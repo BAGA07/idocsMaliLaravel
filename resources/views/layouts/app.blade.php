@@ -38,13 +38,13 @@
                     <div class="clearfix"></div>
 
                     <!-- je charge le menu profile  -->
-                    {{-- @yield('layouts.profileMenu') --}}
+                    @include('components.template.profileMenu')
                     <!-- /menu profile  -->
 
                     <br />
 
                     <!-- je charge le sidebar menu -->
-                    @include('layouts.sidebar')
+                    @include('components.template.sidebar')
                     <!-- /sidebar menu -->
 
                     <!-- je charge le menu footer buttons -->
@@ -54,7 +54,7 @@
             </div>
 
             <!-- je charge la bar de navigation du haut-->
-
+            @include('components.template.topNavigation')
             <!-- /top navigation -->
 
             @yield('content')
