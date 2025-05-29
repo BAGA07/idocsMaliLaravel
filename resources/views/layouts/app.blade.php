@@ -135,6 +135,8 @@
     <script src="{{ asset('gentelella/assets/vendors/jszip/dist/jszip.min.js')}}"></script>
     <script src="{{ asset('gentelella/assets/vendors/pdfmake/build/pdfmake.min.js')}}"></script>
     <script src="{{ asset('gentelella/assets/vendors/pdfmake/build/vfs_fonts.js')}}"></script>
+    <script src="{{ asset('gentelella/assets/vendors/jQuery-Smart-Wizard/js/jquery.smartWizard.js')}}"></script>
+
 </body>
 
 </html>
