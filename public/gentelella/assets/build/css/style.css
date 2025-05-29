@@ -3,11 +3,7 @@ form {
     color: black;
     backdrop-filter: blur(10px);
     padding: 20px;
-<<<<<<< HEAD
-    background-color: rgba(0, 187, 255, 0.953);
-=======
     background-color: rgba(173, 216, 230, 0.5);
->>>>>>> 5b71f25023d495094b10aadbb0a992283ffce985
     border-radius: 10px;      
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
