@@ -16,10 +16,6 @@
     <!-- Custom TheStyle -->
     <link href="{{ asset('gentelella/assets/build/css/custom.min.css') }}" rel="stylesheet">
 
-    <link rel="stylesheet" type="text/css" href=" {{ asset('gentelella/assets/css/style.css') }}">
-    {{--
-    <link rel="stylesheet" type="text/css" href="{{ asset('gentelella/assets/build/css/style.css') }}"> --}}
-
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="icon" type="image" href="{{ asset('gentelella/assets/images/favicon.png') }}">
 </head>
@@ -38,13 +34,13 @@
                     <div class="clearfix"></div>
 
                     <!-- je charge le menu profile  -->
-                    {{-- @yield('layouts.profileMenu') --}}
+                    @include('components.template.profileMenu')
                     <!-- /menu profile  -->
 
                     <br />
 
                     <!-- je charge le sidebar menu -->
-                    @include('layouts.sidebar')
+                    @include('components.template.sidebar')
                     <!-- /sidebar menu -->
 
                     <!-- je charge le menu footer buttons -->
@@ -54,7 +50,7 @@
             </div>
 
             <!-- je charge la bar de navigation du haut-->
-
+            @include('components.template.topNavigation')
             <!-- /top navigation -->
 
             @yield('content')
