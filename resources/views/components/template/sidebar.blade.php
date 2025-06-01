@@ -7,16 +7,7 @@
 
         <div class="clearfix"></div>
 
-        <!-- Menu profil -->
-        <div class="profile clearfix">
-            <div class="profile_pic">
-                <img src="{{ asset('assets/images/user.png') }}" alt="..." class="img-circle profile_img">
-            </div>
-            <div class="profile_info">
-                <span>Bienvenue,</span>
-                <h2>{{ session('user')['nom'] ?? 'Utilisateur' }}</h2>
-            </div>
-        </div>
+
 
         <br />
 
