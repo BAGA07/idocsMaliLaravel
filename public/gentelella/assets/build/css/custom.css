@@ -1977,7 +1977,7 @@ table.display thead th:active, table.display thead td:active {
   clear: both; }
 
 .dataTables_scrollBody {
-  *margin-top: -1px;
+  margin-top: -1px !important;
   -webkit-overflow-scrolling: touch; }
 
 .top .dataTables_info {
@@ -4000,12 +4000,10 @@ ul.project_files li a i {
 
 /* *********  /ecommerce  **************************** */
 /** login **/
-<<<<<<< HEAD
 .login {
-  background: #F7F7F7; }
-=======
->>>>>>> feature-authentification-avec-email
-
+  background-image: url(../images/denim.jpg) !important;
+  /* background: #F7F7F7; } */
+}
 .login .fa-paw {
   font-size: 26px; }
 
@@ -4017,13 +4015,7 @@ a.hiddenanchor {
   margin: 0px auto;
   margin-top: 5%;
   max-width: 350px;
-<<<<<<< HEAD
   position: relative; }
-
-=======
-  position: relative;
- }
->>>>>>> feature-authentification-avec-email
 .registration_form, .login_form {
   position: absolute;
   top: 0px;
