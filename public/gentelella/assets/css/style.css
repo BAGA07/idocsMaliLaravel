@@ -1,10 +1,12 @@
 
 form {
-    border: 1px solid transparent;
-    padding: 20px;
-    background-color: transparent !important;
-    border-radius: 10px;      
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    border: 1px solid transparent !important;
+    color: black !important;
+    backdrop-filter: blur(10px) !important;
+    padding: 20px !important;
+    background-color: rgba(49, 171, 211, 0.5) !important;   
+    border-radius: 10px !important;       
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5) !important;     
 }
 
 input {
@@ -21,11 +23,11 @@ button {
 }
 
 body {
-   background-image: url("/gentelella/assets/images/inbox.png");
-    background-size: cover;
-    background-repeat: no-repeat;                                                   
-    background-attachment: fixed;       
-    background-position: center;                                                                                    
+    /*background-image: url('/images/denim.jpg');*/
+    background-image: url('/gentelella/build/images/denim.jpg');
+    background-size: cover !important;
+    background-repeat: no-repeat !important;                                                   
+    background-attachment: fixed !important;       
+    background-position: center !important;                                                                              
 
-     background-image:url(public/assets/images/back.jpg); background-size: cover; background-attachment: fixed;"
-
+ }
