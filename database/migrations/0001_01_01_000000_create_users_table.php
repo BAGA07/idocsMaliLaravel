@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('prenom');
             $table->string('adresse');
             $table->string('telephone')->nullable();
-            $table->string('role')->default('user'); // Default role is 'user'
+            $table->string('role')->default('agent_hopital'); // Default role is 'user'
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

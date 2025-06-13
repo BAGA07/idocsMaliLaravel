@@ -60,27 +60,23 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th>#</th>
+                                <th>Date</th>
                                 <th>Types de demande</th>
-                                <th>Justificatifs / Actes</th>
+                                <th>Provenance</th>
                                 <th>Statut</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {{-- Exemple fictif : À remplacer par une boucle @foreach --}}
-                            {{-- @for ($i = 1; $i <= 3; $i++) --}} <tr>
-                                <td>{{-- {{ $i }} --}}</td>
+                            <tr>
+                                <td>6 mn</td>
                                 <td>Acte de naissance</td>
-                                <td>photo</td>
-                                <td><span class="btn btn-success btn-xs"><i class="fa fa-check"></i> Validée</span></td>
+                                <td>Hopital du mali</td>
+                                <td>En attente</td>
                                 <td>
                                     <a href="#" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i> Modifier</a>
-                                    <a href="#" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i>
-                                        Supprimer</a>
                                 </td>
-                                </tr>
-                                {{-- @endfor --}}
+                            </tr>
                         </tbody>
                     </table>
                 </div>

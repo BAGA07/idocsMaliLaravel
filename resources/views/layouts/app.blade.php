@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Authentification</title>
+    <title>Idocs Mali</title>
     <!-- Bootstrap -->
     <link href="{{ asset('gentelella/assets/vendors/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
     <!-- Font Awesome -->
@@ -16,6 +16,7 @@
     <!-- Custom TheStyle -->
     <link href="{{ asset('gentelella/assets/build/css/custom.min.css') }}" rel="stylesheet">
 
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="icon" type="image" href="{{ asset('gentelella/assets/images/favicon.png') }}">
 </head>
@@ -23,41 +24,20 @@
 <body class="nav-md">
     <div class="container body">
         <div class="main_container">
-            <div class="col-md-3 left_col">
-                <div class="left_col scroll-view">
-                    <div class="navbar nav_title" style="border: 0;">
-                        <a href="index.php?action=dashboard" class="site_title"><i class="glyphicon glyphicon-leaf"></i>
-                            <span>IDocsMali
-                            </span></a>
-                    </div>
+            @include('components.template.sidebar')
 
-                    <div class="clearfix"></div>
-
-                    <!-- je charge le menu profile  -->
-                    @include('components.template.profileMenu')
-                    <!-- /menu profile  -->
-
-                    <br />
-
-                    <!-- je charge le sidebar menu -->
-                    @include('components.template.sidebar')
-                    <!-- /sidebar menu -->
-
-                    <!-- je charge le menu footer buttons -->
-                    {{-- @include('menuFooter') --}}
-                    <!-- /menu footer buttons -->
-                </div>
-            </div>
-
-            <!-- je charge la bar de navigation du haut-->
+            <!-- top navigation -->
             @include('components.template.topNavigation')
             <!-- /top navigation -->
 
+            <!-- page content -->
+
             @yield('content')
+
             <!-- /page content -->
 
             <!-- footer content -->
-            {{-- @include('layouts.footer') --}}
+            @include('components.template.footer')
             <!-- /footer content -->
         </div>
     </div>
@@ -132,6 +112,7 @@
     <script src="{{ asset('gentelella/assets/vendors/pdfmake/build/pdfmake.min.js')}}"></script>
     <script src="{{ asset('gentelella/assets/vendors/pdfmake/build/vfs_fonts.js')}}"></script>
     <script src="{{ asset('gentelella/assets/vendors/jQuery-Smart-Wizard/js/jquery.smartWizard.js')}}"></script>
+    <script src="{{ asset('gentelella/assets/vendors/parsleyjs/dist/parsley.min.js')}}"></script>
 
 </body>
 

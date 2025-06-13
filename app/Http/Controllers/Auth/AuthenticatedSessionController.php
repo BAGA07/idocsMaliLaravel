@@ -28,7 +28,18 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        $user = Auth::user();
+
+        switch ($user->role) {
+            case 'agent_hopital':
+                return redirect()->route('hopital.dashboard');
+            case 'agent_etat_civil':
+                return redirect()->route('etat_civil.index');
+            case 'citoyen':
+                return redirect()->route('citoyen.index');
+            default:
+                return redirect('/'); // Default redirection for other roles
+        }
     }
 
     /**
