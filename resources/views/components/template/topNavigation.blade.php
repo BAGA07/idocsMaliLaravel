@@ -12,7 +12,7 @@
                     <a href="#" class="nav-link dropdown-toggle user-profile" id="navbarDropdown" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
                         <img src="{{ asset('gentelella/assets/images/img.jpg') }}" alt="Avatar utilisateur">
-                        {{ Auth::user()->name ?? 'Utilisateur' }}
+                        {{ Auth::user()->nom ?? 'Utilisateur' }}
                     </a>
                     <div class="dropdown-menu dropdown-usermenu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="">Profil</a>
