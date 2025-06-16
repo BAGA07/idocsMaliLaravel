@@ -42,9 +42,9 @@ header {
     justify-content: space-around;
 }
 .header_main_title {
-    font-size: 72px;
+    font-size: 60px;
     font-weight: 300;
-    color: #3b5d98;
+    color: #800020; 
     width: 70%;
 }
 .header_main_title > span {
