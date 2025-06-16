@@ -4001,12 +4001,7 @@ ul.project_files li a i {
 /* *********  /ecommerce  **************************** */
 /** login **/
 .login {
-  background-image: url(../images/mali.jpg) !important;
-  width: 100%;
-  height: 3%;
-  position: fixed;
-  top: 20;
- 
+  background-image: url(../images/Presentation.png) !important;
   /* background: #F7F7F7; } */
 }
 .login .fa-paw {

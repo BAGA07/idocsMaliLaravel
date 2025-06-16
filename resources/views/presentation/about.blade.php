@@ -15,8 +15,8 @@
       <div class="header_wrapper">
         <div class="header_nav">
           <a href="#" class="nav_logo">
-            <img src="{{ asset('gentelella/assets/cssPresentation/Idocs Mali.png') }}" alt="Logo IDOCS MALI"
-              class="logo" width="100" height="100">
+            <!-- <img src="{{ asset('gentelella/assets/cssPresentation/Idocs Mali.png') }}" alt="Logo IDOCS MALI"
+              class="logo" width="100" height="100"> -->
           </a>
           <div class="nav_items">
             <a href="{{ route('presentation.index') }}" class="nav_btn">Accueil</a>

@@ -17,7 +17,7 @@
     
     <link href="{{ asset('gentelella/assets/build/css/custom.min.css') }}" rel="stylesheet">
     <link href="{{ asset('gentelella/assets/build/css/custom.css') }}" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href=" {{ asset('gentelella/assets/css/style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('gentelella/assets/css/style.css') }}">
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="icon" type="image" href="{{ asset('gentelella/assets/images/favicon.png') }}">
