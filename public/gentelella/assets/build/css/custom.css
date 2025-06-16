@@ -4001,7 +4001,12 @@ ul.project_files li a i {
 /* *********  /ecommerce  **************************** */
 /** login **/
 .login {
-  background-image: url(../images/denim.jpg) !important;
+  background-image: url(../images/mali.jpg) !important;
+  width: 100%;
+  height: 3%;
+  position: fixed;
+  top: 20;
+ 
   /* background: #F7F7F7; } */
 }
 .login .fa-paw {
@@ -4472,7 +4477,9 @@ fieldset {
   margin: 0;
   padding: 0;
   border: 0 solid #CCC;
-  overflow-x: hidden; }
+  overflow-x: hidden; 
+ height: 44px;
+}
 
 .wizard_horizontal ul.wizard_steps {
   display: table;

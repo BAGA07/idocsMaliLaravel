@@ -52,10 +52,11 @@
     <div class="about_team">
       <h3>Notre Équipe</h3>
       <ul>
-        <li>Mahamadou Diarra — Chef de projet</li>
-        <li>Fatoumata Koné — Développeuse full-stack</li>
-        <li>Souleymane Traoré — Spécialiste UX/UI</li>
-        <li>Fanta Coulibaly — Chargée de communication</li>
+        <li>Aboubacar Arouna Bagayoko</li>
+        <li>Dialla Coulibaly</li>
+        <li>Alioune Badra Diallo</li>
+        <li>Cheick El-Boukader Diarra</li>
+        <li>Salimata Sougané</li>
       </ul>
     </div>
   </main>

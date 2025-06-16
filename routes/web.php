@@ -69,13 +69,13 @@ Route::middleware([
 
 
 
-Route::get('/form', function () {
+/* Route::get('/form', function () {
     return view('citoyen.form_demande');
 })->name('form');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard'); */
 
 
 //route pour la gestion de profile
