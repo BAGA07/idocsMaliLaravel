@@ -49,7 +49,7 @@
                                 </li>
                             </ul>
 
-                            <form action="" method="POST">
+                            <form action="{{ route('naissance.store') }}" method="POST">
                                 @csrf
                                 <div class="stepContainer">
                                     <div id="step-1">

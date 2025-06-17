@@ -6,10 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Accueil — IDOCS MALI</title>
     <link rel="stylesheet" href="{{ asset('gentelella/assets/cssPresentation/styles.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+
+
 </head>
 
 <body>
-    <header><br><br>
+    <header><br><br><br><br>
         <div class="container">
             <div class="header_wrapper">
                 <div class="header_nav">
@@ -20,7 +23,6 @@
                     <div class="nav_items">
                         <a href="{{ route('presentation.index') }}" class="nav_btn">Accueil</a>
                         <a href="{{ route('presentation.solution') }}" class="nav_btn">Nos Solutions</a>
-                        <a href="{{ route('login') }}" class="nav_btn">Se connecter</a><br>
                         <div class="text-center mali-header" style="margin-top: 20px;">
                             <div class="titre-mali">République du Mali</div>
                             <div class="badge bg-gradient-mali text-black mb-8">
@@ -29,14 +31,23 @@
                                     <span class="jaune">Un but</span> &middot;
                                     <span class="rouge">Une foi</span>
                                 </div>
+                            </div><br>
+                            <div class="wrapper">
+                                <button onclick="window.location.href='{{ route('demande.create') }}'">
+                                    Faire une demande!
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </button>
                             </div>
                         </div>
-
-
                     </div>
-
-
                 </div>
+
+
+
+
                 <div class="header_content">
                     <div class="header_empty_wrapper"></div>
                     <div class="header_content_wrapper">
@@ -66,6 +77,9 @@
             </div>
         </div>
     </header>
+    <footer style="text-align: center; padding: 20px;margin-top: 5px;">
+        <p>&copy; 2025 IDOCS MALI — Tous droits réservés</p>
+    </footer>
 </body>
 
 </html>
