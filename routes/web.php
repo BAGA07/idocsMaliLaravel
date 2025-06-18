@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\DemandeController;
 use App\Http\Controllers\Hopital\NaissanceController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\VoletDeclarationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\RoleMiddleware;
 
@@ -22,8 +24,6 @@ Route::get('/service', function () {
 Route::get('/about', function () {
     return view('presentation.about');
 })->name('presentation.about');
-
-
 // fin des routes pour la page de presentation
 
 
@@ -34,7 +34,6 @@ Route::middleware([
     Route::get('/etat-civil', function () {
         return view('centre_etat_civil.index');
     })->name('etat_civil.index');
-
 
     Route::get('/etat-civil/acte-naissance', function () {
         return view('etat_civil.acte_naissance');
@@ -48,34 +47,29 @@ Route::middleware([
         return view('etat_civil.acte_deces');
     })->name('etat_civil.acte_deces');
 });
-
+// fin des routes pour le centre d'etat civil
 
 // Les routes pour le citoyen
-Route::get('/citoyen', function () {
-    return view('citoyen.form_demande');
-})->name('citoyen.index');
 
+Route::get('/citoyen/demande', [DemandeController::class, 'create'])->name('demande.create');
+Route::post('/citoyen/demande', [DemandeController::class, 'store'])->name('demande.store');
+// fin des routes pour le citoyen
 
 // les routes pour les agents de l'hopital
 Route::middleware([
     \App\Http\Middleware\RoleMiddleware::class . ':agent_hopital',
 ])->prefix('hopital')->group(function () {
     Route::get('/dashboard', [NaissanceController::class, 'dashboard'])->name('hopital.dashboard');
-    Route::get('/naissance', [NaissanceController::class, 'index'])->name('hopital.naissance.list');
-    Route::get('/naissance/create', [NaissanceController::class, 'create'])->name('hopital.naissance.create');
-    Route::post('/naissances', [NaissanceController::class, 'store'])->name('hopital.naissance.store');
-    Route::get('/naissance/{id}', [NaissanceController::class, 'show'])->name('hopital.naissance.show');
+    //Route::get('/naissance', [NaissanceController::class, 'index'])->name('hopital.naissance.list');
+    //Route::get('/naissance/create', [NaissanceController::class, 'create'])->name('hopital.naissance.create');
+    // Route::post('/naissances', [NaissanceController::class, 'store'])->name('hopital.naissance.store');
+    //Route::get('/naissance/{id}', [NaissanceController::class, 'show'])->name('hopital.naissance.show');
+    Route::get('naissance/create', [VoletDeclarationController::class, 'create'])->name('naissance.create');
+    Route::post('hopital/naissance', [VoletDeclarationController::class, 'store'])->name('naissance.store');
 });
+// fin des routes pour les agents de l'hopital
 
 
-
-Route::get('/form', function () {
-    return view('citoyen.form_demande');
-})->name('form');
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
 
 //route pour la gestion de profile

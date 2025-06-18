@@ -10,7 +10,7 @@ html,body {
 }
 header {
     width: 100%;
-    height: 80vh;
+    height: 60vh;
     background-image: url(tourafrique.jpg);
     backdrop-filter: blur(8px) !important;
     background-size: cover;
