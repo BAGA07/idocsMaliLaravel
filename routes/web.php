@@ -6,27 +6,70 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\RoleMiddleware;
 
 
-// les routes pour la page de presentation
+
+
+
+// =========================================================
+// ROUTES POUR LES PAGES PRINCIPALES DE PRÉSENTATION
+// =========================================================
+
+// Page d'Accueil
 Route::get('/', function () {
     return view('presentation.index');
 })->name('presentation.index');
 
-Route::get('/solution', function () {
-    return view('presentation.solution');
-})->name('presentation.solution');
+// Page "Demander un Acte" (le formulaire)
+Route::get('/demander-un-acte', function () {
+    return view('presentation.demander_acte');
+})->name('presentation.demander_acte');
 
-Route::get('/service', function () {
-    return view('presentation.service');
-})->name('presentation.service');
+// NOUVELLE ROUTE ICI POUR LA DÉMARCHE DE DEMANDE
+Route::get('/la-demarche', function () {
+    return view('presentation.la-demarche'); // Chemin de la vue : resources/views/presentation/la_demarche.blade.php
+})->name('presentation.la_demarche');
 
-Route::get('/about', function () {
-    return view('presentation.about');
-})->name('presentation.about');
+// Page "Suivre ma Demande"
+Route::get('/suivre-ma-demande', function () {
+    return view('presentation.suivre_demande');
+})->name('presentation.suivre_demande');
+
+// Page "Le Projet / À Propos" (page principale de cette section)
+Route::get('/a-propos', function () {
+    return view('presentation.a_propos');
+})->name('presentation.a_propos');
 
 
-// fin des routes pour la page de presentation
+// =========================================================
+// ROUTES POUR LE DROPDOWN "LE PROJET / À PROPOS" (Sous-pages)
+// =========================================================
 
+Route::prefix('a-propos')->name('presentation.a_propos.')->group(function () {
+    Route::get('/notre-vision', function () {
+        return view('presentation.a_propos.notre_vision');
+    })->name('notre_vision');
 
+    Route::get('/securite-confidentialite', function () {
+        return view('presentation.a_propos.securite-confidentialite');
+    })->name('securite_confidentialite');
+
+    Route::get('/partenaires', function () {
+        return view('presentation.a_propos.partenaires');
+    })->name('partenaires');
+});
+
+// =========================================================
+// AUTRES ROUTES DU MENU PRINCIPAL
+// =========================================================
+
+// Page FAQ
+Route::get('/faq', function () {
+    return view('presentation.faq');
+})->name('presentation.faq');
+
+// Page Contact
+Route::get('/contact', function () {
+    return view('presentation.contact');
+})->name('presentation.contact');
 // Les routes pour le centre d'etat civil
 Route::middleware([
     \App\Http\Middleware\RoleMiddleware::class . ':agent_etat_civil',
