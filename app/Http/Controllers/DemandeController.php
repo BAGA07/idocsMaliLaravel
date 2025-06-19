@@ -9,7 +9,7 @@ class DemandeController extends Controller
 {
     public function create()
     {
-        return view('citoyen.form_demande');
+        return view('citoyen.demande.form_demande');
     }
 
     public function store(Request $request)
@@ -39,5 +39,19 @@ class DemandeController extends Controller
 
 
         return redirect()->route('demande.create')->with('success', 'Votre demande a été envoyée avec succès.');
+    }
+
+    public function choix()
+    {
+        return view('citoyen.demande.choix');
+    }
+    public function copie()
+    {
+        return view('citoyen.demande.copie');
+    }
+
+    public function storeNouveauNe()
+    {
+        return view('citoyen.demande.sans_info');
     }
 }

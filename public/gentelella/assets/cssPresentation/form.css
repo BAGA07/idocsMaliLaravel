@@ -63,3 +63,63 @@
         .hidden {
             display: none;
         }
+
+        /* form choix */
+        .choix-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 80vh;
+        background-color: rgba(255, 255, 255, 0.85);
+        border-radius: 15px;
+        padding: 40px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        max-width: 600px;
+        margin: auto;
+    }
+
+    .choix-title {
+        font-size: 24px;
+        font-weight: bold;
+        color: #8e0d35;
+        /* couleur IDOCS MALI */
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+    .choix-link {
+        display: block;
+        width: 100%;
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 8px;
+        text-align: center;
+        font-weight: bold;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+    }
+
+    .choix-link:hover {
+        transform: scale(1.02);
+        text-decoration: none;
+    }
+
+    .choix-1 {
+        background-color: #e3f2fd;
+        color: #00e654;
+        border: 2px solid #90caf9;
+    }
+
+    .choix-2 {
+        background-color: #fff8e1;
+        color: #f57f17;
+        border: 2px solid #ffd54f;
+    }
+
+    .choix-3 {
+        background-color: #e8f5e9;
+        color: #1b5e20;
+        border: 2px solid #81c784;
+    }
