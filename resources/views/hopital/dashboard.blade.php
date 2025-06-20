@@ -18,7 +18,7 @@
         <div class="col-md-4 col-sm-6 col-xs-12">
             <div class="tile-stats">
                 <div class="icon"><i class="fa fa-file-text-o"></i></div>
-                <div class="count">23</div>
+                <div class="count"></div>
                 <h3>Total des Naissance</h3>
                 <p>Depuis votre inscription</p>
             </div>
@@ -53,7 +53,7 @@
                     <h2>Liste des naissance enregistrées </h2>
                     <ul class="nav navbar-right panel_toolbox">
                         <li>
-                            <span><a href="{{ route('naissance.create') }}" class="btn btn-primary btn-xs"><i
+                            <span><a href="{{ route('naissances.create') }}" class="btn btn-primary btn-xs"><i
                                         class="fa fa-plus"></i> Nouvelle naissance</a></span>
                         </li>
                     </ul>
@@ -82,9 +82,9 @@
                                 <td>M</td>
                                 <td>en cour</td>
                                 <td>
-                                    <a href="{{ route('hopital.naissance.show', $declaration->id_volet) }}"
+                                    <a href="{{ route('naissances.show', $declaration->id_volet) }}"
                                         class="btn btn-sm btn-info">Voir</a>
-                                    <a href="{{ route('naissance.edit', $declaration->id_volet) }}"
+                                    <a href="{{ route('naissances.edit', $declaration->id_volet) }}"
                                         class="btn btn-sm btn-warning">Modifier</a>
 
                                 </td>
