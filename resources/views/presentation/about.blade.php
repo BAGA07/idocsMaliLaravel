@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 @extends('layouts.presentation')
 @section('links')
 <link rel="stylesheet" href="{{ asset('gentelella/assets/cssPresentation/about.css') }}">
@@ -54,3 +55,5 @@
   </div>
 </main>
 @endsection
+=======
+>>>>>>> 98ce78432dfb49134b611cada640fcb8e87255c9

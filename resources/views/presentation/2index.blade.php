@@ -18,14 +18,7 @@
             </div>
         </div>
     </nav>
-    <!-- Header-->
-    <header class="py-5">
-        <div class="text-center">
-            <div class="badge bg-gradient-mali text-black mb-8">
-                <div class="text-uppercase">Un peuple &middot; Un but &middot; Une foi</div>
-            </div>
-            <div class="fs-3 fw-light text-muted">République du Mali</div>
-        </div>
+    
 
         <div class="row gx-12 align-items-center">
             <div class="col-xxl-5">
