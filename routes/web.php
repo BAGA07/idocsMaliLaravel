@@ -7,12 +7,6 @@ use App\Http\Controllers\VoletDeclarationController;
 use Illuminate\Support\Facades\Route;
 
 
-
-
-// =========================================================
-// ROUTES POUR LES PAGES PRINCIPALES DE PRÉSENTATION
-// =========================================================
-
 // Page d'Accueil
 Route::get('/', function () {
     return view('presentation.index');
@@ -49,7 +43,6 @@ Route::get('/a-propos', function () {
 // ROUTES POUR LE DROPDOWN "LE PROJET / À PROPOS" (Sous-pages)
 // =========================================================
 
-
 Route::prefix('a-propos')->name('presentation.a_propos.')->group(function () {
     Route::get('/notre-vision', function () {
         return view('presentation.a_propos.notre_vision');
@@ -77,6 +70,7 @@ Route::get('/faq', function () {
 Route::get('/contact', function () {
     return view('presentation.contact');
 })->name('presentation.contact');
+
 // Les routes pour le centre d'etat civil
 Route::middleware([
     'role:agent_etat_civil',
