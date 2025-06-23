@@ -21,8 +21,14 @@ class Declarant extends Model
         'date_declaration'
     ];
 
-    public function declarations()
+    public function declarant()
     {
         return $this->hasMany(VoletDeclaration::class, 'id_declarant');
+
+    }
+    use HasFactory; 
+    public function Acte()
+    {
+        return $this->hasMany(Acte::class);
     }
 }

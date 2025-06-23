@@ -49,4 +49,8 @@ class VoletDeclaration extends Model
     {
         return $this->belongsTo(Hopital::class, 'id_hopital');
     }
+    public function Acte(){
+        return $this->hasOne(Acte::class);
+
+    }
 }

@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('communes', function (Blueprint $table) {
-            $table->id();
-            $table->string('nom_commune', 200);
-            $table->string('region', 200);
-            $table->string('cercle', 200);
+        Schema::create('pieces_jointes', function (Blueprint $table) {
+             $table->id();
+            $table->foreignId('id_demande')->constrained('demandes')->onDelete('cascade');
+              $table->string('nom_fichier');
+              $table->string('chemin_fichier');
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('communes');
+        Schema::dropIfExists('pieces_jointes');
     }
 };

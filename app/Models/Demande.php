@@ -17,4 +17,12 @@ class Demande extends Model
         'informations_complementaires',
         'justificatif',
     ];
+     
+    public function PieceJointe () {
+         return $this->hasMany(PieceJointe::class);
+    }
+    
+    public function Acte(){
+        return $this->hasOne(Acte::class);
+    }
 }
