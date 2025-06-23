@@ -18,7 +18,7 @@
         <div class="col-md-4 col-sm-6 col-xs-12">
             <div class="tile-stats">
                 <div class="icon"><i class="fa fa-file-text-o"></i></div>
-                <div class="count"></div>
+                <div class="count">333</div>
                 <h3>Total des Naissance</h3>
                 <p>Depuis votre inscription</p>
             </div>
@@ -68,7 +68,6 @@
                                 <th>Nom et Prenom de la mère</th>
                                 <th>Contacte du Pere</th>
                                 <th>sexe de l'enfant</th>
-                                <th>Statut</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -80,7 +79,6 @@
                                 <td>{{ $declaration->prenom_mere }} {{ $declaration->nom_mere }}</td>
                                 <td>+223 {{ $declaration->telephone_pere }}</td>
                                 <td>M</td>
-                                <td>en cour</td>
                                 <td>
                                     <a href="{{ route('naissances.show', $declaration->id_volet) }}"
                                         class="btn btn-sm btn-info">Voir</a>

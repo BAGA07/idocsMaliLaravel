@@ -1,6 +1,3 @@
-@extends('layouts.app')
-
-@section('content')
 <style>
     .declaration {
         width: 800px;
@@ -158,5 +155,3 @@
         <button onclick="window.print()" class="btn btn-primary">Imprimer</button>
     </div>
 </div>
-
-@endsection
