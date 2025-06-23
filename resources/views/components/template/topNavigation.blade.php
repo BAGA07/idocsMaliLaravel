@@ -15,7 +15,7 @@
                         {{ Auth::user()->nom ?? 'Utilisateur' }}
                     </a>
                     <div class="dropdown-menu dropdown-usermenu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="">Profil</a>
+                        <a class="dropdown-item" href="{{ route('profile.edit') }}">Profil</a>
                         <a class="dropdown-item" href="#">
                             <span class="badge bg-danger float-right">50%</span>
                             <span>Paramètres</span>

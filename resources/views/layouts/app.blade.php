@@ -15,6 +15,8 @@
 
     <!-- Custom TheStyle -->
     <link href="{{ asset('gentelella/assets/build/css/custom.min.css') }}" rel="stylesheet">
+    <!-- SweetAlert2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -42,6 +44,27 @@
         </div>
     </div>
 
+    @if(session('success'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Succès',
+            text: '{{ session("success") }}',
+            confirmButtonColor: '#198754'
+        });
+    </script>
+    @endif
+
+    @if(session('error'))
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Erreur',
+            text: '{{ session("error") }}',
+            confirmButtonColor: '#d33'
+        });
+    </script>
+    @endif
 
     <!-- Je charge les fichier du template -->
     <!-- jQuery -->

@@ -1,5 +1,6 @@
 @extends ('layouts.presentation') {{-- Assurez-vous que c'est le bon chemin vers votre layout --}}
 
+
 @section('title', 'Accueil - MaliActes') {{-- Titre spécifique pour la page d'accueil --}}
 
 @section('content')
@@ -18,7 +19,7 @@
             Demandez et suivez vos actes en ligne, rapidement et en toute sécurité, depuis chez vous.
         </p>
         <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6 animate-scale-in">
-            <a href="{{ route('presentation.demander_acte') }}" class="inline-block bg-white text-blue-600 hover:bg-blue-100 px-8 py-4 rounded-lg text-lg font-semibold shadow-lg transition duration-300 ease-in-out transform hover:scale-105">
+            <a href="{{ route('demande.choix_type') }}" class="inline-block bg-white text-blue-600 hover:bg-blue-100 px-8 py-4 rounded-lg text-lg font-semibold shadow-lg transition duration-300 ease-in-out transform hover:scale-105">
                 Demander un Acte
             </a>
             <a href="{{ route('presentation.suivre_demande') }}" class="inline-block border-2 border-white text-white hover:bg-white hover:text-blue-600 px-8 py-4 rounded-lg text-lg font-semibold shadow-lg transition duration-300 ease-in-out transform hover:scale-105">
@@ -31,7 +32,7 @@
 {{-- 2. Avantages Clés --}}
 <section class="py-16 bg-gray-50">
     <div class="container mx-auto px-4 text-center">
-        <h2 class="text-4xl font-bold text-gray-800 mb-12">Pourquoi choisir MaliActes ?</h2>
+        <h2 class="text-4xl font-bold text-gray-800 mb-12">Pourquoi choisir e-Naissance Mali ?</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
             {{-- Avantage 1 --}}
             <div class="bg-white p-8 rounded-lg shadow-xl hover:shadow-2xl transition duration-300 transform hover:-translate-y-2">
@@ -114,7 +115,7 @@
 
 {{-- 4. Confiance & Chiffres --}}
 <section class="py-16 bg-gray-100">
-    <div class="container mx-auto px-4 text-center">
+<div class="container mx-auto px-4 text-center">
         <h2 class="text-4xl font-bold text-gray-800 mb-12">Notre Engagement : Confiance et Efficacité</h2>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
@@ -136,17 +137,17 @@
             </div>
         </div>
 
-        <h3 class="text-2xl font-bold text-gray-800 mb-8">Ils nous font confiance :</h3>
+                <h3 class="text-2xl font-bold text-gray-800 mb-8">Ils nous font confiance :</h3>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-8 items-center justify-center mb-12">
             {{-- Remplacez par les chemins de vos logos partenaires --}}
-            <img src="https://via.placeholder.com/150x80?text=Partenaire+1" alt="Partenaire 1" class="mx-auto max-h-20 opacity-75 hover:opacity-100 transition duration-300">
-            <img src="https://via.placeholder.com/150x80?text=Partenaire+2" alt="Partenaire 2" class="mx-auto max-h-20 opacity-75 hover:opacity-100 transition duration-300">
-            <img src="https://via.placeholder.com/150x80?text=Partenaire+3" alt="Partenaire 3" class="mx-auto max-h-20 opacity-75 hover:opacity-100 transition duration-300">
-            <img src="https://via.placeholder.com/150x80?text=Partenaire+4" alt="Partenaire 4" class="mx-auto max-h-20 opacity-75 hover:opacity-100 transition duration-300">
+            <img src="{{ asset('./images/mali.jpg') }}" alt="Nom du Partenaire 1" class="mx-auto max-h-20 opacity-75 hover:opacity-100 transition duration-300">
+            <img src="{{ asset('./images/bdm.png') }}" alt="Nom du Partenaire 2" class="mx-auto max-h-20 opacity-75 hover:opacity-100 transition duration-300">
+            <img src="{{ asset('./images/ONG.png') }}" alt="Nom du Partenaire 3" class="mx-auto max-h-20 opacity-75 hover:opacity-100 transition duration-300">
+            <img src="{{ asset('./images/agtic.jpeg') }}" alt="Nom du Partenaire 4" class="mx-auto max-h-20 opacity-75 hover:opacity-100 transition duration-300">
         </div>
 
         <p class="text-gray-700 text-lg max-w-2xl mx-auto">
-            MaliActes s'engage à garantir la confidentialité et la sécurité de toutes vos informations. Votre confiance est notre priorité.
+            e-Naissance Mali s'engage à garantir la confidentialité et la sécurité de toutes vos informations. Votre confiance est notre priorité.
         </p>
     </div>
 </section>
@@ -214,9 +215,10 @@
 {{-- 6. Appel à l'Action Final --}}
 <section class="bg-blue-400 text-white py-20 text-center">
     <div class="container mx-auto px-4">
-        <h2 class="text-4xl md:text-5xl font-bold mb-8">Prêt à simplifier vos démarches administratives ?</h2>
-        <a href="{{ route('presentation.demander_acte') }}" class="inline-block bg-white text-blue-700 hover:bg-blue-100 px-10 py-5 rounded-lg text-xl font-semibold shadow-xl transition duration-300 ease-in-out transform hover:scale-105">
-            Commencer ma Demande Maintenant
+        {{-- Le titre est rendu plus spécifique à l'acte de naissance et à la digitalisation --}}
+        <h2 class="text-4xl md:text-5xl font-bold mb-8">Prêt à digitaliser vos démarches d'Acte de Naissance ?</h2>
+        <a href="{{ route('demande.choix_type') }}" class="inline-block bg-white text-blue-700 hover:bg-blue-100 px-10 py-5 rounded-lg text-xl font-semibold shadow-xl transition duration-300 ease-in-out transform hover:scale-105">
+            Commencer ma Demande en Ligne
         </a>
     </div>
 </section>

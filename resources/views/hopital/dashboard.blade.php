@@ -9,7 +9,7 @@
         <section class="welcome-section text-center shadow-lg">
             <h1>Bonne journée <strong>{{ Auth::user()->nom }}</strong></h1>
 
-            <a href="{{ url('index.php?action=new_demande') }}" class="btn btn-welcome">Faire une nouvelle declaration
+            <a href="" class="btn btn-welcome">Faire une nouvelle declaration
                 de naissance</a>
         </section>
     </div>
@@ -23,7 +23,7 @@
                     <h2>Liste des naissance enregistrées </h2>
                     <ul class="nav navbar-right panel_toolbox">
                         <li>
-                            <span><a href="{{ route('hopital.naissance.create') }}" class="btn btn-primary btn-xs"><i
+                            <span><a href="{{ route('naissance.create') }}" class="btn btn-primary btn-xs"><i
                                         class="fa fa-plus"></i> Nouvelle naissance</a></span>
                         </li>
                     </ul>

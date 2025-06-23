@@ -4472,7 +4472,9 @@ fieldset {
   margin: 0;
   padding: 0;
   border: 0 solid #CCC;
-  overflow-x: hidden; }
+  overflow-x: hidden; 
+ height: 44px;
+}
 
 .wizard_horizontal ul.wizard_steps {
   display: table;

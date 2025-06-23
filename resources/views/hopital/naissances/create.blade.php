@@ -49,7 +49,7 @@
                                 </li>
                             </ul>
 
-                            <form action="" method="POST">
+                            <form action="{{ route('naissance.store') }}" method="POST">
                                 @csrf
                                 <div class="stepContainer">
                                     <div id="step-1">
@@ -225,58 +225,9 @@
                                         </div>
                                         <div class="form-group row">
                                             <label class="col-form-label col-md-3 label-align"><span
-                                                    class="required">*</span></label>
+                                                    class="required">Date de naissance</span></label>
                                             <div class="col-md-6">
-                                                <input type="number" name="age_mere" required class="form-control">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-md-3 label-align">Domicile<span
-                                                    class="required">*</span></label>
-                                            <div class="col-md-6">
-                                                <input type="text" name="domicile_mere" required class="form-control">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-md-3 label-align">Ethnie<span
-                                                    class="required">*</span></label>
-                                            <div class="col-md-6">
-                                                <input type="text" name="ethnie_mere" required class="form-control">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-md-3 label-align">Situation
-                                                Matrimoniale</label>
-                                            <div class="col-md-6">
-                                                <div class="btn-group" data-toggle="buttons">
-                                                    <label class="btn btn-outline-secondary">
-                                                        <input type="radio" name="situation_matrimoniale_mere"
-                                                            value="marie"> Mariée
-                                                    </label>
-                                                    <label class="btn btn-outline-secondary">
-                                                        <input type="radio" name="situation_matrimoniale_mere"
-                                                            value="celibataire"> Célibataire
-                                                    </label>
-                                                    <label class="btn btn-outline-secondary">
-                                                        <input type="radio" name="situation_matrimoniale_mere"
-                                                            value="divorce"> Divorcée
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-md-3 label-align">Niveau Scolaire<span
-                                                    class="required">*</span></label>
-                                            <div class="col-md-6">
-                                                <input type="text" name="niveau_scolaire_mere" required
-                                                    class="form-control">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-md-3 label-align">Profession<span
-                                                    class="required">*</span></label>
-                                            <div class="col-md-6">
-                                                <input type="text" name="profession_mere" required class="form-control">
+                                                <input type="date" name="date_naissance" required class="form-control">
                                             </div>
                                         </div>
                                     </div>
