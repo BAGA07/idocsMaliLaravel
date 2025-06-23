@@ -103,4 +103,11 @@ class VoletDeclarationController extends Controller
 
         return redirect()->route('hopital.dashboard')->with('success', 'Déclaration de naissance enregistrée avec succès.');
     }
+
+    public function show($id)
+    {
+        $declaration = VoletDeclaration::with('declarant', 'hopital')->findOrFail($id);
+        return view('hopital.naissances.show', compact('declaration'));
+    }
+    public function edit($id) {}
 }

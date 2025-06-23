@@ -131,6 +131,6 @@ class DemandeController extends Controller
             'lieu_evenement' => $validatedData['lieu_evenement_acte'],
         ]);
 
-        return redirect()->route('demande.choix_type')->with('success', 'Votre demande de copie d\'extrait a été soumise avec succès !');
+        return redirect()->route('demande.create')->with('success', 'Votre demande a été envoyée avec succès.');
     }
 }

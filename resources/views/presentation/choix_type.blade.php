@@ -1,6 +1,6 @@
 @extends('layouts.presentation')
 
-@section('title', 'Choix du Type de Demande - e-Naissance MALI') {{-- Titre plus descriptif --}}
+@section('title', 'Choix du Type de Demande - e-Naissance Mali') {{-- Titre plus descriptif --}}
 
 @section('content')
 

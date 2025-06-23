@@ -1,13 +1,11 @@
 <?php
-
+use App\Http\Controllers\PresentationController;
 use App\Http\Controllers\DemandeController;
 use App\Http\Controllers\Hopital\NaissanceController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VoletDeclarationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\RoleMiddleware;
-use App\Http\Controllers\PresentationController; // Assurez-vous que le chemin est correct
-
 
 
 
@@ -70,7 +68,7 @@ Route::post('/presentation/copie-extrait', [DemandeController::class, 'storeCopi
 // Route::post('/presentation/demande', [DemandeController::class, 'store'])->name('demande.store');
 // Les routes pour le centre d'etat civil
 Route::middleware([
-    \App\Http\Middleware\RoleMiddleware::class . ':agent_etat_civil',
+    'role:agent_etat_civil',
 ])->prefix('mairie')->group(function () {
     Route::get('/etat-civil', function () {
         return view('centre_etat_civil.index');
@@ -90,14 +88,14 @@ Route::middleware([
 });
 // fin des routes pour le centre d'etat civil
 
-// Les routes pour le citoyen
 
 
-// fin des routes pour le citoyen
+
+
 
 // les routes pour les agents de l'hopital
 Route::middleware([
-    \App\Http\Middleware\RoleMiddleware::class . ':agent_hopital',
+    'role:agent_hopital',
 ])->prefix('hopital')->group(function () {
     Route::get('/dashboard', [NaissanceController::class, 'dashboard'])->name('hopital.dashboard');
     //Route::get('/naissance', [NaissanceController::class, 'index'])->name('hopital.naissance.list');
@@ -109,15 +107,11 @@ Route::middleware([
 });
 // fin des routes pour les agents de l'hopital
 
-
-
-
 //route pour la gestion de profile
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-
 
 require __DIR__ . '/auth.php';

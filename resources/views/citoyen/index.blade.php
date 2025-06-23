@@ -37,8 +37,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {{-- Exemple fictif : À remplacer par une boucle @foreach --}}
-                            {{-- @for ($i = 1; $i <= 3; $i++) --}} <tr>
+                            <tr>
                                 <td>{{-- {{ $i }} --}}</td>
                                 <td>Acte de naissance</td>
                                 <td>photo</td>
@@ -48,8 +47,8 @@
                                     <a href="#" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i>
                                         Supprimer</a>
                                 </td>
-                                </tr>
-                                {{-- @endfor --}}
+                            </tr>
+
                         </tbody>
                     </table>
                 </div>
