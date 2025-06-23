@@ -22,7 +22,7 @@
                     </li>
                     <li>
                         <i class="fas fa-envelope text-blue-600 mr-3"></i>
-                        <a href="mailto:contact@mali-actes.ml" class="hover:underline">contact@mali-actes.ml</a>
+                        <a href="mailto:contact@e-Naissance Mali.ml" class="hover:underline">contact@e-Naissance Mali.ml</a>
                     </li>
                     <li>
                         <i class="fas fa-phone-alt text-blue-600 mr-3"></i>
@@ -59,7 +59,7 @@
                     </div>
                 @endif
 
-                <form action="{{ route('presentation.contact.submit') }}" method="POST">
+                <form action="{{ route('presentation.contact') }}" method="POST">
                     @csrf
                     <div class="mb-6">
                         <label for="name" class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Nom Complet:</label>
