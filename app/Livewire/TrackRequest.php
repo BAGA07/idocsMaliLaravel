@@ -6,8 +6,6 @@ use Livewire\Component;
 
 class TrackRequest extends Component
 {
-
-
     public $trackingNumber = '';
     public $status = null;
     public $message = '';
