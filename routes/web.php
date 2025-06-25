@@ -1,4 +1,5 @@
 <?php
+
 use App\Http\Controllers\PresentationController;
 use App\Http\Controllers\DemandeController;
 use App\Http\Controllers\Hopital\NaissanceController;
@@ -98,12 +99,7 @@ Route::middleware([
     'role:agent_hopital',
 ])->prefix('hopital')->group(function () {
     Route::get('/dashboard', [NaissanceController::class, 'dashboard'])->name('hopital.dashboard');
-    //Route::get('/naissance', [NaissanceController::class, 'index'])->name('hopital.naissance.list');
-    //Route::get('/naissance/create', [NaissanceController::class, 'create'])->name('hopital.naissance.create');
-    // Route::post('/naissances', [NaissanceController::class, 'store'])->name('hopital.naissance.store');
-    //Route::get('/naissance/{id}', [NaissanceController::class, 'show'])->name('hopital.naissance.show');
-    Route::get('naissance/create', [VoletDeclarationController::class, 'create'])->name('naissance.create');
-    Route::post('hopital/naissance', [VoletDeclarationController::class, 'store'])->name('naissance.store');
+    Route::resource('naissances', VoletDeclarationController::class);
 });
 // fin des routes pour les agents de l'hopital
 

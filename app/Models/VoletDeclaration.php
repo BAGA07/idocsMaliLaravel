@@ -19,6 +19,7 @@ class VoletDeclaration extends Model
         'nom_enfant',
         'sexe',
         'nbreEnfantAccouchement',
+
         'prenom_pere',
         'nom_pere',
         'age_pere',
@@ -27,6 +28,7 @@ class VoletDeclaration extends Model
         'situation_matrimonial_pere',
         'niveau_instruction_pere',
         'profession_pere',
+
         'prenom_mere',
         'nom_mere',
         'age_mere',
@@ -35,9 +37,10 @@ class VoletDeclaration extends Model
         'situation_matrimonial_mere',
         'niveau_instruction_mere',
         'profession_mere',
+
         'nbreEINouvNee',
         'id_declarant',
-        'id_hopital'
+        'id_hopital',
     ];
 
     public function declarant()

@@ -53,17 +53,17 @@
         </div>
 
         <div class="line">
-            <div class="field">RÉGION DE : {{ $declaration->hopital->region ?? '---' }}</div>
-            <div class="field">CERCLE DE : {{ $declaration->hopital->cercle ?? '---' }}</div>
+            <div class="field">RÉGION DE : {{ $declaration->hopital->commune->region ?? '---' }}</div>
+            <div class="field">CERCLE DE : {{ $declaration->hopital->commune->cercle ?? '---' }}</div>
         </div>
         <div class="line">
-            <div class="field">COMMUNE DE : {{ $declaration->hopital->commune ?? '---' }}</div>
+            <div class="field">COMMUNE DE : {{ $declaration->hopital->commune->nom_commune }}</div>
         </div>
         <div class="line">
             <div class="field">CENTRE DE : Mairie Principale</div>
         </div>
         <div class="line">
-            <div class="field">CENTRE DE DÉCLARATION DE : {{ $declaration->hopital->nom ?? '---' }}</div>
+            <div class="field">CENTRE DE DÉCLARATION DE : {{ $declaration->hopital->nom_hopital ?? '---' }}</div>
         </div>
 
         <div class="section-title">VOLET N°2</div>
@@ -143,7 +143,8 @@
             <div class="field">27. Domicile : {{ $declaration->declarant->domicile_declarant }}</div>
         </div>
         <div class="line">
-            <div class="field">28. Agent de déclaration : {{ $declaration->agent_declaration ?? '---' }}</div>
+            <div class="field">28. Agent de déclaration : {{ $declaration->declarant->nom_declarant ?? '---' }} {{
+                $declaration->declarant->prenom_declarant }}</div>
         </div>
 
         <div class="signature">

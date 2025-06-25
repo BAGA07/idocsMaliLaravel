@@ -12,13 +12,14 @@ class Declarant extends Model
     protected $primaryKey = 'id_declarant';
 
     protected $fillable = [
-        'nom_declarant',
         'prenom_declarant',
+        'nom_declarant',
         'age_declarant',
-        'profession_declarant',
         'domicile_declarant',
+        'ethnie_declarant',
+        'profession_declarant',
         'numero_declaration',
-        'date_declaration'
+        'date_declaration',
     ];
 
     public function declarations()
