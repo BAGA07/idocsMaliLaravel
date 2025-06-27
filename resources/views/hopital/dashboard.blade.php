@@ -48,58 +48,65 @@
     {{-- Tableau des demandes --}}
     <div class="row mt-4">
         <div class="col-md-12">
-            <div class="x_panel">
-                <div class="x_title">
-                    <h2>Liste des naissance enregistrées </h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li>
-                            <span><a href="{{ route('naissances.create') }}" class="btn btn-primary btn-xs"><i
-                                        class="fa fa-plus"></i> Nouvelle naissance</a></span>
-                        </li>
-                    </ul>
-                    <div class="clearfix"></div>
+            <div class="x_panel shadow-sm" style="border-radius: 10px;">
+                <div class="x_title d-flex justify-content-between align-items-center">
+                    <h2 class="mb-0">Liste des naissances enregistrées</h2>
+                    <a href="{{ route('naissances.create') }}" class="btn btn-primary">
+                        <i class="fa fa-plus"></i> Nouvelle naissance
+                    </a>
                 </div>
-                <div class="x_content">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Nom et Prenom du père</th>
-                                <th>Nom et Prenom de la mère</th>
-                                <th>Contacte du Pere</th>
-                                <th>sexe de l'enfant</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse ($declarations as $declaration)
-                            <tr>
-                                <td>{{ $declaration->heure_naissance }}</td>
-                                <td>{{ $declaration->prenom_pere }} {{ $declaration->nom_pere }}</td>
-                                <td>{{ $declaration->prenom_mere }} {{ $declaration->nom_mere }}</td>
-                                <td>+223 {{ $declaration->telephone_pere }}</td>
-                                <td>M</td>
-                                <td>
-                                    <a href="{{ route('naissances.show', $declaration->id_volet) }}"
-                                        class="btn btn-sm btn-info">Voir</a>
-                                    <a href="{{ route('naissances.edit', $declaration->id_volet) }}"
-                                        class="btn btn-sm btn-warning">Modifier</a>
 
-                                </td>
-                            </tr>
-
-                            @empty
-                            <tr>
-                                <td colspan="5">Aucune déclaration enregistrée.</td>
-                            </tr>
-                            @endforelse
-
-                        </tbody>
-                    </table>
+                <div class="x_content mt-3">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Nom du père</th>
+                                    <th>Nom de la mère</th>
+                                    <th>Contact du père</th>
+                                    <th>Sexe de l’enfant</th>
+                                    <th class="text-center">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($declarations as $declaration)
+                                <tr>
+                                    <td>{{ \Carbon\Carbon::parse($declaration->heure_naissance)->format('d/m/Y H:i') }}
+                                    </td>
+                                    <td>{{ $declaration->prenom_pere }} {{ $declaration->nom_pere }}</td>
+                                    <td>{{ $declaration->prenom_mere }} {{ $declaration->nom_mere }}</td>
+                                    <td>+223 {{ $declaration->telephone_pere }}</td>
+                                    <td>
+                                        <span
+                                            class="badge badge-{{ $declaration->sexe_enfant == 'M' ? 'primary' : 'pink' }}">
+                                            {{ $declaration->sexe_enfant == 'M' ? 'Masculin' : 'Féminin' }}
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        <a href="{{ route('naissances.show', $declaration->id_volet) }}"
+                                            class="btn btn-sm btn-outline-info" title="Voir les détails">
+                                            <i class="fa fa-eye"></i>
+                                        </a>
+                                        <a href="{{ route('naissances.edit', $declaration->id_volet) }}"
+                                            class="btn btn-sm btn-outline-warning" title="Modifier">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="6" class="text-center text-muted">Aucune déclaration enregistrée.</td>
+                                </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
 
 
 </div>

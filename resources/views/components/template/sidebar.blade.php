@@ -9,7 +9,7 @@
         <!-- Infos utilisateur -->
         <div class="profile clearfix">
             <div class="profile_pic">
-                <img src="{{ asset('images/img.jpg') }}" alt="..." class="img-circle profile_img">
+                <img src="{{ Auth::user()->photo }}" alt="..." class="img-circle profile_img">
             </div>
             <div class="profile_info">
                 <span>Bienvenue,</span>
