@@ -70,23 +70,20 @@ Route::post('/presentation/copie-extrait', [DemandeController::class, 'storeCopi
 // Route::post('/presentation/demande', [DemandeController::class, 'store'])->name('demande.store');
 // Les routes pour le centre d'etat civil
 Route::middleware([
-    'role:agent_etat_civil',
+    'role:agent_mairie',
 ])->prefix('mairie')->group(function () {
-    Route::get('/etat-civil', function () {
-        return view('centre_etat_civil.index');
-    })->name('etat_civil.index');
+    
+//Route pour agent de la mairie
 
-    Route::get('/etat-civil/acte-naissance', function () {
-        return view('etat_civil.acte_naissance');
-    })->name('etat_civil.acte_naissance');
 
-    Route::get('/etat-civil/acte-mariage', function () {
-        return view('etat_civil.acte_mariage');
-    })->name('etat_civil.acte_mariage');
+Route::get('agent',[Acte_naissance::class,'index'])->name('agent.dashboard');
+Route::get('/acte/create/{id}', [Acte_naissance::class, 'create'])->name('acte.create');
+Route::post('/acte', [Acte_naissance::class, 'store'])->name('acte.store');
+Route::get('/actes/{id}', [Acte_naissance::class, 'show'])->name('acte.show');
+Route::get('/actes/{id}/edit', [Acte_naissance::class, 'edit'])->name('acte.edit');
+Route::put('/actes/{id}', [Acte_naissance::class, 'update'])->name('acte.update');
+Route::delete('/actes/{id}', [Acte_naissance::class, 'destroy'])->name('acte.destroy');
 
-    Route::get('/etat-civil/acte-deces', function () {
-        return view('etat_civil.acte_deces');
-    })->name('etat_civil.acte_deces');
 });
 // fin des routes pour le centre d'etat civil
 
@@ -115,16 +112,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-//Route pour agent de la mairie
 
-
-Route::get('agent',[Acte_naissance::class,'index'])->name('agent.dashboard');
-Route::get('/acte/create/{id}', [Acte_naissance::class, 'create'])->name('acte.create');
-Route::post('/acte', [Acte_naissance::class, 'store'])->name('acte.store');
-Route::get('/actes/{id}', [Acte_naissance::class, 'show'])->name('acte.show');
-Route::get('/actes/{id}/edit', [Acte_naissance::class, 'edit'])->name('acte.edit');
-Route::put('/actes/{id}', [Acte_naissance::class, 'update'])->name('acte.update');
-Route::delete('/actes/{id}', [Acte_naissance::class, 'destroy'])->name('acte.destroy');
 
 
 

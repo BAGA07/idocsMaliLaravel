@@ -1,7 +1,7 @@
-<head>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<div class="container py-4">
+@extends('layouts.app')
+@section('content')
+<div class="right_col" role="main">
+
     <h2 class="mb-4">Tableau de bord - Agent de Mairie</h2>
 <!-- Statistiques -->
     <div class="row mb-4">
@@ -154,5 +154,6 @@
         </table>
     </div>
 </div>
-</div>
 
+</div>
+@endsection
