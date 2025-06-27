@@ -1,6 +1,5 @@
 @extends ('layouts.presentation') {{-- Assurez-vous que c'est le bon chemin vers votre layout --}}
 
-
 @section('title', 'Accueil - MaliActes') {{-- Titre spécifique pour la page d'accueil --}}
 
 @section('content')
@@ -21,8 +20,11 @@
             Demandez et suivez vos actes en ligne, rapidement et en toute sécurité, depuis chez vous.
         </p>
         <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6 animate-scale-in">
+            {{-- CORRECTION ICI : Ajout de l'attribut href manquant pour le premier bouton --}}
             <a href="{{ route('demande.choix_type') }}" class="inline-block bg-white text-blue-600 hover:bg-blue-100 px-8 py-4 rounded-lg text-lg font-semibold shadow-lg transition duration-300 ease-in-out transform hover:scale-105">
-       
+                Demander un acte de naissance
+            </a>
+            {{-- Le deuxième bouton est déjà correct --}}
             <a href="{{ route('presentation.suivre_demande') }}"
                 class="inline-block border-2 border-white text-white hover:bg-white hover:text-blue-600 px-8 py-4 rounded-lg text-lg font-semibold shadow-lg transition duration-300 ease-in-out transform hover:scale-105">
                 Suivre ma Demande
@@ -83,7 +85,9 @@
         <div class="mb-12">
             <div class="relative w-full aspect-video rounded-lg shadow-xl overflow-hidden mx-auto">
                 {{-- Remplacez l'URL ci-dessous par l'URL d'intégration de votre vidéo YouTube/Vimeo --}}
-                <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" {{-- Exemple YouTube --}} frameborder="0"
+                {{-- ATTENTION: "https://www.youtube.com/embed/dQw4w9WgXcQ" n'est PAS une URL YouTube valide.
+                     Utilisez une URL d'intégration YouTube standard comme "https://www.youtube.com/embed/YOUR_VIDEO_ID" --}}
+                <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" {{-- Exemple d'URL YouTube valide pour un tutoriel factice --}} frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowfullscreen class="absolute top-0 left-0 w-full h-full"></iframe>
             </div>
@@ -192,8 +196,7 @@
             </h2>
             <div id="accordion-flush-body-1" class="hidden" aria-labelledby="accordion-flush-heading-1">
                 <div class="py-5 border-b border-gray-200 dark:border-gray-700">
-                    <p class="mb-2 text-gray-500 dark:text-gray-400">Le délai de traitement est généralement de X jours
-                        ouvrables après la validation de votre demande. Vous serez notifié par email.</p>
+                    <p class="mb-2 text-gray-500 dark:text-gray-400">Le délai de traitement est généralement de **X jours ouvrables** après la validation de votre demande. Vous serez notifié par email.</p>
                 </div>
             </div>
 
@@ -213,8 +216,8 @@
             </h2>
             <div id="accordion-flush-body-2" class="hidden" aria-labelledby="accordion-flush-heading-2">
                 <div class="py-5 border-b border-gray-200 dark:border-gray-700">
-                    <p class="mb-2 text-gray-500 dark:text-gray-400">Utilisez le numéro de suivi que vous avez reçu par
-                        email sur notre page "Suivre ma Demande".</p>
+                    <p class="mb-2 text-gray-500 dark:text-gray-400">Utilisez le **numéro de suivi** que vous avez reçu par
+                        email sur notre page "<a href="{{ route('presentation.suivre_demande') }}" class="text-blue-600 hover:underline">Suivre ma Demande</a>".</p>
                 </div>
             </div>
 
@@ -236,7 +239,7 @@
                 <div class="py-5 border-b border-gray-200 dark:border-gray-700">
                     <p class="mb-2 text-gray-500 dark:text-gray-400">Oui, nous utilisons des technologies de cryptage
                         avancées pour protéger toutes vos informations. Pour plus de détails, consultez notre page sur
-                        la sécurité et la confidentialité.</p>
+                        la <a href="{{ route('presentation.a_propos.securite_confidentialite') }}" class="text-blue-600 hover:underline">sécurité et la confidentialité</a>.</p>
                 </div>
             </div>
         </div>
@@ -260,6 +263,5 @@
         </a>
     </div>
 </section>
-
 
 @endsection
