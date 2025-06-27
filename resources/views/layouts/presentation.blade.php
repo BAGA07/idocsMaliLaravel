@@ -11,6 +11,9 @@
 
     {{-- Lien vers Font Awesome pour les icônes (si vous les utilisez) --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    {{-- AJOUT IMPORTANT : Styles Livewire --}}
+    @livewireStyles
 </head>
 <body class="bg-gray-100 text-gray-900 dark:bg-gray-900 dark:text-gray-200">
 
@@ -91,7 +94,7 @@
             <div class="col-span-1">
               <h3 class="text-xl font-semibold mb-4 text-blue-400">À Propos</h3>
               <p class="text-blue-200 text-sm leading-relaxed">
-                  Notre plateforme  **e-Naissance Mali** vise à **digitaliser et simplifier** vos démarches pour l'obtention et la gestion des actes de naissance au Mali, en vous garantissant un accès facile et sécurisé à ce document essentiel pour votre identité juridique.
+                  Notre plateforme  **e-Naissance Mali** vise à **digitaliser et simplifier** vos démarches pour l'obtention et la gestion des actes de naissance au Mali, en vous garantissant un accès facile et sécurisé à ce document essentiel pour votre identité juridique.
               </p>
           </div>
 
@@ -101,7 +104,8 @@
                 <ul class="space-y-2">
                     <li><a href="/" class="text-blue-200 hover:text-white transition duration-200 text-sm">Accueil</a></li>
                     <li><a href="{{ route('presentation.la_demarche') }}" class="text-blue-200 hover:text-white transition duration-200 text-sm">La Démarche</a></li>
-                    <li><a href="{{ route('presentation.demander_acte') }}" class="text-blue-200 hover:text-white transition duration-200 text-sm">Demander un Acte</a></li>
+                    {{-- Correction : 'demander_acte' n'était pas défini, utilisation de 'choix_type' --}}
+                    <li><a href="{{ route('demande.choix_type') }}" class="text-blue-200 hover:text-white transition duration-200 text-sm">Demander un Acte</a></li>
                     <li><a href="{{ route('presentation.suivre_demande') }}" class="text-blue-200 hover:text-white transition duration-200 text-sm">Suivre ma Demande</a></li>
                     <li><a href="{{ route('presentation.faq') }}" class="text-blue-200 hover:text-white transition duration-200 text-sm">FAQ</a></li>
                 </ul>
@@ -149,3 +153,8 @@
     </div>
 </footer>
 {{-- FIN DU FOOTER --}}
+
+{{-- AJOUT IMPORTANT : Scripts Livewire --}}
+@livewireScripts
+</body>
+</html>

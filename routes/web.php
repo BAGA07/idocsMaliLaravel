@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Acte_naissance;
+
 use App\Http\Controllers\PresentationController;
 use App\Http\Controllers\DemandeController;
 use App\Http\Controllers\Hopital\NaissanceController;
@@ -109,5 +111,22 @@ Route::middleware('auth')->group(function () {
     Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile/delete', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+//Route pour agent de la mairie
+
+
+Route::get('agent', [Acte_naissance::class, 'index'])->name('agent.dashboard');
+Route::get('/acte/create/{id}', [Acte_naissance::class, 'create'])->name('acte.create');
+Route::post('/acte', [Acte_naissance::class, 'store'])->name('acte.store');
+Route::get('/actes/{id}', [Acte_naissance::class, 'show'])->name('acte.show');
+Route::get('/actes/{id}/edit', [Acte_naissance::class, 'edit'])->name('acte.edit');
+Route::put('/actes/{id}', [Acte_naissance::class, 'update'])->name('acte.update');
+Route::delete('/actes/{id}', [Acte_naissance::class, 'destroy'])->name('acte.destroy');
+
+
+
+
+
+//Route::get('/dashboard-agent', [Acte_naissance::class, 'index'])->name('agent_mairie.dasboard');
+
 
 require __DIR__ . '/auth.php';

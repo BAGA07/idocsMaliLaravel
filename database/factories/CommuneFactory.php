@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Hopital>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Commune>
  */
-class HopitalFactory extends Factory
+class CommuneFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,9 +17,7 @@ class HopitalFactory extends Factory
     public function definition(): array
     {
         return [
-            'nom_hopital' => $this->faker->company . ' Hospital',
-            'id_commune' => $this->faker->numberBetween(1, 100),
-            
+            //
         ];
     }
 }

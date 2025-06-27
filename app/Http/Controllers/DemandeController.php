@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\VoletDeclaration; // Assurez-vous que ce modèle existe et est correct
+use App\Models\PieceJointe;
 
 use App\Models\Demande; // Assurez-vous que ce modèle existe et est correct
 use Illuminate\Http\Request;
@@ -42,42 +44,72 @@ class DemandeController extends Controller
      */
     public function storeNouveauNe(Request $request)
     {
-        $validatedData = $request->validate([
+         $validatedData = $request->validate([
             'nom_demandeur' => 'required|string|max:255',
             'email_demandeur' => 'required|email|max:255',
             'telephone_demandeur' => 'required|string|max:20',
+
             'nom_enfant' => 'required|string|max:255',
             'prenom_enfant' => 'required|string|max:255',
-            'date_naissance' => 'required|date',
-            'lieu_naissance' => 'required|string|max:255',
-            'hopital_declaration' => 'nullable|string|max:255',
-            'numero_volet_naissance' => 'nullable|string|max:50',
+            //'date_naissance' => 'required|date',
+            //'lieu_naissance' => 'required|string|max:255',
+
+            'numero_volet_naissance' => 'required|string|max:50',
+            //'hopital_declaration' => 'nullable|string|max:255',
             'justificatif_demande' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
             'informations_complementaires_nouveau_ne' => 'nullable|string',
         ]);
 
-        $filePath = null;
-        if ($request->hasFile('justificatif_demande')) {
-            $filePath = $request->file('justificatif_demande')->store('justificatifs_demande_nouveau_ne', 'public');
+        // Gestion du fichier justificatif
+        // Enregistrement pièce jointe
+    if ($request->hasFile('pieces_jointe')) {
+        $file = $request->file('pieces_jointe');
+        $piece = new PieceJointe();
+        
+        $piece->demande_id = $request->demande_id;
+        $piece->nom_fichier = $file->getClientOriginalName();
+        $piece->chemin_fichier = $file->store('pieces_jointes', 'public');
+        $piece->save();
+    }
+
+        //  Chercher le volet par numéro
+        $volet = VoletDeclaration::where('num_volet', $validatedData['numero_volet_naissance'])->first();
+
+        //  Si trouvé, mettre à jour nom/prénom enfant
+        $idVolet = null;
+        if ($volet) {
+            $volet->nom_enfant = $validatedData['nom_enfant'];
+            $volet->prenom_enfant = $validatedData['prenom_enfant'];
+            $volet->save();
+
+            $idVolet = $volet->id_volet;
         }
 
+        // Créer la demande
         Demande::create([
             'nom_complet' => $validatedData['nom_demandeur'],
             'email' => $validatedData['email_demandeur'],
             'telephone' => $validatedData['telephone_demandeur'],
             'type_document' => 'Acte de Naissance (Nouveau-né)',
-            'informations_complementaires' => $validatedData['informations_complementaires_nouveau_ne'],
-            'justificatif_path' => $filePath,
-            'statut' => 'En attente',
+
             'nom_personne_concernee' => $validatedData['nom_enfant'],
             'prenom_personne_concernee' => $validatedData['prenom_enfant'],
-            'date_evenement' => $validatedData['date_naissance'],
-            'lieu_evenement' => $validatedData['lieu_naissance'],
-            'hopital_declaration' => $validatedData['hopital_declaration'],
-            'numero_volet' => $validatedData['numero_volet_naissance'],
+            // 'date_evenement' => $validatedData['date_naissance'],
+            // 'lieu_evenement' => $validatedData['lieu_naissance'],
+
+            'numero_volet_naissance' => $validatedData['numero_volet_naissance'],
+            
+            'id_volet' => $idVolet,
+            //'hopital_declaration' => $validatedData['hopital_declaration'],
+            'informations_complementaires' => $validatedData['informations_complementaires_nouveau_ne'],
+            
+
+            'statut' => 'En attente',
         ]);
 
-        return redirect()->route('demande.choix_type')->with('success', 'Votre demande d\'acte de naissance pour le nouveau-né a été soumise avec succès !');
+        return redirect()->route('agent')
+            ->with('success', 'Votre demande a été soumise avec succès.');
+    
     }
 
     /**

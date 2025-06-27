@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Declarant extends Model
 {
+
+    protected $table = 'declarants';
+
     use HasFactory;
 
     protected $primaryKey = 'id_declarant';
@@ -22,8 +25,18 @@ class Declarant extends Model
         'date_declaration',
     ];
 
-    public function declarations()
+    public function declarant()
     {
-        return $this->hasMany(VoletDeclaration::class, 'id_declarant');
+        return $this->hasMany(VoletDeclaration::class, 'id_declarant', 'id_declarant');
     }
+
+    public function Acte()
+    {
+        return $this->hasMany(Acte::class);
+    }
+    //     public function hopital()
+    // {
+    //     return $this->belongsTo(Hopital::class);
+    // }
+
 }
