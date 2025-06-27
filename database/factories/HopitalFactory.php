@@ -17,10 +17,9 @@ class HopitalFactory extends Factory
     public function definition(): array
     {
         return [
-            'nom' => $this->faker->company . ' Hospital',
+            'nom_hopital' => $this->faker->company . ' Hospital',
             'id_commune' => $this->faker->numberBetween(1, 100),
-            'update_at' => now(),
-            'created_at' => now(),
+            
         ];
     }
 }

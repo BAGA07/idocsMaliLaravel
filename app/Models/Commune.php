@@ -9,7 +9,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Commune extends Model
 {
     use HasFactory;
-    protected $primaryKey = 'id_commune';
+
+    // protected $primaryKey = 'id_commune';
     protected $fillable = ['nom_commune', 'region', 'cercle'];
      public function Mairie()
 {

@@ -17,6 +17,10 @@ return new class extends Migration
             $table->string('email');
             $table->string('telephone');
             $table->string('type_document');
+            $table->string('numero_volet_naissance');
+            $table->unsignedBigInteger('id_volet')->nullable();
+              $table->foreign('id_volet')->references('id_volet')->on('volet_declarations')->onDelete('cascade');
+            $table->enum('statut', ['En attente', 'Validé', 'Rejeté'])->default('En attente');
             $table->text('informations_complementaires')->nullable();
             $table->string('justificatif')->nullable();
             $table->timestamps();

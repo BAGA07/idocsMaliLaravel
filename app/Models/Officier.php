@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Officier extends Model
 {
+    protected $table = 'officier_etat_civil'; 
     protected $fillable = [
         'nom',
         'prenom',

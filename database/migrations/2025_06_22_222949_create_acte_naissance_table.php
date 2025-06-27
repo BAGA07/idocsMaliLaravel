@@ -17,6 +17,7 @@ return new class extends Migration
             $table->integer('num_acte')->unique();
             $table->date('date_naissance_enfant');
             $table->string('lieu_naissance_enfant');
+            $table->time('heure_naissance');
             $table->string('sexe_enfant');
             $table->string('nom');
             $table->string('prenom');

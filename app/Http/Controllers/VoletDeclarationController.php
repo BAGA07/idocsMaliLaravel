@@ -69,8 +69,14 @@ class VoletDeclarationController extends Controller
         /* var_dump($declarant->id_declarant);
         exit; */
         //dd($declarant->id);
+        $lastVolet = VoletDeclaration::orderBy('id_volet', 'desc')->first();
+        $nextNumber = $lastVolet ? ((int) $lastVolet->num_volet + 1) : 1;
+        $num_volet_format = str_pad($nextNumber, 4, '0', STR_PAD_LEFT);
+
         // 2. Enregistrement dans volet_declaration
         VoletDeclaration::create([
+            'num_volet' => $num_volet_format,
+
             'prenom_pere' => $request->prenom_pere,
             'nom_pere' => $request->nom_pere,
             'age_pere' => $request->age_pere,

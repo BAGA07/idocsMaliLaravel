@@ -53,4 +53,8 @@ class VoletDeclaration extends Model
         return $this->hasOne(Acte::class);
 
     }
+    public function Demande(){
+        return $this->hasMany(Demande::class);
+
+    }
 }
