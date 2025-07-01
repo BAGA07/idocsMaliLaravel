@@ -6,24 +6,27 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->unsignedBigInteger('id_hopital')->nullable()->after('role');
-            $table->foreign('id_hopital')->references('id')->on('hopitals')->onDelete('set null');
+            // Assure-toi que la colonne existe et est nullable
+            if (!Schema::hasColumn('users', 'id_hopital')) {
+                $table->unsignedBigInteger('id_hopital')->nullable()->after('role');
+            }
+
+            // Ajoute la clé étrangère proprement (en supposant que hopitals.id est la bonne clé)
+            $table->foreign('id_hopital')
+                ->references('id')  // corriger ici si le champ s'appelle bien 'id' et non 'id_hopital'
+                ->on('hopitals')   // vérifie l'orthographe de ta table
+                ->onDelete('set null');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            //
+            $table->dropForeign(['id_hopital']);
+            $table->dropColumn('id_hopital');
         });
     }
 };

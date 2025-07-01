@@ -61,22 +61,14 @@ class VoletDeclarationController extends Controller
             'nom_declarant' => $request->nom_declarant,
             'age_declarant' => $request->age_declarant,
             'domicile_declarant' => $request->domicile_declarant,
-            'profession_declarant' => '-', // Pas fourni
-            'numero_declaration' => rand(1000, 9999), // À améliorer
+            'profession_declarant' => '-', // Peut être remplacé plus tard
+            'numero_declaration' => rand(1000, 9999),
             'date_declaration' => now(),
         ]);
 
-        /* var_dump($declarant->id_declarant);
-        exit; */
-        //dd($declarant->id);
-        $lastVolet = VoletDeclaration::orderBy('id_volet', 'desc')->first();
-        $nextNumber = $lastVolet ? ((int) $lastVolet->num_volet + 1) : 1;
-        $num_volet_format = str_pad($nextNumber, 4, '0', STR_PAD_LEFT);
-
-        // 2. Enregistrement dans volet_declaration
+        // 2. Enregistrement dans volet_declarations
         VoletDeclaration::create([
-            'num_volet' => $num_volet_format,
-
+            'num_volet' => 'VL' . now()->format('ymd') . rand(10, 99),
             'prenom_pere' => $request->prenom_pere,
             'nom_pere' => $request->nom_pere,
             'age_pere' => $request->age_pere,
@@ -98,18 +90,17 @@ class VoletDeclarationController extends Controller
             'prenom_enfant' => $request->prenom_enfant,
             'nom_enfant' => $request->nom_enfant,
             'date_naissance' => $request->date_naissance,
-            'heure_naissance' => now()->format('H:i:s'), // à personnaliser si nécessaire
+            'heure_naissance' => now()->format('H:i:s'),
             'date_declaration' => now(),
             'nbreEnfantAccouchement' => 1,
-            'nbreEINouvNee' => 1, //le nombre d'enfants nés vivants
+            'nbreEINouvNee' => 1,
 
             'id_declarant' => $declarant->id_declarant,
             'id_hopital' => Auth::user()->id_hopital,
-
         ]);
-
         return redirect()->route('hopital.dashboard')->with('success', 'Déclaration de naissance enregistrée avec succès.');
     }
+
 
     public function show($id)
     {
@@ -204,5 +195,13 @@ class VoletDeclarationController extends Controller
         ]);
 
         return redirect()->route('hopital.dashboard')->with('success', 'Déclaration mise à jour avec succès.');
+    }
+
+    public function destroy($id)
+    {
+        $volet = VoletDeclaration::findOrFail($id);
+        $volet->delete();
+
+        return redirect()->route('hopital.dashboard')->with('success', 'Déclaration supprimée avec succès.');
     }
 }

@@ -2,17 +2,6 @@
 
 @section('content')
 <div class="right_col" role="main">
-
-    {{-- Dashboard pour citoyen --}}
-    {{-- @if (session('user')['role'] === 'citoyen') --}}
-    {{-- <div class="container">
-        <section class="welcome-section text-center shadow-lg">
-            <h1>Bienvenue <strong>{{ Auth::user()->nom }}</strong></h1>
-
-            <a href="" class="btn btn-welcome">Faire une nouvelle declaration
-                de naissance</a>
-        </section>
-    </div> --}}
     <div class="row mt-4">
         {{-- Statistique - Total des demandes --}}
         <div class="col-md-4 col-sm-6 col-xs-12">
@@ -84,15 +73,31 @@
                                         </span>
                                     </td>
                                     <td class="text-center">
+                                        <!-- Voir -->
                                         <a href="{{ route('naissances.show', $declaration->id_volet) }}"
                                             class="btn btn-sm btn-outline-info" title="Voir les détails">
                                             <i class="fa fa-eye"></i>
                                         </a>
+
+                                        <!-- Modifier -->
                                         <a href="{{ route('naissances.edit', $declaration->id_volet) }}"
                                             class="btn btn-sm btn-outline-warning" title="Modifier">
                                             <i class="fa fa-edit"></i>
                                         </a>
+
+                                        <!-- Supprimer -->
+                                        <form action="{{ route('naissances.destroy', $declaration->id_volet) }}"
+                                            method="POST" style="display:inline;"
+                                            onsubmit="return confirm('Confirmer la suppression ?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-outline-danger"
+                                                title="Supprimer">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </form>
                                     </td>
+
                                 </tr>
                                 @empty
                                 <tr>

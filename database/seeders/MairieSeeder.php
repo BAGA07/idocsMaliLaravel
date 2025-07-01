@@ -13,7 +13,7 @@ class MairieSeeder extends Seeder
      */
     public function run(): void
     {
-    Mairie::factory()->count(10)->create();
-        
+        //Mairie::factory()->count(10)->create();
+
     }
 }

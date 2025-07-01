@@ -13,7 +13,7 @@ class DeclarantSeeder extends Seeder
      */
     public function run(): void
     {
-                Declarant::factory()->count(10)->create();
-        
+        //Declarant::factory()->count(10)->create();
+
     }
 }

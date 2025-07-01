@@ -14,7 +14,7 @@ class VoletDeclarationSeeder extends Seeder
      */
     public function run(): void
     {
-        
-    VoletDeclaration::factory()->count(10)->create();
+
+        // VoletDeclaration::factory()->count(10)->create();
     }
 }

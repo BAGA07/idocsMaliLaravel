@@ -25,9 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('communes', function (Blueprint $table) {
-            $table->dropForeign(['id']);
-            $table->foreign('id_commune')->references('id_commune')->on('communes')->onDelete('cascade');
-        });
+        Schema::dropIfExists('communes');
     }
 };

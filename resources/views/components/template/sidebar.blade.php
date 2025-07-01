@@ -48,6 +48,22 @@
                         </ul>
                     </li>
                     @endif
+
+                    {{-- Admin --}}
+                    @if(Auth::user()->role === 'admin')
+                    <li><a><i class="fa fa-users"></i> Manager <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li><a href="{{ route('managers.index') }}">Liste des managers</a></li>
+                            <li><a href="{{ route('managers.create') }}">Ajouter un manager</a></li>
+                        </ul>
+                    </li>
+                    <li><a><i class="fa fa-edit"></i> Structure <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li><a href="#">Liste des Structures</a></li>
+                            <li><a href="#">Ajouter une structure</a></li>
+                        </ul>
+                    </li>
+                    @endif
                 </ul>
             </div>
         </div>

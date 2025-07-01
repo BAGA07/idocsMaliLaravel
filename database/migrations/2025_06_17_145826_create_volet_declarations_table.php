@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('volet_declarations', function (Blueprint $table) {
             $table->id('id_volet');
-            $table->string('num_volet',10)->unique();
+            $table->string('num_volet')->unique();
             $table->date('date_naissance');
             $table->time('heure_naissance');
             $table->date('date_declaration');

@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Acte_naissance;
-
+use App\Http\Controllers\Admin\AdminManagerController;
 use App\Http\Controllers\PresentationController;
 use App\Http\Controllers\DemandeController;
 use App\Http\Controllers\Hopital\NaissanceController;
@@ -66,17 +66,11 @@ Route::post('/presenttation/nouveau-ne', [DemandeController::class, 'storeNouvea
 Route::get('/presentation/copie-extrait', [DemandeController::class, 'createCopieExtraitForm'])->name('demande.copie_extrait.create');
 Route::post('/presentation/copie-extrait', [DemandeController::class, 'storeCopieExtrait'])->name('demande.copie_extrait.store');
 
-// L'ancienne route pour la demande générique  :
-// Route::get('/presentation/demande', [DemandeController::class, 'create'])->name('demande.create');
-// Route::post('/presentation/demande', [DemandeController::class, 'store'])->name('demande.store');
-// Les routes pour le centre d'etat civil
+
+//Route pour agent de la mairie
 Route::middleware([
     'role:agent_mairie',
 ])->prefix('mairie')->group(function () {
-
-    //Route pour agent de la mairie
-
-
     Route::get('agent', [Acte_naissance::class, 'index'])->name('agent.dashboard');
     Route::get('/acte/create/{id}', [Acte_naissance::class, 'create'])->name('acte.create');
     Route::post('/acte', [Acte_naissance::class, 'store'])->name('acte.store');
@@ -86,10 +80,6 @@ Route::middleware([
     Route::delete('/actes/{id}', [Acte_naissance::class, 'destroy'])->name('acte.destroy');
 });
 // fin des routes pour le centre d'etat civil
-
-
-
-
 
 
 // les routes pour les agents de l'hopital
@@ -108,7 +98,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile/delete', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-
+// Route pour l'administration des managers
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
+    Route::get('/dashboard', fn() => view('admin.dashboard'))->name('admin.dashboard');
+    Route::resource('/managers', AdminManagerController::class);
+});
 
 
 
