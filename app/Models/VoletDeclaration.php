@@ -42,6 +42,7 @@ class VoletDeclaration extends Model
         'nbreEINouvNee',
         'id_declarant',
         'id_hopital',
+        'ethnie_declarant'
     ];
 
     public function declarant()

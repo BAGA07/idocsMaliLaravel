@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Hopital;
 
 use App\Http\Controllers\Controller;
 use App\Models\VoletDeclaration;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,15 +15,17 @@ class NaissanceController extends Controller
         $declarations = VoletDeclaration::latest()->paginate(10);
         return view('hopital.dashboard', compact('declarations'));
 
-        $userId = Auth::id(); // l'agent connecté
+        // Statistiques globales
+        $totalNaissances = VoletDeclaration::count();
 
-        $totalNaissances = VoletDeclaration::where('id', $userId)->count();
+        $anneeActuelle = Carbon::now()->year;
 
-        $totalGarçons = VoletDeclaration::where('id_hopital', $userId)
-            ->where('sexe', 'Masculin')
+        $totalGarçons = VoletDeclaration::whereYear('created_at', $anneeActuelle)
+            ->where('sexe_enfant', 'M')
             ->count();
-        $totalFilles = VoletDeclaration::where('id_hopital', $userId)
-            ->where('sexe', 'Féminin')
+
+        $totalFilles = VoletDeclaration::whereYear('created_at', $anneeActuelle)
+            ->where('sexe_enfant', 'F')
             ->count();
 
         return view('hopital.dashboard', compact('totalNaissances', 'totalGarçons', 'totalFilles'));

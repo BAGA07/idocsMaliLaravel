@@ -6,16 +6,31 @@ use App\Models\Declarant;
 use App\Models\Hopital;
 use App\Models\Log;
 use App\Models\VoletDeclaration;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class VoletDeclarationController extends Controller
 {
     // Afficher toutes les déclarations
-    public function index()
+    public function dashboard()
     {
-        $declarations = VoletDeclaration::with('declarant', 'hopital')->latest()->get();
-        return view('declarations.index', compact('declarations'));
+        // Statistiques globales
+        $totalNaissances = VoletDeclaration::count();
+
+        $anneeActuelle = Carbon::now()->year;
+
+        $totalGarçons = VoletDeclaration::whereYear('created_at', $anneeActuelle)
+            ->where('sexe', 'M')
+            ->count();
+
+        $totalFilles = VoletDeclaration::whereYear('created_at', $anneeActuelle)
+            ->where('sexe', 'F')
+            ->count();
+
+        $declarations = VoletDeclaration::with('declarant', 'hopital')->latest()->paginate(20);
+
+        return view('hopital.dashboard', compact('declarations', 'totalNaissances', 'totalGarçons', 'totalFilles'));
     }
 
     public function create()

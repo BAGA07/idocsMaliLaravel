@@ -66,6 +66,26 @@
         });
     </script>
     @endif
+    <script>
+        function confirmDelete(id) {
+        Swal.fire({
+            title: 'Confirmation',
+            text: "Voulez-vous vraiment supprimer cet élément ?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Oui, supprimer',
+            cancelButtonText: 'Annuler'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Soumettre le formulaire
+                document.getElementById('delete-form-' + id).submit();
+            }
+        })
+    }
+    </script>
+
 
     <!-- Je charge les fichier du template -->
     <!-- jQuery -->

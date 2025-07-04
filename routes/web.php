@@ -10,10 +10,6 @@ use App\Http\Controllers\VoletDeclarationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\RoleMiddleware;
 
-
-
-
-
 // =========================================================
 // ROUTES POUR LES PAGES PRINCIPALES DE PRÉSENTATION
 // =========================================================
@@ -86,7 +82,7 @@ Route::middleware([
 Route::middleware([
     'role:agent_hopital',
 ])->prefix('hopital')->group(function () {
-    Route::get('/dashboard', [NaissanceController::class, 'dashboard'])->name('hopital.dashboard');
+    Route::get('/dashboard', [VoletDeclarationController::class, 'dashboard'])->name('hopital.dashboard');
     Route::resource('naissances', VoletDeclarationController::class);
 });
 // fin des routes pour les agents de l'hopital

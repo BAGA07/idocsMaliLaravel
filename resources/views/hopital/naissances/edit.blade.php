@@ -36,7 +36,15 @@
         font-family: inherit;
     }
 </style>
-
+@if ($errors->any())
+<div class="alert alert-danger">
+    <ul>
+        @foreach ($errors->all() as $message)
+        <li>{{ $message }}</li>
+        @endforeach
+    </ul>
+</div>
+@endif
 <form method="POST" action="{{ route('naissances.update', $volet->id_volet) }}">
     @csrf
     @method('PUT')
@@ -75,9 +83,9 @@
             <div class="field">
                 <label>Sexe</label>
                 <select name="sexe">
-                    <option value="Masculin" {{ old('sexe', $volet->sexe) == 'Masculin' ? 'selected' : '' }}>Masculin
+                    <option value="M" {{ old('sexe', $volet->sexe) == 'M' ? 'selected' : '' }}>Masculin
                     </option>
-                    <option value="Féminin" {{ old('sexe', $volet->sexe) == 'Féminin' ? 'selected' : '' }}>Féminin
+                    <option value="F" {{ old('sexe', $volet->sexe) == 'F' ? 'selected' : '' }}>Féminin
                     </option>
                 </select>
             </div>

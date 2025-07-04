@@ -109,7 +109,12 @@
             </div>
             <div class="field">
                 <label>Situation matrimoniale</label>
-                <input type="text" name="situation_matrimoniale_pere" required>
+                <select name="situation_matrimonial_pere" required>
+                    <option value="">-- Choisir --</option>
+                    <option value="Marié">Marié</option>
+                    <option value="Célibataire">Célibataire</option>
+                    <option value="Divorcé">Divorcé</option>
+                </select>
             </div>
         </div>
         <div class="line">

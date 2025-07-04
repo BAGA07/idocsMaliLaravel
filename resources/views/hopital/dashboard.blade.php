@@ -1,13 +1,20 @@
 @extends('layouts.app')
 
 @section('content')
+
 <div class="right_col" role="main">
     <div class="row mt-4">
         {{-- Statistique - Total des demandes --}}
         <div class="col-md-4 col-sm-6 col-xs-12">
             <div class="tile-stats">
                 <div class="icon"><i class="fa fa-file-text-o"></i></div>
-                <div class="count">333</div>
+                <div class="count">
+                    @if(isset($totalNaissances))
+                    {{ $totalNaissances }}
+                    @else
+                    00
+                    @endif
+                </div>
                 <h3>Total des Naissance</h3>
                 <p>Depuis votre inscription</p>
             </div>
@@ -16,8 +23,14 @@
         {{-- Statistique - Demandes validées --}}
         <div class="col-md-4 col-sm-6 col-xs-12">
             <div class="tile-stats">
-                <div class="icon"><i class="fa fa-check-circle"></i></div>
-                <div class="count"></div>
+                <div class="icon"><i class="fa fa-mars"></i></div>
+                <div class="count">
+                    @if(isset($totalGarçons))
+                    {{ $totalGarçons }}
+                    @else
+                    00
+                    @endif
+                </div>
                 <h3>Total Garçons</h3>
                 <p>Le nombre de garçon née cette année</p>
             </div>
@@ -26,8 +39,14 @@
         {{-- Statistique - Demandes en attente --}}
         <div class="col-md-4 col-sm-6 col-xs-12">
             <div class="tile-stats">
-                <div class="icon"><i class="fa fa-hourglass-half"></i></div>
-                <div class="count">34</div>
+                <div class="icon"><i class="fa fa-venus"></i></div>
+                <div class="count">
+                    @if(isset($totalFilles))
+                    {{ $totalFilles }}
+                    @else
+                    00
+                    @endi
+                </div>
                 <h3>Total Filles</h3>
                 <p>Le nombre de filles née cette année</p>
             </div>
@@ -67,11 +86,15 @@
                                     <td>{{ $declaration->prenom_mere }} {{ $declaration->nom_mere }}</td>
                                     <td>+223 {{ $declaration->telephone_pere }}</td>
                                     <td>
-                                        <span
-                                            class="badge badge-{{ $declaration->sexe_enfant == 'M' ? 'primary' : 'pink' }}">
-                                            {{ $declaration->sexe_enfant == 'M' ? 'Masculin' : 'Féminin' }}
-                                        </span>
+                                        @if ($declaration->sexe === 'M')
+                                        <span class="badge badge-primary">Masculin</span>
+                                        @elseif ($declaration->sexe === 'F')
+                                        <span class="badge badge-pink">Féminin</span>
+                                        @else
+                                        <span class="badge badge-secondary">Non défini</span>
+                                        @endif
                                     </td>
+
                                     <td class="text-center">
                                         <!-- Voir -->
                                         <a href="{{ route('naissances.show', $declaration->id_volet) }}"
@@ -85,17 +108,20 @@
                                             <i class="fa fa-edit"></i>
                                         </a>
 
-                                        <!-- Supprimer -->
-                                        <form action="{{ route('naissances.destroy', $declaration->id_volet) }}"
-                                            method="POST" style="display:inline;"
-                                            onsubmit="return confirm('Confirmer la suppression ?')">
+                                        <!-- Formulaire de suppression masqué -->
+                                        <form id="delete-form-{{ $declaration->id_volet }}"
+                                            action="{{ route('naissances.destroy', $declaration->id_volet) }}"
+                                            method="POST" style="display: none;">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-outline-danger"
-                                                title="Supprimer">
-                                                <i class="fa fa-trash"></i>
-                                            </button>
                                         </form>
+
+                                        <!-- Bouton qui déclenche le SweetAlert -->
+                                        <button type="button" class="btn btn-sm btn-outline-danger" title="Supprimer"
+                                            onclick="confirmDelete({{ $declaration->id_volet }})">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+
                                     </td>
 
                                 </tr>
@@ -106,6 +132,9 @@
                                 @endforelse
                             </tbody>
                         </table>
+                        <div class="text-center">
+                            {{ $declarations->links() }}
+                        </div>
                     </div>
                 </div>
             </div>
