@@ -23,6 +23,8 @@ class Declarant extends Model
         'profession_declarant',
         'numero_declaration',
         'date_declaration',
+        'telephone',
+        'email',
     ];
 
     public function declarant()

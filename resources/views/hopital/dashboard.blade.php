@@ -1,7 +1,10 @@
+@php
+use Illuminate\Pagination\Paginator;
+@endphp
+
 @extends('layouts.app')
 
 @section('content')
-
 <div class="right_col" role="main">
     <div class="row mt-4">
         {{-- Statistique - Total des demandes --}}
@@ -45,7 +48,7 @@
                     {{ $totalFilles }}
                     @else
                     00
-                    @endi
+                    @endif
                 </div>
                 <h3>Total Filles</h3>
                 <p>Le nombre de filles née cette année</p>
@@ -58,6 +61,8 @@
         <div class="col-md-12">
             <div class="x_panel shadow-sm" style="border-radius: 10px;">
                 <div class="x_title d-flex justify-content-between align-items-center">
+                    {{-- @livewire('hopital.recherche-naissance') --}}
+
                     <h2 class="mb-0">Liste des naissances enregistrées</h2>
                     <a href="{{ route('naissances.create') }}" class="btn btn-primary">
                         <i class="fa fa-plus"></i> Nouvelle naissance
@@ -72,7 +77,7 @@
                                     <th>Date</th>
                                     <th>Nom du père</th>
                                     <th>Nom de la mère</th>
-                                    <th>Contact du père</th>
+                                    <th>Contact Déclarant</th>
                                     <th>Sexe de l’enfant</th>
                                     <th class="text-center">Actions</th>
                                 </tr>
@@ -84,7 +89,7 @@
                                     </td>
                                     <td>{{ $declaration->prenom_pere }} {{ $declaration->nom_pere }}</td>
                                     <td>{{ $declaration->prenom_mere }} {{ $declaration->nom_mere }}</td>
-                                    <td>+223 {{ $declaration->telephone_pere }}</td>
+                                    <td>+223 {{ $declaration->declarant->telephone }}</td>
                                     <td>
                                         @if ($declaration->sexe === 'M')
                                         <span class="badge badge-primary">Masculin</span>
@@ -133,15 +138,12 @@
                             </tbody>
                         </table>
                         <div class="text-center">
-                            {{ $declarations->links() }}
+                            {{ $declarations->links(); }}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-
-
 </div>
 @endsection

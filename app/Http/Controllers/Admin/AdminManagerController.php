@@ -15,9 +15,13 @@ class AdminManagerController extends Controller
     public function index()
     {
         $managers = User::whereIn('role', ['agent_mairie', 'agent_hopital'])->get();
-        return view('admin.managers.index', compact('managers'));
+        return view('admin.managers.index', compact('managers',));
     }
-
+    public function structureList()
+    {
+        $structures = Hopital::all()->merge(Mairie::all());
+        return view('admin.managers.structureList', compact('structures'));
+    }
     // Formulaire de création
     public function create()
     {

@@ -97,6 +97,7 @@ Route::middleware('auth')->group(function () {
 // Route pour l'administration des managers
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', fn() => view('admin.dashboard'))->name('admin.dashboard');
+    Route::get('/managers/structureList', [AdminManagerController::class, 'structureList'])->name('structure.list');
     Route::resource('/managers', AdminManagerController::class);
 });
 

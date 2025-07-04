@@ -21,6 +21,7 @@
     <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"> -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="icon" type="image" href="{{ asset('gentelella/assets/images/favicon.png') }}">
+    @livewireStyles
 </head>
 
 <body class="nav-md">
@@ -157,7 +158,7 @@
     <script src="{{ asset('gentelella/assets/vendors/pdfmake/build/vfs_fonts.js')}}"></script>
     <script src="{{ asset('gentelella/assets/vendors/jQuery-Smart-Wizard/js/jquery.smartWizard.js')}}"></script>
     <script src="{{ asset('gentelella/assets/vendors/parsleyjs/dist/parsley.min.js')}}"></script>
-
+    @livewireScripts
 </body>
 
 </html>

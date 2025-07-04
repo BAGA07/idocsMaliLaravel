@@ -36,6 +36,15 @@
         font-family: inherit;
     }
 </style>
+@if ($errors->any())
+<div class="alert alert-danger">
+    <ul>
+        @foreach ($errors->all() as $message)
+        <li>{{ $message }}</li>
+        @endforeach
+    </ul>
+</div>
+@endif
 
 <form method="POST" action="{{ route('naissances.store') }}">
     @csrf
@@ -71,12 +80,12 @@
             <div class="field">
                 <label>Sexe</label>
                 <select name="sexe">
-                    <option value="Masculin">Masculin</option>
-                    <option value="Féminin">Féminin</option>
+                    <option value="M">Masculin</option>
+                    <option value="F">Féminin</option>
                 </select>
             </div>
             <div class="field">
-                <label>Nombre d’enfants</label>
+                <label>Nombre d’enfants issus de cet accouchement</label>
                 <input type="number" name="nbreEnfantAccouchement" min="1">
             </div>
         </div>
@@ -156,7 +165,12 @@
             </div>
             <div class="field">
                 <label>Situation matrimoniale</label>
-                <input type="text" name="situation_matrimoniale_mere" required>
+                <select name="situation_matrimonial_mere" required>
+                    <option value="">-- Choisir --</option>
+                    <option value="Marié">Marié</option>
+                    <option value="Célibataire">Célibataire</option>
+                    <option value="Divorcé">Divorcé</option>
+                </select>
             </div>
         </div>
         <div class="line">
@@ -167,6 +181,12 @@
             <div class="field">
                 <label>Profession</label>
                 <input type="text" name="profession_mere" required>
+            </div>
+        </div>
+        <div class="line">
+            <div class="field">
+                <label>Nombre d'enfant Née vivant y compris celui-ci</label>
+                <input type="number" name="nbreEINouvNee" required>
             </div>
         </div>
 
@@ -189,6 +209,16 @@
             <div class="field">
                 <label>Domicile</label>
                 <input type="text" name="domicile_declarant" required>
+            </div>
+        </div>
+        <div class="line">
+            <div class="field">
+                <label>Téléphone</label>
+                <input type="text" name="telephone" required>
+            </div>
+            <div class="field">
+                <label>email</label>
+                <input type="email" name="email" required>
             </div>
         </div>
         <div class="line">

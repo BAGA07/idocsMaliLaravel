@@ -124,10 +124,17 @@
                 <input type="text" name="ethnie_pere" value="{{ old('ethnie_pere', $volet->ethnie_pere) }}">
             </div>
             <div class="field">
-                <label>Situation matrimoniale</label>
-                <input type="text" name="situation_matrimonial_pere"
-                    value="{{ old('situation_matrimonial_pere', $volet->situation_matrimonial_pere) }}">
+                <label for="situation_matrimonial_pere">Situation matrimoniale</label>
+                <select name="situation_matrimonial_pere" id="situation_matrimonial_pere" class="form-control">
+                    <option value="Marié" {{ old('situation_matrimonial_pere', $volet->situation_matrimonial_pere) ==
+                        'Marié' ? 'selected' : '' }}>Marié</option>
+                    <option value="Célibataire" {{ old('situation_matrimonial_pere', $volet->situation_matrimonial_pere)
+                        == 'Célibataire' ? 'selected' : '' }}>Célibataire</option>
+                    <option value="Divorcé" {{ old('situation_matrimonial_pere', $volet->situation_matrimonial_pere) ==
+                        'Divorcé' ? 'selected' : '' }}>Divorcé</option>
+                </select>
             </div>
+
         </div>
         <div class="line">
             <div class="field">
@@ -169,10 +176,17 @@
                 <input type="text" name="ethnie_mere" value="{{ old('ethnie_mere', $volet->ethnie_mere) }}">
             </div>
             <div class="field">
-                <label>Situation matrimoniale</label>
-                <input type="text" name="situation_matrimonial_mere"
-                    value="{{ old('situation_matrimonial_mere', $volet->situation_matrimonial_mere) }}">
+                <label for="situation_matrimonial_mere">Situation matrimoniale</label>
+                <select name="situation_matrimonial_mere" id="situation_matrimonial_mere" class="form-control">
+                    <option value="Marié" {{ old('situation_matrimonial_mere', $volet->situation_matrimonial_mere) ==
+                        'Marié' ? 'selected' : '' }}>Marié</option>
+                    <option value="Célibataire" {{ old('situation_matrimonial_mere', $volet->situation_matrimonial_mere)
+                        == 'Célibataire' ? 'selected' : '' }}>Célibataire</option>
+                    <option value="Divorcé" {{ old('situation_matrimonial_mere', $volet->situation_matrimonial_mere) ==
+                        'Divorcé' ? 'selected' : '' }}>Divorcé</option>
+                </select>
             </div>
+
         </div>
         <div class="line">
             <div class="field">
@@ -210,6 +224,16 @@
                 <label>Domicile</label>
                 <input type="text" name="domicile_declarant"
                     value="{{ old('domicile_declarant', $volet->declarant->domicile_declarant) }}">
+            </div>
+        </div>
+        <div class="line">
+            <div class="field">
+                <label>Email</label>
+                <input type="text" name="email" value="{{ old('email', $volet->declarant->email) }}">
+            </div>
+            <div class="field">
+                <label>Téléphone</label>
+                <input type="text" name="telephone" value="{{ old('telephone', $volet->declarant->telephone) }}">
             </div>
         </div>
         <div class="line">

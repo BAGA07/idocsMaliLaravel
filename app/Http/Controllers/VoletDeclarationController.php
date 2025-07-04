@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Declarant;
+use Illuminate\Validation\Rules\Enum;
+use App\Enums\StatusEnum;
 use App\Models\Hopital;
 use App\Models\Log;
 use App\Models\VoletDeclaration;
@@ -40,13 +42,14 @@ class VoletDeclarationController extends Controller
 
     public function store(Request $request)
     {
+        //dd($request->all());
         $request->validate([
             'prenom_pere' => 'required|string|max:100',
             'nom_pere' => 'required|string|max:100',
             'age_pere' => 'required|integer|min:0|max:130',
             'domicile_pere' => 'required|string',
             'ethnie_pere' => 'required|string',
-            'situation_matrimoniale_pere' => 'required|string',
+            'situation_matrimonial_pere' => 'required|string',
             'niveau_scolaire_pere' => 'required|string',
             'profession_pere' => 'required|string',
 
@@ -55,19 +58,23 @@ class VoletDeclarationController extends Controller
             'age_mere' => 'required|integer|min:0|max:130',
             'domicile_mere' => 'required|string',
             'ethnie_mere' => 'required|string',
-            'situation_matrimoniale_mere' => 'required|string',
+            'situation_matrimonial_mere' => 'required|string',
             'niveau_instruction_mere' => 'required|string',
             'profession_mere' => 'required|string',
 
             'prenom_enfant' => 'nullable|string|max:100',
             'nom_enfant' => 'nullable|string|max:100',
             'date_naissance' => 'required|date',
+            'sexe' => 'required|string|in:M,F',
+            'nbreEnfantAccouchement' => 'nullable|integer|min:1',
 
             'prenom_declarant' => 'required|string|max:100',
             'nom_declarant' => 'required|string|max:100',
             'age_declarant' => 'required|integer|min:0|max:130',
             'domicile_declarant' => 'required|string',
             'ethnie_declarant' => 'required|string',
+            'telephone' => 'nullable|string|max:15',
+            'email' => 'nullable|email|max:255',
         ]);
 
         // 1. Enregistrement du déclarant
@@ -79,6 +86,8 @@ class VoletDeclarationController extends Controller
             'profession_declarant' => '-', // Peut être remplacé plus tard
             'numero_declaration' => rand(1000, 9999),
             'date_declaration' => now(),
+            'telephone' => $request->telephone ?? null,
+            'email' => $request->email ?? null,
         ]);
 
         // 2. Enregistrement dans volet_declarations
@@ -89,7 +98,7 @@ class VoletDeclarationController extends Controller
             'age_pere' => $request->age_pere,
             'domicile_pere' => $request->domicile_pere,
             'ethnie_pere' => $request->ethnie_pere,
-            'situation_matrimonial_pere' => $request->situation_matrimoniale_pere,
+            'situation_matrimonial_pere' => $request->situation_matrimonial_pere,
             'niveau_instruction_pere' => $request->niveau_scolaire_pere,
             'profession_pere' => $request->profession_pere,
 
@@ -98,17 +107,18 @@ class VoletDeclarationController extends Controller
             'age_mere' => $request->age_mere,
             'domicile_mere' => $request->domicile_mere,
             'ethnie_mere' => $request->ethnie_mere,
-            'situation_matrimonial_mere' => $request->situation_matrimoniale_mere,
+            'situation_matrimonial_mere' => $request->situation_matrimonial_mere,
             'niveau_instruction_mere' => $request->niveau_instruction_mere,
             'profession_mere' => $request->profession_mere,
 
             'prenom_enfant' => $request->prenom_enfant,
             'nom_enfant' => $request->nom_enfant,
             'date_naissance' => $request->date_naissance,
+            'sexe' => $request->sexe,
             'heure_naissance' => now()->format('H:i:s'),
             'date_declaration' => now(),
-            'nbreEnfantAccouchement' => 1,
-            'nbreEINouvNee' => 1,
+            'nbreEnfantAccouchement' => $request->nbreEnfantAccouchement ?? 1,
+            'nbreEINouvNee' => $request->nbreEINouvNee ?? 1,
 
             'id_declarant' => $declarant->id_declarant,
             'id_hopital' => Auth::user()->id_hopital,
@@ -137,7 +147,7 @@ class VoletDeclarationController extends Controller
             'nom_enfant' => 'nullable|string|max:100',
             'date_naissance' => 'required|date',
             'heure_naissance' => 'required',
-            'sexe' => 'required|string',
+            'sexe' => 'required|in:M,F',
             'nbreEnfantAccouchement' => 'nullable|integer|min:1',
 
             // Père
@@ -146,7 +156,7 @@ class VoletDeclarationController extends Controller
             'age_pere' => 'required|integer|min:0|max:130',
             'domicile_pere' => 'required|string',
             'ethnie_pere' => 'required|string',
-            'situation_matrimonial_pere' => 'required|string',
+            'situation_matrimonial_pere' => 'required|in:Marié,Célibataire,Divorcé',
             'niveau_instruction_pere' => 'required|string',
             'profession_pere' => 'required|string',
 
@@ -156,7 +166,7 @@ class VoletDeclarationController extends Controller
             'age_mere' => 'required|integer|min:0|max:130',
             'domicile_mere' => 'required|string',
             'ethnie_mere' => 'required|string',
-            'situation_matrimonial_mere' => 'required|string',
+            'situation_matrimonial_mere' => 'required|in:Marié,Célibataire,Divorcé',
             'niveau_instruction_mere' => 'required|string',
             'profession_mere' => 'required|string',
 
@@ -166,6 +176,8 @@ class VoletDeclarationController extends Controller
             'age_declarant' => 'required|integer|min:0|max:130',
             'domicile_declarant' => 'required|string',
             'ethnie_declarant' => 'required|string',
+            'telephone' => 'nullable|string|max:15',
+            'email' => 'nullable|email|max:255',
         ]);
 
         $volet = VoletDeclaration::findOrFail($id);
@@ -175,6 +187,8 @@ class VoletDeclarationController extends Controller
         $declarant->nom_declarant = $request->nom_declarant;
         $declarant->age_declarant = $request->age_declarant;
         $declarant->domicile_declarant = $request->domicile_declarant;
+        $declarant->telephone = $request->telephone;
+        $declarant->email = $request->email;
         $declarant->ethnie_declarant = $request->ethnie_declarant;
         $declarant->save();
 
