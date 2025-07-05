@@ -18,9 +18,10 @@
     <!-- SweetAlert2 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"> -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="icon" type="image" href="{{ asset('gentelella/assets/images/favicon.png') }}">
+    @livewireStyles
 </head>
 
 <body class="nav-md">
@@ -47,11 +48,12 @@
     @if(session('success'))
     <script>
         Swal.fire({
-            icon: 'success',
-            title: 'Succès',
-            text: '{{ session("success") }}',
-            confirmButtonColor: '#198754'
-        });
+        position: "top-end",
+        icon: "success",
+        title: '{{ session("success") }}',
+        showConfirmButton: false,
+        timer: 2000
+    });
     </script>
     @endif
 
@@ -65,6 +67,26 @@
         });
     </script>
     @endif
+    <script>
+        function confirmDelete(id) {
+        Swal.fire({
+            title: 'Confirmation',
+            text: "Voulez-vous vraiment supprimer cet élément ?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Oui, supprimer',
+            cancelButtonText: 'Annuler'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Soumettre le formulaire
+                document.getElementById('delete-form-' + id).submit();
+            }
+        })
+    }
+    </script>
+
 
     <!-- Je charge les fichier du template -->
     <!-- jQuery -->
@@ -136,7 +158,7 @@
     <script src="{{ asset('gentelella/assets/vendors/pdfmake/build/vfs_fonts.js')}}"></script>
     <script src="{{ asset('gentelella/assets/vendors/jQuery-Smart-Wizard/js/jquery.smartWizard.js')}}"></script>
     <script src="{{ asset('gentelella/assets/vendors/parsleyjs/dist/parsley.min.js')}}"></script>
-
+    @livewireScripts
 </body>
 
 </html>

@@ -1,42 +1,167 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\VoletDeclaration; // Assurez-vous que ce modèle existe et est correct
+use App\Models\PieceJointe;
 
-use App\Models\Demande;
+use App\Models\Demande; // Assurez-vous que ce modèle existe et est correct
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class DemandeController extends Controller
 {
-    public function create()
+    // =========================================================
+    // Méthodes pour les demandes SPÉCIFIQUES d'actes d'état civil (préservées et adaptées)
+    // =========================================================
+
+    /**
+     * Affiche la page de choix pour le type de demande spécifique (nouveau-né ou copie extrait).
+     *
+     * @return \Illuminate\View\View
+     */
+    public function choixType()
     {
-        return view('citoyen.form_demande');
+        // La vue est dans resources/views/presentation/choix_type.blade.php
+        return view('presentation.choix_type');
     }
 
-    public function store(Request $request)
+    /**
+     * Affiche le formulaire pour demander un acte de naissance pour un nouveau-né déjà déclaré.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function createNouveauNeForm()
     {
-        $request->validate([
-            'nom' => 'required|string|max:255',
-            'email' => 'required|email',
-            'telephone' => 'required|string|max:20',
-            'type_document' => 'required|string',
-            'informations_complementaires' => 'nullable|string',
-            'justificatif' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+        // La vue est dans resources/views/presentation/nouveau_ne_form.blade.php
+        return view('presentation.nouveau_ne_form');
+    }
+
+    /**
+     * Enregistre une demande d'acte de naissance pour un nouveau-né déjà déclaré.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function storeNouveauNe(Request $request)
+    {
+         $validatedData = $request->validate([
+            'nom_demandeur' => 'required|string|max:255',
+            'email_demandeur' => 'required|email|max:255',
+            'telephone_demandeur' => 'required|string|max:20',
+
+            'nom_enfant' => 'required|string|max:255',
+            'prenom_enfant' => 'required|string|max:255',
+            //'date_naissance' => 'required|date',
+            //'lieu_naissance' => 'required|string|max:255',
+
+            'numero_volet_naissance' => 'required|string|max:50',
+            //'hopital_declaration' => 'nullable|string|max:255',
+            'justificatif_demande' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'informations_complementaires_nouveau_ne' => 'nullable|string',
         ]);
 
-        $fichier = null;
-        if ($request->hasFile('justificatif')) {
-            $fichier = $request->file('justificatif')->store('justificatifs', 'public');
+        // Gestion du fichier justificatif
+        // Enregistrement pièce jointe
+    if ($request->hasFile('pieces_jointe')) {
+        $file = $request->file('pieces_jointe');
+        $piece = new PieceJointe();
+        
+        $piece->demande_id = $request->demande_id;
+        $piece->nom_fichier = $file->getClientOriginalName();
+        $piece->chemin_fichier = $file->store('pieces_jointes', 'public');
+        $piece->save();
+    }
+
+        //  Chercher le volet par numéro
+        $volet = VoletDeclaration::where('num_volet', $validatedData['numero_volet_naissance'])->first();
+
+        //  Si trouvé, mettre à jour nom/prénom enfant
+        $idVolet = null;
+        if ($volet) {
+            $volet->nom_enfant = $validatedData['nom_enfant'];
+            $volet->prenom_enfant = $validatedData['prenom_enfant'];
+            $volet->save();
+
+            $idVolet = $volet->id_volet;
+        }
+
+        // Créer la demande
+        Demande::create([
+            'nom_complet' => $validatedData['nom_demandeur'],
+            'email' => $validatedData['email_demandeur'],
+            'telephone' => $validatedData['telephone_demandeur'],
+            'type_document' => 'Acte de Naissance (Nouveau-né)',
+
+            'nom_personne_concernee' => $validatedData['nom_enfant'],
+            'prenom_personne_concernee' => $validatedData['prenom_enfant'],
+            // 'date_evenement' => $validatedData['date_naissance'],
+            // 'lieu_evenement' => $validatedData['lieu_naissance'],
+
+            'numero_volet_naissance' => $validatedData['numero_volet_naissance'],
+            
+            'id_volet' => $idVolet,
+            //'hopital_declaration' => $validatedData['hopital_declaration'],
+            'informations_complementaires' => $validatedData['informations_complementaires_nouveau_ne'],
+            
+
+            'statut' => 'En attente',
+        ]);
+
+        return redirect()->route('agent')
+            ->with('success', 'Votre demande a été soumise avec succès.');
+    
+    }
+
+    /**
+     * Affiche le formulaire pour demander une copie d'un acte existant (non nouveau-né).
+     *
+     * @return \Illuminate\View\View
+     */
+    public function createCopieExtraitForm()
+    {
+        // La vue est dans resources/views/presentation/copie_extrait_form.blade.php
+        return view('presentation.copie_extrait_form');
+    }
+
+    /**
+     * Enregistre une nouvelle demande de copie d'acte existant.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function storeCopieExtrait(Request $request)
+    {
+        $validatedData = $request->validate([
+            'nom_demandeur' => 'required|string|max:255',
+            'email_demandeur' => 'required|email|max:255',
+            'telephone_demandeur' => 'required|string|max:20',
+            'nom_personne_acte' => 'required|string|max:255',
+            'prenom_personne_acte' => 'required|string|max:255',
+            'date_evenement_acte' => 'required|date',
+            'lieu_evenement_acte' => 'required|string|max:255',
+            'type_acte_demande' => 'required|string|max:255',
+            'justificatif_copie' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'informations_complementaires_copie' => 'nullable|string',
+        ]);
+
+        $filePath = null;
+        if ($request->hasFile('justificatif_copie')) {
+            $filePath = $request->file('justificatif_copie')->store('justificatifs_copie_extrait', 'public');
         }
 
         Demande::create([
-            'nom_complet' => $request->nom,
-            'email' => $request->email,
-            'telephone' => $request->telephone,
-            'type_document' => $request->type_document,
-            'informations_complementaires' => $request->informations_complementaires,
-            'justificatif' => $fichier,
+            'nom_complet' => $validatedData['nom_demandeur'],
+            'email' => $validatedData['email_demandeur'],
+            'telephone' => $validatedData['telephone_demandeur'],
+            'type_document' => $validatedData['type_acte_demande'],
+            'informations_complementaires' => $validatedData['informations_complementaires_copie'],
+            'justificatif_path' => $filePath,
+            'statut' => 'En attente',
+            'nom_personne_concernee' => $validatedData['nom_personne_acte'],
+            'prenom_personne_concernee' => $validatedData['prenom_personne_acte'],
+            'date_evenement' => $validatedData['date_evenement_acte'],
+            'lieu_evenement' => $validatedData['lieu_evenement_acte'],
         ]);
-
 
         return redirect()->route('demande.create')->with('success', 'Votre demande a été envoyée avec succès.');
     }

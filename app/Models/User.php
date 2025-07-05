@@ -24,7 +24,10 @@ class User extends Authenticatable
         'telephone',
         'email',
         'password',
+        'photo',
         'role',
+        'id_hopital',
+        'id_mairie'
     ];
 
     /**
@@ -48,5 +51,14 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function hopital()
+    {
+        return $this->belongsTo(Hopital::class, 'id_hopital');
+    }
+    public function mairie()
+    {
+        return $this->belongsTo(Mairie::class, 'id_mairie');
     }
 }

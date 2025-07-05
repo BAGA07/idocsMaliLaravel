@@ -1,296 +1,236 @@
-<!-- formulaire_declaration_naissance.blade.php -->
-@extends('layouts.app')
+<style>
+    .declaration {
+        width: 800px;
+        margin: auto;
+        font-family: 'Times New Roman', Times, serif;
+        font-size: 14px;
+        padding: 20px;
+        background: white;
+        border: 1px solid #000;
+    }
 
-@section('content')
-<div class="right_col" role="main">
-    <div class="">
-        <div class="page-title">
-            <div class="title_left">
-                <h3>Formulaire de déclaration de naissance</h3>
+    .header,
+    .section-title {
+        text-align: center;
+        font-weight: bold;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    .line {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+
+    .field {
+        flex: 1;
+        margin-right: 10px;
+    }
+
+    input,
+    select {
+        width: 100%;
+        padding: 5px;
+        font-size: 14px;
+        font-family: inherit;
+    }
+</style>
+@if ($errors->any())
+<div class="alert alert-danger">
+    <ul>
+        @foreach ($errors->all() as $message)
+        <li>{{ $message }}</li>
+        @endforeach
+    </ul>
+</div>
+@endif
+
+<form method="POST" action="{{ route('naissances.store') }}">
+    @csrf
+
+    <div class="declaration">
+        <div class="header">
+            REPUBLIQUE DU MALI<br>
+            Un Peuple - Un But - Une Foi
+        </div>
+
+        <div class="section-title">Enfant</div>
+        <div class="line">
+            <div class="field">
+                <label>Date de naissance</label>
+                <input type="date" name="date_naissance" required>
+            </div>
+            <div class="field">
+                <label>Heure</label>
+                <input type="time" name="heure_naissance" required>
+            </div>
+        </div>
+        <div class="line">
+            <div class="field">
+                <label>Prénoms</label>
+                <input type="text" name="prenom_enfant">
+            </div>
+            <div class="field">
+                <label>Nom</label>
+                <input type="text" name="nom_enfant">
+            </div>
+        </div>
+        <div class="line">
+            <div class="field">
+                <label>Sexe</label>
+                <select name="sexe">
+                    <option value="M">Masculin</option>
+                    <option value="F">Féminin</option>
+                </select>
+            </div>
+            <div class="field">
+                <label>Nombre d’enfants issus de cet accouchement</label>
+                <input type="number" name="nbreEnfantAccouchement" min="1">
             </div>
         </div>
 
-        <div class="clearfix"></div>
-
-        <div class="row">
-            <div class="col-md-12 col-sm-12 ">
-                <div class="x_panel">
-                    <div class="x_title">
-                        <h2>Déclaration</h2>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="x_content">
-                        <!-- SmartWizard html -->
-                        <div id="wizard" class="form_wizard wizard_horizontal">
-                            <ul class="wizard_steps">
-                                <li>
-                                    <a href="#step-1">
-                                        <span class="step_no">1</span>
-                                        <span class="step_descr">Info Père</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#step-2">
-                                        <span class="step_no">2</span>
-                                        <span class="step_descr">Info Mère</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#step-3">
-                                        <span class="step_no">3</span>
-                                        <span class="step_descr">Info Nouveau née</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#step-4">
-                                        <span class="step_no">4</span>
-                                        <span class="step_descr">Info Déclarant</span>
-                                    </a>
-                                </li>
-                            </ul>
-
-                            <form action="{{ route('naissance.store') }}" method="POST">
-                                @csrf
-                                <div class="stepContainer">
-                                    <div id="step-1">
-                                        <h2 class="StepTitle">Partie 1 - Info Père</h2>
-
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-md-3 label-align">Prénom du père<span
-                                                    class="required">*</span></label>
-                                            <div class="col-md-6">
-                                                <input type="text" name="prenom_pere" required class="form-control">
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-md-3 label-align">Nom du père<span
-                                                    class="required">*</span></label>
-                                            <div class="col-md-6">
-                                                <input type="text" name="nom_pere" required class="form-control">
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-md-3 label-align">Âge du père<span
-                                                    class="required">*</span></label>
-                                            <div class="col-md-6">
-                                                <input type="number" name="age_pere" required class="form-control">
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-md-3 label-align">Domicile<span
-                                                    class="required">*</span></label>
-                                            <div class="col-md-6">
-                                                <input type="text" name="domicile_pere" required class="form-control">
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-md-3 label-align">Ethnie<span
-                                                    class="required">*</span></label>
-                                            <div class="col-md-6">
-                                                <input type="text" name="ethnie_pere" required class="form-control">
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-md-3 label-align">Situation
-                                                Matrimoniale</label>
-                                            <div class="col-md-6">
-                                                <div class="btn-group" data-toggle="buttons">
-                                                    <label class="btn btn-outline-secondary">
-                                                        <input type="radio" name="situation_matrimoniale_pere"
-                                                            value="marie"> Marié
-                                                    </label>
-                                                    <label class="btn btn-outline-secondary">
-                                                        <input type="radio" name="situation_matrimoniale_pere"
-                                                            value="celibataire"> Célibataire
-                                                    </label>
-                                                    <label class="btn btn-outline-secondary">
-                                                        <input type="radio" name="situation_matrimoniale_pere"
-                                                            value="divorce"> Divorcé
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-md-3 label-align">Niveau Scolaire<span
-                                                    class="required">*</span></label>
-                                            <div class="col-md-6">
-                                                <input type="text" name="niveau_scolaire_pere" required
-                                                    class="form-control">
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-md-3 label-align">Profession<span
-                                                    class="required">*</span></label>
-                                            <div class="col-md-6">
-                                                <input type="text" name="profession_pere" required class="form-control">
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div id="step-2">
-                                        <h2 class="StepTitle">Partie 2 - Info Mère</h2>
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-md-3 label-align">Prénom de la mère<span
-                                                    class="required">*</span></label>
-                                            <div class="col-md-6">
-                                                <input type="text" name="prenom_mere" required class="form-control">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-md-3 label-align">Nom de la mère<span
-                                                    class="required">*</span></label>
-                                            <div class="col-md-6">
-                                                <input type="text" name="nom_mere" required class="form-control">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-md-3 label-align">Âge de la mère<span
-                                                    class="required">*</span></label>
-                                            <div class="col-md-6">
-                                                <input type="number" name="age_mere" required class="form-control">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-md-3 label-align">Domicile<span
-                                                    class="required">*</span></label>
-                                            <div class="col-md-6">
-                                                <input type="text" name="domicile_mere" required class="form-control">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-md-3 label-align">Ethnie<span
-                                                    class="required">*</span></label>
-                                            <div class="col-md-6">
-                                                <input type="text" name="ethnie_mere" required class="form-control">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-md-3 label-align">Situation
-                                                Matrimoniale</label>
-                                            <div class="col-md-6">
-                                                <div class="btn-group" data-toggle="buttons">
-                                                    <label class="btn btn-outline-secondary">
-                                                        <input type="radio" name="situation_matrimoniale_mere"
-                                                            value="marie"> Mariée
-                                                    </label>
-                                                    <label class="btn btn-outline-secondary">
-                                                        <input type="radio" name="situation_matrimoniale_mere"
-                                                            value="celibataire"> Célibataire
-                                                    </label>
-                                                    <label class="btn btn-outline-secondary">
-                                                        <input type="radio" name="situation_matrimoniale_mere"
-                                                            value="divorce"> Divorcée
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-md-3 label-align">Niveau Scolaire<span
-                                                    class="required">*</span></label>
-                                            <div class="col-md-6">
-                                                <input type="text" name="niveau_scolaire_mere" required
-                                                    class="form-control">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-md-3 label-align">Profession<span
-                                                    class="required">*</span></label>
-                                            <div class="col-md-6">
-                                                <input type="text" name="profession_mere" required class="form-control">
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-                                    <div id="step-3">
-                                        <h2 class="StepTitle">Partie 3 - Info Du Nouveau Née</h2>
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-md-3 label-align">Prénom</label>
-                                            <div class="col-md-6">
-                                                <input type="text" name="prenom_enfant" class="form-control">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-md-3 label-align">Nom</label>
-                                            <div class="col-md-6">
-                                                <input type="text" name="nom_enfant" class="form-control">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-md-3 label-align"><span
-                                                    class="required">Date de naissance</span></label>
-                                            <div class="col-md-6">
-                                                <input type="date" name="date_naissance" required class="form-control">
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-
-                                    <div id="step-4">
-                                        <h2 class="StepTitle">Partie 3 - Info Déclarant</h2>
-
-                                        {{-- Partie declarant --}}
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-md-3 label-align">Prénom du déclarant<span
-                                                    class="required">*</span></label>
-                                            <div class="col-md-6">
-                                                <input type="text" name="prenom_declarant" required
-                                                    class="form-control">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-md-3 label-align">Nom du déclarant<span
-                                                    class="required">*</span></label>
-                                            <div class="col-md-6">
-                                                <input type="text" name="nom_declarant" required class="form-control">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-md-3 label-align">Âge du déclarant<span
-                                                    class="required">*</span></label>
-                                            <div class="col-md-6">
-                                                <input type="number" name="age_declarant" required class="form-control">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-md-3 label-align">Domicile<span
-                                                    class="required">*</span></label>
-                                            <div class="col-md-6">
-                                                <input type="text" name="domicile_declarant" required
-                                                    class="form-control">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-md-3 label-align">Ethnie<span
-                                                    class="required">*</span></label>
-                                            <div class="col-md-6">
-                                                <input type="text" name="ethnie_declarant" required
-                                                    class="form-control">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <div class="col-md-6 offset-md-3">
-                                                <button type="submit" class="btn btn-success">Soumettre</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </form>
-                        </div>
-                    </div>
-                </div>
+        <div class="section-title">Père</div>
+        <div class="line">
+            <div class="field">
+                <label>Prénom</label>
+                <input type="text" name="prenom_pere" required>
             </div>
+            <div class="field">
+                <label>Nom</label>
+                <input type="text" name="nom_pere" required>
+            </div>
+        </div>
+        <div class="line">
+            <div class="field">
+                <label>Âge</label>
+                <input type="number" name="age_pere" required>
+            </div>
+            <div class="field">
+                <label>Domicile</label>
+                <input type="text" name="domicile_pere" required>
+            </div>
+        </div>
+        <div class="line">
+            <div class="field">
+                <label>Ethnie</label>
+                <input type="text" name="ethnie_pere" required>
+            </div>
+            <div class="field">
+                <label>Situation matrimoniale</label>
+                <select name="situation_matrimonial_pere" required>
+                    <option value="">-- Choisir --</option>
+                    <option value="Marié">Marié</option>
+                    <option value="Célibataire">Célibataire</option>
+                    <option value="Divorcé">Divorcé</option>
+                </select>
+            </div>
+        </div>
+        <div class="line">
+            <div class="field">
+                <label>Niveau scolaire</label>
+                <input type="text" name="niveau_scolaire_pere" required>
+            </div>
+            <div class="field">
+                <label>Profession</label>
+                <input type="text" name="profession_pere" required>
+            </div>
+        </div>
+
+        <div class="section-title">Mère</div>
+        <div class="line">
+            <div class="field">
+                <label>Prénom</label>
+                <input type="text" name="prenom_mere" required>
+            </div>
+            <div class="field">
+                <label>Nom</label>
+                <input type="text" name="nom_mere" required>
+            </div>
+        </div>
+        <div class="line">
+            <div class="field">
+                <label>Âge</label>
+                <input type="number" name="age_mere" required>
+            </div>
+            <div class="field">
+                <label>Domicile</label>
+                <input type="text" name="domicile_mere" required>
+            </div>
+        </div>
+        <div class="line">
+            <div class="field">
+                <label>Ethnie</label>
+                <input type="text" name="ethnie_mere" required>
+            </div>
+            <div class="field">
+                <label>Situation matrimoniale</label>
+                <select name="situation_matrimonial_mere" required>
+                    <option value="">-- Choisir --</option>
+                    <option value="Marié">Marié</option>
+                    <option value="Célibataire">Célibataire</option>
+                    <option value="Divorcé">Divorcé</option>
+                </select>
+            </div>
+        </div>
+        <div class="line">
+            <div class="field">
+                <label>Niveau scolaire</label>
+                <input type="text" name="niveau_instruction_mere" required>
+            </div>
+            <div class="field">
+                <label>Profession</label>
+                <input type="text" name="profession_mere" required>
+            </div>
+        </div>
+        <div class="line">
+            <div class="field">
+                <label>Nombre d'enfant Née vivant y compris celui-ci</label>
+                <input type="number" name="nbreEINouvNee" required>
+            </div>
+        </div>
+
+        <div class="section-title">Déclarant</div>
+        <div class="line">
+            <div class="field">
+                <label>Prénom</label>
+                <input type="text" name="prenom_declarant" required>
+            </div>
+            <div class="field">
+                <label>Nom</label>
+                <input type="text" name="nom_declarant" required>
+            </div>
+        </div>
+        <div class="line">
+            <div class="field">
+                <label>Âge</label>
+                <input type="number" name="age_declarant" required>
+            </div>
+            <div class="field">
+                <label>Domicile</label>
+                <input type="text" name="domicile_declarant" required>
+            </div>
+        </div>
+        <div class="line">
+            <div class="field">
+                <label>Téléphone</label>
+                <input type="text" name="telephone" required>
+            </div>
+            <div class="field">
+                <label>email</label>
+                <input type="email" name="email" required>
+            </div>
+        </div>
+        <div class="line">
+            <div class="field">
+                <label>Ethnie</label>
+                <input type="text" name="ethnie_declarant" required>
+            </div>
+        </div>
+
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-primary">✅ Enregistrer</button>
+            <a href="{{ route('hopital.dashboard') }}" class="btn btn-secondary">Annuler</a>
         </div>
     </div>
-</div>
-</div>
-@endsection
+</form>

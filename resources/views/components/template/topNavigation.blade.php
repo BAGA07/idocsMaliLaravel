@@ -11,11 +11,11 @@
                 <li class="nav-item dropdown" style="padding-left: 15px;">
                     <a href="#" class="nav-link dropdown-toggle user-profile" id="navbarDropdown" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
-                        <img src="{{ asset('gentelella/assets/images/img.jpg') }}" alt="Avatar utilisateur">
+                        <img src="{{ Auth::user()->photo}}">
                         {{ Auth::user()->nom ?? 'Utilisateur' }}
                     </a>
                     <div class="dropdown-menu dropdown-usermenu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="{{ route('profile.edit') }}">Profil</a>
+                        <a class="dropdown-item" href="{{ route('profile') }}">Profil</a>
                         <a class="dropdown-item" href="#">
                             <span class="badge bg-danger float-right">50%</span>
                             <span>Paramètres</span>

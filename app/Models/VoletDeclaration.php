@@ -19,6 +19,7 @@ class VoletDeclaration extends Model
         'nom_enfant',
         'sexe',
         'nbreEnfantAccouchement',
+
         'prenom_pere',
         'nom_pere',
         'age_pere',
@@ -27,6 +28,7 @@ class VoletDeclaration extends Model
         'situation_matrimonial_pere',
         'niveau_instruction_pere',
         'profession_pere',
+
         'prenom_mere',
         'nom_mere',
         'age_mere',
@@ -35,9 +37,12 @@ class VoletDeclaration extends Model
         'situation_matrimonial_mere',
         'niveau_instruction_mere',
         'profession_mere',
+
+        'num_volet',
         'nbreEINouvNee',
         'id_declarant',
-        'id_hopital'
+        'id_hopital',
+        'ethnie_declarant'
     ];
 
     public function declarant()
@@ -48,5 +53,13 @@ class VoletDeclaration extends Model
     public function hopital()
     {
         return $this->belongsTo(Hopital::class, 'id_hopital');
+    }
+    public function Acte()
+    {
+        return $this->hasOne(Acte::class);
+    }
+    public function Demande()
+    {
+        return $this->hasMany(Demande::class);
     }
 }

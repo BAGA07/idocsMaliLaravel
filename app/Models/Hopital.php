@@ -20,4 +20,9 @@ class Hopital extends Model
     {
         return $this->hasMany(VoletDeclaration::class, 'id_hopital');
     }
+
+    public function commune()
+    {
+        return $this->belongsTo(Commune::class, 'id_commune');
+    }
 }
