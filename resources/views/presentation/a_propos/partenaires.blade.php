@@ -1,7 +1,7 @@
 @extends('layouts.presentation')
 
 {{-- Mise à jour du titre de la page --}}
-@section('title', 'Nos Partenaires - e-Naissance Mali')
+@section('title', 'Nos Partenaires - IdocsMali')
 
 @section('content')
 
@@ -11,7 +11,7 @@
             Nos Partenaires Stratégiques
         </h1>
         <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-12">
-            La réussite du projet **e-Naissance Mali** repose sur des collaborations solides et des partenariats stratégiques avec des institutions clés au Mali et des organisations qui partagent notre vision de la digitalisation et de la modernisation des **services d'enregistrement de naissances**.
+            La réussite du projet **IdocsMali** repose sur des collaborations solides et des partenariats stratégiques avec des institutions clés au Mali et des organisations qui partagent notre vision de la digitalisation et de la modernisation des **services d'enregistrement de naissances**.
         </p>
 
         <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-8">Institutions Gouvernementales</h2>
@@ -69,7 +69,7 @@
         <div class="text-center mt-16 p-8 bg-blue-100 dark:bg-blue-700 rounded-lg shadow">
             <p class="text-lg font-semibold text-blue-800 dark:text-blue-100">
                 {{-- Mise à jour du nom du projet --}}
-                Nous sommes fiers de collaborer avec ces acteurs clés pour faire de **e-Naissance Mali** une réalité au service des citoyens maliens.
+                Nous sommes fiers de collaborer avec ces acteurs clés pour faire de **IdocsMali** une réalité au service des citoyens maliens.
             </p>
         </div>
     </div>

@@ -1,6 +1,6 @@
 @extends('layouts.presentation')
 
-@section('title', 'Demande Copie Extrait Acte - e-Naissance-Mali')
+@section('title', 'Demande Copie Extrait Acte - IdocsMali')
 
 @section('content')
 

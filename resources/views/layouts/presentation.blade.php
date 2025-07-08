@@ -136,7 +136,7 @@
           <div class="col-span-1">
             <h3 class="text-xl font-semibold mb-4 text-blue-400">À Propos</h3>
             <p class="text-blue-200 text-sm leading-relaxed">
-              Notre plateforme  *e-Naissance Mali* vise à *digitaliser et simplifier* vos démarches pour l'obtention et
+              Notre plateforme  *IdocsMali* vise à *digitaliser et simplifier* vos démarches pour l'obtention et
               la
               gestion des actes de naissance au Mali, en vous garantissant un accès facile et sécurisé à ce document
               essentiel pour votre identité juridique.
@@ -166,7 +166,7 @@
             <ul class="space-y-2 text-blue-200 text-sm">
               <li><i class="fas fa-map-marker-alt mr-2"></i> Bamako, Mali</li>
               <li><i class="fas fa-phone mr-2"></i> +223 XXXX XXXX</li>
-              <li><i class="fas fa-envelope mr-2"></i> contact@votredomaine.com</li>
+              <li><i class="fas fa-envelope mr-2"></i> contact@IdocsMali.com</li>
             </ul>
           </div>
 

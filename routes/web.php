@@ -66,9 +66,6 @@ Route::post('/presenttation/nouveau-ne', [DemandeController::class, 'storeNouvea
 Route::get('/presentation/copie-extrait', [DemandeController::class, 'createCopieExtraitForm'])->name('demande.copie_extrait.create');
 Route::post('/presentation/copie-extrait', [DemandeController::class, 'storeCopieExtrait'])->name('demande.copie_extrait.store');
 
-// L'ancienne route pour la demande générique  :
-// Route::get('/presentation/demande', [DemandeController::class, 'create'])->name('demande.create');
-// Route::post('/presentation/demande', [DemandeController::class, 'store'])->name('demande.store');
 // Les routes pour le centre d'etat civil
 Route::middleware([
     'role:agent_mairie',

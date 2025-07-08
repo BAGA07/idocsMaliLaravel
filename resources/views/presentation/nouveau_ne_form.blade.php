@@ -1,6 +1,6 @@
 @extends('layouts.presentation')
 
-@section('title', 'Demande Acte Nouveau-né Déclaré - e-Naissance Mali')
+@section('title', 'Demande Acte Nouveau-né Déclaré - IdocsMali')
 
 @section('content')
 

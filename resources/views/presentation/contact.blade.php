@@ -1,6 +1,6 @@
 @extends ('layouts.presentation')
 
-@section('title', 'Contact - MaliActes')
+@section('title', 'Contact - IdocsMali')
 
 @section('content')
 <section class="py-16 bg-white dark:bg-gray-800">

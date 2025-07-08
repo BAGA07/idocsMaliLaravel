@@ -28,7 +28,7 @@
         <div class="col-md-4 col-sm-6 col-xs-12">
             <div class="tile-stats">
                 <div class="icon"><i class="fa fa-check-circle"></i></div>
-                <div class="count"></div>
+                <div class="count">40</div>
                 <h3>Total Garçons</h3>
                 <p>Le nombre de garçon née cette année</p>
             </div>

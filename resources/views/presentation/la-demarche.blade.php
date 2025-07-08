@@ -20,7 +20,7 @@
             L'Acte de Naissance au Mali à l'Ère Numérique
         </h2>
         <p class="text-lg lg:text-xl text-gray-700 leading-relaxed mb-4">
-            Au Mali, l'acte de naissance est le fondement de l'identité juridique. Conscients des défis liés aux démarches traditionnelles, **e-Naissance Mali** a pour objectif de simplifier et de digitaliser le processus d'obtention et de suivi de votre acte de naissance. Nous vous éclairons ici sur les différentes démarches possibles, désormais facilitées par notre plateforme en ligne.
+            Au Mali, l'acte de naissance est le fondement de l'identité juridique. Conscients des défis liés aux démarches traditionnelles, **IdocsMali** a pour objectif de simplifier et de digitaliser le processus d'obtention et de suivi de votre acte de naissance. Nous vous éclairons ici sur les différentes démarches possibles, désormais facilitées par notre plateforme en ligne.
         </p>
         <p class="text-lg lg:text-xl text-gray-700 leading-relaxed">
             Que vous soyez un jeune parent souhaitant récupérer l'acte de votre nouveau-né, un citoyen ayant besoin d'une copie de votre acte existant, ou en situation de non-déclaration, notre guide vous accompagnera pas à pas.
@@ -33,7 +33,7 @@
             1. Demander l'Acte de Naissance d'un Nouveau-né (Déclaration Préalable Effectuée)
         </h2>
         <p class="text-lg lg:text-xl text-gray-700 leading-relaxed mb-4">
-            Si la naissance de votre enfant a déjà été déclarée à la maternité ou au centre de santé par un agent d'état civil, **e-Naissance Mali** vous permet de **demander facilement l'établissement ou la récupération de son acte de naissance officiel** en ligne. Cette étape cruciale finalise l'enregistrement de votre enfant auprès de l'état civil.
+            Si la naissance de votre enfant a déjà été déclarée à la maternité ou au centre de santé par un agent d'état civil, **IdocsMali** vous permet de **demander facilement l'établissement ou la récupération de son acte de naissance officiel** en ligne. Cette étape cruciale finalise l'enregistrement de votre enfant auprès de l'état civil.
         </p>
         <ul class="list-disc list-inside text-lg lg:text-xl text-gray-700 space-y-3 pl-4">
             <li>
@@ -59,7 +59,7 @@
             2. Demande de Copie d'un Acte de Naissance Existant
         </h2>
         <p class="text-lg lg:text-xl text-gray-700 leading-relaxed mb-4">
-            Si un acte de naissance a déjà été établi et enregistré, **e-Naissance Mali** simplifie la demande de sa copie intégrale ou d'un extrait. Cette démarche, souvent nécessaire pour des besoins administratifs (passeport, carte d'identité, scolarisation, etc.), est désormais plus accessible et rapide.
+            Si un acte de naissance a déjà été établi et enregistré, **IdocsMali** simplifie la demande de sa copie intégrale ou d'un extrait. Cette démarche, souvent nécessaire pour des besoins administratifs (passeport, carte d'identité, scolarisation, etc.), est désormais plus accessible et rapide.
         </p>
         <ul class="list-disc list-inside text-lg lg:text-xl text-gray-700 space-y-3 pl-4">
             <li>
@@ -92,21 +92,21 @@
                 <strong class="font-semibold text-red-700">La Démarche :</strong> Cette procédure nécessite de s'adresser au tribunal compétent pour obtenir une décision de justice qui tiendra lieu d'acte de naissance.
             </li>
             <li>
-                <strong class="font-semibold text-red-700">Notre Accompagnement :</strong> Bien que **e-Naissance Mali** ne traite pas directement cette demande judiciaire, nous vous fournissons un guide détaillé et des conseils pour comprendre les preuves nécessaires (témoignages, certificats de non-inscription, etc.) et préparer votre dossier pour cette procédure.
+                <strong class="font-semibold text-red-700">Notre Accompagnement :</strong> Bien que **IdocsMali** ne traite pas directement cette demande judiciaire, nous vous fournissons un guide détaillé et des conseils pour comprendre les preuves nécessaires (témoignages, certificats de non-inscription, etc.) et préparer votre dossier pour cette procédure.
             </li>
             <li>
                 C'est la voie à suivre si vous n'avez <strong class="font-semibold text-red-700">aucune information ni aucune trace d'un acte de naissance existant</strong>.
             </li>
         </ul>
         <p class="mt-6 text-lg lg://text-xl text-gray-700 leading-relaxed">
-            Bien que plus longue, cette procédure est cruciale pour rétablir votre identité juridique. **e-Naissance Mali** est là pour vous guider à travers ce processus.
+            Bien que plus longue, cette procédure est cruciale pour rétablir votre identité juridique. **IdocsMali** est là pour vous guider à travers ce processus.
         </p>
     </div>
 
     {{-- Section Conclusion et Appel à l'Action --}}
     <div class="bg-gray-100 p-8 rounded-lg shadow-xl border border-gray-200">
         <h2 class="text-3xl lg:text-4xl font-extrabold text-gray-900 mb-6 border-b-2 border-gray-400 pb-3">
-            **e-Naissance Mali** : Votre Partenaire pour des Démarches Simplifiées
+            **IdocsMali** : Votre Partenaire pour des Démarches Simplifiées
         </h2>
         <p class="text-lg lg:text-xl text-gray-700 leading-relaxed mb-4">
             Notre plateforme a été conçue pour vous accompagner et simplifier l'ensemble des démarches liées à l'acte de naissance au Mali. Nous vous guidons pas à pas dans la préparation de votre dossier en ligne, en vous indiquant précisément les informations et documents nécessaires pour chaque type de demande.
