@@ -1,6 +1,6 @@
 <footer>
     <div class="pull-right">
-        Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
+        IdocsMali - by Etudiant Technolab Ista
     </div>
     <div class="clearfix"></div>
 </footer>

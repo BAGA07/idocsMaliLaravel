@@ -18,7 +18,7 @@
     <!-- SweetAlert2 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-
+<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"> -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="icon" type="image" href="{{ asset('gentelella/assets/images/favicon.png') }}">
 </head>
@@ -49,7 +49,7 @@
         Swal.fire({
   position: "top-end",
   icon: "success",
-  title: "{{ session("success") }}",
+  title: '{{ session("succes") }}',
   showConfirmButton: false,
   timer: 2000
 });

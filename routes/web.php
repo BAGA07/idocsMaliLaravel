@@ -1,4 +1,7 @@
 <?php
+
+use App\Http\Controllers\Acte_naissance;
+
 use App\Http\Controllers\PresentationController;
 use App\Http\Controllers\DemandeController;
 use App\Http\Controllers\Hopital\NaissanceController;
@@ -68,23 +71,19 @@ Route::post('/presentation/copie-extrait', [DemandeController::class, 'storeCopi
 // Route::post('/presentation/demande', [DemandeController::class, 'store'])->name('demande.store');
 // Les routes pour le centre d'etat civil
 Route::middleware([
-    'role:agent_etat_civil',
+    'role:agent_mairie',
 ])->prefix('mairie')->group(function () {
-    Route::get('/etat-civil', function () {
-        return view('centre_etat_civil.index');
-    })->name('etat_civil.index');
 
-    Route::get('/etat-civil/acte-naissance', function () {
-        return view('etat_civil.acte_naissance');
-    })->name('etat_civil.acte_naissance');
+    //Route pour agent de la mairie
 
-    Route::get('/etat-civil/acte-mariage', function () {
-        return view('etat_civil.acte_mariage');
-    })->name('etat_civil.acte_mariage');
 
-    Route::get('/etat-civil/acte-deces', function () {
-        return view('etat_civil.acte_deces');
-    })->name('etat_civil.acte_deces');
+    Route::get('agent', [Acte_naissance::class, 'index'])->name('agent.dashboard');
+    Route::get('/acte/create/{id}', [Acte_naissance::class, 'create'])->name('acte.create');
+    Route::post('/acte', [Acte_naissance::class, 'store'])->name('acte.store');
+    Route::get('/actes/{id}', [Acte_naissance::class, 'show'])->name('acte.show');
+    Route::get('/actes/{id}/edit', [Acte_naissance::class, 'edit'])->name('acte.edit');
+    Route::put('/actes/{id}', [Acte_naissance::class, 'update'])->name('acte.update');
+    Route::delete('/actes/{id}', [Acte_naissance::class, 'destroy'])->name('acte.destroy');
 });
 // fin des routes pour le centre d'etat civil
 
@@ -98,20 +97,23 @@ Route::middleware([
     'role:agent_hopital',
 ])->prefix('hopital')->group(function () {
     Route::get('/dashboard', [NaissanceController::class, 'dashboard'])->name('hopital.dashboard');
-    //Route::get('/naissance', [NaissanceController::class, 'index'])->name('hopital.naissance.list');
-    //Route::get('/naissance/create', [NaissanceController::class, 'create'])->name('hopital.naissance.create');
-    // Route::post('/naissances', [NaissanceController::class, 'store'])->name('hopital.naissance.store');
-    //Route::get('/naissance/{id}', [NaissanceController::class, 'show'])->name('hopital.naissance.show');
-    Route::get('naissance/create', [VoletDeclarationController::class, 'create'])->name('naissance.create');
-    Route::post('hopital/naissance', [VoletDeclarationController::class, 'store'])->name('naissance.store');
+    Route::resource('naissances', VoletDeclarationController::class);
 });
 // fin des routes pour les agents de l'hopital
 
 //route pour la gestion de profile
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile');
+    Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile/delete', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+
+
+
+
+
+//Route::get('/dashboard-agent', [Acte_naissance::class, 'index'])->name('agent_mairie.dasboard');
+
 
 require __DIR__ . '/auth.php';
