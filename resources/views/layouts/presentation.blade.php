@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     {{-- Indispensable pour le responsive design sur mobiles --}}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', '**e-Naissance Mali**')</title>
+    <title>@yield('title', '**IdocsMali**')</title>
 
     {{-- Import Vite (CSS/JS). C'est Vite qui va inclure votre app.js (qui importera Flowbite) --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -22,7 +22,7 @@
     <a href="{{ route('presentation.index') }}" class="flex items-center space-x-3 rtl:space-x-reverse">
       {{-- MODIFICATION ICI : h-12 changé en h-16 pour augmenter encore plus la taille du logo --}}
       <img src="{{ asset('images/logo.png') }}" class="h-16" alt="Logo Projet Mali" />
-      <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">e-Naissance Mali</span>
+      <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">IdocsMali</span>
     </a>
 
     <button data-collapse-toggle="navbar-dropdown" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-dropdown" aria-expanded="false">

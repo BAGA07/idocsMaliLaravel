@@ -22,7 +22,7 @@
                     </li>
                     <li>
                         <i class="fas fa-envelope text-blue-600 mr-3"></i>
-                        <a href="mailto:contact@e-Naissance Mali.ml" class="hover:underline">contact@e-Naissance Mali.ml</a>
+                        <a href="mailto:contact@e-Naissance Mali.ml" class="hover:underline">contact@IdocsMali.ml</a>
                     </li>
                     <li>
                         <i class="fas fa-phone-alt text-blue-600 mr-3"></i>

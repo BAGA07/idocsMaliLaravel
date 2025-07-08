@@ -1,6 +1,6 @@
 @extends ('layouts.presentation') {{-- Assurez-vous que c'est le bon chemin vers votre layout --}}
 
-@section('title', 'Accueil - MaliActes') {{-- Titre spécifique pour la page d'accueil --}}
+@section('title', 'Accueil - idocsMali') {{-- Titre spécifique pour la page d'accueil --}}
 
 @section('content')
 
