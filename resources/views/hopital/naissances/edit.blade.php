@@ -1,252 +1,186 @@
-<style>
-    .declaration {
-        width: 800px;
-        margin: auto;
-        font-family: 'Times New Roman', Times, serif;
-        font-size: 14px;
-        padding: 20px;
-        background: white;
-        border: 1px solid #000;
-    }
+@extends('layouts.app')
+@section('titre')Modification @endsection
+@section('content')
+<div class="right_col" role="main">
+    <form method="POST" action="{{ route('naissances.update', $volet->id_volet) }}"
+        class="max-w-3xl mx-auto my-10 bg-white border border-black px-6 py-8 font-[Times] text-[14px]">
+        @csrf
+        @method('PUT')
 
-    .header,
-    .section-title {
-        text-align: center;
-        font-weight: bold;
-        margin-top: 10px;
-        margin-bottom: 10px;
-    }
+        @if ($errors->any())
+        <div class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+            <ul class="list-disc list-inside">
+                @foreach ($errors->all() as $message)
+                <li>{{ $message }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
 
-    .line {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 10px;
-    }
-
-    .field {
-        flex: 1;
-        margin-right: 10px;
-    }
-
-    input,
-    select {
-        width: 100%;
-        padding: 5px;
-        font-size: 14px;
-        font-family: inherit;
-    }
-</style>
-@if ($errors->any())
-<div class="alert alert-danger">
-    <ul>
-        @foreach ($errors->all() as $message)
-        <li>{{ $message }}</li>
-        @endforeach
-    </ul>
-</div>
-@endif
-<form method="POST" action="{{ route('naissances.update', $volet->id_volet) }}">
-    @csrf
-    @method('PUT')
-
-    <div class="declaration">
-        <div class="header">
+        <div class="text-center font-bold uppercase mb-4">
             REPUBLIQUE DU MALI<br>
             Un Peuple - Un But - Une Foi
         </div>
 
-        {{-- ENFANT --}}
-        <div class="section-title">Enfant</div>
-        <div class="line">
-            <div class="field">
-                <label>Date de naissance</label>
+        <div class="text-center font-bold uppercase mb-4">Enfant</div>
+        <div class="flex flex-wrap gap-4 mb-4">
+            <div class="w-full md:flex-1">
+                <label class="font-semibold block mb-1">Date de naissance</label>
                 <input type="date" name="date_naissance" value="{{ old('date_naissance', $volet->date_naissance) }}"
-                    required>
+                    required class="w-full border px-3 py-1 rounded">
             </div>
-            <div class="field">
-                <label>Heure</label>
+            <div class="w-full md:flex-1">
+                <label class="font-semibold block mb-1">Heure</label>
                 <input type="time" name="heure_naissance" value="{{ old('heure_naissance', $volet->heure_naissance) }}"
-                    required>
+                    required class="w-full border px-3 py-1 rounded">
             </div>
         </div>
-        <div class="line">
-            <div class="field">
-                <label>Prénoms</label>
-                <input type="text" name="prenom_enfant" value="{{ old('prenom_enfant', $volet->prenom_enfant) }}">
+
+        <div class="flex flex-wrap gap-4 mb-4">
+            <div class="w-full md:flex-1">
+                <label class="font-semibold block mb-1">Prénoms</label>
+                <input type="text" name="prenom_enfant" value="{{ old('prenom_enfant', $volet->prenom_enfant) }}"
+                    class="w-full border px-3 py-1 rounded">
             </div>
-            <div class="field">
-                <label>Nom</label>
-                <input type="text" name="nom_enfant" value="{{ old('nom_enfant', $volet->nom_enfant) }}">
+            <div class="w-full md:flex-1">
+                <label class="font-semibold block mb-1">Nom</label>
+                <input type="text" name="nom_enfant" value="{{ old('nom_enfant', $volet->nom_enfant) }}"
+                    class="w-full border px-3 py-1 rounded">
             </div>
         </div>
-        <div class="line">
-            <div class="field">
-                <label>Sexe</label>
-                <select name="sexe">
-                    <option value="M" {{ old('sexe', $volet->sexe) == 'M' ? 'selected' : '' }}>Masculin
-                    </option>
-                    <option value="F" {{ old('sexe', $volet->sexe) == 'F' ? 'selected' : '' }}>Féminin
-                    </option>
+
+        <div class="flex flex-wrap gap-4 mb-4">
+            <div class="w-full md:flex-1">
+                <label class="font-semibold block mb-1">Sexe</label>
+                <select name="sexe" class="w-full border px-3 py-1 rounded">
+                    <option value="M" {{ old('sexe', $volet->sexe) == 'M' ? 'selected' : '' }}>Masculin</option>
+                    <option value="F" {{ old('sexe', $volet->sexe) == 'F' ? 'selected' : '' }}>Féminin</option>
                 </select>
             </div>
-            <div class="field">
-                <label>Nombre d’enfants</label>
+            <div class="w-full md:flex-1">
+                <label class="font-semibold block mb-1">Nombre d’enfants</label>
                 <input type="number" name="nbreEnfantAccouchement"
-                    value="{{ old('nbreEnfantAccouchement', $volet->nbreEnfantAccouchement) }}">
+                    value="{{ old('nbreEnfantAccouchement', $volet->nbreEnfantAccouchement) }}"
+                    class="w-full border px-3 py-1 rounded">
             </div>
         </div>
 
-        {{-- PÈRE --}}
-        <div class="section-title">Père</div>
-        <div class="line">
-            <div class="field">
-                <label>Prénom</label>
-                <input type="text" name="prenom_pere" value="{{ old('prenom_pere', $volet->prenom_pere) }}">
+        @php $parents = ['pere' => 'Père', 'mere' => 'Mère']; @endphp
+        @foreach ($parents as $prefix => $label)
+        <div class="text-center font-bold uppercase mb-4">{{ $label }}</div>
+        <div class="flex flex-wrap gap-4 mb-4">
+            <div class="w-full md:flex-1">
+                <label class="font-semibold block mb-1">Prénom</label>
+                <input type="text" name="prenom_{{ $prefix }}"
+                    value="{{ old('prenom_'.$prefix, $volet->{'prenom_'.$prefix}) }}"
+                    class="w-full border px-3 py-1 rounded">
             </div>
-            <div class="field">
-                <label>Nom</label>
-                <input type="text" name="nom_pere" value="{{ old('nom_pere', $volet->nom_pere) }}">
-            </div>
-        </div>
-        <div class="line">
-            <div class="field">
-                <label>Âge</label>
-                <input type="number" name="age_pere" value="{{ old('age_pere', $volet->age_pere) }}">
-            </div>
-            <div class="field">
-                <label>Domicile</label>
-                <input type="text" name="domicile_pere" value="{{ old('domicile_pere', $volet->domicile_pere) }}">
+            <div class="w-full md:flex-1">
+                <label class="font-semibold block mb-1">Nom</label>
+                <input type="text" name="nom_{{ $prefix }}" value="{{ old('nom_'.$prefix, $volet->{'nom_'.$prefix}) }}"
+                    class="w-full border px-3 py-1 rounded">
             </div>
         </div>
-        <div class="line">
-            <div class="field">
-                <label>Ethnie</label>
-                <input type="text" name="ethnie_pere" value="{{ old('ethnie_pere', $volet->ethnie_pere) }}">
+        <div class="flex flex-wrap gap-4 mb-4">
+            <div class="w-full md:flex-1">
+                <label class="font-semibold block mb-1">Age</label>
+                <input type="number" name="age_{{ $prefix }}"
+                    value="{{ old('age_'.$prefix, $volet->{'age_'.$prefix}) }}" class="w-full border px-3 py-1 rounded">
             </div>
-            <div class="field">
-                <label for="situation_matrimonial_pere">Situation matrimoniale</label>
-                <select name="situation_matrimonial_pere" id="situation_matrimonial_pere" class="form-control">
-                    <option value="Marié" {{ old('situation_matrimonial_pere', $volet->situation_matrimonial_pere) ==
-                        'Marié' ? 'selected' : '' }}>Marié</option>
-                    <option value="Célibataire" {{ old('situation_matrimonial_pere', $volet->situation_matrimonial_pere)
-                        == 'Célibataire' ? 'selected' : '' }}>Célibataire</option>
-                    <option value="Divorcé" {{ old('situation_matrimonial_pere', $volet->situation_matrimonial_pere) ==
-                        'Divorcé' ? 'selected' : '' }}>Divorcé</option>
+            <div class="w-full md:flex-1">
+                <label class="font-semibold block mb-1">Domicile</label>
+                <input type="text" name="domicile_{{ $prefix }}"
+                    value="{{ old('domicile_'.$prefix, $volet->{'domicile_'.$prefix}) }}"
+                    class="w-full border px-3 py-1 rounded">
+            </div>
+        </div>
+        <div class="flex flex-wrap gap-4 mb-4">
+            <div class="w-full md:flex-1">
+                <label class="font-semibold block mb-1">Ethnie</label>
+                <input type="text" name="ethnie_{{ $prefix }}"
+                    value="{{ old('ethnie_'.$prefix, $volet->{'ethnie_'.$prefix}) }}"
+                    class="w-full border px-3 py-1 rounded">
+            </div>
+            <div class="w-full md:flex-1">
+                <label class="font-semibold block mb-1">Situation matrimoniale</label>
+                <select name="situation_matrimonial_{{ $prefix }}" class="w-full border px-3 py-1 rounded">
+                    @foreach(['Marié', 'Célibataire', 'Divorcé'] as $status)
+                    <option value="{{ $status }}" {{ old('situation_matrimonial_'.$prefix, $volet->
+                        {'situation_matrimonial_'.$prefix}) == $status ? 'selected' : '' }}>{{ $status }}</option>
+                    @endforeach
                 </select>
             </div>
+        </div>
+        <div class="flex flex-wrap gap-4 mb-6">
+            <div class="w-full md:flex-1">
+                <label class="font-semibold block mb-1">Niveau scolaire</label>
+                <input type="text" name="niveau_instruction_{{ $prefix }}"
+                    value="{{ old('niveau_instruction_'.$prefix, $volet->{'niveau_instruction_'.$prefix}) }}"
+                    class="w-full border px-3 py-1 rounded">
+            </div>
+            <div class="w-full md:flex-1">
+                <label class="font-semibold block mb-1">Profession</label>
+                <input type="text" name="profession_{{ $prefix }}"
+                    value="{{ old('profession_'.$prefix, $volet->{'profession_'.$prefix}) }}"
+                    class="w-full border px-3 py-1 rounded">
+            </div>
+        </div>
+        @endforeach
 
-        </div>
-        <div class="line">
-            <div class="field">
-                <label>Niveau scolaire</label>
-                <input type="text" name="niveau_instruction_pere"
-                    value="{{ old('niveau_instruction_pere', $volet->niveau_instruction_pere) }}">
-            </div>
-            <div class="field">
-                <label>Profession</label>
-                <input type="text" name="profession_pere" value="{{ old('profession_pere', $volet->profession_pere) }}">
-            </div>
-        </div>
-
-        {{-- MÈRE --}}
-        <div class="section-title">Mère</div>
-        <div class="line">
-            <div class="field">
-                <label>Prénom</label>
-                <input type="text" name="prenom_mere" value="{{ old('prenom_mere', $volet->prenom_mere) }}">
-            </div>
-            <div class="field">
-                <label>Nom</label>
-                <input type="text" name="nom_mere" value="{{ old('nom_mere', $volet->nom_mere) }}">
-            </div>
-        </div>
-        <div class="line">
-            <div class="field">
-                <label>Âge</label>
-                <input type="number" name="age_mere" value="{{ old('age_mere', $volet->age_mere) }}">
-            </div>
-            <div class="field">
-                <label>Domicile</label>
-                <input type="text" name="domicile_mere" value="{{ old('domicile_mere', $volet->domicile_mere) }}">
-            </div>
-        </div>
-        <div class="line">
-            <div class="field">
-                <label>Ethnie</label>
-                <input type="text" name="ethnie_mere" value="{{ old('ethnie_mere', $volet->ethnie_mere) }}">
-            </div>
-            <div class="field">
-                <label for="situation_matrimonial_mere">Situation matrimoniale</label>
-                <select name="situation_matrimonial_mere" id="situation_matrimonial_mere" class="form-control">
-                    <option value="Marié" {{ old('situation_matrimonial_mere', $volet->situation_matrimonial_mere) ==
-                        'Marié' ? 'selected' : '' }}>Marié</option>
-                    <option value="Célibataire" {{ old('situation_matrimonial_mere', $volet->situation_matrimonial_mere)
-                        == 'Célibataire' ? 'selected' : '' }}>Célibataire</option>
-                    <option value="Divorcé" {{ old('situation_matrimonial_mere', $volet->situation_matrimonial_mere) ==
-                        'Divorcé' ? 'selected' : '' }}>Divorcé</option>
-                </select>
-            </div>
-
-        </div>
-        <div class="line">
-            <div class="field">
-                <label>Niveau scolaire</label>
-                <input type="text" name="niveau_instruction_mere"
-                    value="{{ old('niveau_instruction_mere', $volet->niveau_instruction_mere) }}">
-            </div>
-            <div class="field">
-                <label>Profession</label>
-                <input type="text" name="profession_mere" value="{{ old('profession_mere', $volet->profession_mere) }}">
-            </div>
-        </div>
-
-        {{-- DÉCLARANT --}}
-        <div class="section-title">Déclarant</div>
-        <div class="line">
-            <div class="field">
-                <label>Prénom</label>
+        <div class="text-center font-bold uppercase mb-4">Déclarant</div>
+        <div class="flex flex-wrap gap-4 mb-4">
+            <div class="w-full md:flex-1">
+                <label class="font-semibold block mb-1">Prénom</label>
                 <input type="text" name="prenom_declarant"
-                    value="{{ old('prenom_declarant', $volet->declarant->prenom_declarant) }}">
+                    value="{{ old('prenom_declarant', $volet->declarant->prenom_declarant) }}"
+                    class="w-full border px-3 py-1 rounded">
             </div>
-            <div class="field">
-                <label>Nom</label>
+            <div class="w-full md:flex-1">
+                <label class="font-semibold block mb-1">Nom</label>
                 <input type="text" name="nom_declarant"
-                    value="{{ old('nom_declarant', $volet->declarant->nom_declarant) }}">
+                    value="{{ old('nom_declarant', $volet->declarant->nom_declarant) }}"
+                    class="w-full border px-3 py-1 rounded">
             </div>
         </div>
-        <div class="line">
-            <div class="field">
-                <label>Âge</label>
+        <div class="flex flex-wrap gap-4 mb-4">
+            <div class="w-full md:flex-1">
+                <label class="font-semibold block mb-1">Age</label>
                 <input type="number" name="age_declarant"
-                    value="{{ old('age_declarant', $volet->declarant->age_declarant) }}">
+                    value="{{ old('age_declarant', $volet->declarant->age_declarant) }}"
+                    class="w-full border px-3 py-1 rounded">
             </div>
-            <div class="field">
-                <label>Domicile</label>
+            <div class="w-full md:flex-1">
+                <label class="font-semibold block mb-1">Domicile</label>
                 <input type="text" name="domicile_declarant"
-                    value="{{ old('domicile_declarant', $volet->declarant->domicile_declarant) }}">
+                    value="{{ old('domicile_declarant', $volet->declarant->domicile_declarant) }}"
+                    class="w-full border px-3 py-1 rounded">
             </div>
         </div>
-        <div class="line">
-            <div class="field">
-                <label>Email</label>
-                <input type="text" name="email" value="{{ old('email', $volet->declarant->email) }}">
+        <div class="flex flex-wrap gap-4 mb-4">
+            <div class="w-full md:flex-1">
+                <label class="font-semibold block mb-1">Email</label>
+                <input type="email" name="email" value="{{ old('email', $volet->declarant->email) }}"
+                    class="w-full border px-3 py-1 rounded">
             </div>
-            <div class="field">
-                <label>Téléphone</label>
-                <input type="text" name="telephone" value="{{ old('telephone', $volet->declarant->telephone) }}">
+            <div class="w-full md:flex-1">
+                <label class="font-semibold block mb-1">Téléphone</label>
+                <input type="text" name="telephone" value="{{ old('telephone', $volet->declarant->telephone) }}"
+                    class="w-full border px-3 py-1 rounded">
             </div>
         </div>
-        <div class="line">
-            <div class="field">
-                <label>Ethnie</label>
-                <input type="text" name="ethnie_declarant"
-                    value="{{ old('ethnie_declarant', $volet->declarant->ethnie_declarant) }}">
-            </div>
+        <div class="mb-6">
+            <label class="font-semibold block mb-1">Ethnie</label>
+            <input type="text" name="ethnie_declarant"
+                value="{{ old('ethnie_declarant', $volet->declarant->ethnie_declarant) }}"
+                class="w-full border px-3 py-1 rounded">
         </div>
 
-        <div class="text-center mt-4">
-            <button type="submit" class="btn btn-success"> Mettre à jour</button>
-            <a href="{{ route('hopital.dashboard') }}" class="btn btn-secondary">Annuler</a>
+        <div class="flex justify-center gap-4">
+            <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2 rounded">✅
+                Mettre à jour</button>
+            <a href="{{ route('hopital.dashboard') }}"
+                class="bg-gray-400 hover:bg-gray-500 text-white font-semibold px-6 py-2 rounded">Annuler</a>
         </div>
-    </div>
-</form>
+    </form>
+</div>
+@endsection

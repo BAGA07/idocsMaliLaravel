@@ -1,120 +1,90 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="right_col" role="main">
-    <div class="">
-        <div class="page-title">
-            <div class="title_left">
-                <h3>Profil de l'utilisateur</h3>
+<div class="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
+
+    <!-- ✅ Titre principal -->
+    <h2 class="text-2xl font-semibold text-gray-800 mb-6">Profil de l'utilisateur</h2>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+        <!-- 🧍‍♂️ Colonne gauche : Informations -->
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex flex-col items-center text-center">
+                <img class="w-32 h-32 rounded-full border object-cover" src="{{ $user->photo  }}" alt="Photo de profil">
+                <h3 class="mt-4 text-xl font-semibold text-gray-900">{{ $user->prenom }} {{ $user->nom }}</h3>
+                <p class="text-gray-600 mt-1">
+                    <i class="fa fa-envelope mr-2"></i>{{ $user->email }}
+                </p>
+                <p class="text-gray-600 mt-1">
+                    <i class="fa fa-phone mr-2"></i>{{ $user->telephone ?? 'Non renseigné' }}
+                </p>
+                <p class="text-gray-600 mt-1">
+                    <i class="fa fa-briefcase mr-2"></i>Rôle : {{ $user->role }}
+                </p>
+                <a href="#update-form"
+                    class="mt-4 inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+                    <i class="fa fa-edit mr-2"></i>Modifier le profil
+                </a>
             </div>
         </div>
 
-        <div class="clearfix"></div>
+        <!-- ✏️ Colonne droite : Formulaire -->
+        <div id="update-form" class="lg:col-span-2 bg-white rounded-lg shadow p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Mettre à jour le profil</h3>
 
-        <div class="row">
-            <!-- Colonne gauche : Informations utilisateur -->
-            <div class="col-md-4 col-sm-4 col-xs-12">
-                <div class="x_panel">
-                    <div class="x_title">
-                        <h2>Profil</h2>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="x_content">
-                        <div class="profile_img">
-                            <div id="crop-avatar">
-                                <img class="img-circle profile_img"
-                                    src="{{ $user->photo ? asset($user->photo) : asset('images/user.png') }}"
-                                    alt="Photo de profil"
-                                    style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%; border: 2px solid #ddd;">
-                            </div>
-                        </div>
+            <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data" class="space-y-5">
+                @csrf
+                @method('PUT')
 
-                        <h3>{{ Auth::user()->name }}</h3>
-
-                        <ul class="list-unstyled user_data">
-                            <li><i class="fa fa-envelope user-profile-icon"></i> {{ Auth::user()->email }}</li>
-                            <li><i class="fa fa-phone user-profile-icon"></i> {{ Auth::user()->telephone ?? 'Non
-                                renseigné' }}</li>
-                            <li><i class="fa fa-briefcase user-profile-icon"></i> Rôle : {{ Auth::user()->role }}</li>
-                        </ul>
-
-                        <a class="btn btn-success" href="#"><i class="fa fa-edit m-right-xs"></i> Modifier le profil</a>
-                    </div>
+                <!-- Nom -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Nom</label>
+                    <input type="text" name="nom" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+                        value="{{ $user->nom }}">
                 </div>
-            </div>
 
-            <!-- Colonne droite : Formulaire de mise à jour -->
-            <div class="col-md-8 col-sm-8 col-xs-12">
-                <div class="x_panel">
-                    <div class="x_title">
-                        <h2>Mettre à jour le profil</h2>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="x_content">
-                        <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data"
-                            class="form-horizontal form-label-left">
-                            @csrf
-                            @method('PUT')
-
-                            {{-- Nom --}}
-                            <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Nom</label>
-                                <div class="col-md-9 col-sm-9 col-xs-12">
-                                    <input type="text" name="nom" class="form-control" value="{{ $user->nom }}">
-                                </div>
-                            </div>
-
-                            {{-- Prénom --}}
-                            <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Prénom</label>
-                                <div class="col-md-9 col-sm-9 col-xs-12">
-                                    <input type="text" name="prenom" class="form-control" value="{{ $user->prenom }}">
-                                </div>
-                            </div>
-
-                            {{-- Email --}}
-                            <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Email</label>
-                                <div class="col-md-9 col-sm-9 col-xs-12">
-                                    <input type="email" name="email" class="form-control" value="{{ $user->email }}">
-                                </div>
-                            </div>
-
-                            {{-- Téléphone --}}
-                            <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Téléphone</label>
-                                <div class="col-md-9 col-sm-9 col-xs-12">
-                                    <input type="text" name="telephone" class="form-control"
-                                        value="{{ $user->telephone }}">
-                                </div>
-                            </div>
-
-                            {{-- Photo de profil --}}
-                            <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Photo de profil</label>
-                                <div class="col-md-9 col-sm-9 col-xs-12">
-                                    <input type="file" name="photo" class="form-control">
-                                    @if ($user->photo)
-                                    <img src="{{ asset($user->photo) }}" alt="Photo actuelle"
-                                        style="margin-top: 10px; width: 120px; height: 120px; object-fit: cover; border-radius: 50%; border: 1px solid #ccc;">
-                                    @endif
-                                </div>
-                            </div>
-
-                            <div class="ln_solid"></div>
-
-                            {{-- Boutons --}}
-                            <div class="form-group">
-                                <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
-                                    <button type="submit" class="btn btn-success">Mettre à jour</button>
-                                </div>
-                            </div>
-
-                    </div>
+                <!-- Prénom -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Prénom</label>
+                    <input type="text" name="prenom" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+                        value="{{ $user->prenom }}">
                 </div>
-            </div>
+
+                <!-- Email -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Email</label>
+                    <input type="email" name="email" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+                        value="{{ $user->email }}">
+                </div>
+
+                <!-- Téléphone -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Téléphone</label>
+                    <input type="text" name="telephone" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+                        value="{{ $user->telephone }}">
+                </div>
+
+                <!-- Photo -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Photo de profil</label>
+                    <input type="file" name="photo" class="mt-1 block w-full text-sm">
+                    @if ($user->photo)
+                    <img src="{{ $user->photo }}" alt="Photo actuelle"
+                        class="mt-4 w-24 h-24 rounded-full object-cover border">
+                    @endif
+                </div>
+
+                <!-- Bouton -->
+                <div class="pt-4">
+                    <button type="submit"
+                        class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded">
+                        Mettre à jour
+                    </button>
+                </div>
+            </form>
         </div>
+
     </div>
 </div>
-
 @endsection

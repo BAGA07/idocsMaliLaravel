@@ -100,6 +100,11 @@
         </ul>
     </div>
     @endif
+    <div class="btn-return text-center">
+        <a href="{{ route('hopital.dashboard') }}" class="btn btn-outline-secondary rounded-pill">
+            <i class="fa fa-arrow-left"></i> Retour à la liste
+        </a>
+    </div>
 
     <form method="POST" action="{{ route('naissances.store') }}">
         @csrf
@@ -293,13 +298,13 @@
                 <a href="{{ route('hopital.dashboard') }}" class="btn btn-secondary">Annuler</a>
             </div>
 
-            <div class="btn-return text-center">
-                <a href="{{ route('naissances.index') }}" class="btn btn-outline-secondary rounded-pill">
-                    <i class="fa fa-arrow-left"></i> Retour à la liste
-                </a>
-            </div>
 
         </div>
     </form>
+    <div class="btn-return text-center">
+        <a href="{{ route('hopital.dashboard') }}" class="btn btn-outline-secondary rounded-pill">
+            <i class="fa fa-arrow-left"></i> Retour à la liste
+        </a>
+    </div>
 </div>
 @endsection

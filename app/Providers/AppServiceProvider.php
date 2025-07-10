@@ -23,5 +23,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Paginator::useTailwind();
+        Carbon::setLocale('fr');
+        App::setLocale('fr');
     }
 }
