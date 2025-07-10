@@ -8,7 +8,7 @@
 
         <div class="login_wrapper">
             {{-- LOGIN FORM --}}
-            <div class="animate form login_form">
+            r <div class="animate form login_form">
                 <section class="login_content">
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
@@ -57,9 +57,7 @@
                         <div class="clearfix"></div>
 
                         <div class="separator">
-                            <p class="change_link">Vous êtes nouveau ?
-                                <a href="{{ route('register') }}" class="to_register">Créer un compte</a>
-                            </p>
+
 
                             <div class="clearfix"></div>
                             <br />

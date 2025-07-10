@@ -43,7 +43,7 @@
             @endif
 
             {{-- Agent État civil --}}
-            @if(Auth::user()->role === 'agent_etat_civil')
+            @if(Auth::user()->role === 'agent_mairie')
             <li>
                 <details class="group">
                     <summary class="flex items-center p-2 rounded hover:bg-blue-700 cursor-pointer">
