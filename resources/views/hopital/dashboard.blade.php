@@ -1,148 +1,87 @@
-@php
-use Illuminate\Pagination\Paginator;
-@endphp
-
 @extends('layouts.app')
 
 @section('content')
-<div class="right_col" role="main">
-    <div class="row mt-4">
-        {{-- Statistique - Total des demandes --}}
-        <div class="col-md-4 col-sm-6 col-xs-12">
-            <div class="tile-stats">
-                <div class="icon"><i class="fa fa-file-text-o"></i></div>
-                <div class="count">
-                    @if(isset($totalNaissances))
-                    {{ $totalNaissances }}
-                    @else
-                    00
-                    @endif
-                </div>
-                <h3>Total des Naissance</h3>
-                <p>Depuis votre inscription</p>
-            </div>
+<div class="max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+        <div class="bg-white p-4 shadow rounded-lg border-l-4 border-blue-600">
+            <p class="text-sm text-gray-600">Total des naissances</p>
+            <p class="text-2xl font-bold text-gray-800">{{ $totalNaissances ?? 0 }}</p>
         </div>
-
-        {{-- Statistique - Demandes validées --}}
-        <div class="col-md-4 col-sm-6 col-xs-12">
-            <div class="tile-stats">
-                <div class="icon"><i class="fa fa-mars"></i></div>
-                <div class="count">
-                    @if(isset($totalGarçons))
-                    {{ $totalGarçons }}
-                    @else
-                    00
-                    @endif
-                </div>
-                <h3>Total Garçons</h3>
-                <p>Le nombre de garçon née cette année</p>
-            </div>
+        <div class="bg-white p-4 shadow rounded-lg border-l-4 border-blue-600">
+            <p class="text-sm text-gray-600">Total Garçons (année)</p>
+            <p class="text-2xl font-bold text-gray-800">{{ $totalGarçons ?? 0 }}</p>
         </div>
-
-        {{-- Statistique - Demandes en attente --}}
-        <div class="col-md-4 col-sm-6 col-xs-12">
-            <div class="tile-stats">
-                <div class="icon"><i class="fa fa-venus"></i></div>
-                <div class="count">
-                    @if(isset($totalFilles))
-                    {{ $totalFilles }}
-                    @else
-                    00
-                    @endif
-                </div>
-                <h3>Total Filles</h3>
-                <p>Le nombre de filles née cette année</p>
-            </div>
+        <div class="bg-white p-4 shadow rounded-lg border-l-4 border-pink-600">
+            <p class="text-sm text-gray-600">Total Filles (année)</p>
+            <p class="text-2xl font-bold text-gray-800">{{ $totalFilles ?? 0 }}</p>
         </div>
     </div>
 
-    {{-- Tableau des demandes --}}
-    <div class="row mt-4">
-        <div class="col-md-12">
-            <div class="x_panel shadow-sm" style="border-radius: 10px;">
-                <div class="x_title d-flex justify-content-between align-items-center">
-                    {{-- @livewire('hopital.recherche-naissance') --}}
+    <div class="bg-white shadow rounded-lg p-6">
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-lg font-bold text-gray-700">Liste des naissances enregistrées</h2>
+            <a href="{{ route('naissances.create') }}"
+                class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                + Nouvelle naissance
+            </a>
+        </div>
 
-                    <h2 class="mb-0">Liste des naissances enregistrées</h2>
-                    <a href="{{ route('naissances.create') }}" class="btn btn-primary">
-                        <i class="fa fa-plus"></i> Nouvelle naissance
-                    </a>
-                </div>
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th class="px-4 py-2 text-left text-sm font-medium text-gray-700 uppercase">Date</th>
+                    <th class="px-4 py-2 text-left text-sm font-medium text-gray-700 uppercase">Nom du père</th>
+                    <th class="px-4 py-2 text-left text-sm font-medium text-gray-700 uppercase">Nom de la mère</th>
+                    <th class="px-4 py-2 text-left text-sm font-medium text-gray-700 uppercase">Contact</th>
+                    <th class="px-4 py-2 text-left text-sm font-medium text-gray-700 uppercase">Sexe</th>
+                    <th class="px-4 py-2 text-center text-sm font-medium text-gray-700 uppercase">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+                @forelse ($declarations as $declaration)
+                <tr>
+                    <td class="px-4 py-2">{{ \Carbon\Carbon::parse($declaration->heure_naissance)->format('d/m/Y H:i')
+                        }}</td>
+                    <td class="px-4 py-2">{{ $declaration->prenom_pere }} {{ $declaration->nom_pere }}</td>
+                    <td class="px-4 py-2">{{ $declaration->prenom_mere }} {{ $declaration->nom_mere }}</td>
+                    <td class="px-4 py-2">+223 {{ $declaration->declarant->telephone }}</td>
+                    <td class="px-4 py-2">
+                        @if ($declaration->sexe === 'M')
+                        <span
+                            class="text-blue-800 bg-blue-100 px-2 py-1 rounded-full text-xs font-semibold">Masculin</span>
+                        @elseif ($declaration->sexe === 'F')
+                        <span
+                            class="text-pink-800 bg-pink-100 px-2 py-1 rounded-full text-xs font-semibold">Féminin</span>
+                        @else
+                        <span
+                            class="text-gray-800 bg-gray-200 px-2 py-1 rounded-full text-xs font-semibold">Indéfini</span>
+                        @endif
+                    </td>
+                    <td class="px-4 py-2 text-center space-x-2">
+                        <a href="{{ route('naissances.show', $declaration->id_volet) }}" class="text-blue-600"><i
+                                class="fa fa-eye"></i></a>
+                        <a href="{{ route('naissances.edit', $declaration->id_volet) }}" class="text-yellow-500"><i
+                                class="fa fa-edit"></i></a>
+                        <form id="delete-form-{{ $declaration->id_volet }}"
+                            action="{{ route('naissances.destroy', $declaration->id_volet) }}" method="POST"
+                            class="hidden">
+                            @csrf
+                            @method('DELETE')
+                        </form>
+                        <button onclick="confirmDelete({{ $declaration->id_volet }})" class="text-red-600"><i
+                                class="fa fa-trash"></i></button>
+                    </td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="6" class="text-center text-gray-500 py-4">Aucune déclaration enregistrée.</td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
 
-                <div class="x_content mt-3">
-                    <div class="table-responsive">
-                        <table class="table table-striped table-hover">
-                            <thead class="thead-light">
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Nom du père</th>
-                                    <th>Nom de la mère</th>
-                                    <th>Contact Déclarant</th>
-                                    <th>Sexe de l’enfant</th>
-                                    <th class="text-center">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse ($declarations as $declaration)
-                                <tr>
-                                    <td>{{ \Carbon\Carbon::parse($declaration->heure_naissance)->format('d/m/Y H:i') }}
-                                    </td>
-                                    <td>{{ $declaration->prenom_pere }} {{ $declaration->nom_pere }}</td>
-                                    <td>{{ $declaration->prenom_mere }} {{ $declaration->nom_mere }}</td>
-                                    <td>+223 {{ $declaration->declarant->telephone }}</td>
-                                    <td>
-                                        @if ($declaration->sexe === 'M')
-                                        <span class="badge badge-primary">Masculin</span>
-                                        @elseif ($declaration->sexe === 'F')
-                                        <span class="badge badge-pink">Féminin</span>
-                                        @else
-                                        <span class="badge badge-secondary">Non défini</span>
-                                        @endif
-                                    </td>
-
-                                    <td class="text-center">
-                                        <!-- Voir -->
-                                        <a href="{{ route('naissances.show', $declaration->id_volet) }}"
-                                            class="btn btn-sm btn-outline-info" title="Voir les détails">
-                                            <i class="fa fa-eye"></i>
-                                        </a>
-
-                                        <!-- Modifier -->
-                                        <a href="{{ route('naissances.edit', $declaration->id_volet) }}"
-                                            class="btn btn-sm btn-outline-warning" title="Modifier">
-                                            <i class="fa fa-edit"></i>
-                                        </a>
-
-                                        <!-- Formulaire de suppression masqué -->
-                                        <form id="delete-form-{{ $declaration->id_volet }}"
-                                            action="{{ route('naissances.destroy', $declaration->id_volet) }}"
-                                            method="POST" style="display: none;">
-                                            @csrf
-                                            @method('DELETE')
-                                        </form>
-
-                                        <!-- Bouton qui déclenche le SweetAlert -->
-                                        <button type="button" class="btn btn-sm btn-outline-danger" title="Supprimer"
-                                            onclick="confirmDelete({{ $declaration->id_volet }})">
-                                            <i class="fa fa-trash"></i>
-                                        </button>
-
-                                    </td>
-
-                                </tr>
-                                @empty
-                                <tr>
-                                    <td colspan="6" class="text-center text-muted">Aucune déclaration enregistrée.</td>
-                                </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                        <div class="text-center">
-                            {{ $declarations->links(); }}
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="mt-4">
+            {{ $declarations->links() }}
         </div>
     </div>
 </div>

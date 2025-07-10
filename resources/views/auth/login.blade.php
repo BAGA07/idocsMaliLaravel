@@ -7,7 +7,6 @@
         <a class="hiddenanchor" id="signin"></a>
 
         <div class="login_wrapper">
-
             {{-- LOGIN FORM --}}
             <div class="animate form login_form">
                 <section class="login_content">
@@ -15,16 +14,39 @@
                         @csrf
                         <h1>Formulaire de connexion</h1>
 
+                        {{-- ✅ Message flash (ex : déconnexion réussie) --}}
+                        @if (session('status'))
+                        <div class="alert alert-success">
+                            {{ session('status') }}
+                        </div>
+                        @endif
+
+                        {{-- ❌ Erreurs générales (identifiants incorrects par exemple) --}}
+                        @if ($errors->has('email'))
+                        <div class="alert alert-danger">
+                            {{ $errors->first('email') }}
+                        </div>
+                        @endif
+
+                        {{-- ✅ Champ email avec message d'erreur --}}
                         <div>
-                            <input type="email" name="email" class="form-control" placeholder="Votre email" required
-                                value="{{ old('email') }}" />
+                            <input type="email" name="email" class="form-control" placeholder="Votre email"
+                                value="{{ old('email') }}" required autofocus>
+                            @error('email')
+                            <span class="text-danger small">{{ $message }}</span>
+                            @enderror
                         </div>
 
+                        {{-- ✅ Champ mot de passe avec message d'erreur --}}
                         <div>
                             <input type="password" name="password" class="form-control" placeholder="Mot de passe"
-                                required />
+                                required>
+                            @error('password')
+                            <span class="text-danger small">{{ $message }}</span>
+                            @enderror
                         </div>
 
+                        {{-- ✅ Bouton de soumission + lien mot de passe oublié --}}
                         <div>
                             <button type="submit" class="btn btn-default submit">Se connecter</button>
                             @if (Route::has('password.request'))
@@ -50,9 +72,6 @@
                     </form>
                 </section>
             </div>
-
-
-
         </div>
     </div>
 </div>

@@ -10,13 +10,21 @@ export default {
          './node_modules/flowbite/**/*.js',
     ],
 
-    theme: {
-        extend: {
-            fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+   theme: {
+    extend: {
+        fontFamily: {
+            sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+        },
+        colors: {
+            primary: {
+                DEFAULT: '#1E3A8A', // Bleu principal
+                light: '#3B82F6',   // Variante claire
+                dark: '#1E40AF',    // Variante foncée
             },
         },
     },
+},
+
 
     plugins: [
     require('flowbite/plugin'),
