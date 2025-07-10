@@ -2,7 +2,7 @@
 
     <!-- Logo -->
     <div class="flex items-center justify-center h-16 bg-blue-800 text-xl font-bold">
-        <i class="fa fa-paw mr-2"></i> Idocs Mali
+        <i class="fa fa-stethoscope mr-2"></i> Idocs Mali
     </div>
 
     <!-- Infos utilisateur -->
