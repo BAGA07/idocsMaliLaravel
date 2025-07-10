@@ -38,9 +38,11 @@ class VoletDeclaration extends Model
         'niveau_instruction_mere',
         'profession_mere',
 
+        'num_volet',
         'nbreEINouvNee',
         'id_declarant',
         'id_hopital',
+        'ethnie_declarant'
     ];
 
     public function declarant()

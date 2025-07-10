@@ -16,7 +16,7 @@ class DeclarantFactory extends Factory
      */
     public function definition(): array
     {
-           return [
+        return [
             'nom_declarant' => $this->faker->lastName(),
             'prenom_declarant' => $this->faker->firstName(),
             'age_declarant' => $this->faker->numberBetween(18, 60),

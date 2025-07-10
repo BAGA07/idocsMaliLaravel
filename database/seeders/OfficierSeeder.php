@@ -13,7 +13,7 @@ class OfficierSeeder extends Seeder
      */
     public function run(): void
     {
-                Officier::factory()->count(10)->create();
-        
+        // Officier::factory()->count(10)->create();
+
     }
 }

@@ -1,11 +1,9 @@
 @extends('layouts.app')
 @section('content')
 <div class="right_col" role="main">
-
     <h2 class="mb-4">Tableau de bord - Agent de Mairie</h2>
-<!-- Statistiques -->
+    <!-- Statistiques -->
     <div class="row mb-4">
-        
         <div class="col-md-3">
             <div class="card text-white bg-primary mb-3">
                 <div class="card-body">
@@ -82,7 +80,7 @@
                         <th>Nom Enfant</th>
                         <th>Numéro Volet</th>
                         <th>Statut</th>
-                        
+
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -91,26 +89,28 @@
                     <tr>
                         <td>{{ $demande->nom_complet }}</td>
                         <td>
-                       {{ $demande->volet ? $demande->volet->prenom_enfant . ' ' . $demande->volet->nom_enfant : 'N/A' }}
+                            {{ $demande->volet ? $demande->volet->prenom_enfant . ' ' . $demande->volet->nom_enfant :
+                            'N/A' }}
                         </td>
                         <td>{{ $demande->numero_volet_naissance }}</td>
-                        
 
-                      <td>
-  @switch($demande->statut)
-    @case('Validé')
-      <span class="badge bg-success">Validé</span>
-      @break
-    @case('Rejeté')
-      <span class="badge bg-danger">Rejeté</span>
-      @break
-    @default
-      <span class="badge bg-warning">{{ $demande->statut }}</span>
-  @endswitch
-</td>
+
                         <td>
-                        <a href="{{ route('acte.create', $demande->id) }}" class="btn btn-sm btn-primary">Traiter</a>
-                    </td>
+                            @switch($demande->statut)
+                            @case('Validé')
+                            <span class="badge bg-success">Validé</span>
+                            @break
+                            @case('Rejeté')
+                            <span class="badge bg-danger">Rejeté</span>
+                            @break
+                            @default
+                            <span class="badge bg-warning">{{ $demande->statut }}</span>
+                            @endswitch
+                        </td>
+                        <td>
+                            <a href="{{ route('acte.create', $demande->id) }}"
+                                class="btn btn-sm btn-primary">Traiter</a>
+                        </td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -118,42 +118,43 @@
         </div>
     </div>
     <div class="card mt-4">
-    <div class="card-header">Liste des actes de naissance</div>
-    <div class="card-body table-responsive">
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Numéro acte</th>
-                    <th>Nom enfant</th>
-                    <th>Prénom enfant</th>
-                    <th>Date naissance</th>
-                    <th>Déclarant</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($actesNaissance as $acte)
+        <div class="card-header">Liste des actes de naissance</div>
+        <div class="card-body table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Numéro acte</th>
+                        <th>Nom enfant</th>
+                        <th>Prénom enfant</th>
+                        <th>Date naissance</th>
+                        <th>Déclarant</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($actesNaissance as $acte)
                     <tr>
                         <td>{{ $acte->num_acte }}</td>
                         <td>{{ $acte->nom }}</td>
                         <td>{{ $acte->prenom }}</td>
                         <td>{{ $acte->date_naissance_enfant }}</td>
-                        <td>{{ $acte->declarant->prenom_declarant ?? 'N/A' }} {{ $acte->declarant->nom_declarant ?? '' }}</td>
+                        <td>{{ $acte->declarant->prenom_declarant ?? 'N/A' }} {{ $acte->declarant->nom_declarant ?? ''
+                            }}</td>
                         <td>
-    <a href="{{ route('acte.show', $acte->id) }}" class="btn btn-sm btn-info">
-        Voir
-    </a>
-    
-    <a href="{{ route('acte.edit', $acte->id) }}" class="btn btn-sm btn-warning">
-        Modifier
-    </a>
-</td>
+                            <a href="{{ route('acte.show', $acte->id) }}" class="btn btn-sm btn-info">
+                                Voir
+                            </a>
+
+                            <a href="{{ route('acte.edit', $acte->id) }}" class="btn btn-sm btn-warning">
+                                Modifier
+                            </a>
+                        </td>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
 
 </div>
 @endsection

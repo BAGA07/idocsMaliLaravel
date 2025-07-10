@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Acte_naissance;
-
+use App\Http\Controllers\Admin\AdminManagerController;
 use App\Http\Controllers\PresentationController;
 use App\Http\Controllers\DemandeController;
 use App\Http\Controllers\Hopital\NaissanceController;
@@ -9,10 +9,6 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VoletDeclarationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\RoleMiddleware;
-
-
-
-
 
 // =========================================================
 // ROUTES POUR LES PAGES PRINCIPALES DE PRÉSENTATION
@@ -43,6 +39,10 @@ Route::prefix('a-propos')->name('presentation.a_propos.')->group(function () {
     Route::get('/partenaires', [PresentationController::class, 'partenaires'])->name('partenaires');
 });
 
+Route::get('/nouveau-ne', [PresentationController::class, 'nouveauNeGuide'])->name('demande.nouveau_ne.guide');
+Route::get('/copie-extrait', [PresentationController::class, 'copieExtraitGuide'])->name('demande.copie_extrait.guide');
+Route::get('/jugement-suppletif', [PresentationController::class, 'jugementSuppletifGuide'])->name('demande.jugement_suppletif.guide');
+
 // Route pour soumettre le formulaire de contact (méthode POST)
 Route::post('/contact', [PresentationController::class, 'submitContactForm'])->name('presentation.contact.submit');
 
@@ -67,13 +67,11 @@ Route::get('/presentation/copie-extrait', [DemandeController::class, 'createCopi
 Route::post('/presentation/copie-extrait', [DemandeController::class, 'storeCopieExtrait'])->name('demande.copie_extrait.store');
 
 // Les routes pour le centre d'etat civil
+
+//Route pour agent de la mairie
 Route::middleware([
     'role:agent_mairie',
 ])->prefix('mairie')->group(function () {
-
-    //Route pour agent de la mairie
-
-
     Route::get('agent', [Acte_naissance::class, 'index'])->name('agent.dashboard');
     Route::get('/acte/create/{id}', [Acte_naissance::class, 'create'])->name('acte.create');
     Route::post('/acte', [Acte_naissance::class, 'store'])->name('acte.store');
@@ -85,15 +83,11 @@ Route::middleware([
 // fin des routes pour le centre d'etat civil
 
 
-
-
-
-
 // les routes pour les agents de l'hopital
 Route::middleware([
     'role:agent_hopital',
 ])->prefix('hopital')->group(function () {
-    Route::get('/dashboard', [NaissanceController::class, 'dashboard'])->name('hopital.dashboard');
+    Route::get('/dashboard', [VoletDeclarationController::class, 'dashboard'])->name('hopital.dashboard');
     Route::resource('naissances', VoletDeclarationController::class);
 });
 // fin des routes pour les agents de l'hopital
@@ -105,7 +99,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile/delete', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-
+// Route pour l'administration des managers
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
+    Route::get('/dashboard', fn() => view('admin.dashboard'))->name('admin.dashboard');
+    Route::get('/managers/structureList', [AdminManagerController::class, 'structureList'])->name('structure.list');
+    Route::resource('/managers', AdminManagerController::class);
+});
 
 
 

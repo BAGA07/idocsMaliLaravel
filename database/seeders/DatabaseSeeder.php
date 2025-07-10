@@ -17,16 +17,18 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
         // Dans un fichier seeder
         // $this->call([
-            
+
         // ]);
 
-        // $this->call([
-        //     CommuneSeeder::class,
-        // ]);
-               $this->call([
-        //UserSeeder::class,
-        //PersonneSeeder::class,
-        VoletDeclarationSeeder::class,
+        $this->call([
+            CommuneSeeder::class,
+            HopitalSeeder::class,
+            VoletDeclarationSeeder::class,
+        ]);
+        $this->call([
+            //UserSeeder::class,
+            //PersonneSeeder::class,
+            /* VoletDeclarationSeeder::class,
         HopitalSeeder::class,
         ActeSeeder::class,
         OfficierSeeder::class,
@@ -34,14 +36,9 @@ class DatabaseSeeder extends Seeder
         MairieSeeder::class,
         DemandeSeeder::class,
         DeclarantSeeder::class,
-        CommuneSeeder::class,
-
-    ]);//
+        CommuneSeeder::class, */]); //
 
 
-        /* User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]); */
+
     }
 }

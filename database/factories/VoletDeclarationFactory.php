@@ -1,6 +1,7 @@
 <?php
 
 namespace Database\Factories;
+
 use Illuminate\Support\Str;
 use App\Models\Declarant;
 use App\Models\Hopital;
@@ -19,9 +20,9 @@ class VoletDeclarationFactory extends Factory
      */
     public function definition(): array
     {
-        
-            return [
-            'num_volet' => strtoupper(Str::random(4)) . rand(100, 999), // exemple : ABXZ347
+
+        return [
+            'num_volet' => 'VL' . now()->format('YmdHis') . Str::random(5), // Unique number for the declaration
             'date_naissance' => $this->faker->date(),
             'heure_naissance' => $this->faker->time(),
             'date_declaration' => $this->faker->date(),
@@ -50,9 +51,8 @@ class VoletDeclarationFactory extends Factory
             'nbreEINouvNee' => $this->faker->numberBetween(1, 5),
 
             'id_declarant' => Declarant::query()->inRandomOrder()->value('id_declarant') ?? Declarant::factory(),
-'id_hopital' => Hopital::inRandomOrder()->limit(1)->first()?->id ?? Hopital::factory()->create()->id,
+            'id_hopital' => Hopital::inRandomOrder()->limit(1)->first()?->id ?? Hopital::factory()->create()->id,
 
         ];
-        
     }
 }

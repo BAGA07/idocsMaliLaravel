@@ -20,7 +20,7 @@
             L'Acte de Naissance au Mali à l'Ère Numérique
         </h2>
         <p class="text-lg lg:text-xl text-gray-700 leading-relaxed mb-4">
-            Au Mali, l'acte de naissance est le fondement de l'identité juridique. Conscients des défis liés aux démarches traditionnelles, **IdocsMali** a pour objectif de simplifier et de digitaliser le processus d'obtention et de suivi de votre acte de naissance. Nous vous éclairons ici sur les différentes démarches possibles, désormais facilitées par notre plateforme en ligne.
+            Au Mali, l'acte de naissance est le fondement de l'identité juridique. Conscients des défis liés aux démarches traditionnelles, **IdocsMali** a pour objectif de simplifier et de numériser le processus d'obtention et de suivi de votre acte de naissance. Nous vous éclairons ici sur les différentes démarches possibles, désormais facilitées par notre plateforme en ligne.
         </p>
         <p class="text-lg lg:text-xl text-gray-700 leading-relaxed">
             Que vous soyez un jeune parent souhaitant récupérer l'acte de votre nouveau-né, un citoyen ayant besoin d'une copie de votre acte existant, ou en situation de non-déclaration, notre guide vous accompagnera pas à pas.
@@ -28,79 +28,75 @@
     </div>
 
     {{-- Section 1: Demande d'Acte de Naissance pour un Nouveau-né (Déclaration déjà faite) --}}
-    <div class="bg-blue-50 p-8 rounded-lg shadow-xl mb-10 border border-blue-200">
-        <h2 class="text-3xl lg:text-4xl font-extrabold text-blue-800 mb-6 border-b-2 border-blue-400 pb-3">
-            1. Demander l'Acte de Naissance d'un Nouveau-né (Déclaration Préalable Effectuée)
-        </h2>
-        <p class="text-lg lg:text-xl text-gray-700 leading-relaxed mb-4">
-            Si la naissance de votre enfant a déjà été déclarée à la maternité ou au centre de santé par un agent d'état civil, **IdocsMali** vous permet de **demander facilement l'établissement ou la récupération de son acte de naissance officiel** en ligne. Cette étape cruciale finalise l'enregistrement de votre enfant auprès de l'état civil.
-        </p>
-        <ul class="list-disc list-inside text-lg lg:text-xl text-gray-700 space-y-3 pl-4">
-            <li>
-                <strong class="font-semibold text-blue-700">Information Cruciale pour votre Demande :</strong> Pour initier la démarche sur notre plateforme, vous aurez besoin du <strong class="font-semibold">numéro du volet (ou extrait provisoire) fourni par l'agent d'état civil à la maternité/centre de santé</strong>. Une photo de ce volet sera également demandée.
-            </li>
-            <li>
-                Vous devrez également fournir quelques informations complémentaires sur le nouveau-né et les parents pour faciliter la recherche et l'établissement de l'acte.
-            </li>
-            <li>
-                Cette démarche vous permet d'obtenir rapidement l'acte de naissance de votre enfant, sans avoir à vous déplacer.
-            </li>
-        </ul>
-        <p class="mt-6 text-lg lg:text-xl text-gray-700 leading-relaxed">
-            <a href="{{ route('demande.nouveau_ne.create') }}" class="inline-flex items-center text-blue-700 hover:text-blue-900 font-semibold transition duration-150 ease-in-out">
-                Demander l'acte de naissance de mon nouveau-né <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"></path></svg>
+    <div class="bg-blue-50 p-8 rounded-lg shadow-xl mb-10 border border-blue-200 flex flex-col md:flex-row items-center">
+        <div class="md:w-2/3 md:pr-8">
+            <h2 class="text-3xl lg:text-4xl font-extrabold text-blue-800 mb-6 border-b-2 border-blue-400 pb-3">
+                1. Demander l'Acte de Naissance d'un Nouveau-né
+            </h2>
+            <p class="text-lg lg:text-xl text-gray-700 leading-relaxed mb-4">
+                Si la naissance de votre enfant a déjà été déclarée, **IdocsMali** vous permet de **demander facilement l'établissement ou la récupération de son acte de naissance officiel** en ligne. Cette étape cruciale finalise l'enregistrement de votre enfant auprès de l'état civil.
+            </p>
+            <ul class="list-disc list-inside text-lg lg:text-xl text-gray-700 space-y-3 pl-4 mb-4">
+                <li>
+                    <strong class="font-semibold text-blue-700">Information Cruciale :</strong> Vous aurez besoin du <strong class="font-semibold">numéro du volet (ou extrait provisoire) fourni par l'agent d'état civil à la maternité/centre de santé</strong>. Une photo de ce volet sera également demandée.
+                </li>
+            </ul>
+            <a href="{{ route('demande.nouveau_ne.guide') }}" class="inline-flex items-center text-blue-700 hover:text-blue-900 font-semibold transition duration-150 ease-in-out">
+                Voir plus et Commencer ma demande <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"></path></svg>
             </a>
-        </p>
+        </div>
+        <div class="md:w-1/3 mt-6 md:mt-0 flex justify-center items-center">
+            {{-- Remplacez 'acte_naissance_nouveau_ne.jpg' par le nom de votre image --}}
+            <img src="{{ asset('images/nouveau.png') }}" alt="Acte de naissance nouveau-né" class="rounded-lg shadow-md object-cover max-h-64">
+        </div>
     </div>
 
     {{-- Section 2: Demander une Copie Numérique d'un Acte de Naissance Existant --}}
-    <div class="bg-green-50 p-8 rounded-lg shadow-xl mb-10 border border-green-200">
-        <h2 class="text-3xl lg:text-4xl font-extrabold text-green-800 mb-6 border-b-2 border-green-400 pb-3">
-            2. Demande de Copie d'un Acte de Naissance Existant
-        </h2>
-        <p class="text-lg lg:text-xl text-gray-700 leading-relaxed mb-4">
-            Si un acte de naissance a déjà été établi et enregistré, **IdocsMali** simplifie la demande de sa copie intégrale ou d'un extrait. Cette démarche, souvent nécessaire pour des besoins administratifs (passeport, carte d'identité, scolarisation, etc.), est désormais plus accessible et rapide.
-        </p>
-        <ul class="list-disc list-inside text-lg lg:text-xl text-gray-700 space-y-3 pl-4">
-            <li>
-                <strong class="font-semibold text-green-700">Informations Indispensables :</strong> Pour obtenir une copie via notre service, vous devez impérativement disposer d'informations précises sur l'acte original : le <strong class="font-semibold">nom et prénom de la personne concernée, sa date et son lieu de naissance</strong>.
-            </li>
-            <li>
-                <strong class="font-semibold text-green-700">Accélérer votre demande :</strong> Une photo ou un scan de l'acte original, ou la connaissance du **numéro de l'acte**, sont des atouts majeurs qui peuvent accélérer considérablement le traitement de votre demande.
-            </li>
-            <li>
-                Si vous ne possédez aucune de ces informations, veuillez consulter la section suivante sur le jugement supplétif.
-            </li>
-        </ul>
-        <p class="mt-6 text-lg lg://text-xl text-gray-700 leading-relaxed">
-            <a href="{{ route('demande.copie_extrait.create') }}" class="inline-flex items-center text-green-700 hover:text-green-900 font-semibold transition duration-150 ease-in-out">
-                Demander une copie d'extrait d'acte <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"></path></svg>
+    <div class="bg-green-50 p-8 rounded-lg shadow-xl mb-10 border border-green-200 flex flex-col md:flex-row items-center">
+        <div class="md:w-2/3 md:pr-8">
+            <h2 class="text-3xl lg:text-4xl font-extrabold text-green-800 mb-6 border-b-2 border-green-400 pb-3">
+                2. Demande de Copie d'un Acte de Naissance Existant
+            </h2>
+            <p class="text-lg lg:text-xl text-gray-700 leading-relaxed mb-4">
+                Si un acte de naissance a déjà été établi et enregistré, **IdocsMali** simplifie la demande de sa copie intégrale ou d'un extrait. Cette démarche est souvent nécessaire pour des besoins administratifs (passeport, carte d'identité, scolarisation, etc.).
+            </p>
+            <ul class="list-disc list-inside text-lg lg:text-xl text-gray-700 space-y-3 pl-4 mb-4">
+                <li>
+                    <strong class="font-semibold text-green-700">Informations Indispensables :</strong> Vous devez disposer d'informations précises sur l'acte original : <strong class="font-semibold">nom et prénom de la personne concernée, sa date et son lieu de naissance</strong>.
+                </li>
+            </ul>
+            <a href="{{ route('demande.copie_extrait.guide') }}" class="inline-flex items-center text-green-700 hover:text-green-900 font-semibold transition duration-150 ease-in-out">
+                Voir plus et Demander une copie d'extrait d'acte <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"></path></svg>
             </a>
-        </p>
+        </div>
+        <div class="md:w-1/3 mt-6 md:mt-0 flex justify-center items-center">
+            {{-- Remplacez 'copie_acte_naissance.jpg' par le nom de votre image --}}
+            <img src="{{ asset('images/copie.png') }}" alt="Copie d'un acte de naissance" class="rounded-lg shadow-md object-cover max-h-64">
+        </div>
     </div>
 
     {{-- Section 3: Guider la Demande par Jugement Supplétif --}}
-    <div class="bg-red-50 p-8 rounded-lg shadow-xl mb-10 border border-red-200">
-        <h2 class="text-3xl lg:text-4xl font-extrabold text-red-800 mb-6 border-b-2 border-red-400 pb-3">
-            3. Procédure par Jugement Supplétif (En cas d'Absence Totale d'Acte)
-        </h2>
-        <p class="text-lg lg:text-xl text-gray-700 leading-relaxed mb-4">
-            Le <strong class="font-semibold text-red-700">jugement supplétif d'acte de naissance</strong> est une procédure judiciaire fondamentale au Mali. Il est requis lorsque la naissance n'a jamais été déclarée dans les délais légaux (absence totale d'acte), ou lorsque l'acte original a été irrémédiablement perdu sans aucune référence permettant sa récupération.
-        </p>
-        <ul class="list-disc list-inside text-lg lg:text-xl text-gray-700 space-y-3 pl-4">
-            <li>
-                <strong class="font-semibold text-red-700">La Démarche :</strong> Cette procédure nécessite de s'adresser au tribunal compétent pour obtenir une décision de justice qui tiendra lieu d'acte de naissance.
-            </li>
-            <li>
-                <strong class="font-semibold text-red-700">Notre Accompagnement :</strong> Bien que **IdocsMali** ne traite pas directement cette demande judiciaire, nous vous fournissons un guide détaillé et des conseils pour comprendre les preuves nécessaires (témoignages, certificats de non-inscription, etc.) et préparer votre dossier pour cette procédure.
-            </li>
-            <li>
-                C'est la voie à suivre si vous n'avez <strong class="font-semibold text-red-700">aucune information ni aucune trace d'un acte de naissance existant</strong>.
-            </li>
-        </ul>
-        <p class="mt-6 text-lg lg://text-xl text-gray-700 leading-relaxed">
-            Bien que plus longue, cette procédure est cruciale pour rétablir votre identité juridique. **IdocsMali** est là pour vous guider à travers ce processus.
-        </p>
+    <div class="bg-red-50 p-8 rounded-lg shadow-xl mb-10 border border-red-200 flex flex-col md:flex-row items-center">
+        <div class="md:w-2/3 md:pr-8">
+            <h2 class="text-3xl lg:text-4xl font-extrabold text-red-800 mb-6 border-b-2 border-red-400 pb-3">
+                3. Procédure par Jugement Supplétif
+            </h2>
+            <p class="text-lg lg:text-xl text-gray-700 leading-relaxed mb-4">
+                Le <strong class="font-semibold text-red-700">jugement supplétif d'acte de naissance</strong> est une procédure judiciaire fondamentale au Mali. Il est requis lorsque la naissance n'a jamais été déclarée (absence totale d'acte), ou lorsque l'acte original a été irrémédiablement perdu sans aucune référence.
+            </p>
+            <ul class="list-disc list-inside text-lg lg:text-xl text-gray-700 space-y-3 pl-4 mb-4">
+                <li>
+                    <strong class="font-semibold text-red-700">La Démarche :</strong> Cette procédure nécessite de s'adresser au tribunal compétent pour obtenir une décision de justice.
+                </li>
+            </ul>
+            <a href="{{ route('demande.jugement_suppletif.guide') }}" class="inline-flex items-center text-red-700 hover:text-red-900 font-semibold transition duration-150 ease-in-out">
+                Voir plus sur le jugement supplétif <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"></path></svg>
+            </a>
+        </div>
+        <div class="md:w-1/3 mt-6 md:mt-0 flex justify-center items-center">
+            {{-- Remplacez 'jugement_suppletif.jpg' par le nom de votre image --}}
+            <img src="{{ asset('images/jugement.png') }}" alt="Jugement supplétif d'acte de naissance" class="rounded-lg shadow-md object-cover max-h-64">
+        </div>
     </div>
 
     {{-- Section Conclusion et Appel à l'Action --}}

@@ -24,13 +24,12 @@
             <div class="menu_section">
                 <h3>Menu principal</h3>
                 <ul class="nav side-menu">
-                    <li><a href="{{ route('hopital.dashboard') }}"><i class="fa fa-home"></i> Accueil</a></li>
-
                     {{-- Agent Hôpital --}}
                     @if(Auth::user()->role === 'agent_hopital')
+                    <li><a href="{{ route('hopital.dashboard') }}"><i class="fa fa-home"></i> Accueil</a></li>
                     <li><a><i class="fa fa-users"></i> Naissances <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
-                            <li><a href="{{ route('naissances.index') }}">Liste complète</a></li>
+                            <li><a href="{{ route('hopital.dashboard') }}">Liste complète</a></li>
                             <li><a href="{{ route('naissances.create') }}">Nouvelle déclaration</a></li>
                             <li><a href="#">Non traitées</a></li>
                         </ul>
@@ -41,10 +40,35 @@
                     @if(Auth::user()->role === 'agent_etat_civil')
                     <li><a><i class="fa fa-file-text-o"></i> Demandes <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
+                            <li><a href="{{ route('') }}"><i class="fa fa-home"></i> Accueil</a></li>
                             <li><a href="#">Toutes les demandes</a></li>
                             <li><a href="#">En attente</a></li>
                             <li><a href="#">Traitées</a></li>
                             <li><a href="#">Rejetées</a></li>
+                        </ul>
+                    </li>
+                    @endif
+
+                    {{-- Admin --}}
+                    @if(Auth::user()->role === 'admin')
+                    <li><a><i class="fa fa-users"></i> Manager <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li><a href="{{ route('managers.index') }}"><i class="fa fa-home"></i> Accueil</a></li>
+                            <li><a href="{{ route('managers.index') }}">Liste des managers</a></li>
+                            <li><a href="{{ route('managers.create') }}">Ajouter un manager</a></li>
+                        </ul>
+                    </li>
+                    <li><a><i class="fa fa-users"></i> Officier <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li><a href="{{ route('structure.list') }}"><i class="fa fa-home"></i> Accueil</a></li>
+                            <li><a href="{{ route('managers.index') }}">Liste des managers</a></li>
+                            <li><a href="{{ route('managers.create') }}">Ajouter un manager</a></li>
+                        </ul>
+                    </li>
+                    <li><a><i class="fa fa-edit"></i> Structure <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li><a href="#">Liste des Structures</a></li>
+                            <li><a href="#">Ajouter une structure</a></li>
                         </ul>
                     </li>
                     @endif
