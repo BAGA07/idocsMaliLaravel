@@ -1,0 +1,82 @@
+
+    body {
+        background-color: #f8f9fa;
+        font-family: 'Times New Roman', Times, serif;
+        padding: 30px 15px;
+    }
+
+    .declaration-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .ticket-box,
+    .volet-box {
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 12px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        font-size: 15px;
+    }
+
+    .ticket-box {
+        width: 30%;
+        height: 350px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .volet-box {
+        width: 65%;
+    }
+
+    .section-title {
+        text-align: center;
+        font-weight: bold;
+        text-transform: uppercase;
+        margin-top: 30px;
+        margin-bottom: 10px;
+    }
+
+    .red-number {
+        color: red;
+        font-weight: bold;
+        font-size: 16px;
+    }
+
+    .btn-print {
+        margin-top: 15px;
+        text-align: center;
+    }
+
+    .btn-print button {
+        background-color: black;
+        color: white;
+        border: none;
+        padding: 8px 20px;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    @media print {
+
+        .btn-print,
+        .no-print {
+            display: none !important;
+        }
+
+        .ticket-box.only-print-ticket {
+            width: 100% !important;
+            border: none;
+            box-shadow: none;
+        }
+
+        @page {
+            size: A5 portrait;
+            margin: 10mm;
+        }
+    }

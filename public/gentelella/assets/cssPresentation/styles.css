@@ -1,0 +1,267 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+* {
+    padding: 0;
+    margin: 0;
+}
+body {
+    font-family: "Roboto", sans-serif;
+}
+header {
+    width: 100%;
+    height: 100vh;
+    background-image: url(imgPresentation.png);
+    backdrop-filter: blur(8px) !important;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.container {
+    max-width: 1340px;
+    margin: 0 auto;
+}
+/* navbar */
+.header_nav {
+    width: 100%;
+    height: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.nav_link {
+    text-decoration: none;
+    color: #fff;
+    font-weight: 300;
+    margin-left: 20px;
+    font-size: 14px;
+}
+/* header content */
+.header_content {
+    width: 100%;
+    height: calc(100vh - 80px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+.header_main_title {
+    font-size: 60px;
+    font-weight: 300;
+    color: #800020; 
+    width: 70%;
+}
+.header_main_title > span {
+    font-weight: 700;
+
+}
+.header_p {
+    margin: 20px 0px 45px 0px;
+    color: #282323;
+}.header_btn_bg {
+    padding: 15px 25px;
+    background-color: #282323;
+    text-decoration: none;
+    color: #fefefe;
+    border: 1px solid #fff;
+}
+.header_btn_outline {
+    padding: 15px 25px;
+    border: 1px solid #3d3b3b;
+    text-decoration: none;
+    color:  #3d3b3b;
+    margin-left: 15px;
+}
+.header_links {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.header_link_name {
+    font-size: 32px;
+    color: #fff;
+    font-weight: 500;
+}
+.header_link_number {
+    color: #a8a8a8;
+}
+.header_link_number > b {
+    font-size: 32px;
+}
+.social_icon {
+    margin-left: 20px;
+}
+.nav_btn {
+    background-color: #fff;
+    color: #333;
+    text-decoration: none;
+    padding: 10px 20px;
+    margin-left: 10px;
+    
+    font-weight: bold;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+}
+
+.nav_btn:hover {
+    background-color: transparent !important;
+}
+
+  
+.mali-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.titre-mali {
+    font-size: 2rem; /* ou plus grand : 2.5rem, 3rem si besoin */
+    font-weight: 500;
+    color: #6c757d; /* text-muted */
+    margin-bottom: 10px;
+}
+
+.vert {
+    color: green;
+}
+
+.jaune {
+    color: #FCD116;
+}
+
+.rouge {
+    color: red;
+}
+.mali-description {
+    font-size: 1.2rem; /* ajustez la taille selon vos besoins */
+    color: #6c757d; /* text-muted */
+    max-width: 600px; /* pour limiter la largeur du texte */
+    line-height: 1.5; /* pour une meilleure lisibilité */
+}
+/* STYLE DU BOUTON FAIRE UNE DEMANDE */
+
+        .wrapper {
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        button {
+            width: 200px;
+            height: 60px;
+            background: linear-gradient(to left top, #c32c71 50%, #b33771 50%);
+            border-style: none;
+            color: #fff;
+            font-size: 23px;
+            letter-spacing: 3px;
+            font-family: 'Lato';
+            font-weight: 600;
+            outline: none;
+            cursor: pointer;
+            position: relative;
+            padding: 0px;
+            overflow: hidden;
+            transition: all .5s;
+            box-shadow: 0px 1px 2px rgba(0, 0, 0, .2);
+        }
+
+        button span {
+            position: absolute;
+            display: block;
+        }
+
+        button span:nth-child(1) {
+            height: 3px;
+            width: 200px;
+            top: 0px;
+            left: -200px;
+            background: linear-gradient(to right, rgba(0, 0, 0, 0), #f6e58d);
+            border-top-right-radius: 1px;
+            border-bottom-right-radius: 1px;
+            animation: span1 2s linear infinite;
+            animation-delay: 1s;
+        }
+
+        @keyframes span1 {
+            0% {
+                left: -200px
+            }
+
+            100% {
+                left: 200px;
+            }
+        }
+
+        button span:nth-child(2) {
+            height: 70px;
+            width: 3px;
+            top: -70px;
+            right: 0px;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0), #f6e58d);
+            border-bottom-left-radius: 1px;
+            border-bottom-right-radius: 1px;
+            animation: span2 2s linear infinite;
+            animation-delay: 2s;
+        }
+
+        @keyframes span2 {
+            0% {
+                top: -70px;
+            }
+
+            100% {
+                top: 70px;
+            }
+        }
+
+        button span:nth-child(3) {
+            height: 3px;
+            width: 200px;
+            right: -200px;
+            bottom: 0px;
+            background: linear-gradient(to left, rgba(0, 0, 0, 0), #f6e58d);
+            border-top-left-radius: 1px;
+            border-bottom-left-radius: 1px;
+            animation: span3 2s linear infinite;
+            animation-delay: 3s;
+        }
+
+        @keyframes span3 {
+            0% {
+                right: -200px;
+            }
+
+            100% {
+                right: 200px;
+            }
+        }
+
+        button span:nth-child(4) {
+            height: 70px;
+            width: 3px;
+            bottom: -70px;
+            left: 0px;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0), #f6e58d);
+            border-top-right-radius: 1px;
+            border-top-left-radius: 1px;
+            animation: span4 2s linear infinite;
+            animation-delay: 4s;
+        }
+
+        @keyframes span4 {
+            0% {
+                bottom: -70px;
+            }
+
+            100% {
+                bottom: 70px;
+            }
+        }
+
+        button:hover {
+            transition: all .5s;
+            transform: rotate(-3deg) scale(1.1);
+            box-shadow: 0px 3px 5px rgba(0, 0, 0, .4);
+        }
+
+        button:hover span {
+            animation-play-state: paused;
+        }
+    

@@ -1,0 +1,125 @@
+  body {
+            font-family: 'Roboto', sans-serif;
+            background-image: url('imgPresentation.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            backdrop-filter: blur(6px);
+            padding: 50px;
+            margin: 0;
+        }
+
+        .form-container {
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            margin: auto;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {opacity: 0; transform: translateY(20px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+
+        h2 {
+            color: #800020;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        input[type="text"], input[type="email"], input[type="tel"], select, textarea, input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            margin-top: 5px;
+        }
+
+        button {
+            margin-top: 25px;
+            width: 100%;
+            padding: 12px;
+            background-color: #800020;
+            color: white;
+            font-weight: 600;
+            border: none;
+            border-radius: 6px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #a52a2a;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* form choix */
+        .choix-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 80vh;
+        background-color: rgba(255, 255, 255, 0.85);
+        border-radius: 15px;
+        padding: 40px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        max-width: 600px;
+        margin: auto;
+    }
+
+    .choix-title {
+        font-size: 24px;
+        font-weight: bold;
+        color: #8e0d35;
+        /* couleur IDOCS MALI */
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+    .choix-link {
+        display: block;
+        width: 100%;
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 8px;
+        text-align: center;
+        font-weight: bold;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+    }
+
+    .choix-link:hover {
+        transform: scale(1.02);
+        text-decoration: none;
+    }
+
+    .choix-1 {
+        background-color: #e3f2fd;
+        color: #00e654;
+        border: 2px solid #90caf9;
+    }
+
+    .choix-2 {
+        background-color: #fff8e1;
+        color: #f57f17;
+        border: 2px solid #ffd54f;
+    }
+
+    .choix-3 {
+        background-color: #e8f5e9;
+        color: #1b5e20;
+        border: 2px solid #81c784;
+    }
