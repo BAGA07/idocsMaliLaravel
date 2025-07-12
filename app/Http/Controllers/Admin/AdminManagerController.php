@@ -14,7 +14,10 @@ class AdminManagerController extends Controller
     // Afficher la liste des managers
     public function index()
     {
-        $managers = User::whereIn('role', ['agent_mairie', 'agent_hopital'])->get();
+        $managers = User::with(['hopital', 'mairie'])
+            ->whereIn('role', ['agent_hopital', 'agent_mairie'])
+            ->get();
+
         return view('admin.managers.index', compact('managers',));
     }
     public function structureList()
@@ -106,11 +109,14 @@ class AdminManagerController extends Controller
         // Mise à jour de la structure
         $user->id_hopital = null;
         $user->id_mairie = null;
+        $user->role = null;
 
         if ($request->structure == 'hopital') {
             $user->id_hopital = $request->structure_id;
+            $user->role = 'agent_hopital';
         } else {
             $user->id_mairie = $request->structure_id;
+            $user->role = 'agent_mairie';
         }
 
         $user->save();

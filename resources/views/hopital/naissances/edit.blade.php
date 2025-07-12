@@ -10,9 +10,9 @@
 <body class="bg-gray-100 dark:bg-gray-900">
 
     <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-cover bg-center"
-         style="background-image: url('/images/declaration3.png');"> 
+         style="background-image: url('/images/declaration3.png');">
          {{-- Utilisation de l'image de fond qui évoque l'enregistrement --}}
-         
+
         @if ($errors->any())
         <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
             <span class="font-bold">Oups !</span> Il y a eu des erreurs lors de la soumission :
@@ -24,7 +24,7 @@
         </div>
         @endif
 
-        <form method="POST" action="{{ route('naissances.update', $volet->id_volet) }}" 
+        <form method="POST" action="{{ route('naissances.update', $volet->id_volet) }}"
               class="max-w-4xl w-full space-y-8 p-8 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 bg-opacity-90 dark:bg-opacity-90">
             @csrf
             @method('PUT')
@@ -179,9 +179,9 @@
                         <input type="text" name="profession_mere" id="profession_mere" value="{{ old('profession_mere', $volet->profession_mere) }}"
                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                     </div>
-                    <div class="md:col-span-2"> 
+                    <div class="md:col-span-2">
                         <label for="nbreEINouvNee" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre d'enfants nés vivants (y compris celui-ci)</label>
-                        <input type="number" name="nbreEINouvNee" id="nbreEINouvNee" 
+                        <input type="number" name="nbreEINouvNee" id="nbreEINouvNee"
                                value="{{ old('nbreEINouvNee', $volet->nbreEINouvNee) }}"
                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                     </div>
@@ -226,7 +226,7 @@
                         <input type="email" name="email" id="email" value="{{ old('email', $volet->declarant->email) }}"
                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                     </div>
-                    <div class="md:col-span-2"> 
+                    <div class="md:col-span-2">
                         <label for="ethnie_declarant" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Ethnie</label>
                         <input type="text" name="ethnie_declarant" id="ethnie_declarant"
                                value="{{ old('ethnie_declarant', $volet->declarant->ethnie_declarant) }}"

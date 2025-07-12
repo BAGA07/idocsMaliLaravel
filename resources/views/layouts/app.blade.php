@@ -318,5 +318,75 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
     {{-- Scripts Livewire --}}
     @livewireScripts
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="icon" type="image" href="{{ asset('favicon.png') }}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body class="bg-gray-100 min-h-screen text-gray-800">
+    <div class="flex">
+        {{-- Sidebar à gauche --}}
+        <div class="fixed inset-y-0 left-0 w-64 z-40">
+            @include('components.template.sidebar')
+        </div>
+
+        {{-- Contenu principal avec marge gauche équivalente à la sidebar --}}
+        <div class="ml-64 flex-1 min-h-screen">
+            {{-- Barre de navigation en haut --}}
+            <div class="sticky top-0 z-30 bg-white shadow">
+                @include('components.template.topNavigation')
+            </div>
+
+            {{-- Contenu dynamique --}}
+            <main class="p-6">
+                @yield('content')
+            </main>
+        </div>
+    </div>
+
+    {{-- SweetAlert : Messages de succès --}}
+    @if(session('success'))
+    <script>
+        Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: '{{ session("success") }}',
+            showConfirmButton: false,
+            timer: 2000
+        });
+    </script>
+    @endif
+
+    {{-- SweetAlert : Messages d'erreur --}}
+    @if(session('error'))
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Erreur',
+            text: '{{ session("error") }}',
+            confirmButtonColor: '#d33'
+        });
+    </script>
+    @endif
+
+    {{-- Fonction de suppression avec confirmation --}}
+    <script>
+        function confirmDelete(id) {
+            Swal.fire({
+                title: 'Confirmation',
+                text: "Voulez-vous vraiment supprimer cet élément ?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Oui, supprimer',
+                cancelButtonText: 'Annuler'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + id).submit();
+                }
+            })
+        }
+    </script>
 </body>
 </html>
