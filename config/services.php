@@ -34,5 +34,9 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+    'sendchamp' => [
+    'api_key' => env('SENDCHAMP_API_KEY'),
+    'sms_from' => env('SENDCHAMP_SMS_FROM', 'CIVIL'), // ou le nom de ton expéditeur
+],
 
 ];

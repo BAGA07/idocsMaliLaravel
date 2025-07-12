@@ -15,7 +15,7 @@
     integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
 
   {{-- AJOUT IMPORTANT : Styles Livewire --}}
-  @livewireStyles
+  {{-- @livewireStyles --}}
   <meta charset="UTF-8">
   {{-- Indispensable pour le responsive design sur mobiles --}}
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
