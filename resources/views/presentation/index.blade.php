@@ -1,6 +1,6 @@
 @extends ('layouts.presentation') {{-- Assurez-vous que c'est le bon chemin vers votre layout --}}
 
-@section('title', 'Accueil - MaliActes') {{-- Titre spécifique pour la page d'accueil --}}
+@section('title', 'Accueil - idocsMali') {{-- Titre spécifique pour la page d'accueil --}}
 
 @section('content')
 
@@ -36,7 +36,7 @@
 {{-- 2. Avantages Clés --}}
 <section class="py-16 bg-gray-50">
     <div class="container mx-auto px-4 text-center">
-        <h2 class="text-4xl font-bold text-gray-800 mb-12">Pourquoi choisir e-Naissance Mali ?</h2>
+        <h2 class="text-4xl font-bold text-gray-800 mb-12">Pourquoi choisir IdocsMali ?</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
             {{-- Avantage 1 --}}
             <div
@@ -167,7 +167,7 @@
         </div>
 
         <p class="text-gray-700 text-lg max-w-2xl mx-auto">
-            e-Naissance Mali s'engage à garantir la confidentialité et la sécurité de toutes vos informations. Votre confiance est notre priorité.
+            IdocsMali Mali s'engage à garantir la confidentialité et la sécurité de toutes vos informations. Votre confiance est notre priorité.
         </p>
     </div>
 </section>

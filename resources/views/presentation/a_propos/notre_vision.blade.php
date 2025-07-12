@@ -1,6 +1,6 @@
 @extends('layouts.presentation')
 
-@section('title', 'Notre Vision - e-Naissance Mali')
+@section('title', 'Notre Vision - IdocsMalii')
 
 @section('content')
 
@@ -19,7 +19,7 @@
          </div>
 
         <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
-            Chez e-Naissance Mali, nous rêvons d'un Mali où l'accès aux **documents fondamentaux d'identité** est simplifié, transparent et équitable pour tous les citoyens, où qu'ils se trouvent. Notre vision est de bâtir un pont numérique entre l'administration et le citoyen, en tirant parti des technologies modernes pour offrir une expérience sans friction.
+            Chez IdocsMali, nous rêvons d'un Mali où l'accès aux **documents fondamentaux d'identité** est simplifié, transparent et équitable pour tous les citoyens, où qu'ils se trouvent. Notre vision est de bâtir un pont numérique entre l'administration et le citoyen, en tirant parti des technologies modernes pour offrir une expérience sans friction.
         </p>
         <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
             Nous aspirons à un système où l'obtention d'un **acte de naissance** n'est plus une source de stress ou de perte de temps, mais une démarche simple et rapide, accessible depuis un téléphone ou un ordinateur. Cela permettra non seulement de faciliter la vie des Maliens, mais aussi de renforcer la fiabilité et la sécurité des **registres de naissances** du pays.

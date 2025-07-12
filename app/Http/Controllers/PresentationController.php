@@ -51,6 +51,32 @@ class PresentationController extends Controller
     }
 
 
+    /**
+     * Affiche la page de guide détaillée pour la demande d'acte de naissance d'un nouveau-né.
+     */
+    public function nouveauNeGuide()
+    {
+        return view('presentation.nouveau_ne'); // Vous devrez créer ce fichier Blade
+    }
+
+    /**
+     * Affiche la page de guide détaillée pour la demande de copie/extrait d'un acte existant.
+     */
+    public function copieExtraitGuide()
+    {
+        return view('presentation.copie-extrait'); // Vous devrez créer ce fichier Blade
+    }
+
+    /**
+     * Affiche la page de guide détaillée pour la procédure de jugement supplétif.
+     */
+    public function jugementSuppletifGuide()
+    {
+        return view('presentation.jugement_suppletif'); // Vous devrez créer ce fichier Blade
+    }
+
+
+
     // --- NOUVELLES MÉTHODES ---
 
     /**
