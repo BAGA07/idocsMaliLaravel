@@ -102,10 +102,23 @@ use Illuminate\Pagination\Paginator;
                                 class="hidden">
                                 @csrf @method('DELETE')
                             </form>
+                            <!--Ici je vais faire ma methode d'envoie des emails--->
+
                             <button onclick="confirmDelete({{ $declaration->id_volet }})"
                                 class="text-red-600 hover:text-red-800 mx-1" title="Supprimer">
                                 <i class="fa fa-trash"></i>
                             </button>
+                             <!--Envoyer le Formulaire sous forme de notification au declarant -->
+                                        <button type="button" class="btn btn-sm btn-outline-success"
+                                            onclick="event.preventDefault(); document.getElementById('send-form-{{ $declaration->id_volet }}').submit();"
+                                            title="Envoyer la notification">
+                                            <i class="fa fa-paper-plane"></i>
+                                        </button>
+                                        <!--ici je vais ajouter un formulaire cache pour envoyer le mail et le message au declarant-->
+                                        <form id="send-form-{{ $declaration->id_volet }}"
+                                            action="{{ route('declaration.sendNotification', $declaration->id_volet) }}"                                            method="POST" style="display: none;">
+                                            @csrf
+                                        </form>
                         </td>
                     </tr>
                     @empty
