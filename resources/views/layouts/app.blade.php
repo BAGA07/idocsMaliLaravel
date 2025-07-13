@@ -8,6 +8,10 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="icon" type="image" href="{{ asset('favicon.png') }}">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
 </head>
 
 <body class="bg-gray-100 min-h-screen text-gray-800">
@@ -75,6 +79,8 @@
             })
         }
     </script>
+    @stack('scripts')
+
 </body>
 
 </html>

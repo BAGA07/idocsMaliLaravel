@@ -29,7 +29,7 @@
                             <tr>
 
                                 <td>{{ $structure->nom_hopital ?? $structure->nom_mairie }}</td>
-                                <td>{{ $structure-> }}</td>
+                                <td>{{ $structure->nom_hopital }}</td>
                                 <td>{{ $structure->commune }}</td>
                                 <td>{{ $structure->telephone }}</td>
                                 <td>

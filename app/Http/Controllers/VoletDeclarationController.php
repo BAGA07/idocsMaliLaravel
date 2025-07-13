@@ -30,7 +30,7 @@ class VoletDeclarationController extends Controller
             ->where('sexe', 'F')
             ->count();
 
-        $declarations = VoletDeclaration::with('declarant', 'hopital')->latest()->paginate(20);
+        $declarations = VoletDeclaration::with('declarant', 'hopital')->latest()->paginate(10);
 
         return view('hopital.dashboard', compact('declarations', 'totalNaissances', 'totalGarçons', 'totalFilles'));
     }
