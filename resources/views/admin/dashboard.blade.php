@@ -1,4 +1,11 @@
-@extends('layouts.app')
+@extends('layouts.app') {{-- ou layouts.admin --}}
+
 @section('content')
-<h1>bonjour</h1>
+<div class="right_col" role="main">
+    <div class="container">
+        <h2 class="mb-4">Dashboard Administrateur</h2>
+
+        <livewire:admin.dashboard /> {{-- Livewire v3 syntaxe --}}
+    </div>
+</div>
 @endsection

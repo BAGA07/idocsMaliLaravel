@@ -12,17 +12,29 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('demandes', function (Blueprint $table) {
+            // Partie du la demande de copie
             $table->id();
             $table->string('nom_complet');
             $table->string('email');
             $table->string('telephone');
-            $table->string('type_document');
-            $table->string('numero_volet_naissance');
             $table->unsignedBigInteger('id_volet')->nullable();
-              $table->foreign('id_volet')->references('id_volet')->on('volet_declarations')->onDelete('cascade');
-            $table->enum('statut', ['En attente', 'Validé', 'Rejeté'])->default('En attente');
-            $table->text('informations_complementaires')->nullable();
-            $table->string('justificatif')->nullable();
+            $table->foreign('id_volet')->references('id_volet')->on('volet_declarations')->onDelete('cascade');
+
+            $table->unsignedBigInteger('hopital_id')->nullable();
+            $table->foreign('hopital_id')->references('id')->on('hopitaux')->onDelete('set null');
+
+            $table->unsignedBigInteger('mairie_id')->nullable();
+            $table->foreign('mairie_id')->references('id')->on('mairies')->onDelete('set null');
+
+            $table->string('type_document')->default('Copie intégrale');
+
+            $table->enum('statut', ['En attente', 'En cours de traitement', 'Validé', 'Rejeté'])->default('En attente');
+
+            $table->text('message_hopital')->nullable(); // message auto ou personnalisé de l'hôpital
+            $table->text('remarque_mairie')->nullable(); // remarque mairie après traitement
+
+            $table->unsignedBigInteger('traité_par')->nullable(); // agent mairie
+            $table->foreign('traité_par')->references('id')->on('users')->onDelete('set null');
             $table->timestamps();
         });
     }
