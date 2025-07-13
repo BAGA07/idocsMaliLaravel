@@ -21,11 +21,18 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call([
-            CommuneSeeder::class,
-            HopitalSeeder::class,
-            VoletDeclarationSeeder::class,
-            DemandeSeeder::class,
-            MairieSeeder::class,
+            // CommuneSeeder::class,
+            // HopitalSeeder::class,
+            // VoletDeclarationSeeder::class,
+            // DemandeSeeder::class,
+            // MairieSeeder::class,
+        CommuneSeeder::class,
+        HopitalSeeder::class,
+        DeclarantSeeder::class,
+        VoletDeclarationSeeder::class,
+        DemandeSeeder::class,
+        MairieSeeder::class,
+        AdminSeeder::class
         ]);
         $this->call([
             //UserSeeder::class,
