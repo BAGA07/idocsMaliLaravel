@@ -20,7 +20,7 @@ class Acte_naissance extends Controller
      */
     public function index()
     {
-    $demandes = Demande::with('volet')->get();
+    $demandes = Demande::with('volet')->where('statut','en attente')->get();
 
 
     $today = Carbon::today();
@@ -28,14 +28,14 @@ class Acte_naissance extends Controller
     $endOfWeek = Carbon::now()->endOfWeek(); 
 
     // Toutes les déclarations avec relations
-    $declarations = VoletDeclaration::with( 'hopital','declarant')->latest()->get();
+     $declarations = VoletDeclaration::with( 'hopital','declarant')->latest()->get();
     
 
     // Statistiques
-    $total = VoletDeclaration::count();
-    $todayCount = VoletDeclaration::whereDate('created_at', $today)->count();
-    $weekCount = VoletDeclaration::whereBetween('created_at', [$startOfWeek, $endOfWeek])->count();
-    $monthCount = VoletDeclaration::whereMonth('created_at', Carbon::now()->month)->count();
+    $total = Demande::count();
+    $todayCount = Demande::whereDate('created_at', $today)->count();
+    $weekCount = Demande::whereBetween('created_at', [$startOfWeek, $endOfWeek])->count();
+    $monthCount = Demande::whereMonth('created_at', Carbon::now()->month)->count();
      // Récupérer la liste des actes de naissance
     $actesNaissance = Acte::with('declarant')->latest()->get();
     return view('agent_mairie.dasboard', compact('declarations', 'total', 'todayCount', 'weekCount', 'monthCount','demandes','actesNaissance'));
@@ -84,12 +84,12 @@ class Acte_naissance extends Controller
 
     $acte->prenom_pere = $request->prenom_pere;
     $acte->nom_pere = $request->nom_pere;
-    $acte->proffesion_pere = $request->profession_pere; 
+    $acte->profession_pere = $request->profession_pere; 
     $acte->domicile_pere = $request->domicile_pere;
 
     $acte->prenom_mere = $request->prenom_mere;
     $acte->nom_mere = $request->nom_mere;
-    $acte->proffesion_mere = $request->profession_mere;
+    $acte->profession_mere = $request->profession_mere;
     $acte->domicile_mere = $request->domicile_mere;
     $acte->id_declarant = $demande->volet->id_declarant ?? null;  
     //$acte->heure_naissance = $demande->volet->heure_naissance ?? null;  
