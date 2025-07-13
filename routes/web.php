@@ -82,6 +82,7 @@ Route::middleware([
 Route::middleware([
     'role:agent_hopital',
 ])->prefix('hopital')->group(function () {
+    Route::post('/hopital/demandes/envoyer/{id_volet}', [App\Http\Controllers\Hopital\DemandeController::class, 'envoyerDemande'])->name('hopital.demandes.envoyer');
     Route::get('/dashboard', [VoletDeclarationController::class, 'dashboard'])->name('hopital.dashboard');
     Route::resource('naissances', VoletDeclarationController::class);
 });

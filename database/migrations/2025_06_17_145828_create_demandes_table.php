@@ -14,18 +14,18 @@ return new class extends Migration
         Schema::create('demandes', function (Blueprint $table) {
             // Partie du la demande de copie
             $table->id();
-            $table->string('nom_complet');
-            $table->string('email');
-            $table->string('telephone');
+            $table->string('nom_complet')->nullable();
+            $table->string('email')->nullable();
+            $table->string('telephone')->nullable();
             $table->unsignedBigInteger('id_volet')->nullable();
             $table->foreign('id_volet')->references('id_volet')->on('volet_declarations')->onDelete('cascade');
 
-            $table->unsignedBigInteger('hopital_id')->nullable();
-            $table->foreign('hopital_id')->references('id')->on('hopitaux')->onDelete('set null');
+            $table->unsignedBigInteger('id_hopital')->nullable();
+            $table->foreign('id_hopital')->references('id')->on('hopitals')->onDelete('set null');
 
-            $table->unsignedBigInteger('mairie_id')->nullable();
-            $table->foreign('mairie_id')->references('id')->on('mairies')->onDelete('set null');
-
+           /*  $table->unsignedBigInteger('id_mairie')->nullable();
+            $table->foreign('id_mairie')->references('id')->on('mairie')->onDelete('set null');
+ */
             $table->string('type_document')->default('Copie intégrale');
 
             $table->enum('statut', ['En attente', 'En cours de traitement', 'Validé', 'Rejeté'])->default('En attente');
