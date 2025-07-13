@@ -21,6 +21,7 @@
             REPUBLIQUE DU MALI<br>
             Un Peuple - Un But - Une Foi
         </div>
+        @endif
 
         <div class="text-center font-bold uppercase mb-4">Enfant</div>
         <div class="flex flex-wrap gap-4 mb-4">

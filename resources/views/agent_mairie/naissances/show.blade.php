@@ -68,6 +68,7 @@
         <p><strong>Date d'enregistrement :</strong> {{ $acte->date_enregistrement_acte }}</p>
         <p><strong>Officier d'état civil :</strong> {{ $acte->officier->nom ?? 'N/A' }}</p>
     </div>
+    
 
     <div class="text-end mt-4">
         <p><strong>Fait à :</strong> {{ $acte->lieu_naissance_enfant }}</p>
@@ -77,6 +78,10 @@
     <div class="text-end mt-4">
         <p><strong>Signature et cachet de l’officier d’état civil</strong></p>
     </div>
-
+<form action="{{ route('acte.destroy', $acte->id) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet acte ?');">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="btn btn-danger mt-3">Supprimer cet acte</button>
+    </form>
 </body>
 </html>

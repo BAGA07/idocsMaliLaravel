@@ -1,6 +1,6 @@
 @extends('layouts.presentation')
 
-@section('title', 'Demande Copie Extrait Acte - e-Naissance-Mali')
+@section('title', 'Demande Copie Extrait Acte - IdocsMali')
 
 @section('content')
 
@@ -8,7 +8,7 @@
     style="min-height: 800px;">
     {{-- L'image d'arrière-plan --}}
     <img src="{{ asset('./images/img2.png') }}" alt="Arrière-plan du formulaire MaliActes"
-         class="absolute inset-0 w-full h-full object-cover opacity-70 dark:opacity-50">
+          class="absolute inset-0 w-full h-full object-cover opacity-70 dark:opacity-50">
 
     {{-- Le conteneur du formulaire (au-dessus de l'image) --}}
     <div class="relative z-10 container mx-auto px-4">
@@ -135,13 +135,23 @@
                     <div>
                         <label for="type_acte_demande" class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Type d'acte demandé:</label>
                         <select name="type_acte_demande" id="type_acte_demande"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <option value="">-- Choisir un type --</option>
                             <option value="Extrait de naissance" {{ old('type_acte_demande') == 'Extrait de naissance' ? 'selected' : '' }}>Extrait de naissance</option>
                             <option value="Copie intégrale de naissance" {{ old('type_acte_demande') == 'Copie intégrale de naissance' ? 'selected' : '' }}>Copie intégrale de naissance</option>
                             <option value="Autre" {{ old('type_acte_demande') == 'Autre' ? 'selected' : '' }}>Autre (préciser dans info complémentaires)</option>
                         </select>
                         @error('type_acte_demande')
+                            <p class="text-red-500 text-xs italic mt-2">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    {{-- Nouveau champ: Nombre de copies --}}
+                    <div>
+                        <label for="nombre_copies" class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Nombre de copies:</label>
+                        <input type="number" name="nombre_copies" id="nombre_copies" min="1" value="{{ old('nombre_copies', 1) }}"
+                               class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                        @error('nombre_copies')
                             <p class="text-red-500 text-xs italic mt-2">{{ $message }}</p>
                         @enderror
                     </div>
@@ -222,7 +232,7 @@
         // Si des erreurs de validation Laravel existent, revenir à l'étape correspondante
         @if($errors->any())
             const errorFieldsStep1 = ['nom_demandeur', 'email_demandeur', 'telephone_demandeur'];
-            const errorFieldsStep2 = ['nom_personne_acte', 'prenom_personne_acte', 'date_evenement_acte', 'lieu_evenement_acte', 'type_acte_demande', 'justificatif_copie', 'informations_complementaires_copie'];
+            const errorFieldsStep2 = ['nom_personne_acte', 'prenom_personne_acte', 'date_evenement_acte', 'lieu_evenement_acte', 'type_acte_demande', 'nombre_copies', 'justificatif_copie', 'informations_complementaires_copie']; // Added nombre_copies
 
             let hasErrorInStep1 = false;
             let hasErrorInStep2 = false;

@@ -1,6 +1,6 @@
 @extends('layouts.presentation')
 
-@section('title', 'Sécurité & Confidentialité - MaliActes')
+@section('title', 'Sécurité & Confidentialité - IdocsMali')
 
 @section('content')
 
@@ -10,7 +10,7 @@
             Votre Sécurité, Notre Priorité Absolue
         </h1>
         <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-8">
-            Chez MaliActes, nous comprenons l'importance capitale de la protection de vos données personnelles et de la confidentialité de vos informations. C'est pourquoi la sécurité est au cœur de notre conception et de nos opérations. Nous nous engageons à protéger vos données avec les plus hauts standards de l'industrie.
+            Chez IdocsMali, nous comprenons l'importance capitale de la protection de vos données personnelles et de la confidentialité de vos informations. C'est pourquoi la sécurité est au cœur de notre conception et de nos opérations. Nous nous engageons à protéger vos données avec les plus hauts standards de l'industrie.
         </p>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
@@ -29,7 +29,7 @@
                 </div>
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Authenticité et Intégrité des Actes</h2>
                 <p class="text-gray-700 dark:text-gray-300">
-                    Les actes que vous recevez via MaliActes sont authentifiés et intègres. Nous travaillons en étroite collaboration avec les autorités compétentes pour garantir leur validité juridique.
+                    Les actes que vous recevez via IdocsMali sont authentifiés et intègres. Nous travaillons en étroite collaboration avec les autorités compétentes pour garantir leur validité juridique.
                 </p>
             </div>
             <div class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg">
@@ -54,7 +54,7 @@
 
         <div class="text-center mt-12 p-8 bg-blue-100 dark:bg-blue-700 rounded-lg shadow">
             <p class="text-lg font-semibold text-blue-800 dark:text-blue-100">
-                MaliActes s'engage à une transparence totale concernant l'utilisation et la protection de vos informations.
+                IdocsMali s'engage à une transparence totale concernant l'utilisation et la protection de vos informations.
             </p>
         </div>
     </div>

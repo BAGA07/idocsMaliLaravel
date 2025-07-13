@@ -39,6 +39,10 @@ Route::prefix('a-propos')->name('presentation.a_propos.')->group(function () {
     Route::get('/partenaires', [PresentationController::class, 'partenaires'])->name('partenaires');
 });
 
+Route::get('/nouveau-ne', [PresentationController::class, 'nouveauNeGuide'])->name('demande.nouveau_ne.guide');
+Route::get('/copie-extrait', [PresentationController::class, 'copieExtraitGuide'])->name('demande.copie_extrait.guide');
+Route::get('/jugement-suppletif', [PresentationController::class, 'jugementSuppletifGuide'])->name('demande.jugement_suppletif.guide');
+
 // Route pour soumettre le formulaire de contact (méthode POST)
 Route::post('/contact', [PresentationController::class, 'submitContactForm'])->name('presentation.contact.submit');
 
@@ -62,6 +66,7 @@ Route::post('/presenttation/nouveau-ne', [DemandeController::class, 'storeNouvea
 Route::get('/presentation/copie-extrait', [DemandeController::class, 'createCopieExtraitForm'])->name('demande.copie_extrait.create');
 Route::post('/presentation/copie-extrait', [DemandeController::class, 'storeCopieExtrait'])->name('demande.copie_extrait.store');
 
+// Les routes pour le centre d'etat civil
 
 //Route pour agent de la mairie
 Route::middleware([

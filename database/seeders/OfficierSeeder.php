@@ -14,6 +14,15 @@ class OfficierSeeder extends Seeder
     public function run(): void
     {
         // Officier::factory()->count(10)->create();
+        $officiers = [
+            ['nom' => 'Mamadi ', 'prenom' => 'Kone','profession'=>'Officier etat civil', 'id_commune' => 1],
+            ['nom' => 'Issiaka', 'prenom' => 'Kanté','profession'=>'Officier etat civil',  'id_commune' => 2],];
+
+  foreach ($officiers as $officier) {
+            Officier::firstOrCreate([
+                'nom' => $officier['nom'],
+            ], $officier);
+        }
 
     }
 }

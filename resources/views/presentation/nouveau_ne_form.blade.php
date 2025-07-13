@@ -1,6 +1,6 @@
 @extends('layouts.presentation')
 
-@section('title', 'Demande Acte Nouveau-né Déclaré - e-Naissance Mali')
+@section('title', 'Demande Acte Nouveau-né Déclaré - IdocsMali')
 
 @section('content')
 
@@ -8,7 +8,7 @@
     style="min-height: 800px;">
     {{-- L'image d'arrière-plan --}}
     <img src="{{ asset('./images/img2.png') }}" alt="Arrière-plan du formulaire MaliActes"
-         class="absolute inset-0 w-full h-full object-cover opacity-70 dark:opacity-50">
+          class="absolute inset-0 w-full h-full object-cover opacity-70 dark:opacity-50">
 
     {{-- Le conteneur du formulaire (au-dessus de l'image) --}}
     <div class="relative z-10 container mx-auto px-4">
@@ -154,6 +154,16 @@
                         @enderror
                     </div>
 
+                    {{-- Nouveau champ: Nombre de copies --}}
+                    <div>
+                        <label for="nombre_copies" class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Nombre de copies demandées:</label>
+                        <input type="number" name="nombre_copies" id="nombre_copies" min="1" value="{{ old('nombre_copies', 1) }}"
+                               class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                        @error('nombre_copies')
+                            <p class="text-red-500 text-xs italic mt-2">{{ $message }}</p>
+                        @enderror
+                    </div>
+
                     <div>
                         <label for="justificatif_demande" class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Pièce justificative (Ex: Certificat de déclaration - PDF, JPG, PNG):</label>
                         <input type="file" name="justificatif_demande" id="justificatif_demande" accept=".pdf,.jpg,.jpeg,.png"
@@ -230,7 +240,8 @@
         // Si des erreurs de validation Laravel existent, revenir à l'étape correspondante
         @if($errors->any())
             const errorFieldsStep1 = ['nom_demandeur', 'email_demandeur', 'telephone_demandeur'];
-            const errorFieldsStep2 = ['nom_enfant', 'prenom_enfant', 'date_naissance', 'lieu_naissance', 'hopital_declaration', 'numero_volet_naissance', 'justificatif_demande', 'informations_complementaires_nouveau_ne'];
+            // Added 'nombre_copies' to errorFieldsStep2 for correct step navigation on validation errors
+            const errorFieldsStep2 = ['nom_enfant', 'prenom_enfant', 'date_naissance', 'lieu_naissance', 'hopital_declaration', 'numero_volet_naissance', 'nombre_copies', 'justificatif_demande', 'informations_complementaires_nouveau_ne'];
 
             let hasErrorInStep1 = false;
             let hasErrorInStep2 = false;
