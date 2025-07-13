@@ -2,40 +2,39 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Database\Seeder;
 use App\Models\Demande;
 use App\Models\VoletDeclaration;
-use Illuminate\Database\Seeder;
+use App\Models\Hopital;
+use App\Models\User;
 use Illuminate\Support\Str;
 
 class DemandeSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        // Récupère tous les volets existants
-        $volets = VoletDeclaration::all();
+        $volets = VoletDeclaration::pluck('id_volet')->toArray();
+        $hopitaux = Hopital::pluck('id')->toArray();
+        $agentsMairie = User::where('role', 'agent_mairie')->pluck('id')->toArray();
 
-        if ($volets->isEmpty()) {
-            $this->command->warn('Aucun volet de déclaration trouvé. Veuillez d\'abord insérer des volets.');
+        if (empty($volets) || empty($hopitaux)) {
+            $this->command->warn('Aucun volet ou hôpital disponible. Assurez-vous que les volets de déclaration et les hôpitaux existent.');
             return;
         }
 
-        // Générer 10 fausses demandes
-        foreach (range(1, 10) as $i) {
-            $volet = $volets->random();
-
+        foreach (range(1, 20) as $i) {
             Demande::create([
                 'nom_complet' => fake()->name(),
-                'email' => fake()->unique()->safeEmail(),
-                'telephone' => '+223 6' . rand(1000000, 9999999),
+                'email' => fake()->safeEmail(),
+                'telephone' => '+2236' . rand(1000000, 9999999),
+
                 'type_document' => fake()->randomElement(['Extrait de naissance', 'Copie intégrale']),
-                'numero_volet_naissance' => $volet->num_volet,
-                'id_volet' => $volet->id_volet,
-                'statut' => fake()->randomElement(['En attente', 'Validé', 'Rejeté']),
-                'informations_complementaires' => fake()->optional()->sentence(),
-                'justificatif' => fake()->optional()->word() . '.pdf',
+                'statut' => fake()->randomElement(['En attente', 'En cours de traitement', 'Validé', 'Rejeté']),
+                'message_hopital' => fake()->optional()->sentence(),
+                'remarque_mairie' => fake()->optional()->sentence(),
+                'traité_par' => $agentsMairie ? $agentsMairie[array_rand($agentsMairie)] : null,
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
         }
     }

@@ -11,7 +11,7 @@ class DemandeController extends Controller
 {
     public function envoyerDemande($id_volet)
     {
-        $volet = VoletDeclaration::findOrFail($id_volet);
+        $declaration = VoletDeclaration::findOrFail($id_volet);
 
         // Vérifier s'il existe déjà une demande pour ce volet
         $existe = Demande::where('id_volet', $id_volet)->first();
@@ -20,15 +20,12 @@ class DemandeController extends Controller
         }
 
         Demande::create([
-            'id_volet' => $volet->id_volet,
-            'hopital_id' => Auth::user()->id_hopital, // id de l'hôpital connecté
-            'mairie_id' => $volet->id_mairie, // il faut que ce champ existe dans la table volet_declarations
+            'id_volet' => $declaration->id_volet,
             'type_document' => 'Copie intégrale',
             'statut' => 'En attente',
-            'message_hopital' => "Demande d'acte de naissance initiée par l'hôpital pour le volet N° {$volet->id_volet}",
+            'message_hopital' => "Demande d'acte de naissance initiée par l'hôpital pour le volet N° {$declaration->id_volet}",
         ]);
 
-        return view('hopital.naissances.show', compact('volet'))
-            ->with('success', 'La demande a été envoyée à la mairie avec succès.');
+        return redirect()->back()->with('success', 'Demande envoyée avec succès à la mairie.');
     }
 }

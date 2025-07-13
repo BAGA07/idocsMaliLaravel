@@ -121,8 +121,7 @@
         </div>
     </div>
 </div>
-<form action="{{ route('hopital.demandes.envoyer', $declaration->id_volet) }}" method="POST"
-    onsubmit="return confirm('Confirmez-vous l\'envoi de la demande à la mairie ?');">
+<form action="{{ route('hopital.demandes.envoyer', $declaration->id_volet) }}" method="POST">
     @csrf
     <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
         <i class="fa fa-paper-plane"></i> Envoyer demande à la mairie
