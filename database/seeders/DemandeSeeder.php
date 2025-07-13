@@ -25,6 +25,8 @@ class DemandeSeeder extends Seeder
         foreach (range(1, 20) as $i) {
             Demande::create([
                 'nom_complet' => fake()->name(),
+                'nom_enfant' => fake()->name(),
+                'prenom_enfant' => fake()->name(),
                 'email' => fake()->safeEmail(),
                 'telephone' => '+2236' . rand(1000000, 9999999),
 
@@ -32,7 +34,7 @@ class DemandeSeeder extends Seeder
                 'statut' => fake()->randomElement(['En attente', 'En cours de traitement', 'Validé', 'Rejeté']),
                 'message_hopital' => fake()->optional()->sentence(),
                 'remarque_mairie' => fake()->optional()->sentence(),
-                'traité_par' => $agentsMairie ? $agentsMairie[array_rand($agentsMairie)] : null,
+
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Hopital;
 
 use App\Http\Controllers\Controller;
+use App\Models\Declarant;
 use App\Models\Demande;
 use App\Models\VoletDeclaration;
 use Illuminate\Support\Facades\Auth;
@@ -12,6 +13,7 @@ class DemandeController extends Controller
     public function envoyerDemande($id_volet)
     {
         $declaration = VoletDeclaration::findOrFail($id_volet);
+        $declarant = Declarant::where('id_declarant', $declaration->id_declarant)->first();
 
         // Vérifier s'il existe déjà une demande pour ce volet
         $existe = Demande::where('id_volet', $id_volet)->first();
@@ -20,7 +22,8 @@ class DemandeController extends Controller
         }
 
         Demande::create([
-            'id_volet' => $declaration->id_volet,
+            'id_volet' => $declaration->num_volet,
+            'nom_complet' => $declarant->nom_declarant . ' ' . $declarant->prenom_declarant,
             'type_document' => 'Copie intégrale',
             'statut' => 'En attente',
             'message_hopital' => "Demande d'acte de naissance initiée par l'hôpital pour le volet N° {$declaration->id_volet}",

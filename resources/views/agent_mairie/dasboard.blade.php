@@ -24,7 +24,7 @@
         </div>
     </div>
 
-     Tableau des déclarations 
+    Tableau des déclarations
     <div class="bg-white shadow rounded mb-6">
         <div class="border-b px-6 py-3 font-semibold">Volets de déclaration</div>
         <div class="overflow-x-auto">
@@ -78,7 +78,7 @@
                             {{ $demande->volet ? $demande->volet->prenom_enfant . ' ' . $demande->volet->nom_enfant :
                             'N/A' }}
                         </td>
-                        <td class="px-4 py-2 border">{{ $demande->numero_volet_naissance }}</td>
+                        <td class="px-4 py-2 border">{{ $demande->id_volet }}</td>
                         <td class="px-4 py-2 border">
                             @switch($demande->statut)
                             @case('Validé')
