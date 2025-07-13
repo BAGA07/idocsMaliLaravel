@@ -76,6 +76,7 @@ class Acte_naissance extends Controller
 
     $acte->date_naissance_enfant = $request->date_naissance;
     $acte->lieu_naissance_enfant = $request->lieu_naissance;
+    $acte->heure_naissance = $request->heure_naissance;
     $acte->sexe_enfant = $request->sexe_enfant;
 
     $acte->prenom = $request->prenom_enfant;

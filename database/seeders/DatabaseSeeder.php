@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
             // DemandeSeeder::class,
             // MairieSeeder::class,
         CommuneSeeder::class,
+        OfficierSeeder::class,
         HopitalSeeder::class,
         DeclarantSeeder::class,
         VoletDeclarationSeeder::class,
