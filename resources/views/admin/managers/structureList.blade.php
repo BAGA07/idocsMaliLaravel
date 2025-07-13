@@ -29,8 +29,8 @@
                             <tr>
 
                                 <td>{{ $structure->nom_hopital ?? $structure->nom_mairie }}</td>
-                                <td>{{ $structure->prenom }}</td>
-                                <td>{{ $structure->email }}</td>
+                                <td>{{ $structure-> }}</td>
+                                <td>{{ $structure->commune }}</td>
                                 <td>{{ $structure->telephone }}</td>
                                 <td>
                                     @if($structure->nom_hopital)

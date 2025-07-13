@@ -33,12 +33,12 @@ class AuthenticatedSessionController extends Controller
         switch ($user->role) {
             case 'agent_hopital':
                 return redirect()->route('hopital.dashboard');
-            case 'agent_etat_civil':
-                return redirect()->route('etat_civil.index');
-            case 'citoyen':
-                return redirect()->route('citoyen.index');
+            case 'agent_mairie':
+                return redirect()->route('agent.dashboard');
+            case 'admin':
+                return redirect()->route('managers.index');
             default:
-                return redirect('/'); // Default redirection for other roles
+                return redirect('login'); // Default redirection for other roles
         }
     }
 
@@ -53,6 +53,6 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect('login');
     }
 }

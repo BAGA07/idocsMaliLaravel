@@ -1,64 +1,65 @@
-<!-- Top Navigation -->
-<div class="top_nav">
-    <div class="nav_menu">
-        <div class="nav toggle">
-            <a id="menu_toggle"><i class="fa fa-bars"></i></a>
-        </div>
-        <nav class="nav navbar-nav">
-            <ul class="navbar-right">
+<header class="bg-blue-800 text-white shadow-md px-6 py-3 flex justify-between items-center w-full sticky top-0 z-50">
 
-                <!-- Profil utilisateur -->
-                <li class="nav-item dropdown" style="padding-left: 15px;">
-                    <a href="#" class="nav-link dropdown-toggle user-profile" id="navbarDropdown" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
-                        <img src="{{ Auth::user()->photo}}">
-                        {{ Auth::user()->nom ?? 'Utilisateur' }}
-                    </a>
-                    <div class="dropdown-menu dropdown-usermenu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="{{ route('profile') }}">Profil</a>
-                        <a class="dropdown-item" href="#">
-                            <span class="badge bg-danger float-right">50%</span>
-                            <span>Paramètres</span>
-                        </a>
-                        <a class="dropdown-item" href="#">Aide</a>
-                        <a class="dropdown-item"
-                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                            <i class="fa fa-sign-out float-right"></i> Déconnexion
-                        </a>
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                            @csrf
-                        </form>
-                    </div>
-                </li>
-
-                <!-- Notifications -->
-                <li class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle info-number" id="navbarDropdown1" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
-                        <i class="fa fa-envelope-o"></i>
-                        <span class="badge bg-success">6</span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown1">
-                        @for($i = 0; $i < 4; $i++) <a class="dropdown-item d-flex align-items-start" href="#">
-                            <span class="image mr-2">
-                                <img src="{{ asset('assets/images/img.jpg') }}" alt="Image Profil" />
-                            </span>
-                            <div class="message">
-                                <strong>John Smith</strong>
-                                <span class="time d-block">il y a 3 min</span>
-                                <span>Film festivals used to be do-or-die moments...</span>
-                            </div>
-                            </a>
-                            @endfor
-                            <div class="text-center mt-2">
-                                <a class="dropdown-item" href="#"><strong>Voir toutes les alertes</strong> <i
-                                        class="fa fa-angle-right"></i></a>
-                            </div>
-                    </div>
-                </li>
-
-            </ul>
-        </nav>
+    <!-- Bouton pour afficher le menu (responsive) -->
+    <div class="flex items-center gap-3">
+        <span class="text-lg font-semibold hidden md:inline">@yield('titre')</span>
     </div>
-</div>
-<!-- /Top Navigation -->
+
+    <!-- Section droite : profil + notifications -->
+    <div class="flex items-center gap-6">
+
+        <!-- Profil utilisateur -->
+        <div class="relative">
+            <button class="flex items-center gap-2 focus:outline-none" id="userDropdownBtn">
+                <img src="{{ Auth::user()->photo }}" alt="Profil" class="w-8 h-8 rounded-full border border-white">
+                <span class="hidden md:inline">{{ Auth::user()->nom ?? 'Utilisateur' }}</span>
+                <i class="fa fa-chevron-down text-xs"></i>
+            </button>
+
+            <!-- Dropdown profil -->
+            <div class="hidden absolute right-0 mt-2 w-56 bg-white text-black rounded shadow-md z-50" id="userDropdown">
+                <a href="{{ route('profile') }}" class="block px-4 py-2 hover:bg-gray-100">Profil</a>
+                <a href="#" class="block px-4 py-2 hover:bg-gray-100">
+                    <span class="flex justify-between">
+                        <span>Paramètres</span>
+                        <span class="bg-red-500 text-white text-xs rounded px-2">50%</span>
+                    </span>
+                </a>
+                <a href="#" class="block px-4 py-2 hover:bg-gray-100">Aide</a>
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="w-full text-left px-4 py-2 hover:bg-gray-100 text-red-600">
+                        <i class="fa fa-sign-out mr-2"></i>Déconnexion
+                    </button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+</header>
+
+<!-- Scripts pour dropdowns -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const dropdownBtn = document.getElementById('userDropdownBtn');
+        const dropdownMenu = document.getElementById('userDropdown');
+
+        if (dropdownBtn && dropdownMenu) {
+            dropdownBtn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                dropdownMenu.classList.toggle('hidden');
+            });
+
+            // Fermer le menu si on clique ailleurs
+            window.addEventListener('click', function () {
+                dropdownMenu.classList.add('hidden');
+            });
+
+            // Ne pas fermer si on clique dans le menu lui-même
+            dropdownMenu.addEventListener('click', function (e) {
+                e.stopPropagation();
+            });
+        }
+    });
+</script>

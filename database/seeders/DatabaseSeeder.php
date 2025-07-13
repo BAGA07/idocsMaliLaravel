@@ -24,6 +24,8 @@ class DatabaseSeeder extends Seeder
             CommuneSeeder::class,
             HopitalSeeder::class,
             VoletDeclarationSeeder::class,
+            DemandeSeeder::class,
+            MairieSeeder::class,
         ]);
         $this->call([
             //UserSeeder::class,
