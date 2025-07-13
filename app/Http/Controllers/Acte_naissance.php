@@ -126,12 +126,15 @@ class Acte_naissance extends Controller
      */
     public function edit(string $id)
     {
-        $acte = Acte::findOrFail($id);
+   $acte = Acte::with(['Commune','Officier','declarant'])->findOrFail($id);
     $communes = Commune::all();
     $officiers = Officier::all();
     $declarants = Declarant::all();
+    // $mairies = Mairie::all();
 
     return view('agent_mairie.naissances.edit', compact('acte', 'communes', 'officiers', 'declarants'));
+
+
     }
 
     /**
@@ -141,10 +144,10 @@ class Acte_naissance extends Controller
     {
 
 $request->validate([
-        'prenom_enfant' => 'required|string',
-        'nom_enfant' => 'required|string',
-        'date_naissance' => 'required|date',
-        'lieu_naissance' => 'required|string',
+        'prenom' => 'required|string',
+        'nom' => 'required|string',
+        'date_naissance_enfant' => 'required|date',
+        'lieu_naissance_enfant' => 'required|string',
         'sexe_enfant' => 'required|string',
         'prenom_pere' => 'nullable|string',
         'nom_pere' => 'nullable|string',
@@ -159,21 +162,22 @@ $request->validate([
     ]);
 
     $acte = Acte::findOrFail($id);
-
-    $acte->prenom = $request->prenom_enfant;
-    $acte->nom = $request->nom_enfant;
-    $acte->date_naissance_enfant = $request->date_naissance;
-    $acte->lieu_naissance_enfant = $request->lieu_naissance;
+// $acte->update($request->all());
+    $acte->prenom = $request->prenom;
+    $acte->nom = $request->nom;
+    $acte->date_naissance_enfant = $request->date_naissance_enfant;
+    $acte->lieu_naissance_enfant = $request->lieu_naissance_enfant;
+    $acte->heure_naissance = $request->heure_naissance;
     $acte->sexe_enfant = $request->sexe_enfant;
 
     $acte->prenom_pere = $request->prenom_pere;
     $acte->nom_pere = $request->nom_pere;
-    $acte->proffesion_pere = $request->profession_pere;
+    $acte->profession_pere = $request->profession_pere;
     $acte->domicile_pere = $request->domicile_pere;
 
     $acte->prenom_mere = $request->prenom_mere;
     $acte->nom_mere = $request->nom_mere;
-    $acte->proffesion_mere = $request->profession_mere;
+    $acte->profession_mere = $request->profession_mere;
     $acte->domicile_mere = $request->domicile_mere;
 
     $acte->id_officier = $request->id_officier;
@@ -183,6 +187,11 @@ $request->validate([
     
 
     return redirect()->route('agent.dashboard')->with('success', 'Acte de naissance modifié avec succès.');
+
+
+
+
+
 
     }
 
