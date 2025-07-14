@@ -9,6 +9,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VoletDeclarationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\RoleMiddleware;
+use App\Http\Controllers\PaiementController;
 
 // =========================================================
 // ROUTES POUR LES PAGES PRINCIPALES DE PRÉSENTATION
@@ -111,7 +112,10 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::resource('/managers', AdminManagerController::class);
 });
 
+Route::post('/declaration/send-notification/{id}', [App\Http\Controllers\DeclarationController::class, 'sendNotification'])->name('declaration.sendNotification');
 
+Route::post('/payer', [App\Http\Controllers\PaiementController::class, 'payer'])->name('payer');
+Route::get('/paiement/confirmation', [PaiementController::class, 'confirmation'])->name('paiement.confirmation');
 
 
 //Route::get('/dashboard-agent', [Acte_naissance::class, 'index'])->name('agent_mairie.dasboard');

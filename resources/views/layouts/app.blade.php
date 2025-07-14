@@ -79,7 +79,7 @@
             })
         }
     </script>
-    @stack('scripts')
-
+    <<<<<<< HEAD @stack('scripts')=======>>>>>>> 157a70e266e23bd9467d0c769a206e94cd10403c
 </body>
+
 </html>
