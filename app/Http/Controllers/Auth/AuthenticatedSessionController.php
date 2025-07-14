@@ -36,7 +36,7 @@ class AuthenticatedSessionController extends Controller
             case 'agent_mairie':
                 return redirect()->route('agent.dashboard');
             case 'admin':
-                return redirect()->route('managers.index');
+                return redirect()->route('admin.dashboard');
             default:
                 return redirect('login'); // Default redirection for other roles
         }
