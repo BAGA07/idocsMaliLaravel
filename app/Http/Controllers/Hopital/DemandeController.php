@@ -22,7 +22,8 @@ class DemandeController extends Controller
         }
 
         Demande::create([
-            'id_volet' => $declaration->num_volet,
+            'id_volet' => $id_volet,
+            'numero_volet_naissance' => $declaration->num_volet,
             'nom_complet' => $declarant->nom_declarant . ' ' . $declarant->prenom_declarant,
             'type_document' => 'Copie intégrale',
             'statut' => 'En attente',
