@@ -24,20 +24,13 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             CommuneSeeder::class,
-            HopitalSeeder::class,
-            VoletDeclarationSeeder::class,
-            DeclarantSeeder::class,
-            DemandeSeeder::class,
-            MairieSeeder::class,
-            AdminSeeder::class,
-            CommuneSeeder::class,
-            OfficierSeeder::class,
-            HopitalSeeder::class,
-            DeclarantSeeder::class,
-            VoletDeclarationSeeder::class,
-            DemandeSeeder::class,
-            MairieSeeder::class,
-            AdminSeeder::class
+    HopitalSeeder::class,
+    DeclarantSeeder::class,
+    VoletDeclarationSeeder::class,
+    DemandeSeeder::class,
+    MairieSeeder::class,
+    OfficierSeeder::class,
+    AdminSeeder::class,
         ]);
         $this->call([
             //UserSeeder::class,

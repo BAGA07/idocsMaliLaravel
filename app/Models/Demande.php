@@ -33,6 +33,6 @@ class Demande extends Model
     public function volet()
     {
 
-        return $this->belongsTo(VoletDeclaration::class, 'id_volet', 'id_volet');
+        return $this->belongsTo(VoletDeclaration::class, 'id_volet');
     }
 }

@@ -1,87 +1,121 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Extrait d'Acte de Naissance</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body { font-family: 'Times New Roman', Times, serif; font-size: 16px; }
-        .bordered { border: 1px solid black; padding: 5px; }
-        .titre { font-weight: bold; text-align: center; text-transform: uppercase; }
-        .section-title { font-weight: bold; margin-top: 10px; }
-        .form-group { margin-bottom: 5px; }
-    </style>
-</head>
-<body class="container my-4">
-  <div>
-<a href="{{ route('agent.dashboard') }}" class="btn btn-light btn-sm">← Retour au dashboard</a>
+@extends('layouts.app')
+
+@section('content')
+<div class="max-w-3xl mx-auto bg-white border border-black p-6 text-[16px] font-[Times New Roman] print:p-4 print:w-full print:max-w-full print:border-none">
+
+    <!-- En-tête avec logo et slogan -->
+    <div class="flex justify-between items-start mb-4">
+        {{-- <img src="{{ asset('images/logo_mali.png') }}" alt="Logo Mali" class="w-24 h-auto"> --}}
+        <div class="text-center flex-1">
+            <p class="uppercase font-bold">République du Mali</p>
+            <p><em>Un Peuple - Un But - Une Foi</em></p>
         </div>
-    <div class="text-center">
-        <h5>REPUBLIQUE DU MALI</h5>
-        <p><em>Un Peuple - Un But - Une Foi</em></p>
-        <h4 class="mb-3">Acte de naissance N°{{ $acte->num_acte }}</h4>
-        <h6>(Volet N°3 – Original remis au déclarant)</h6>
+        {{-- <img src="{{ asset('images/tampon_officiel.png') }}" alt="Tampon Officiel" class="w-24 h-auto"> --}}
     </div>
 
-    <div class="bordered my-3">
-        <p><strong>Région :</strong> {{ $acte->Commune->region ?? 'N/A' }}</p>
-        <p><strong>Cercle :</strong> {{ $acte->Commune->cercle ?? 'N/A' }}</p>
-        <p><strong>Commune :</strong> {{ $acte->Commune->nom_commune ?? 'N/A' }}</p>
+    <!-- Infos de localisation et numéro d’acte -->
+    <div class="grid grid-cols-2 gap-2 border border-black p-2">
+        <div>
+            <p><strong>RÉGION DE :</strong> {{ $acte->Commune->region ?? '...' }}</p>
+            <p><strong>CERCLE DE :</strong> {{ $acte->Commune->cercle ?? '...' }}</p>
+            <p><strong>COMMUNE DE :</strong> {{ $acte->Commune->nom_commune ?? '...' }}</p>
+            <p><strong>CENTRE :</strong> Principal</p>
+            <p><strong>DE :</strong> La Commune IV</p>
+        </div>
+        <div class="text-right">
+            <p><strong>Acte de naissance</strong> N° {{ $acte->num_acte }}</p>
+            <p class="text-sm">(Volet N°3 – Original remis au déclarant)</p>
+            <p><strong>NINA :</strong> ......................................</p>
+        </div>
     </div>
 
-    <h5 class="section-title">ENFANT</h5>
-    <div class="bordered">
-        <p><strong>Nom :</strong> {{ $acte->nom }}</p>
-        <p><strong>Prénom :</strong> {{ $acte->prenom }}</p>
-        <p><strong>Date de naissance :</strong> {{ $acte->date_naissance_enfant }}</p>
-        <p><strong>Heure de naissance :</strong> {{ $acte->heure_naissance ?? 'Non précisée' }}</p>
-        <p><strong>Lieu de naissance :</strong> {{ $acte->lieu_naissance_enfant }}</p>
-        <p><strong>Sexe :</strong> {{ $acte->sexe_enfant }}</p>
+    <!-- Infos enfant -->
+    <div class="border border-black mt-3 p-2">
+        <p><strong>1. Date de naissance :</strong> {{ \Carbon\Carbon::parse($acte->date_naissance_enfant)->translatedFormat('d F Y') }}</p>
+        <p><strong>2. Heure de naissance :</strong> {{ $acte->heure_naissance ?? '...' }}</p>
+        <p><strong>3. Prénom(s) :</strong> {{ $acte->prenom }}</p>
+        <p><strong>4. Nom :</strong> {{ $acte->nom }}</p>
+        <p><strong>5. Sexe :</strong> {{ $acte->sexe_enfant }}</p>
+        <p><strong>6. Lieu de naissance :</strong> {{ $acte->lieu_naissance_enfant }}</p>
     </div>
 
-    <h5 class="section-title">PÈRE</h5>
-    <div class="bordered">
-        <p><strong>Nom :</strong> {{ $acte->nom_pere }}</p>
-        <p><strong>Prénom :</strong> {{ $acte->prenom_pere }}</p>
-        <p><strong>Profession :</strong> {{ $acte->proffesion_pere }}</p>
-        <p><strong>Domicile :</strong> {{ $acte->domicile_pere }}</p>
+    <!-- Infos père -->
+    <div class="border border-black mt-3 p-2">
+        <p><strong>7. Nom du père :</strong> {{ $acte->nom_pere }}</p>
+        {{-- {{ dd($acte->demande->volet) }} --}}
+        <p><strong>8. Âge :</strong> {{ $acte->demande->volet->age_pere ?? '...' }} ans</p>
+        <p><strong>9. Domicile :</strong> {{ $acte->domicile_pere }}</p>
+        <p><strong>10. Profession :</strong> {{ $acte->profession_pere }}</p>
     </div>
 
-    <h5 class="section-title">MÈRE</h5>
-    <div class="bordered">
-        <p><strong>Nom :</strong> {{ $acte->nom_mere }}</p>
-        <p><strong>Prénom :</strong> {{ $acte->prenom_mere }}</p>
-        <p><strong>Profession :</strong> {{ $acte->proffesion_mere }}</p>
-        <p><strong>Domicile :</strong> {{ $acte->domicile_mere }}</p>
+    <!-- Infos mère -->
+    <div class="border border-black mt-3 p-2">
+        <p><strong>11. Nom de la mère :</strong> {{ $acte->nom_mere }}</p>
+        <p><strong>12. Âge :</strong> {{ $acte->demande->volet->age_mere ?? '...' }} ans</p>
+        <p><strong>13. Domicile :</strong> {{ $acte->domicile_mere }}</p>
+        <p><strong>14. Profession :</strong> {{ $acte->profession_mere }}</p>
     </div>
 
-    <h5 class="section-title">DÉCLARANT</h5>
-    <div class="bordered">
-        <p><strong>Nom :</strong> {{ $acte->declarant->nom_declarant ?? 'N/A' }}</p>
-        <p><strong>Prénom :</strong> {{ $acte->declarant->prenom_declarant ?? '' }}</p>
-        <p><strong>Profession :</strong> {{ $acte->declarant->profession_declarant ?? 'N/A' }}</p>
-        <p><strong>Domicile :</strong> {{ $acte->declarant->domicile_declarant ?? 'N/A' }}</p>
+    <!-- Infos déclarant -->
+    <div class="border border-black mt-3 p-2">
+        <p><strong>15. Déclarant :</strong> {{ $acte->declarant->nom_declarant ?? '...' }}</p>
+        <p><strong>16. Âge :</strong> {{ $acte->declarant->age_declarant ?? '...' }} ans</p>
+        <p><strong>17. Domicile :</strong> {{ $acte->declarant->domicile_declarant ?? '...' }}</p>
+        <p><strong>18. Profession :</strong> {{ $acte->declarant->profession_declarant ?? '...' }}</p>
     </div>
 
-    <h5 class="section-title">INFORMATIONS JURIDIQUES</h5>
-    <div class="bordered">
-        <p><strong>Date d'enregistrement :</strong> {{ $acte->date_enregistrement_acte }}</p>
-        <p><strong>Officier d'état civil :</strong> {{ $acte->officier->nom ?? 'N/A' }}</p>
-    </div>
-    
-
-    <div class="text-end mt-4">
-        <p><strong>Fait à :</strong> {{ $acte->lieu_naissance_enfant }}</p>
-        <p><strong>Le :</strong> {{ \Carbon\Carbon::parse($acte->date_enregistrement_acte)->format('d/m/Y') }}</p>
+    <!-- Infos enregistrement -->
+    <div class="border border-black mt-3 p-2">
+        <p><strong>19. N° de déclaration et date :</strong> {{ $acte->declarant->numero_declaration ?? '...' }} du {{ \Carbon\Carbon::parse($acte->declarant->date_declaration)->format('d/m/Y') }}</p>
+        <p><strong>20. Centre :</strong> {{ $acte->lieu_naissance_enfant }}</p>
     </div>
 
-    <div class="text-end mt-4">
-        <p><strong>Signature et cachet de l’officier d’état civil</strong></p>
+    <!-- Officier état civil -->
+    <div class="border border-black mt-3 p-2">
+        <p><strong>21. Officier d'état civil :</strong> {{ $acte->officier->nom ?? '...' }}</p>
+        {{-- {{ $acte->officier->Mairie->nom_mairie ?? '...' }} --}}
+        <p><strong>22. Qualité :</strong> {{ $acte->officier->profession ?? '...' }} </p>
+        <p><strong>23. Date :</strong> {{ \Carbon\Carbon::parse($acte->date_enregistrement_acte)->format('d/m/Y') }}</p>
     </div>
-<form action="{{ route('acte.destroy', $acte->id) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet acte ?');">
+
+    <!-- Signature + Tampon officiel -->
+    <div class="mt-10 relative h-32">
+        <p class="text-right font-semibold">24. Signature et cachet de l’officier d’état civil</p>
+        <img src="{{ asset('images/mali2.png') }}" 
+             alt="Tampon officiel" 
+             class="absolute right-0 bottom-0 w-28 h-28 opacity-80 print:opacity-100">
+    </div>
+
+ <div class="flex items-center gap-4 mt-6 print:hidden">
+    <!-- Bouton de retour -->
+    <a href="{{ route('agent.dashboard') }}"
+       class="inline-flex items-center bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300 shadow">
+        ← Retour
+    </a>
+
+    <!-- Formulaire de suppression -->
+    {{-- <form action="{{ route('acte.destroy', $acte->id) }}" method="POST">
         @csrf
         @method('DELETE')
-        <button type="submit" class="btn btn-danger mt-3">Supprimer cet acte</button>
-    </form>
-</body>
-</html>
+        <button type="submit"
+                class="bg-red-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-red-700 shadow transition duration-200">
+            Supprimer cet acte
+        </button>
+
+    </form> --}}
+    <button onclick="confirmDelete({{ $acte->id_volet }})"
+                                class="text-red-600 hover:text-red-800 mx-1" title="Supprimer">
+                                <i class="fa fa-trash"></i>
+                            </button>
+</div>
+
+
+
+        {{-- <form action="{{ route('acte.download', $acte->id) }}" method="GET">
+            <button type="submit" class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
+                Télécharger en PDF
+            </button>
+        </form> --}}
+    </div>
+</div>
+@endsection
