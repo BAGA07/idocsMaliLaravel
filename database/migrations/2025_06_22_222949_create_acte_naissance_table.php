@@ -40,10 +40,10 @@ return new class extends Migration
 $table->foreign('id_declarant')->references('id_declarant')->on('declarants')->onDelete('cascade');
             $table->foreignId('id_commune')->constrained('communes')->onDelete('cascade');
             $table->foreignId('id_demande')->constrained('demandes')->onDelete('cascade');
-            $table->foreignId('id_volet')
-      ->nullable()
-      ->constrained('volet_declarations', 'id_volet')
-      ->onDelete('set null');
+    //         $table->foreignId('id_volet')
+    //   ->nullable()
+    //   ->constrained('volet_declarations', 'id_volet')
+    //   ->onDelete('set null');
 
             $table->date('date_enregistrement_acte');
 

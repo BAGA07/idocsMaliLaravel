@@ -19,4 +19,8 @@ class Mairie extends Model
     {
         return $this->belongsTo(Commune::class);
     }
+    public function Officier()
+{
+    return $this->hasMany(Officier::class, 'id_mairie');
+}
 }
