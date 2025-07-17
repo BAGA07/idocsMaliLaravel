@@ -24,5 +24,6 @@ class OfficierSeeder extends Seeder
             ], $officier);
         }
 
+
     }
 }

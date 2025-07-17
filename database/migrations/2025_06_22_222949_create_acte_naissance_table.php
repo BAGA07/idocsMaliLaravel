@@ -25,13 +25,13 @@ return new class extends Migration
             // Informations du père
             $table->string('nom_pere');
             $table->string('prenom_pere');
-            $table->string('profession_pere');
+            $table->string('proffesion_pere');
             $table->string('domicile_pere');
 
             // Informations de la mère
             $table->string('nom_mere');
             $table->string('prenom_mere');
-            $table->string('profession_mere');
+            $table->string('proffesion_mere');
             $table->string('domicile_mere');
 
             // Liaisons avec les autres entités

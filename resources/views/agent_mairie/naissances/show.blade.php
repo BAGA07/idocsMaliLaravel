@@ -86,6 +86,7 @@
              class="absolute right-0 bottom-0 w-28 h-28 opacity-80 print:opacity-100">
     </div>
 
+
  <div class="flex items-center gap-4 mt-6 print:hidden">
     <!-- Bouton de retour -->
     <a href="{{ route('agent.dashboard') }}"
@@ -119,3 +120,4 @@
     </div>
 </div>
 @endsection
+

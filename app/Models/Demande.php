@@ -18,20 +18,16 @@ class Demande extends Model
         'justificatif',
         'numero_volet_naissance',
         'id_volet',
-        'statut',
     ];
-
-    public function PieceJointe()
-    {
-        return $this->hasMany(PieceJointe::class);
+     
+    public function PieceJointe () {
+         return $this->hasMany(PieceJointe::class);
     }
-
-    public function Acte()
-    {
+    
+    public function Acte(){
         return $this->hasOne(Acte::class);
     }
-    public function volet()
-    {
+    public function volet(){
 
         return $this->belongsTo(VoletDeclaration::class, 'id_volet');
     }
