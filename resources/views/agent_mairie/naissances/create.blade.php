@@ -1,5 +1,3 @@
-@extends('layouts.app')
-@section('content')
 <!-- <!-- <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
@@ -120,7 +118,6 @@
         <button type="submit" class="btn btn-primary">Créer l’acte</button>
     </form>
 </div> -->
-
 <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
@@ -132,12 +129,11 @@
 
         <input type="hidden" name="demande_id" value="{{ $demande->id }}">
 
-
+       
 
         <div class="mb-3">
             <label>Prénom de l'enfant</label>
-            <input type="text" name="prenom_enfant" class="form-control"
-                value="{{ $demande->volet->prenom_enfant ?? '' }}">
+            <input type="text" name="prenom_enfant" class="form-control" value="{{ $demande->volet->prenom_enfant ?? '' }}">
         </div>
 
         <div class="mb-3">
@@ -147,99 +143,93 @@
 
         <div class="mb-3">
             <label>Date de naissance</label>
-            <input type="date" name="date_naissance" class="form-control"
-                value="{{ $demande->volet->date_naissance ?? '' }}">
+            <input type="date" name="date_naissance" class="form-control" value="{{ $demande->volet->date_naissance ?? '' }}">
         </div>
 
         <div class="mb-3">
             <label>Lieu de naissance (Hôpital)</label>
-            <input type="text" name="lieu_naissance" class="form-control"
-                value="{{ $demande->volet->hopital->nom_hopital ?? '' }}" readonly>
+            <input type="text" name="lieu_naissance" class="form-control" value="{{ $demande->volet->hopital->nom_hopital ?? '' }}" readonly>
         </div>
-        <!-- Heure de naissance -->
-        <div class="mb-3">
-            <label>Heure de naissance</label>
-            <input type="time" name="heure_naissance" class="form-control"
-                value="{{ $demande->volet->heure_naissance ?? '' }}">
-        </div>
-        <div class="mb-3">
-            <label>Sexe Enfant</label>
-            <input type="texe" name="sexe_enfant" class="form-control" value="{{ $demande->volet->sexe ?? '' }}">
-        </div>
+<!-- Heure de naissance -->
+<div class="mb-3">
+    <label>Heure de naissance</label>
+    <input type="time" name="heure_naissance" class="form-control" value="{{ $demande->volet->heure_naissance ?? '' }}">
+</div>
+<div class="mb-3">
+    <label>Sexe Enfant</label>
+    <input type="texe" name="sexe_enfant" class="form-control" value="{{ $demande->volet->sexe ?? '' }}">
+</div>
 
-        <!-- Informations sur le père -->
-        <h5>Informations du Père</h5>
-        <div class="mb-3">
-            <label>Prénom du père</label>
-            <input type="text" name="prenom_pere" class="form-control" value="{{ $demande->volet->prenom_pere ?? '' }}">
-        </div>
-        <div class="mb-3">
-            <label>Nom du père</label>
-            <input type="text" name="nom_pere" class="form-control" value="{{ $demande->volet->nom_pere ?? '' }}">
-        </div>
-        <div class="mb-3">
-            <label>Âge du père</label>
-            <input type="number" name="age_pere" class="form-control" value="{{ $demande->volet->age_pere ?? '' }}">
-        </div>
-        <div class="mb-3">
-            <label>Domicile du père</label>
-            <input type="text" name="domicile_pere" class="form-control"
-                value="{{ $demande->volet->domicile_pere ?? '' }}">
-        </div>
-        <div class="mb-3">
-            <label>Profession du père</label>
-            <input type="text" name="profession_pere" class="form-control"
-                value="{{ $demande->volet->profession_pere ?? '' }}">
-        </div>
+<!-- Informations sur le père -->
+<h5>Informations du Père</h5>
+<div class="mb-3">
+    <label>Prénom du père</label>
+    <input type="text" name="prenom_pere" class="form-control" value="{{ $demande->volet->prenom_pere ?? '' }}">
+</div>
+<div class="mb-3">
+    <label>Nom du père</label>
+    <input type="text" name="nom_pere" class="form-control" value="{{ $demande->volet->nom_pere ?? '' }}">
+</div>
+<div class="mb-3">
+    <label>Âge du père</label>
+    <input type="number" name="age_pere" class="form-control" value="{{ $demande->volet->age_pere ?? '' }}">
+</div>
+<div class="mb-3">
+    <label>Domicile du père</label>
+    <input type="text" name="domicile_pere" class="form-control" value="{{ $demande->volet->domicile_pere ?? '' }}">
+</div>
+<div class="mb-3">
+    <label>Profession du père</label>
+    <input type="text" name="profession_pere" class="form-control" value="{{ $demande->volet->profession_pere ?? '' }}">
+</div>
 
-        <!-- Informations sur la mère -->
-        <h5>Informations de la Mère</h5>
-        <div class="mb-3">
-            <label>Prénom de la mère</label>
-            <input type="text" name="prenom_mere" class="form-control" value="{{ $demande->volet->prenom_mere ?? '' }}">
-        </div>
-        <div class="mb-3">
-            <label>Nom de la mère</label>
-            <input type="text" name="nom_mere" class="form-control" value="{{ $demande->volet->nom_mere ?? '' }}">
-        </div>
-        <div class="mb-3">
-            <label>Âge de la mère</label>
-            <input type="number" name="age_mere" class="form-control" value="{{ $demande->volet->age_mere ?? '' }}">
-        </div>
-        <div class="mb-3">
-            <label>Domicile de la mère</label>
-            <input type="text" name="domicile_mere" class="form-control"
-                value="{{ $demande->volet->domicile_mere ?? '' }}">
-        </div>
-        <div class="mb-3">
-            <label>Profession de la mère</label>
-            <input type="text" name="profession_mere" class="form-control"
-                value="{{ $demande->volet->profession_mere ?? '' }}">
-        </div>
-        {{-- Listes déroulantes pour les relations --}}
+<!-- Informations sur la mère -->
+<h5>Informations de la Mère</h5>
+<div class="mb-3">
+    <label>Prénom de la mère</label>
+    <input type="text" name="prenom_mere" class="form-control" value="{{ $demande->volet->prenom_mere ?? '' }}">
+</div>
+<div class="mb-3">
+    <label>Nom de la mère</label>
+    <input type="text" name="nom_mere" class="form-control" value="{{ $demande->volet->nom_mere ?? '' }}">
+</div>
+<div class="mb-3">
+    <label>Âge de la mère</label>
+    <input type="number" name="age_mere" class="form-control" value="{{ $demande->volet->age_mere ?? '' }}">
+</div>
+<div class="mb-3">
+    <label>Domicile de la mère</label>
+    <input type="text" name="domicile_mere" class="form-control" value="{{ $demande->volet->domicile_mere ?? '' }}">
+</div>
+<div class="mb-3">
+    <label>Profession de la mère</label>
+    <input type="text" name="profession_mere" class="form-control" value="{{ $demande->volet->profession_mere ?? '' }}">
+</div>
+         {{-- Listes déroulantes pour les relations --}}
         <hr>
         <div class="form-group">
             <label>Officier d'état civil</label>
             <select name="id_officier" class="form-control" required>
                 @foreach($officiers as $officier)
-                <option value="{{ $officier->id }}">{{ $officier->nom }}</option>
+                    <option value="{{ $officier->id }}">{{ $officier->nom }}</option>
                 @endforeach
             </select>
         </div>
 
-
+        
 
         <div class="form-group">
             <label>Commune</label>
             <select name="id_commune" class="form-control" required>
                 @foreach($communes as $commune)
-                <option value="{{ $commune->id }}">{{ $commune->nom_commune }}</option>
+                    <option value="{{ $commune->id }}">{{ $commune->nom_commune }}</option>
                 @endforeach
             </select>
         </div>
 
-        <br>
+<br>
         <button type="submit" class="btn btn-success">Enregistrer l'acte</button>
     </form>
 </div>
-@endsection
+
+ 

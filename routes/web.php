@@ -88,7 +88,6 @@ Route::middleware([
 Route::middleware([
     'role:agent_hopital',
 ])->prefix('hopital')->group(function () {
-    Route::post('/hopital/demandes/envoyer/{id_volet}', [App\Http\Controllers\Hopital\DemandeController::class, 'envoyerDemande'])->name('hopital.demandes.envoyer');
     Route::get('/dashboard', [VoletDeclarationController::class, 'dashboard'])->name('hopital.dashboard');
     Route::resource('naissances', VoletDeclarationController::class);
 });
@@ -103,11 +102,7 @@ Route::middleware('auth')->group(function () {
 
 // Route pour l'administration des managers
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
-
-    Route::get('/admin/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('admin.dashboard');
-
+    Route::get('/dashboard', fn() => view('admin.dashboard'))->name('admin.dashboard');
     Route::get('/managers/structureList', [AdminManagerController::class, 'structureList'])->name('structure.list');
     Route::resource('/managers', AdminManagerController::class);
 });

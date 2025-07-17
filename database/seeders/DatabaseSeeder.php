@@ -2,12 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Declarant;
 use App\Models\Hopital;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use StructureSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -24,6 +22,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             CommuneSeeder::class,
+
     HopitalSeeder::class,
     DeclarantSeeder::class,
     VoletDeclarationSeeder::class,

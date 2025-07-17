@@ -24,7 +24,9 @@
         </div>
     </div>
 
-    {{-- Tableau des déclarations
+
+    <!-- Tableau des déclarations -->
+
     <div class="bg-white shadow rounded mb-6">
         <div class="border-b px-6 py-3 font-semibold">Volets de déclaration</div>
         <div class="overflow-x-auto">
