@@ -56,11 +56,11 @@ class Acte extends Model
    // public function User(){
         //return $this->belongsTo(User::class);
     //}
-    public function Demande(){
-        return $this->belongsTo(Demande::class);
+    public function demande(){
+        return $this->belongsTo(Demande::class,'id_demande');
     }
     public function voletDeclaration(){
-        return $this->belongsTo(VoletDeclaration::class);
+        return $this->belongsTo(VoletDeclaration::class,'id_volet');
 
     }
 }

@@ -22,10 +22,14 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             CommuneSeeder::class,
-            HopitalSeeder::class,
-            VoletDeclarationSeeder::class,
-            DemandeSeeder::class,
-            MairieSeeder::class,
+
+    HopitalSeeder::class,
+    DeclarantSeeder::class,
+    VoletDeclarationSeeder::class,
+    DemandeSeeder::class,
+    MairieSeeder::class,
+    OfficierSeeder::class,
+    AdminSeeder::class,
         ]);
         $this->call([
             //UserSeeder::class,

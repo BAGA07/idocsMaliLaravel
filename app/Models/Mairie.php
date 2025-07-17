@@ -15,9 +15,12 @@ class Mairie extends Model
         'id_commune',
     ];
     use HasFactory;
-      public function Commune()
-{
-    return $this->belongsTo(Commune::class);
 
-}
+    public function Commune()
+    {
+        return $this->belongsTo(Commune::class);
+    }
+    public function Officier()
+{
+    return $this->hasMany(Officier::class, 'id_mairie');
 }

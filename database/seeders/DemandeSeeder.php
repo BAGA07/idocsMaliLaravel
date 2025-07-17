@@ -36,6 +36,7 @@ class DemandeSeeder extends Seeder
                 'statut' => fake()->randomElement(['En attente', 'Validé', 'Rejeté']),
                 'informations_complementaires' => fake()->optional()->sentence(),
                 'justificatif' => fake()->optional()->word() . '.pdf',
+
             ]);
         }
     }

@@ -28,8 +28,9 @@ class Acte_naissance extends Controller
     $endOfWeek = Carbon::now()->endOfWeek(); 
 
     // Toutes les déclarations avec relations
+
     $declarations = VoletDeclaration::with( 'hopital','declarant')->latest()->get();
-    
+
 
     // Statistiques
     $total = VoletDeclaration::count();
@@ -38,7 +39,7 @@ class Acte_naissance extends Controller
     $monthCount = VoletDeclaration::whereMonth('created_at', Carbon::now()->month)->count();
      // Récupérer la liste des actes de naissance
     $actesNaissance = Acte::with('declarant')->latest()->get();
-    return view('agent_mairie.dasboard', compact('declarations', 'total', 'todayCount', 'weekCount', 'monthCount','demandes','actesNaissance'));
+    return view('agent_mairie.dasboard', compact( 'total', 'todayCount', 'weekCount', 'monthCount','demandes','actesNaissance'));
        
 
     }
@@ -95,7 +96,9 @@ class Acte_naissance extends Controller
     $acte->id_demande = $request->demande_id;
     $acte->id_officier = $request->id_officier;
     $acte->id_commune = $request->id_commune;
+    
     $acte->date_enregistrement_acte = now();
+// $acte->id_volet = $demande->volet->id_volet;
 
     $acte->save();
 
@@ -115,7 +118,7 @@ class Acte_naissance extends Controller
      */
     public function show(string $id)
     {
-         $acte = Acte::with(['Commune', 'declarant', 'officier'])->findOrFail($id);
+         $acte = Acte::with(['demande.volet','Commune', 'declarant', 'officier.mairie'])->findOrFail($id);
 
     return view('agent_mairie.naissances.show', compact('acte'));
     }
