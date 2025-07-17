@@ -18,10 +18,16 @@ class Acte_naissance extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-    $demandes = Demande::with('volet')->where('statut','en attente')->get();
-
+         $statut = $request->input('statut');  
+ if ($statut) {
+        $demandes = Demande::with('volet')->where('statut', $statut)->get();
+        $demandesCopies = Demande::where('statut', $statut)->get();
+    } else {
+        $demandes = Demande::with('volet')->get();
+        $demandesCopies = Demande::all();
+    }
 
     $today = Carbon::today();
     $startOfWeek = Carbon::now()->startOfWeek(); 
@@ -37,8 +43,15 @@ class Acte_naissance extends Controller
     $weekCount = Demande::whereBetween('created_at', [$startOfWeek, $endOfWeek])->count();
     $monthCount = Demande::whereMonth('created_at', Carbon::now()->month)->count();
      // Récupérer la liste des actes de naissance
+  // Actes originaux (ceux qui ont un volet lié à la même demande)
     $actesNaissance = Acte::with('declarant')->latest()->get();
-    return view('agent_mairie.dasboard', compact( 'total', 'todayCount', 'weekCount', 'monthCount','demandes','actesNaissance'));
+    $actesCopies = Acte::with('declarant')->latest()->get();
+
+
+
+
+
+    return view('agent_mairie.dasboard', compact( 'total', 'todayCount', 'weekCount', 'monthCount','demandes','actesNaissance','demandesCopies','actesCopies'));
        
 
     }
@@ -52,12 +65,118 @@ class Acte_naissance extends Controller
     $communes = Commune::all();
     $officiers = Officier::all();
     $declarants=Declarant::all();
+   
+
 
    
     return view('agent_mairie.naissances.create', compact('demande', 'communes', 'officiers','declarants'));
 
 }
+   public function creates($id){
+ $demandeCopies = Demande::findOrFail($id);
+//  $demandeCopies = Demande::with('acte', 'volet.declarant', 'volet.hopital')->findOrFail($id);
+ $communes = Commune::all();
+    $officiers = Officier::all();
+    $declarants=Declarant::all();
+    $acte=Acte::all();
+    return view('agent_mairie.naissances.acteCopies', compact('demandeCopies','acte','communes', 'officiers','declarants'));
 
+   }
+public function stores(Request $request){
+        $request->validate([
+        'prenom_enfant' => 'required|string',
+        'nom_enfant' => 'required|string',
+        'date_naissance' => 'required|date',
+        'lieu_naissance' => 'required|string',
+        'heure_naissance' => 'required',
+        'sexe_enfant' => 'required|string',
+        'prenom_pere' => 'required|string',
+        'nom_pere' => 'required|string',
+        'profession_pere' => 'required|string',
+        'domicile_pere' => 'required|string',
+        'prenom_mere' => 'required|string',
+        'nom_mere' => 'required|string',
+        'profession_mere' => 'required|string',
+        'domicile_mere' => 'required|string',
+        'prenom_declarant' => 'required|string',
+        'nom_declarant' => 'required|string',
+        'age_declarant' => 'required|numeric',
+        'profession_declarant' => 'required|string',
+        'domicile_declarant' => 'required|string',
+        'ethnie_declarant' => 'nullable',
+        
+        'id_officier' => 'required|exists:officier_etat_civil,id',
+        // 'id_declarand' => 'required|exists:declarants,id_declarant',
+        'id_commune' => 'required|exists:communes,id',
+    ]);
+        //  Créer le déclarant
+         $lastNum = Declarant::max('numero_declaration');
+
+    $nextNum = $lastNum ? $lastNum + 1 : 1;
+    $declarant = Declarant::create([
+        'prenom_declarant' => $request->prenom_declarant,
+        'nom_declarant' => $request->nom_declarant,
+        'age_declarant' => $request->age_declarant,
+        'profession_declarant' => $request->profession_declarant,
+        'domicile_declarant' => $request->domicile_declarant,
+        'ethnie_declarant' => $request->ethnie_declaration,
+        'email' => $request->email,
+        'telephone' => $request->telephone,
+        'date_declaration'=>now() ,
+        'numero_declaration'=>$nextNum,
+
+    ]);
+// dd($declarant);
+
+
+
+    $lastNum = Acte::max('num_acte');
+
+    $nextNum = $lastNum ? $lastNum + 1 : 1;
+
+    // Créer l’acte avec correspondance précise
+    $acte = new Acte();
+    $acte->num_acte = $nextNum;
+
+    $acte->date_naissance_enfant = $request->date_naissance;
+    $acte->lieu_naissance_enfant = $request->lieu_naissance;
+    $acte->heure_naissance = $request->heure_naissance;
+    $acte->sexe_enfant = $request->sexe_enfant;
+
+    $acte->prenom = $request->prenom_enfant;
+    $acte->nom = $request->nom_enfant;
+
+    $acte->prenom_pere = $request->prenom_pere;
+    $acte->nom_pere = $request->nom_pere;
+    $acte->profession_pere = $request->profession_pere; 
+    $acte->domicile_pere = $request->domicile_pere;
+
+    $acte->prenom_mere = $request->prenom_mere;
+    $acte->nom_mere = $request->nom_mere;
+    $acte->profession_mere = $request->profession_mere;
+    $acte->domicile_mere = $request->domicile_mere;
+    // $acte->id_declarant = $demande->volet->id_declarant ?? null;  
+    //$acte->heure_naissance = $demande->volet->heure_naissance ?? null;  
+    $acte->id_demande = $request->demande_id;
+    $acte->id_officier = $request->id_officier;
+    $acte->id_commune = $request->id_commune;
+   $acte->id_declarant = $declarant->id_declarant;
+
+    $acte->date_enregistrement_acte = now();
+// $acte->id_volet = $demande->volet->id_volet;
+
+    $acte->save();
+
+    // Mettre à jour le statut de la demande
+    $demande = Demande::find($request->demande_id);
+    $demande->statut = 'Validé';
+    $demande->save();
+
+    
+
+    return redirect()->route('agent.dashboard')->with('success', 'Acte de naissance créé avec succès.');
+
+}
     /**
      * Store a newly created resource in storage.
      */

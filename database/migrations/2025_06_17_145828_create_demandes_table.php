@@ -32,7 +32,8 @@ return new class extends Migration
             $table->string('numero_volet_naissance')->nullable();
             $table->unsignedBigInteger('id_volet')->nullable();
             $table->foreign('id_volet')->references('id_volet')->on('volet_declarations')->onDelete('cascade');
-
+       $table->integer('nombre_copie');
+       $table->integer('num_acte')->nullable();
             // Champs annexes
             $table->text('informations_complementaires')->nullable();
             $table->string('justificatif')->nullable(); // stocker le nom ou chemin du fichier justificatif

@@ -138,6 +138,8 @@ class DemandeController extends Controller
             'nom_personne_acte' => 'required|string|max:255',
             'prenom_personne_acte' => 'required|string|max:255',
             'date_evenement_acte' => 'required|date',
+            'nombre_copie'=>"required",
+            'num_acte'=>'required',
             'lieu_evenement_acte' => 'required|string|max:255',
             'type_acte_demande' => 'required|string|max:255',
             'justificatif_copie' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
@@ -149,7 +151,7 @@ class DemandeController extends Controller
             $filePath = $request->file('justificatif_copie')->store('justificatifs_copie_extrait', 'public');
         }
 
-        Demande::create([
+        $demande=Demande::create([
             'nom_complet' => $validatedData['nom_demandeur'],
             'email' => $validatedData['email_demandeur'],
             'telephone' => $validatedData['telephone_demandeur'],
@@ -157,11 +159,14 @@ class DemandeController extends Controller
             'informations_complementaires' => $validatedData['informations_complementaires_copie'],
             'justificatif_path' => $filePath,
             'statut' => 'En attente',
+            'num_acte'=>$validatedData['num_acte'],
+            'nombre_copie'=>$validatedData['nombre_copie'],
             'nom_personne_concernee' => $validatedData['nom_personne_acte'],
             'prenom_personne_concernee' => $validatedData['prenom_personne_acte'],
             'date_evenement' => $validatedData['date_evenement_acte'],
             'lieu_evenement' => $validatedData['lieu_evenement_acte'],
         ]);
+         @dd($demande);
 
         return redirect()->route('demande.create')->with('success', 'Votre demande a été envoyée avec succès.');
     }

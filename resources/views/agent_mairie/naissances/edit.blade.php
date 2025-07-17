@@ -1,18 +1,20 @@
-<head>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<div class="container mt-4">
-    <div class="card shadow-sm border-0">
-        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">Modifier l'acte #{{ $acte->num_acte }}</h5>
-            <a href="{{ route('agent.dashboard') }}" class="btn btn-light btn-sm">← Retour au dashboard</a>
-        </div>
-        <div class="card-body">
+@extends('layouts.app')
+@section('content')
 
+<div class="max-w-4xl mx-auto mt-10">
+    <div class="bg-white shadow-md rounded-lg">
+        <div class="bg-blue-600 text-white px-6 py-4 flex justify-between items-center rounded-t-lg">
+            <h2 class="text-lg font-semibold">Modifier l'acte #{{ $acte->num_acte }}</h2>
+            <a href="{{ route('agent.dashboard') }}" class="text-sm bg-white text-blue-600 px-3 py-1 rounded hover:bg-gray-100">
+                ← Retour au dashboard
+            </a>
+        </div>
+
+        <div class="p-6">
             {{-- Affichage des erreurs --}}
             @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul class="mb-0">
+                <div class="bg-red-100 text-red-800 p-4 rounded mb-4">
+                    <ul class="list-disc pl-5">
                         @foreach ($errors->all() as $message)
                             <li>{{ $message }}</li>
                         @endforeach
@@ -25,36 +27,32 @@
                 @method('PUT')
 
                 {{-- Informations de l'enfant --}}
-                <div class="row">
-                    <div class="col-md-6">
-                        <label>Nom de l'enfant</label>
-                        <input type="text" name="nom" class="form-control" value="{{ old('nom', $acte->nom) }}">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block font-medium">Nom de l'enfant</label>
+                        <input type="text" name="nom" class="w-full border rounded px-3 py-2" value="{{ old('nom', $acte->nom) }}">
                     </div>
-                    <div class="col-md-6">
-                        <label>Prénom de l'enfant</label>
-                        <input type="text" name="prenom" class="form-control" value="{{ old('prenom', $acte->prenom) }}">
+                    <div>
+                        <label class="block font-medium">Prénom de l'enfant</label>
+                        <input type="text" name="prenom" class="w-full border rounded px-3 py-2" value="{{ old('prenom', $acte->prenom) }}">
                     </div>
-                </div>
 
-                <div class="row mt-3">
-                    <div class="col-md-6">
-                        <label>Date de naissance</label>
-                        <input type="date" name="date_naissance_enfant" class="form-control" value="{{ old('date_naissance_enfant', $acte->date_naissance_enfant) }}">
+                    <div>
+                        <label class="block font-medium">Date de naissance</label>
+                        <input type="date" name="date_naissance_enfant" class="w-full border rounded px-3 py-2" value="{{ old('date_naissance_enfant', $acte->date_naissance_enfant) }}">
                     </div>
-                    <div class="col-md-6">
-                        <label>Heure de naissance</label>
-                        <input type="time" name="heure_naissance" class="form-control" value="{{ old('heure_naissance', $acte->heure_naissance) }}">
+                    <div>
+                        <label class="block font-medium">Heure de naissance</label>
+                        <input type="time" name="heure_naissance" class="w-full border rounded px-3 py-2" value="{{ old('heure_naissance', $acte->heure_naissance) }}">
                     </div>
-                </div>
 
-                <div class="row mt-3">
-                    <div class="col-md-6">
-                        <label>Lieu de naissance</label>
-                        <input type="text" name="lieu_naissance_enfant" class="form-control" value="{{ old('lieu_naissance_enfant', $acte->lieu_naissance_enfant) }}">
+                    <div>
+                        <label class="block font-medium">Lieu de naissance</label>
+                        <input type="text" name="lieu_naissance_enfant" class="w-full border rounded px-3 py-2" value="{{ old('lieu_naissance_enfant', $acte->lieu_naissance_enfant) }}">
                     </div>
-                    <div class="col-md-6">
-                        <label>Sexe</label>
-                        <select name="sexe_enfant" class="form-select">
+                    <div>
+                        <label class="block font-medium">Sexe</label>
+                        <select name="sexe_enfant" class="w-full border rounded px-3 py-2">
                             <option value="masculin" {{ $acte->sexe_enfant == 'masculin' ? 'selected' : '' }}>Masculin</option>
                             <option value="féminin" {{ $acte->sexe_enfant == 'féminin' ? 'selected' : '' }}>Féminin</option>
                         </select>
@@ -62,56 +60,52 @@
                 </div>
 
                 {{-- Informations du père --}}
-                <div class="row mt-4">
-                    <div class="col-md-6">
-                        <label>Prénom du père</label>
-                        <input type="text" name="prenom_pere" class="form-control" value="{{ old('prenom_pere', $acte->prenom_pere) }}">
+                <h4 class="mt-6 font-semibold text-gray-700">Informations du père</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                    <div>
+                        <label class="block font-medium">Prénom du père</label>
+                        <input type="text" name="prenom_pere" class="w-full border rounded px-3 py-2" value="{{ old('prenom_pere', $acte->prenom_pere) }}">
                     </div>
-                    <div class="col-md-6">
-                        <label>Nom du père</label>
-                        <input type="text" name="nom_pere" class="form-control" value="{{ old('nom_pere', $acte->nom_pere) }}">
+                    <div>
+                        <label class="block font-medium">Nom du père</label>
+                        <input type="text" name="nom_pere" class="w-full border rounded px-3 py-2" value="{{ old('nom_pere', $acte->nom_pere) }}">
                     </div>
-                </div>
-
-                <div class="row mt-3">
-                    <div class="col-md-6">
-                        <label>Profession du père</label>
-                        <input type="text" name="profession_pere" class="form-control" value="{{ old('profession_pere', $acte->profession_pere) }}">
+                    <div>
+                        <label class="block font-medium">Profession du père</label>
+                        <input type="text" name="profession_pere" class="w-full border rounded px-3 py-2" value="{{ old('profession_pere', $acte->profession_pere) }}">
                     </div>
-                    <div class="col-md-6">
-                        <label>Domicile du père</label>
-                        <input type="text" name="domicile_pere" class="form-control" value="{{ old('domicile_pere', $acte->domicile_pere) }}">
+                    <div>
+                        <label class="block font-medium">Domicile du père</label>
+                        <input type="text" name="domicile_pere" class="w-full border rounded px-3 py-2" value="{{ old('domicile_pere', $acte->domicile_pere) }}">
                     </div>
                 </div>
 
                 {{-- Informations de la mère --}}
-                <div class="row mt-4">
-                    <div class="col-md-6">
-                        <label>Prénom de la mère</label>
-                        <input type="text" name="prenom_mere" class="form-control" value="{{ old('prenom_mere', $acte->prenom_mere) }}">
+                <h4 class="mt-6 font-semibold text-gray-700">Informations de la mère</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                    <div>
+                        <label class="block font-medium">Prénom de la mère</label>
+                        <input type="text" name="prenom_mere" class="w-full border rounded px-3 py-2" value="{{ old('prenom_mere', $acte->prenom_mere) }}">
                     </div>
-                    <div class="col-md-6">
-                        <label>Nom de la mère</label>
-                        <input type="text" name="nom_mere" class="form-control" value="{{ old('nom_mere', $acte->nom_mere) }}">
+                    <div>
+                        <label class="block font-medium">Nom de la mère</label>
+                        <input type="text" name="nom_mere" class="w-full border rounded px-3 py-2" value="{{ old('nom_mere', $acte->nom_mere) }}">
                     </div>
-                </div>
-
-                <div class="row mt-3">
-                    <div class="col-md-6">
-                        <label>Profession de la mère</label>
-                        <input type="text" name="profession_mere" class="form-control" value="{{ old('profession_mere', $acte->profession_mere) }}">
+                    <div>
+                        <label class="block font-medium">Profession de la mère</label>
+                        <input type="text" name="profession_mere" class="w-full border rounded px-3 py-2" value="{{ old('profession_mere', $acte->profession_mere) }}">
                     </div>
-                    <div class="col-md-6">
-                        <label>Domicile de la mère</label>
-                        <input type="text" name="domicile_mere" class="form-control" value="{{ old('domicile_mere', $acte->domicile_mere) }}">
+                    <div>
+                        <label class="block font-medium">Domicile de la mère</label>
+                        <input type="text" name="domicile_mere" class="w-full border rounded px-3 py-2" value="{{ old('domicile_mere', $acte->domicile_mere) }}">
                     </div>
                 </div>
 
-                {{-- Officier et commune --}}
-                <div class="row mt-4">
-                    <div class="col-md-6">
-                        <label>Officier d’état civil</label>
-                        <select name="id_officier" class="form-select">
+                {{-- Officier et Commune --}}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                    <div>
+                        <label class="block font-medium">Officier d'état civil</label>
+                        <select name="id_officier" class="w-full border rounded px-3 py-2">
                             @foreach ($officiers as $officier)
                                 <option value="{{ $officier->id }}" {{ $acte->id_officier == $officier->id ? 'selected' : '' }}>
                                     {{ $officier->nom }}
@@ -119,10 +113,9 @@
                             @endforeach
                         </select>
                     </div>
-
-                    <div class="col-md-6">
-                        <label>Commune</label>
-                        <select name="id_commune" class="form-select">
+                    <div>
+                        <label class="block font-medium">Commune</label>
+                        <select name="id_commune" class="w-full border rounded px-3 py-2">
                             @foreach ($communes as $commune)
                                 <option value="{{ $commune->id }}" {{ $acte->id_commune == $commune->id ? 'selected' : '' }}>
                                     {{ $commune->nom_commune }}
@@ -132,29 +125,18 @@
                     </div>
                 </div>
 
-                <!-- {{-- Pièce jointe --}}
-                <div class="mt-4">
-                    <label>Pièce jointe</label>
-                    @if ($acte->piece_jointe)
-                        <p class="mb-1">
-                            Actuelle : 
-                            <a href="{{ asset('storage/pieces_jointes/' . $acte->piece_jointe) }}" target="_blank">
-                                {{ $acte->piece_jointe }}
-                            </a>
-                        </p>
-                    @endif
-                    <input type="file" name="piece_jointe" class="form-control" accept=".pdf,.jpg,.jpeg,.png">
-                </div> -->
-
-                
-
-                    <div class="mt-4">
-            <button type="submit" class="btn btn-success">Modifier</button>
-            <a href="{{ route('agent.dashboard') }}" class="btn btn-secondary"> Annuler</a>
-        </div>
+                {{-- Boutons --}}
+                <div class="mt-6 flex justify-between">
+                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded font-semibold">
+                        Modifier
+                    </button>
+                    <a href="{{ route('agent.dashboard') }}" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded">
+                        Annuler
+                    </a>
                 </div>
+
             </form>
         </div>
     </div>
 </div>
-
+@endsection
