@@ -18,16 +18,16 @@ class Acte_naissance extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
-         $statut = $request->input('statut');  
- if ($statut) {
-        $demandes = Demande::with('volet')->where('statut', $statut)->get();
-        $demandesCopies = Demande::where('statut', $statut)->get();
-    } else {
-        $demandes = Demande::with('volet')->get();
-        $demandesCopies = Demande::all();
-    }
+        //  $statut = $request->input('statut');  
+ 
+        $demandes = Demande::with('volet')->where('statut', 'En attente')->get();
+        $demandesCopies = Demande::where('nombre_copie')->get();
+    
+        // $demandes = Demande::with('volet')->get();
+        // $demandesCopies = Demande::all();
+    
 
     $today = Carbon::today();
     $startOfWeek = Carbon::now()->startOfWeek(); 

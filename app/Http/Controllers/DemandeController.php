@@ -152,7 +152,7 @@ class DemandeController extends Controller
         }
 
         $demande=Demande::create([
-            'nom_complet' => $validatedData['nom_demandeur'],
+            'nom_complet' => $validatedData['nom_complet'],
             'email' => $validatedData['email_demandeur'],
             'telephone' => $validatedData['telephone_demandeur'],
             'type_document' => $validatedData['type_acte_demande'],

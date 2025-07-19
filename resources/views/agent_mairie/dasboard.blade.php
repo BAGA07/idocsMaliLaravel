@@ -136,7 +136,8 @@
                             {{ $demande->volet ? $demande->volet->prenom_enfant . ' ' . $demande->volet->nom_enfant :
                             'N/A' }}
                         </td>
-                        <td class="px-4 py-2 border">{{ $demande->volet->num_volet }}</td>
+                        <td class="px-4 py-2 border">  {{ optional($demande->volet)->num_volet ?? 'N/A' }}
+</td>
                         <td class="px-4 py-2 border">
                             @switch($demande->statut)
                             @case('Validé')

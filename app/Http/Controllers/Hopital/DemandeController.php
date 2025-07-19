@@ -27,6 +27,7 @@ class DemandeController extends Controller
             'nom_complet' => $declarant->nom_declarant . ' ' . $declarant->prenom_declarant,
             'type_document' => 'Copie intégrale',
             'statut' => 'En attente',
+            'nombre_copie' => 0,
             'message_hopital' => "Demande d'acte de naissance initiée par l'hôpital pour le volet N° {$declaration->id_volet}",
         ]);
 
