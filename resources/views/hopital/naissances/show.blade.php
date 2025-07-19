@@ -72,7 +72,7 @@
         <div class="mb-6">
             <h5 class="font-semibold text-gray-700 mb-2"> Informations sur le Père</h5>
             <div class="grid grid-cols-2 gap-2 text-sm">
-                <div>10. Prenom et Nom : {{ $declaration->prenom_pere }} {{ $declaration->nom_pere }}</div>
+                <div>10. Nom : {{ $declaration->prenom_pere }} {{ $declaration->nom_pere }}</div>
                 <div>11. Âge : {{ $declaration->age_pere }}</div>
                 <div>12. Domicile : {{ $declaration->domicile_pere }}</div>
                 <div>13. Ethnie : {{ $declaration->ethnie_pere }}</div>
@@ -86,7 +86,7 @@
         <div class="mb-6">
             <h5 class="font-semibold text-gray-700 mb-2"> Informations sur la Mère</h5>
             <div class="grid grid-cols-2 gap-2 text-sm">
-                <div>17. Prenom et Nom : {{ $declaration->prenom_mere }} {{ $declaration->nom_mere }}</div>
+                <div>17. Nom : {{ $declaration->prenom_mere }} {{ $declaration->nom_mere }}</div>
                 <div>18. Âge : {{ $declaration->age_mere }}</div>
                 <div>19. Domicile : {{ $declaration->domicile_mere }}</div>
                 <div>20. Ethnie : {{ $declaration->ethnie_mere }}</div>
@@ -110,7 +110,7 @@
 
         <!-- AGENT -->
         <div class="mb-6">
-            <h5 class="font-semibold tgrid grid-cols-2 gap-4 mt-6 text-sm text-center"> Agent de Déclaration</h5>
+            <h5 class="font-semibold text-gray-700 mb-2"> Agent Déclarant</h5>
             <div class="text-sm">{{ Auth::user()->prenom ?? '---' }} {{ Auth::user()->nom }}</div>
         </div>
 
@@ -121,13 +121,6 @@
         </div>
     </div>
 </div>
-<form action="{{ route('hopital.demandes.envoyer', $declaration->id_volet) }}" method="POST">
-    @csrf
-    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-        <i class="fa fa-paper-plane"></i> Envoyer demande à la mairie
-    </button>
-</form>
-
 <div class="btn-return text-center">
     <a href="{{ route('hopital.dashboard') }}" class="btn btn-outline-secondary rounded-pill">
         <i class="fa fa-arrow-left"></i> Retour à la liste

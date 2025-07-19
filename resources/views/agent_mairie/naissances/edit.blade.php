@@ -136,6 +136,15 @@
                 </div>
 
             </form>
+            <!-- <div class="d-flex justify-content-end">
+              <form action="{{ route('acte.destroy', $acte->id) }}" method="POST" onsubmit="return confirm('Voulez-vous vraiment supprimer cet acte ?')">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger">
+                            🗑 Supprimer
+                        </button>
+                    </form>
+            </div> -->
         </div>
     </div>
 </div>

@@ -30,7 +30,7 @@ class VoletDeclarationController extends Controller
             ->where('sexe', 'F')
             ->count();
 
-        $declarations = VoletDeclaration::with('declarant', 'hopital')->latest()->paginate(10);
+        $declarations = VoletDeclaration::with('declarant', 'hopital')->latest()->paginate(20);
 
         return view('hopital.dashboard', compact('declarations', 'totalNaissances', 'totalGarçons', 'totalFilles'));
     }
@@ -76,26 +76,19 @@ class VoletDeclarationController extends Controller
             'telephone' => 'nullable|string|max:15',
             'email' => 'nullable|email|max:255',
         ]);
-        //comparer la date de declaration et la date de naissance intervale de 30 jours
-        $dateNaissance = Carbon::parse($request->date_naissance);
-        $dateDeclaration = Carbon::now();
-        if ($dateNaissance->diffInDays($dateDeclaration) > 30) {
-            return redirect()->back()->withErrors(['date_naissance' => 'La date de naissance ne peut pas être plus ancienne que 30 jours par rapport à la date de déclaration.']);
-        }
-        if ($request->date_naissance)
-            // 1. Enregistrement du déclarant
-            $declarant = Declarant::create([
-                'prenom_declarant' => $request->prenom_declarant,
-                'nom_declarant' => $request->nom_declarant,
-                'age_declarant' => $request->age_declarant,
-                'domicile_declarant' => $request->domicile_declarant,
-                'profession_declarant' => '-', // Peut être remplacé plus tard
-                'numero_declaration' => rand(1000, 9999),
-                'date_declaration' => now(),
-                'telephone' => $request->telephone ?? null,
-                'email' => $request->email ?? null,
-            ]);
 
+        // 1. Enregistrement du déclarant
+        $declarant = Declarant::create([
+            'prenom_declarant' => $request->prenom_declarant,
+            'nom_declarant' => $request->nom_declarant,
+            'age_declarant' => $request->age_declarant,
+            'domicile_declarant' => $request->domicile_declarant,
+            'profession_declarant' => '-', // Peut être remplacé plus tard
+            'numero_declaration' => rand(1000, 9999),
+            'date_declaration' => now(),
+            'telephone' => $request->telephone ?? null,
+            'email' => $request->email ?? null,
+        ]);
 
         // 2. Enregistrement dans volet_declarations
         VoletDeclaration::create([

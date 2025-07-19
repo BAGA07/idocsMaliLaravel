@@ -22,31 +22,9 @@ class AdminManagerController extends Controller
     }
     public function structureList()
     {
-        $hopitaux = Hopital::with('commune')->get();
-        $mairies = Mairie::with('commune')->get();
-
-        $structures = $hopitaux->merge($mairies)
-            ->map(function ($structure) {
-                if ($structure instanceof Hopital) {
-                    return (object)[
-                        'id' => $structure->id,
-                        'nom_hopital' => $structure->nom_hopital,
-                        'commune' => $structure->commune->nom_commune ?? 'Non défini',
-                        'telephone' => $structure->telephone,
-                    ];
-                } elseif ($structure instanceof Mairie) {
-                    return (object)[
-                        'id' => $structure->id,
-                        'nom_mairie' => $structure->nom_mairie,
-                        'commune' => $structure->commune->nom_commune ?? 'Non défini',
-                        'telephone' => $structure->telephone,
-                    ];
-                }
-            });
-
+        $structures = Hopital::all()->merge(Mairie::all());
         return view('admin.managers.structureList', compact('structures'));
     }
-
     // Formulaire de création
     public function create()
     {

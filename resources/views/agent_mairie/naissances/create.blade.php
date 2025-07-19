@@ -32,6 +32,15 @@
             <input type="text" name="lieu_naissance" value="{{ $demande->volet->hopital->nom_hopital ?? '' }}" readonly
                 class="w-full bg-gray-100 border border-gray-300 rounded px-3 py-2 text-gray-600">
         </div>
+<!-- Heure de naissance -->
+<div class="mb-3">
+    <label>Heure de naissance</label>
+    <input type="time" name="heure_naissance" class="form-control" value="{{ $demande->volet->heure_naissance ?? '' }}">
+</div>
+<div class="mb-3">
+    <label>Sexe Enfant</label>
+    <input type="texe" name="sexe_enfant" class="form-control" value="{{ $demande->volet->sexe ?? '' }}">
+</div>
 
         <div>
             <label class="block font-medium">Heure de naissance</label>
@@ -115,7 +124,7 @@
             <select name="id_officier"
                 class="w-full border border-gray-300 rounded px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
                 @foreach($officiers as $officier)
-                <option value="{{ $officier->id }}">{{ $officier->nom }}</option>
+                    <option value="{{ $officier->id }}">{{ $officier->nom }}</option>
                 @endforeach
             </select>
         </div>
@@ -125,7 +134,7 @@
             <select name="id_commune"
                 class="w-full border border-gray-300 rounded px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
                 @foreach($communes as $commune)
-                <option value="{{ $commune->id }}">{{ $commune->nom_commune }}</option>
+                    <option value="{{ $commune->id }}">{{ $commune->nom_commune }}</option>
                 @endforeach
             </select>
         </div>
