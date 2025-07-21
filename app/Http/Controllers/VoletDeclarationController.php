@@ -11,6 +11,7 @@ use App\Models\VoletDeclaration;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class VoletDeclarationController extends Controller
 {
@@ -129,6 +130,13 @@ class VoletDeclarationController extends Controller
 
             'id_declarant' => $declarant->id_declarant,
             'id_hopital' => Auth::user()->id_hopital,
+            'token' => Str::uuid(),
+        ]);
+        // Log création volet
+        Log::create([
+            'id_utilisateur' => Auth::id(),
+            'action' => 'Création volet',
+            'details' => 'Volet créé pour ' . $request->nom_enfant . ' ' . $request->prenom_enfant . ' (date naissance : ' . $request->date_naissance . ')',
         ]);
         return redirect()->route('hopital.dashboard')->with('success', 'Déclaration de naissance enregistrée avec succès.');
     }
@@ -136,9 +144,16 @@ class VoletDeclarationController extends Controller
 
     public function show($id)
     {
-        $declaration = VoletDeclaration::with('declarant', 'hopital')->findOrFail($id);
-        return view('hopital.naissances.show', compact('declaration'));
+        $declaration = VoletDeclaration::with('declarant', 'hopital.commune')->findOrFail($id);
+        $demandeExistante = \App\Models\Demande::where('id_volet', $id)->exists();
+        $mairieCommune = null;
+        if ($declaration->hopital && $declaration->hopital->commune) {
+            $mairieCommune = \App\Models\Mairie::where('id_commune', $declaration->hopital->commune->id)->first();
+        }
+        return view('hopital.naissances.show', compact('declaration', 'demandeExistante', 'mairieCommune'));
     }
+
+    
     public function edit($id)
     {
         $volet = VoletDeclaration::with('declarant')->findOrFail($id);
@@ -237,7 +252,12 @@ class VoletDeclarationController extends Controller
     {
         $volet = VoletDeclaration::findOrFail($id);
         $volet->delete();
-
-        return redirect()->route('hopital.dashboard')->with('success', 'Déclaration supprimée avec succès.');
+        // Log suppression volet
+        Log::create([
+            'id_utilisateur' => Auth::id(),
+            'action' => 'Suppression volet',
+            'details' => 'Volet supprimé pour ' . $volet->nom_enfant . ' ' . $volet->prenom_enfant . ' (date naissance : ' . $volet->date_naissance . ')',
+        ]);
+        return redirect()->route('hopital.dashboard')->with('success', 'Volet supprimé avec succès.');
     }
 }

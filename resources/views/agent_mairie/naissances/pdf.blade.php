@@ -2,20 +2,17 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Extrait d'Acte de Naissance</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Extrait d'Acte de Naissance (PDF)</title>
     <style>
         body { font-family: 'Times New Roman', Times, serif; font-size: 16px; }
         .bordered { border: 1px solid black; padding: 5px; }
         .titre { font-weight: bold; text-align: center; text-transform: uppercase; }
         .section-title { font-weight: bold; margin-top: 10px; }
         .form-group { margin-bottom: 5px; }
+        .qr { text-align: center; margin-top: 30px; }
     </style>
 </head>
-<body class="container my-4">
-  <div>
-<a href="{{ route('agent.dashboard') }}" class="btn btn-light btn-sm">← Retour au dashboard</a>
-        </div>
+<body>
     <div class="text-center">
         <h5>REPUBLIQUE DU MALI</h5>
         <p><em>Un Peuple - Un But - Une Foi</em></p>
@@ -68,7 +65,6 @@
         <p><strong>Date d'enregistrement :</strong> {{ $acte->date_enregistrement_acte }}</p>
         <p><strong>Officier d'état civil :</strong> {{ $acte->officier->nom ?? 'N/A' }}</p>
     </div>
-    
 
     <div class="text-end mt-4">
         <p><strong>Fait à :</strong> {{ $acte->lieu_naissance_enfant }}</p>
@@ -78,30 +74,17 @@
     <div class="text-end mt-4">
         <p><strong>Signature et cachet de l’officier d’état civil</strong></p>
     </div>
-    <div class="text-end mb-3">
-    <a href="{{ route('acte.pdf', $acte->id) }}" class="btn btn-primary" target="_blank">
-        Télécharger l'acte (PDF)
-    </a>
-</div>
-@if($acte->token)
-    <div class="mt-5 d-flex justify-content-center">
-        <div style="border:2px solid #0d6efd; border-radius:12px; padding:20px; background:#f8f9fa; max-width:320px;">
-            <div class="text-center mb-2">
-                <span style="font-size:1.2em; color:#0d6efd; font-weight:bold;">Vérification d'authenticité</span>
-            </div>
-            <div class="text-center mb-2">
+
+    @if($acte->token)
+    <div style="margin-top:40px; text-align:center;">
+        <div style="display:inline-block; border:2px solid #0d6efd; border-radius:12px; padding:18px 24px; background:#f4f8fb;">
+            <div style="font-size:1.1em; color:#0d6efd; font-weight:bold; margin-bottom:8px;">Vérification d'authenticité</div>
+            <div style="margin-bottom:8px;">
                 {!! QrCode::size(120)->generate(url('/verifier-document/' . $acte->token)) !!}
             </div>
-            <div class="text-center" style="font-size:0.95em; color:#333;">
-                <span>Scannez ce QR code pour vérifier l'authenticité de cet acte de naissance.</span>
-            </div>
+            <div style="font-size:0.95em; color:#222;">Scannez ce QR code pour vérifier l'authenticité de cet acte de naissance.</div>
         </div>
     </div>
 @endif
-<form action="{{ route('acte.destroy', $acte->id) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet acte ?');">
-        @csrf
-        @method('DELETE')
-        <button type="submit" class="btn btn-danger mt-3">Supprimer cet acte</button>
-    </form>
 </body>
-</html>
+</html> 

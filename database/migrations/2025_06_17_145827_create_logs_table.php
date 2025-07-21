@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('action');
             $table->text('details')->nullable();
             $table->timestamp('date_action')->useCurrent();
+            $table->timestamps();
             $table->foreign('id_utilisateur')->references('id')->on('users')->onDelete('cascade');
         });
     }

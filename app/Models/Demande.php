@@ -11,13 +11,15 @@ class Demande extends Model
 
     protected $fillable = [
         'nom_complet',
+        'id_volet',
+        'nom_enfant',
+        'prenom_enfant',
         'email',
         'telephone',
         'type_document',
         'informations_complementaires',
         'justificatif',
         'numero_volet_naissance',
-        'id_volet',
         'statut',
     ];
 

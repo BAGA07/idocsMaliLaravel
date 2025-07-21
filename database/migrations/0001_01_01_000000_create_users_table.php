@@ -17,11 +17,23 @@ return new class extends Migration
             $table->string('prenom');
             $table->string('adresse');
             $table->string('telephone')->nullable();
-            $table->string('role')->default('agent_hopital'); // Default role is 'user'
+            $table->string('role', 50)->nullable();
+            $table->unsignedBigInteger('id_hopital')->nullable();
+            $table->unsignedBigInteger('id_mairie')->nullable();
+            $table->boolean('actif')->default(true);
+            $table->index('nom');
+            $table->index('prenom');
+            $table->index('email');
+            $table->index('role');
+            // Foreign keys (optionnel, commenter si les tables n'existent pas encore)
+            // $table->foreign('id_hopital')->references('id')->on('hopitals')->onDelete('set null');
+            // $table->foreign('id_mairie')->references('id')->on('mairie')->onDelete('set null');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
+            //un champs last login
+            $table->timestamp('last_login_at')->nullable();
             $table->timestamps();
         });
 

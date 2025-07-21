@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use App\Models\Log;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -29,6 +30,12 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
 
         $user = Auth::user();
+        // Log connexion
+        Log::create([
+            'id_utilisateur' => $user->id,
+            'action' => 'Connexion',
+            'details' => 'Connexion de ' . $user->prenom . ' ' . $user->nom . ' (' . $user->email . ')',
+        ]);
 
         switch ($user->role) {
             case 'agent_hopital':
