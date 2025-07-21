@@ -24,3 +24,4 @@ class Mairie extends Model
 {
     return $this->hasMany(Officier::class, 'id_mairie');
 }
+}

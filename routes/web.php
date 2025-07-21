@@ -83,6 +83,9 @@ Route::middleware([
     // Route::get('/acteCopies/create/{id}', [Acte_naissance::class, 'creates'])->name('acteCopies.create');
     Route::get('/acteCopies/create/{id}', [Acte_naissance::class, 'creates'])->name('acteCopies.create');
     Route::post('/acteCopies/store', [Acte_naissance::class, 'stores'])->name('acteCopies.store');
+        Route::get('/demandesTraiter', [Acte_naissance::class, 'listTraiter'])->name('listTraiter');
+        Route::get('/demandesEnattente', [Acte_naissance::class, 'listEnattente'])->name('listEnattente');
+        Route::get('/demandesRejeté', [Acte_naissance::class, 'listRejeté'])->name('listRejeté');
 
 
     

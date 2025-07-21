@@ -22,29 +22,21 @@ class Acte_naissance extends Controller
     {
         //  $statut = $request->input('statut');  
  
-        $demandes = Demande::with('volet')->where('statut', 'En attente')->get();
-        $demandesCopies = Demande::where('nombre_copie')->get();
+        // $demandes = Demande::with('volet')->where('statut', 'En attente')->get();
+        // $demandesCopies = Demande::where('nombre_copie')->get();
     
-        // $demandes = Demande::with('volet')->get();
-        // $demandesCopies = Demande::all();
-    
-
-    $today = Carbon::today();
+ 
+       $demandes = Demande::with('volet')->get();
+        $demandesCopies = Demande::with('acte')->get();
+            $total = Demande::count();
+               $today = Carbon::today();
     $startOfWeek = Carbon::now()->startOfWeek(); 
     $endOfWeek = Carbon::now()->endOfWeek(); 
+    $todayCount = Demande::whereDate('created_at', $today)->count();
+    $weekCount = Demande::whereBetween('created_at', [$startOfWeek, $endOfWeek])->count();
+    $monthCount = Demande::whereMonth('created_at', Carbon::now()->month)->count();
 
-    // Toutes les déclarations avec relations
-
-    $declarations = VoletDeclaration::with( 'hopital','declarant')->latest()->get();
-
-
-    // Statistiques
-    $total = VoletDeclaration::count();
-    $todayCount = VoletDeclaration::whereDate('created_at', $today)->count();
-    $weekCount = VoletDeclaration::whereBetween('created_at', [$startOfWeek, $endOfWeek])->count();
-    $monthCount = VoletDeclaration::whereMonth('created_at', Carbon::now()->month)->count();
-     // Récupérer la liste des actes de naissance
-  // Actes originaux (ceux qui ont un volet lié à la même demande)
+ 
     $actesNaissance = Acte::with('declarant')->latest()->get();
     $actesCopies = Acte::with('declarant')->latest()->get();
 
@@ -52,7 +44,7 @@ class Acte_naissance extends Controller
 
 
 
-    return view('agent_mairie.dasboard', compact( 'total', 'todayCount', 'weekCount', 'monthCount','demandes','actesNaissance','demandesCopies','actesCopies'));
+    return view('agent_mairie.dasboard', compact( 'total', 'todayCount', 'weekCount', 'monthCount','demandes','demandesCopies'));
        
 
     }
@@ -60,6 +52,22 @@ class Acte_naissance extends Controller
     /**
      * Show the form for creating a new resource.
      */
+    public function listTraiter(){
+         $demandes = Demande::with('volet')->Where('statut','Validé')->get();
+        $demandesCopies = Demande::with('acte')->Where('statut','Validé')->get();
+ 
+        return view('agent_mairie.naissances.listTraiter',compact('demandes','demandesCopies'));
+    }
+     public function listEnattente(){
+        $demandes = Demande::with('volet')->where('statut','En attente')->get();
+        $demandesCopies = Demande::with('acte')->where('statut','En attente')->get();
+        return view('agent_mairie.naissances.listEnattente',compact('demandes','demandesCopies'));
+    }
+     public function listRejeté(){
+        $demandes = Demande::with('volet')->where('statut','Rejeté')->get();
+        $demandesCopies = Demande::with('acte')->where('statut','Rejeté')->get();
+        return view('agent_mairie.naissances.listRejeté',compact('demandes','demandesCopies'));
+    }
     public function create($id)
 {
     $demande = Demande::with('volet.declarant','volet.hopital')->findOrFail($id);
@@ -203,12 +211,14 @@ public function stores(Request $request){
 
     $acte->prenom_pere = $request->prenom_pere;
     $acte->nom_pere = $request->nom_pere;
-    $acte->proffesion_pere = $request->profession_pere; 
+    $acte->profession_pere = $request->profession_pere; 
     $acte->domicile_pere = $request->domicile_pere;
+    $acte->heure_naissance = $request->heure_naissance;
+
 
     $acte->prenom_mere = $request->prenom_mere;
     $acte->nom_mere = $request->nom_mere;
-    $acte->proffesion_mere = $request->profession_mere;
+    $acte->profession_mere = $request->profession_mere;
     $acte->domicile_mere = $request->domicile_mere;
     $acte->id_declarant = $demande->volet->id_declarant ?? null;  
     //$acte->heure_naissance = $demande->volet->heure_naissance ?? null;  

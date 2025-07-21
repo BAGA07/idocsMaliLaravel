@@ -9,6 +9,7 @@
 
         <input type="hidden" name="demande_id" value="{{ $demande->id }}">
 
+        {{-- Enfant --}}
         <div>
             <label class="block font-medium">Prénom de l'enfant</label>
             <input type="text" name="prenom_enfant" value="{{ $demande->volet->prenom_enfant ?? '' }}"
@@ -32,29 +33,20 @@
             <input type="text" name="lieu_naissance" value="{{ $demande->volet->hopital->nom_hopital ?? '' }}" readonly
                 class="w-full bg-gray-100 border border-gray-300 rounded px-3 py-2 text-gray-600">
         </div>
-<!-- Heure de naissance -->
-<div class="mb-3">
-    <label>Heure de naissance</label>
-    <input type="time" name="heure_naissance" class="form-control" value="{{ $demande->volet->heure_naissance ?? '' }}">
-</div>
-<div class="mb-3">
-    <label>Sexe Enfant</label>
-    <input type="texe" name="sexe_enfant" class="form-control" value="{{ $demande->volet->sexe ?? '' }}">
-</div>
 
         <div>
             <label class="block font-medium">Heure de naissance</label>
             <input type="time" name="heure_naissance" value="{{ $demande->volet->heure_naissance ?? '' }}"
-                class="w-full border border-gray-300 rounded px-3 py-2">
+                class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>
 
         <div>
-            <label class="block font-medium">Sexe Enfant</label>
+            <label class="block font-medium">Sexe de l'enfant</label>
             <input type="text" name="sexe_enfant" value="{{ $demande->volet->sexe ?? '' }}"
-                class="w-full border border-gray-300 rounded px-3 py-2">
+                class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>
 
-        <!-- Père -->
+        {{-- Père --}}
         <h3 class="text-lg font-semibold mt-6">Informations du Père</h3>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -85,7 +77,7 @@
             </div>
         </div>
 
-        <!-- Mère -->
+        {{-- Mère --}}
         <h3 class="text-lg font-semibold mt-6">Informations de la Mère</h3>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -116,7 +108,7 @@
             </div>
         </div>
 
-        <!-- Relations -->
+        {{-- Relations --}}
         <hr class="my-6">
 
         <div>
