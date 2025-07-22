@@ -31,12 +31,15 @@ class DemandeSeeder extends Seeder
                 'email' => fake()->unique()->safeEmail(),
                 'telephone' => '+223 6' . rand(1000000, 9999999),
                 'type_document' => fake()->randomElement(['Extrait de naissance', 'Copie intégrale']),
-                'numero_volet_naissance' => $volet->num_volet,
-                'id_volet' => $volet->id_volet,
-                'statut' => fake()->randomElement(['En attente', 'Validé', 'Rejeté']),
-                'informations_complementaires' => fake()->optional()->sentence(),
-                'justificatif' => fake()->optional()->word() . '.pdf',
+                'statut' => fake()->randomElement(['En attente', 'En cours de traitement', 'Validé', 'Rejeté']),
+                'message_hopital' => fake()->optional()->sentence(),
+                'remarque_mairie' => fake()->optional()->sentence(),
+                'nombre_copie'=>rand(1, 5),
+                                'num_acte'=>rand(1, 5),
 
+        'id_volet' => fake()->randomElement($volets),
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
         }
     }

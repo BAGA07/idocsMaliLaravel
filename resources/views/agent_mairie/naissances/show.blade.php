@@ -105,12 +105,14 @@
                 Supprimer cet acte
             </button>
 
-        </form> --}}
-        <button onclick="confirmDelete({{ $acte->id_volet }})" class="text-red-600 hover:text-red-800 mx-1"
-            title="Supprimer">
-            <i class="fa fa-trash"></i>
-        </button>
-    </div>
+
+    </form> --}}
+    <button onclick="confirmDelete({{ $acte->id_volet }})"
+                                class="text-white-100 py-2 px-4 rounded-lg bg-red-600 hover:bg-red-700 mx-1" title="Supprimer">
+                                Supprimer
+                            </button>
+</div>
+
 
 
 

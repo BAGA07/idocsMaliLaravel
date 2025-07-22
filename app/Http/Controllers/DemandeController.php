@@ -134,17 +134,20 @@ class DemandeController extends Controller
      */
     public function storeCopieExtrait(Request $request)
     {
-        $request->validate([
-            'nom_demandeur' => 'required|string',
-            'email_demandeur' => 'required|email',
-            'telephone_demandeur' => 'required|string',
-            'type_acte_demande' => 'required|string',
-            'nom_personne_acte' => 'nullable|string',
-            'prenom_personne_acte' => 'nullable|string',
-            'date_evenement_acte' => 'nullable|date',
-            'lieu_evenement_acte' => 'nullable|string',
-            'nombre_copies' => 'nullable|integer|min:1',
-            'justificatif_copie' => 'nullable|file|mimes:pdf,jpg,jpeg,png',
+
+        $validatedData = $request->validate([
+            'nom_demandeur' => 'required|string|max:255',
+            'email_demandeur' => 'required|email|max:255',
+            'telephone_demandeur' => 'required|string|max:20',
+            'nom_personne_acte' => 'required|string|max:255',
+            'prenom_personne_acte' => 'required|string|max:255',
+            'date_evenement_acte' => 'required|date',
+            'nombre_copie'=>"required",
+            'num_acte'=>'required',
+            'lieu_evenement_acte' => 'required|string|max:255',
+            'type_acte_demande' => 'required|string|max:255',
+            'justificatif_copie' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+
             'informations_complementaires_copie' => 'nullable|string',
         ]);
 
@@ -153,22 +156,24 @@ class DemandeController extends Controller
             $filePath = $request->file('justificatif_copie')->store('justificatifs_copie_extrait', 'public');
         }
 
-        $demande = new Demande();
-        $demande->nom_complet = $request->nom_demandeur;
-        $demande->email = $request->email_demandeur;
-        $demande->telephone = $request->telephone_demandeur;
-        $demande->type_document = $request->type_acte_demande;
-        $demande->nom_enfant = $request->nom_personne_acte;
-        $demande->prenom_enfant = $request->prenom_personne_acte;
-        $demande->date_evenement = $request->date_evenement_acte;
-        $demande->lieu_evenement = $request->lieu_evenement_acte;
-        $demande->informations_complementaires = $request->informations_complementaires_copie;
 
-        // Gestion du fichier justificatif
-        if ($request->hasFile('justificatif_copie')) {
-            $filename = $request->file('justificatif_copie')->store('justificatifs', 'public');
-            $demande->justificatif = $filename;
-        }
+        $demande=Demande::create([
+            'nom_complet' => $validatedData['nom_complet'],
+            'email' => $validatedData['email_demandeur'],
+            'telephone' => $validatedData['telephone_demandeur'],
+            'type_document' => $validatedData['type_acte_demande'],
+            'informations_complementaires' => $validatedData['informations_complementaires_copie'],
+            'justificatif_path' => $filePath,
+            'statut' => 'En attente',
+            'num_acte'=>$validatedData['num_acte'],
+            'nombre_copie'=>$validatedData['nombre_copie'],
+            'nom_personne_concernee' => $validatedData['nom_personne_acte'],
+            'prenom_personne_concernee' => $validatedData['prenom_personne_acte'],
+            'date_evenement' => $validatedData['date_evenement_acte'],
+            'lieu_evenement' => $validatedData['lieu_evenement_acte'],
+        ]);
+         @dd($demande);
+
 
         $demande->save();
         //demande log
