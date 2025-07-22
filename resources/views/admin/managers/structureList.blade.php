@@ -25,12 +25,13 @@
                 </thead>
                 <tbody>
                     @forelse($structures as $structure)
+
                     <tr class="text-center hover:bg-gray-50">
                         <td class="border px-4 py-2">{{ $structure->hopitaux->nom_hopital ?? $structure->nom_mairie }}
                         </td>
-                        <td class="border px-4 py-2">{{ $structure->nom_hopital }}</td>
+                        {{-- <td class="border px-4 py-2">{{ $structure->nom_hopital }}</td>
                         <td class="border px-4 py-2">{{ $structure->commune}}</td>
-                        <td class="border px-4 py-2">{{ $structure->telephone }}</td>
+                        <td class="border px-4 py-2">{{ $structure->telephone }}</td> --}}
                         <td class="border px-4 py-2">
                             @if($structure->nom_hopital)
                             <span
