@@ -1,11 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\VoletDeclaration; // Assurez-vous que ce modèle existe et est correct
 use App\Models\PieceJointe;
 
 use App\Models\Demande; // Assurez-vous que ce modèle existe et est correct
+use App\Models\Log;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class DemandeController extends Controller
@@ -42,7 +45,7 @@ class DemandeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function storeNouveauNe(Request $request)
+    /* public function storeNouveauNe(Request $request)
     {
          $validatedData = $request->validate([
             'nom_demandeur' => 'required|string|max:255',
@@ -110,7 +113,7 @@ class DemandeController extends Controller
         return redirect()->route('agent')
             ->with('success', 'Votre demande a été soumise avec succès.');
     
-    }
+    } */
 
     /**
      * Affiche le formulaire pour demander une copie d'un acte existant (non nouveau-né).
@@ -131,6 +134,7 @@ class DemandeController extends Controller
      */
     public function storeCopieExtrait(Request $request)
     {
+
         $validatedData = $request->validate([
             'nom_demandeur' => 'required|string|max:255',
             'email_demandeur' => 'required|email|max:255',
@@ -143,6 +147,7 @@ class DemandeController extends Controller
             'lieu_evenement_acte' => 'required|string|max:255',
             'type_acte_demande' => 'required|string|max:255',
             'justificatif_copie' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+
             'informations_complementaires_copie' => 'nullable|string',
         ]);
 
@@ -150,6 +155,7 @@ class DemandeController extends Controller
         if ($request->hasFile('justificatif_copie')) {
             $filePath = $request->file('justificatif_copie')->store('justificatifs_copie_extrait', 'public');
         }
+
 
         $demande=Demande::create([
             'nom_complet' => $validatedData['nom_complet'],
@@ -168,6 +174,13 @@ class DemandeController extends Controller
         ]);
          @dd($demande);
 
-        return redirect()->route('demande.create')->with('success', 'Votre demande a été envoyée avec succès.');
+
+        $demande->save();
+        //demande log
+        Log::create([
+            'id_utilisateur' => Auth::id(),
+            'action' => 'Demande ',
+            'details' => 'Demande initier par ' . Auth::user()->nom  . ' pour ' . $request->nom_enfant . ' ' . $request->prenom_enfant . ')',
+        ]);
     }
 }

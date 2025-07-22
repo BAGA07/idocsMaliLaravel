@@ -39,6 +39,7 @@ class Acte extends Model
         'id_demande',
 
         'date_enregistrement_acte',
+        'token'
     ];
 
     use HasFactory;

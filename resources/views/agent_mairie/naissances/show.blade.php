@@ -1,7 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="max-w-3xl mx-auto bg-white border border-black p-6 text-[16px] font-[Times New Roman] print:p-4 print:w-full print:max-w-full print:border-none">
+<div
+    class="max-w-3xl mx-auto bg-white border border-black p-6 text-[16px] font-[Times New Roman] print:p-4 print:w-full print:max-w-full print:border-none">
 
     <!-- En-tête avec logo et slogan -->
     <div class="flex justify-between items-start mb-4">
@@ -31,7 +32,8 @@
 
     <!-- Infos enfant -->
     <div class="border border-black mt-3 p-2">
-        <p><strong>1. Date de naissance :</strong> {{ \Carbon\Carbon::parse($acte->date_naissance_enfant)->translatedFormat('d F Y') }}</p>
+        <p><strong>1. Date de naissance :</strong> {{
+            \Carbon\Carbon::parse($acte->date_naissance_enfant)->translatedFormat('d F Y') }}</p>
         <p><strong>2. Heure de naissance :</strong> {{ $acte->heure_naissance ?? '...' }}</p>
         <p><strong>3. Prénom(s) :</strong> {{ $acte->prenom }}</p>
         <p><strong>4. Nom :</strong> {{ $acte->nom }}</p>
@@ -66,7 +68,8 @@
 
     <!-- Infos enregistrement -->
     <div class="border border-black mt-3 p-2">
-        <p><strong>19. N° de déclaration et date :</strong> {{ $acte->declarant->numero_declaration ?? '...' }} du {{ \Carbon\Carbon::parse($acte->declarant->date_declaration)->format('d/m/Y') }}</p>
+        <p><strong>19. N° de déclaration et date :</strong> {{ $acte->declarant->numero_declaration ?? '...' }} du {{
+            \Carbon\Carbon::parse($acte->declarant->date_declaration)->format('d/m/Y') }}</p>
         <p><strong>20. Centre :</strong> {{ $acte->lieu_naissance_enfant }}</p>
     </div>
 
@@ -81,27 +84,27 @@
     <!-- Signature + Tampon officiel -->
     <div class="mt-10 relative h-32">
         <p class="text-right font-semibold">24. Signature et cachet de l’officier d’état civil</p>
-        <img src="{{ asset('images/mali2.png') }}" 
-             alt="Tampon officiel" 
-             class="absolute right-0 bottom-0 w-28 h-28 opacity-80 print:opacity-100">
+        <img src="{{ asset('images/mali2.png') }}" alt="Tampon officiel"
+            class="absolute right-0 bottom-0 w-28 h-28 opacity-80 print:opacity-100">
     </div>
 
 
- <div class="flex items-center gap-4 mt-6 print:hidden">
-    <!-- Bouton de retour -->
-    <a href="{{ route('agent.dashboard') }}"
-       class="inline-flex items-center bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300 shadow">
-        ← Retour
-    </a>
+    <div class="flex items-center gap-4 mt-6 print:hidden">
+        <!-- Bouton de retour -->
+        <a href="{{ route('agent.dashboard') }}"
+            class="inline-flex items-center bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300 shadow">
+            ← Retour
+        </a>
 
-    <!-- Formulaire de suppression -->
-    {{-- <form action="{{ route('acte.destroy', $acte->id) }}" method="POST">
-        @csrf
-        @method('DELETE')
-        <button type="submit"
+        <!-- Formulaire de suppression -->
+        {{-- <form action="{{ route('acte.destroy', $acte->id) }}" method="POST">
+            @csrf
+            @method('DELETE')
+            <button type="submit"
                 class="bg-red-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-red-700 shadow transition duration-200">
-            Supprimer cet acte
-        </button>
+                Supprimer cet acte
+            </button>
+
 
     </form> --}}
     <button onclick="confirmDelete({{ $acte->id_volet }})"
@@ -112,12 +115,12 @@
 
 
 
-        {{-- <form action="{{ route('acte.download', $acte->id) }}" method="GET">
-            <button type="submit" class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
-                Télécharger en PDF
-            </button>
-        </form> --}}
-    </div>
+
+    {{-- <form action="{{ route('acte.download', $acte->id) }}" method="GET">
+        <button type="submit" class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
+            Télécharger en PDF
+        </button>
+    </form> --}}
+</div>
 </div>
 @endsection
-

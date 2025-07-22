@@ -8,6 +8,8 @@ use App\Models\Hopital;
 use App\Models\Mairie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Log;
+use Illuminate\Support\Facades\Auth;
 
 class AdminManagerController extends Controller
 {
@@ -71,7 +73,12 @@ class AdminManagerController extends Controller
 
 
         $user->save();
-
+        // Log création manager
+        Log::create([
+            'id_utilisateur' => Auth::id(),
+            'action' => 'Création manager',
+            'details' => 'Manager créé : ' . $user->nom . ' ' . $user->prenom . ' (' . $user->email . ')',
+        ]);
         return redirect()->route('managers.create')->with('success', 'Manager créé avec succès.');
     }
 
@@ -120,7 +127,12 @@ class AdminManagerController extends Controller
         }
 
         $user->save();
-
+        // Log mise à jour manager
+        Log::create([
+            'id_utilisateur' => Auth::id(),
+            'action' => 'Mise à jour manager',
+            'details' => 'Manager modifié : ' . $user->nom . ' ' . $user->prenom . ' (' . $user->email . ')',
+        ]);
         return redirect()->route('managers.index')->with('success', 'Manager mis à jour avec succès.');
     }
 
@@ -136,7 +148,12 @@ class AdminManagerController extends Controller
     {
         $user = User::findOrFail($id);
         $user->delete();
-
+        // Log suppression manager
+        Log::create([
+            'id_utilisateur' => Auth::id(),
+            'action' => 'Suppression manager',
+            'details' => 'Manager supprimé : ' . $user->nom . ' ' . $user->prenom . ' (' . $user->email . ')',
+        ]);
         return redirect()->route('admin.managers.index')->with('success', 'Manager supprimé avec succès.');
     }
 }
