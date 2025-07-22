@@ -80,6 +80,20 @@ Route::middleware([
     Route::get('/actes/{id}/edit', [Acte_naissance::class, 'edit'])->name('acte.edit');
     Route::put('/actes/{id}', [Acte_naissance::class, 'update'])->name('acte.update');
     Route::delete('/actes/{id}', [Acte_naissance::class, 'destroy'])->name('acte.destroy');
+<<<<<<< HEAD
+=======
+    // Route::get('/acteCopies/create/{id}', [Acte_naissance::class, 'creates'])->name('acteCopies.create');
+    Route::get('/acteCopies/create/{id}', [Acte_naissance::class, 'creates'])->name('acteCopies.create');
+    Route::post('/acteCopies/store', [Acte_naissance::class, 'stores'])->name('acteCopies.store');
+        Route::get('/demandesTraiter', [Acte_naissance::class, 'listTraiter'])->name('listTraiter');
+        Route::get('/demandesEnattente', [Acte_naissance::class, 'listEnattente'])->name('listEnattente');
+        Route::get('/demandesRejeté', [Acte_naissance::class, 'listRejeté'])->name('listRejeté');
+        Route::get('/Naissances/volet', [Acte_naissance::class, 'listNaissancesVolet'])->name('volet');
+        Route::get('/Naissances/copie', [Acte_naissance::class, 'listNaissancesCopie'])->name('copie');
+
+
+    
+>>>>>>> 42068e3 (affichage des listes volet et acte de naissance copie)
 });
 // fin des routes pour le centre d'etat civil
 
