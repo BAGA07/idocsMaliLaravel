@@ -126,4 +126,7 @@ Route::get('/verifier-document/{token}', [App\Http\Controllers\VerificationContr
 
 Route::get('/acte/{id}/pdf', [App\Http\Controllers\Acte_naissance::class, 'downloadPdf'])->name('acte.pdf');
 
+// Route pour l'envoi de la demande à la mairie depuis l'hôpital
+Route::post('/hopital/demandes/envoyer/{id_volet}', [App\Http\Controllers\Hopital\DemandeController::class, 'envoyerDemande'])->name('hopital.demandes.envoyer');
+
 require __DIR__ . '/auth.php';

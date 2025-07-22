@@ -72,13 +72,23 @@
                 </thead>
                 <tbody>
                     @foreach($demandes as $demande)
+<<<<<<< HEAD
+=======
+                    {{-- @dd($demande->volet) --}}
+
+>>>>>>> 96da1a2 (test)
                     <tr>
                         <td class="px-4 py-2 border">{{ $demande->nom_complet }}</td>
                         <td class="px-4 py-2 border">
                             {{ $demande->volet ? $demande->volet->prenom_enfant . ' ' . $demande->volet->nom_enfant :
                             'N/A' }}
                         </td>
+<<<<<<< HEAD
                         <td class="px-4 py-2 border">{{ $demande->numero_volet_naissance }}</td>
+=======
+                        <td class="px-4 py-2 border"> {{ optional($demande->volet)->num_volet ?? 'N/A' }}
+                        </td>
+>>>>>>> 96da1a2 (test)
                         <td class="px-4 py-2 border">
                             @switch($demande->statut)
                             @case('Validé')
@@ -102,6 +112,7 @@
         </div>
     </div>
 
+<<<<<<< HEAD
     <!-- Liste des actes -->
     <div class="bg-white shadow rounded mb-6">
         <div class="border-b px-6 py-3 font-semibold">Liste des actes de naissance</div>
@@ -140,3 +151,7 @@
     </div>
 </div>
 @endsection
+=======
+
+    @endsection
+>>>>>>> 96da1a2 (test)

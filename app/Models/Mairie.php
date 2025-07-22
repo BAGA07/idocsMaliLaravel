@@ -67,4 +67,13 @@ class Mairie extends Model
             $q->where('nom_commune', 'like', "%{$commune}%");
         });
     }
+<<<<<<< HEAD
 }
+=======
+    public function Officier()
+    {
+        return $this->hasMany(Officier::class, 'id_mairie');
+    }
+}
+
+>>>>>>> 96da1a2 (test)
