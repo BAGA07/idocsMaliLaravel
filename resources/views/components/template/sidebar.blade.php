@@ -116,7 +116,7 @@
                         <i class="fa fa-chevron-down ml-auto text-xs group-open:rotate-180 transition-transform"></i>
                     </summary>
                     <ul class="ml-6 mt-1 space-y-1 text-white/90">
-                        <li><a href="{{ route('structure.list') }}" class="block px-2 py-1 hover:text-white">Liste des
+                        <li><a href="{{ route('admin.structures.index') }}" class="block px-2 py-1 hover:text-white">Liste des
                                 structures</a></li>
                         <li><a href="#" class="block px-2 py-1 hover:text-white">Ajouter une structure</a></li>
                     </ul>
