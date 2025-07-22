@@ -69,6 +69,21 @@
 
                 </details>
             </li>
+            <li>
+                <details class="group">
+                    <summary class="flex items-center p-2 rounded hover:bg-blue-700 cursor-pointer">
+                        <i class="fa fa-file-text-o w-5 mr-2 text-white"></i> Actes
+                        <i class="fa fa-chevron-down ml-auto text-xs group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <ul class="ml-6 mt-1 space-y-1 text-white/90">
+                        <li><a href="#" class="block px-2 py-1 hover:text-white">Toutes les actes</a></li>
+                        <li><a href="#" class="block px-2 py-1 hover:text-white">En attente de traitement</a></li>
+                        <li><a href="#" class="block px-2 py-1 hover:text-white">Actes Traitées</a></li>
+                        <li><a href="#" class="block px-2 py-1 hover:text-white">Rejetées</a></li>
+                    </ul>
+                </details>
+            </li>
+
             @endif
 
             {{-- Admin --}}
@@ -112,9 +127,21 @@
                         <i class="fa fa-chevron-down ml-auto text-xs group-open:rotate-180 transition-transform"></i>
                     </summary>
                     <ul class="ml-6 mt-1 space-y-1 text-white/90">
-                        <li><a href="#" class="block px-2 py-1 hover:text-white">Liste des structures</a></li>
+                        <li><a href="{{ route('admin.structures.index') }}" class="block px-2 py-1 hover:text-white">Liste des
+                                structures</a></li>
                         <li><a href="#" class="block px-2 py-1 hover:text-white">Ajouter une structure</a></li>
                     </ul>
+                </details>
+            </li>
+            <li>
+                <details class="group">
+                    <summary class="flex items-center p-2 rounded hover:bg-blue-700 cursor-pointer">
+                        <i class="fa fa-bar-chart w-5 mr-2 text-white"></i> Rapport
+                    </summary>
+                    {{-- <ul class="ml-6 mt-1 space-y-1 text-white/90">
+                        <li><a href="#" class="block px-2 py-1 hover:text-white">Liste des structures</a></li>
+                        <li><a href="#" class="block px-2 py-1 hover:text-white">Ajouter une structure</a></li>
+                    </ul> --}}
                 </details>
             </li>
             @endif

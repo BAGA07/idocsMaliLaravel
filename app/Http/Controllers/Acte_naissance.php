@@ -12,14 +12,21 @@ use Illuminate\Http\Request;
 use App\Models\VoletDeclaration;
 use App\Models\Demande;
 use App\Models\Officier;
+use Illuminate\Support\Str;
+use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Log;
+use Illuminate\Support\Facades\Auth;
 
 class Acte_naissance extends Controller
 {
+
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
+
         //  $statut = $request->input('statut');  
  
         // $demandes = Demande::with('volet')->where('statut', 'En attente')->get();
@@ -42,11 +49,25 @@ class Acte_naissance extends Controller
 
 
 
+        // Statistiques
+        $total = VoletDeclaration::count();
+        $todayCount = VoletDeclaration::whereDate('created_at', $today)->count();
+        $weekCount = VoletDeclaration::whereBetween('created_at', [$startOfWeek, $endOfWeek])->count();
+        $monthCount = VoletDeclaration::whereMonth('created_at', Carbon::now()->month)->count();
+        // Récupérer la liste des actes de naissance
+        $actesNaissance = Acte::with('declarant')->latest()->get();
+        return view('agent_mairie.dasboard', compact('total', 'todayCount', 'weekCount', 'monthCount', 'demandes', 'actesNaissance'));
 
 
-    return view('agent_mairie.dasboard', compact( 'total', 'todayCount', 'weekCount', 'monthCount','demandes','demandesCopies'));
-       
 
+        // Statistiques
+        $total = Demande::count();
+        $todayCount = Demande::whereDate('created_at', $today)->count();
+        $weekCount = Demande::whereBetween('created_at', [$startOfWeek, $endOfWeek])->count();
+        $monthCount = Demande::whereMonth('created_at', Carbon::now()->month)->count();
+        // Récupérer la liste des actes de naissance
+        $actesNaissance = Acte::with('declarant')->latest()->get();
+        return view('agent_mairie.dasboard', compact('declarations', 'total', 'todayCount', 'weekCount', 'monthCount', 'demandes', 'actesNaissance'));
     }
 
     /**
@@ -69,6 +90,7 @@ class Acte_naissance extends Controller
         return view('agent_mairie.naissances.listRejeté',compact('demandes','demandesCopies'));
     }
     public function create($id)
+
 {
     $demande = Demande::with('volet.declarant','volet.hopital')->findOrFail($id);
     $communes = Commune::all();
@@ -77,8 +99,7 @@ class Acte_naissance extends Controller
    
 
 
-   
-    return view('agent_mairie.naissances.create', compact('demande', 'communes', 'officiers','declarants'));
+
 
 }
    public function creates($id){
@@ -171,6 +192,7 @@ public function stores(Request $request){
     $acte->id_commune = $request->id_commune;
    $acte->id_declarant = $declarant->id_declarant;
 
+
     $acte->date_enregistrement_acte = now();
 // $acte->id_volet = $demande->volet->id_volet;
 
@@ -192,22 +214,22 @@ public function stores(Request $request){
     public function store(Request $request)
     {
         // Récupérer la demande avec son volet et déclarant
-    $demande = Demande::with('volet')->findOrFail($request->demande_id);
+        $demande = Demande::with('volet')->findOrFail($request->demande_id);
 
-   $lastNum = Acte::max('num_acte');
+        $lastNum = Acte::max('num_acte');
 
-    $nextNum = $lastNum ? $lastNum + 1 : 1;
+        $nextNum = $lastNum ? $lastNum + 1 : 1;
 
-    // Créer l’acte avec correspondance précise
-    $acte = new Acte();
-    $acte->num_acte = $nextNum;
+        // Créer l’acte avec correspondance précise
+        $acte = new Acte();
+        $acte->num_acte = $nextNum;
 
-    $acte->date_naissance_enfant = $request->date_naissance;
-    $acte->lieu_naissance_enfant = $request->lieu_naissance;
-    $acte->sexe_enfant = $request->sexe_enfant;
+        $acte->date_naissance_enfant = $request->date_naissance;
+        $acte->lieu_naissance_enfant = $request->lieu_naissance;
+        $acte->sexe_enfant = $request->sexe_enfant;
 
-    $acte->prenom = $request->prenom_enfant;
-    $acte->nom = $request->nom_enfant;
+        $acte->prenom = $request->prenom_enfant;
+        $acte->nom = $request->nom_enfant;
 
     $acte->prenom_pere = $request->prenom_pere;
     $acte->nom_pere = $request->nom_pere;
@@ -229,17 +251,26 @@ public function stores(Request $request){
     $acte->date_enregistrement_acte = now();
 // $acte->id_volet = $demande->volet->id_volet;
 
-    $acte->save();
 
-    // Mettre à jour le statut de la demande
-    $demande = Demande::find($request->demande_id);
-    $demande->statut = 'Validé';
-    $demande->save();
+        $acte->date_enregistrement_acte = now();
+        // $acte->id_volet = $demande->volet->id_volet;
 
-    
+        $acte->save();
+        // Log création acte
+        Log::create([
+            'id_utilisateur' => Auth::id(),
+            'action' => 'Création acte',
+            'details' => 'Acte créé pour ' . $acte->nom . ' ' . $acte->prenom . ' (N°' . $acte->num_acte . ')',
+        ]);
 
-    return redirect()->route('agent.dashboard')->with('success', 'Acte de naissance créé avec succès.');
+        // Mettre à jour le statut de la demande
+        $demande = Demande::find($request->demande_id);
+        $demande->statut = 'Validé';
+        $demande->save();
 
+
+
+        return redirect()->route('agent.dashboard')->with('success', 'Acte de naissance créé avec succès.');
     }
 
     /**
@@ -247,9 +278,9 @@ public function stores(Request $request){
      */
     public function show(string $id)
     {
-         $acte = Acte::with(['demande.volet','Commune', 'declarant', 'officier.mairie'])->findOrFail($id);
+        $acte = Acte::with(['demande.volet', 'Commune', 'declarant', 'officier.mairie'])->findOrFail($id);
 
-    return view('agent_mairie.naissances.show', compact('acte'));
+        return view('agent_mairie.naissances.show', compact('acte'));
     }
 
     /**
@@ -258,11 +289,11 @@ public function stores(Request $request){
     public function edit(string $id)
     {
         $acte = Acte::findOrFail($id);
-    $communes = Commune::all();
-    $officiers = Officier::all();
-    $declarants = Declarant::all();
+        $communes = Commune::all();
+        $officiers = Officier::all();
+        $declarants = Declarant::all();
 
-    return view('agent_mairie.naissances.edit', compact('acte', 'communes', 'officiers', 'declarants'));
+        return view('agent_mairie.naissances.edit', compact('acte', 'communes', 'officiers', 'declarants'));
     }
 
     /**
@@ -271,50 +302,49 @@ public function stores(Request $request){
     public function update(Request $request, string $id)
     {
 
-$request->validate([
-        'prenom_enfant' => 'required|string',
-        'nom_enfant' => 'required|string',
-        'date_naissance' => 'required|date',
-        'lieu_naissance' => 'required|string',
-        'sexe_enfant' => 'required|string',
-        'prenom_pere' => 'nullable|string',
-        'nom_pere' => 'nullable|string',
-        'profession_pere' => 'nullable|string',
-        'domicile_pere' => 'nullable|string',
-        'prenom_mere' => 'nullable|string',
-        'nom_mere' => 'nullable|string',
-        'profession_mere' => 'nullable|string',
-        'domicile_mere' => 'nullable|string',
-        'id_officier' => 'required|integer',
-        'id_commune' => 'required|integer',
-    ]);
+        $request->validate([
+            'prenom_enfant' => 'required|string',
+            'nom_enfant' => 'required|string',
+            'date_naissance' => 'required|date',
+            'lieu_naissance' => 'required|string',
+            'sexe_enfant' => 'required|string',
+            'prenom_pere' => 'nullable|string',
+            'nom_pere' => 'nullable|string',
+            'profession_pere' => 'nullable|string',
+            'domicile_pere' => 'nullable|string',
+            'prenom_mere' => 'nullable|string',
+            'nom_mere' => 'nullable|string',
+            'profession_mere' => 'nullable|string',
+            'domicile_mere' => 'nullable|string',
+            'id_officier' => 'required|integer',
+            'id_commune' => 'required|integer',
+        ]);
 
-    $acte = Acte::findOrFail($id);
+        $acte = Acte::findOrFail($id);
 
-    $acte->prenom = $request->prenom_enfant;
-    $acte->nom = $request->nom_enfant;
-    $acte->date_naissance_enfant = $request->date_naissance;
-    $acte->lieu_naissance_enfant = $request->lieu_naissance;
-    $acte->sexe_enfant = $request->sexe_enfant;
+        $acte->prenom = $request->prenom_enfant;
+        $acte->nom = $request->nom_enfant;
+        $acte->date_naissance_enfant = $request->date_naissance;
+        $acte->lieu_naissance_enfant = $request->lieu_naissance;
+        $acte->sexe_enfant = $request->sexe_enfant;
 
-    $acte->prenom_pere = $request->prenom_pere;
-    $acte->nom_pere = $request->nom_pere;
-    $acte->proffesion_pere = $request->profession_pere;
-    $acte->domicile_pere = $request->domicile_pere;
+        $acte->prenom_pere = $request->prenom_pere;
+        $acte->nom_pere = $request->nom_pere;
+        $acte->proffesion_pere = $request->profession_pere;
+        $acte->domicile_pere = $request->domicile_pere;
 
-    $acte->prenom_mere = $request->prenom_mere;
-    $acte->nom_mere = $request->nom_mere;
-    $acte->proffesion_mere = $request->profession_mere;
-    $acte->domicile_mere = $request->domicile_mere;
+        $acte->prenom_mere = $request->prenom_mere;
+        $acte->nom_mere = $request->nom_mere;
+        $acte->proffesion_mere = $request->profession_mere;
+        $acte->domicile_mere = $request->domicile_mere;
 
-    $acte->id_officier = $request->id_officier;
-    $acte->id_commune = $request->id_commune;
+        $acte->id_officier = $request->id_officier;
+        $acte->id_commune = $request->id_commune;
 
-    $acte->save();
-    
+        $acte->save();
 
-    return redirect()->route('agent.dashboard')->with('success', 'Acte de naissance modifié avec succès.');
 
+        return redirect()->route('agent.dashboard')->with('success', 'Acte de naissance modifié avec succès.');
     }
 
     /**
@@ -324,7 +354,21 @@ $request->validate([
     {
         $acte = Acte::findOrFail($id);
         $acte->delete();
+        // Log suppression acte
+        Log::create([
+            'id_utilisateur' => Auth::id(),
+            'action' => 'Suppression acte',
+            'details' => 'Acte supprimé pour ' . $acte->nom . ' ' . $acte->prenom . ' (N°' . $acte->num_acte . ')',
+        ]);
 
-    return redirect()->route('agent.dashboard')->with('success', 'Acte de naissance supprimé avec succès.');
+        return redirect()->route('agent.dashboard')->with('success', 'Acte de naissance supprimé avec succès.');
+    }
+
+    public function downloadPdf($id)
+    {
+        $acte = \App\Models\Acte::with(['Commune', 'declarant', 'officier'])->findOrFail($id);
+        $pdf = Pdf::loadView('agent_mairie.naissances.pdf', compact('acte'));
+        $filename = 'acte_naissance_' . $acte->num_acte . '.pdf';
+        return $pdf->download($filename);
     }
 }

@@ -21,14 +21,19 @@ class DemandeController extends Controller
             return redirect()->back()->with('error', 'Une demande a déjà été envoyée pour ce volet.');
         }
 
+
         Demande::create([
             'id_volet' => $id_volet,
             'numero_volet_naissance' => $declaration->num_volet,
             'nom_complet' => $declarant->nom_declarant . ' ' . $declarant->prenom_declarant,
-            'type_document' => 'Copie intégrale',
+
+            'nom_enfant' => $declaration->nom_enfant,
+            'prenom_enfant' => $declaration->prenom_enfant,
+            'email' => $declarant->email,
+            'type_document' => 'Extrait original',
             'statut' => 'En attente',
-            'nombre_copie' => 0,
-            'message_hopital' => "Demande d'acte de naissance initiée par l'hôpital pour le volet N° {$declaration->id_volet}",
+            'nombre_copies' => 0,
+            'message_hopital' => "Demande d'acte de naissance initiée par l'hôpital pour le volet N° {$declaration->num_volet}",
         ]);
 
         return redirect()->back()->with('success', 'Demande envoyée avec succès à la mairie.');

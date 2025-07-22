@@ -10,6 +10,7 @@ class Demande extends Model
     use HasFactory;
 
     protected $fillable = [
+
            'nom_complet',
     'email',
     'telephone',
@@ -23,17 +24,22 @@ class Demande extends Model
     'prenom_personne_concernee',
     'date_evenement',
     'lieu_evenement',
+
     ];
-     
-    public function PieceJointe () {
-         return $this->hasMany(PieceJointe::class);
+
+    public function PieceJointe()
+    {
+        return $this->hasMany(PieceJointe::class);
     }
+
 
     public function acte()
     {
         return $this->hasOne(Acte::class,'id_demande');
+
     }
-    public function volet(){
+    public function volet()
+    {
 
         return $this->belongsTo(VoletDeclaration::class, 'id_volet');
     }

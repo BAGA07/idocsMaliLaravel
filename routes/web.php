@@ -111,9 +111,16 @@ Route::middleware('auth')->group(function () {
 
 // Route pour l'administration des managers
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
-    Route::get('/dashboard', fn() => view('admin.dashboard'))->name('admin.dashboard');
+
+    Route::get('/dashboard', function () {
+        return view('admin.dashboard');
+    })->name('admin.dashboard');
+
     Route::get('/managers/structureList', [AdminManagerController::class, 'structureList'])->name('structure.list');
     Route::resource('/managers', AdminManagerController::class);
+
+    // Route pour la gestion des structures
+    Route::get('/structures', [App\Http\Controllers\Admin\StructureController::class, 'index'])->name('admin.structures.index');
 });
 
 Route::post('/declaration/send-notification/{id}', [App\Http\Controllers\DeclarationController::class, 'sendNotification'])->name('declaration.sendNotification');
@@ -121,8 +128,10 @@ Route::post('/declaration/send-notification/{id}', [App\Http\Controllers\Declara
 Route::post('/payer', [App\Http\Controllers\PaiementController::class, 'payer'])->name('payer');
 Route::get('/paiement/confirmation', [PaiementController::class, 'confirmation'])->name('paiement.confirmation');
 
+Route::get('/verifier-document/{token}', [App\Http\Controllers\VerificationController::class, 'verifier'])->name('verifier.document');
 
 //Route::get('/dashboard-agent', [Acte_naissance::class, 'index'])->name('agent_mairie.dasboard');
 
+Route::get('/acte/{id}/pdf', [App\Http\Controllers\Acte_naissance::class, 'downloadPdf'])->name('acte.pdf');
 
 require __DIR__ . '/auth.php';

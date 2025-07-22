@@ -114,7 +114,7 @@
             </li>
 
             <li class="md:ml-4">
-              <a href="{{ route('demande.choix_type') }}"
+              <a href="{{ route('demande.copie_extrait.create') }}"
                 class="text-white bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 md:px-5 md:py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                 Demander un Acte
               </a>
@@ -151,7 +151,7 @@
               <li><a href="{{ route('presentation.la_demarche') }}"
                   class="text-blue-200 hover:text-white transition duration-200 text-sm">La Démarche</a></li>
               {{-- Correction : 'demander_acte' n'était pas défini, utilisation de 'choix_type' --}}
-              <li><a href="{{ route('demande.choix_type') }}"
+              <li><a href="{{ route('demande.copie_extrait.create') }}"
                   class="text-blue-200 hover:text-white transition duration-200 text-sm">Demander un Acte</a></li>
               <li><a href="{{ route('presentation.suivre_demande') }}"
                   class="text-blue-200 hover:text-white transition duration-200 text-sm">Suivre ma Demande</a></li>
