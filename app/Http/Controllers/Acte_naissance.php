@@ -20,13 +20,13 @@ use Illuminate\Support\Facades\Auth;
 class Acte_naissance extends Controller
 {
 
-    
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $demandes = Demande::with('volet')->where('statut', 'en attente')->get();
+        $demandes = Demande::with('volet')->get();
 
 
         $today = Carbon::today();
@@ -34,7 +34,18 @@ class Acte_naissance extends Controller
         $endOfWeek = Carbon::now()->endOfWeek();
 
         // Toutes les déclarations avec relations
+
         $declarations = VoletDeclaration::with('hopital', 'declarant')->latest()->get();
+
+
+        // Statistiques
+        $total = VoletDeclaration::count();
+        $todayCount = VoletDeclaration::whereDate('created_at', $today)->count();
+        $weekCount = VoletDeclaration::whereBetween('created_at', [$startOfWeek, $endOfWeek])->count();
+        $monthCount = VoletDeclaration::whereMonth('created_at', Carbon::now()->month)->count();
+        // Récupérer la liste des actes de naissance
+        $actesNaissance = Acte::with('declarant')->latest()->get();
+        return view('agent_mairie.dasboard', compact('total', 'todayCount', 'weekCount', 'monthCount', 'demandes', 'actesNaissance'));
 
 
         // Statistiques
@@ -79,7 +90,6 @@ class Acte_naissance extends Controller
 
         $acte->date_naissance_enfant = $request->date_naissance;
         $acte->lieu_naissance_enfant = $request->lieu_naissance;
-        $acte->heure_naissance = $request->heure_naissance;
         $acte->sexe_enfant = $request->sexe_enfant;
 
         $acte->prenom = $request->prenom_enfant;
@@ -87,20 +97,21 @@ class Acte_naissance extends Controller
 
         $acte->prenom_pere = $request->prenom_pere;
         $acte->nom_pere = $request->nom_pere;
-        $acte->profession_pere = $request->profession_pere;
+        $acte->proffesion_pere = $request->profession_pere;
         $acte->domicile_pere = $request->domicile_pere;
 
         $acte->prenom_mere = $request->prenom_mere;
         $acte->nom_mere = $request->nom_mere;
-        $acte->profession_mere = $request->profession_mere;
+        $acte->proffesion_mere = $request->profession_mere;
         $acte->domicile_mere = $request->domicile_mere;
         $acte->id_declarant = $demande->volet->id_declarant ?? null;
         //$acte->heure_naissance = $demande->volet->heure_naissance ?? null;  
         $acte->id_demande = $request->demande_id;
         $acte->id_officier = $request->id_officier;
         $acte->id_commune = $request->id_commune;
+
         $acte->date_enregistrement_acte = now();
-        $acte->token = Str::uuid();
+        // $acte->id_volet = $demande->volet->id_volet;
 
         $acte->save();
         // Log création acte
@@ -125,7 +136,7 @@ class Acte_naissance extends Controller
      */
     public function show(string $id)
     {
-        $acte = Acte::with(['Commune', 'declarant', 'officier'])->findOrFail($id);
+        $acte = Acte::with(['demande.volet', 'Commune', 'declarant', 'officier.mairie'])->findOrFail($id);
 
         return view('agent_mairie.naissances.show', compact('acte'));
     }
@@ -135,11 +146,10 @@ class Acte_naissance extends Controller
      */
     public function edit(string $id)
     {
-        $acte = Acte::with(['Commune', 'Officier', 'declarant'])->findOrFail($id);
+        $acte = Acte::findOrFail($id);
         $communes = Commune::all();
         $officiers = Officier::all();
         $declarants = Declarant::all();
-        // $mairies = Mairie::all();
 
         return view('agent_mairie.naissances.edit', compact('acte', 'communes', 'officiers', 'declarants'));
     }
@@ -151,10 +161,10 @@ class Acte_naissance extends Controller
     {
 
         $request->validate([
-            'prenom' => 'required|string',
-            'nom' => 'required|string',
-            'date_naissance_enfant' => 'required|date',
-            'lieu_naissance_enfant' => 'required|string',
+            'prenom_enfant' => 'required|string',
+            'nom_enfant' => 'required|string',
+            'date_naissance' => 'required|date',
+            'lieu_naissance' => 'required|string',
             'sexe_enfant' => 'required|string',
             'prenom_pere' => 'nullable|string',
             'nom_pere' => 'nullable|string',
@@ -169,22 +179,21 @@ class Acte_naissance extends Controller
         ]);
 
         $acte = Acte::findOrFail($id);
-        // $acte->update($request->all());
-        $acte->prenom = $request->prenom;
-        $acte->nom = $request->nom;
-        $acte->date_naissance_enfant = $request->date_naissance_enfant;
-        $acte->lieu_naissance_enfant = $request->lieu_naissance_enfant;
-        $acte->heure_naissance = $request->heure_naissance;
+
+        $acte->prenom = $request->prenom_enfant;
+        $acte->nom = $request->nom_enfant;
+        $acte->date_naissance_enfant = $request->date_naissance;
+        $acte->lieu_naissance_enfant = $request->lieu_naissance;
         $acte->sexe_enfant = $request->sexe_enfant;
 
         $acte->prenom_pere = $request->prenom_pere;
         $acte->nom_pere = $request->nom_pere;
-        $acte->profession_pere = $request->profession_pere;
+        $acte->proffesion_pere = $request->profession_pere;
         $acte->domicile_pere = $request->domicile_pere;
 
         $acte->prenom_mere = $request->prenom_mere;
         $acte->nom_mere = $request->nom_mere;
-        $acte->profession_mere = $request->profession_mere;
+        $acte->proffesion_mere = $request->profession_mere;
         $acte->domicile_mere = $request->domicile_mere;
 
         $acte->id_officier = $request->id_officier;

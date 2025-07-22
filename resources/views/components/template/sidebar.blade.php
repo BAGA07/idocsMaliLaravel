@@ -78,11 +78,6 @@
             {{-- Admin --}}
             @if(Auth::user()->role === 'admin')
             <li>
-                <a href="{{ route('admin.dashboard') }}">
-                    <i class="fa fa-dashboard"></i> Tableau de bord
-                </a>
-            </li>
-            <li>
                 <details class="group">
                     <summary class="flex items-center p-2 rounded hover:bg-blue-700 cursor-pointer">
                         <i class="fa fa-users w-5 mr-2 text-white"></i> Managers

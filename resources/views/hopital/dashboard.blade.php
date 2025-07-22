@@ -108,18 +108,17 @@ use Illuminate\Pagination\Paginator;
                                 class="text-red-600 hover:text-red-800 mx-1" title="Supprimer">
                                 <i class="fa fa-trash"></i>
                             </button>
-                            <!--Envoyer le Formulaire sous forme de notification au declarant -->
-                            <button type="button" class="btn btn-sm btn-outline-success"
-                                onclick="event.preventDefault(); document.getElementById('send-form-{{ $declaration->id_volet }}').submit();"
-                                title="Envoyer la notification">
-                                <i class="fa fa-paper-plane"></i>
-                            </button>
-                            <!--ici je vais ajouter un formulaire cache pour envoyer le mail et le message au declarant-->
-                            <form id="send-form-{{ $declaration->id_volet }}"
-                                action="{{ route('declaration.sendNotification', $declaration->id_volet) }}"
-                                method="POST" style="display: none;">
-                                @csrf
-                            </form>
+                             <!--Envoyer le Formulaire sous forme de notification au declarant -->
+                                        <button type="button" class="btn btn-sm btn-outline-success"
+                                            onclick="event.preventDefault(); document.getElementById('send-form-{{ $declaration->id_volet }}').submit();"
+                                            title="Envoyer la notification">
+                                            <i class="fa fa-paper-plane"></i>
+                                        </button>
+                                        <!--ici je vais ajouter un formulaire cache pour envoyer le mail et le message au declarant-->
+                                        <form id="send-form-{{ $declaration->id_volet }}"
+                                            action="{{ route('declaration.sendNotification', $declaration->id_volet) }}"                                            method="POST" style="display: none;">
+                                            @csrf
+                                        </form>
                         </td>
                     </tr>
                     @empty
@@ -141,5 +140,26 @@ use Illuminate\Pagination\Paginator;
         <div class="bg-white p-6 rounded shadow">Graphique ici (optionnel)</div>
         <div class="bg-white p-6 rounded shadow">Activité récente ici (optionnel)</div>
     </div>
-</div>
+</div> {{-- Fin du div avec mx-auto et max-w --}}
+
+{{-- SweetAlert2 pour la confirmation de suppression --}}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function confirmDelete(id) {
+        Swal.fire({
+            title: 'Êtes-vous sûr(e)?',
+            text: "Vous ne pourrez pas revenir en arrière!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Oui, supprimer!',
+            cancelButtonText: 'Annuler'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('delete-form-' + id).submit();
+            }
+        });
+    }
+</script>
 @endsection

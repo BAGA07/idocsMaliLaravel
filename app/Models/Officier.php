@@ -20,8 +20,13 @@ class Officier extends Model
     public function Acte(){
         return $this->hasMany(Acte::class);
     }
-    public function Commune()
-    {
-        return $this->belongsTo(Commune::class);
-    }
+    // public function Commune()
+    // {
+    //     return $this->belongsTo(Commune::class);
+    // }
+    public function Mairie()
+{
+    return $this->belongsTo(Mairie::class, 'id_mairie');
+}
+
 }

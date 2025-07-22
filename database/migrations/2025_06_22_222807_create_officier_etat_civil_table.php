@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('nom');
             $table->string('prenom');
             $table->string('profession');
-            $table->foreignId('id_commune')->constrained('communes')->onDelete('cascade');
+            $table->foreignId('id_mairie')->constrained('mairie')->onDelete('cascade');
             $table->timestamps();
         });
     }
