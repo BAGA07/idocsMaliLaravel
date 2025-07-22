@@ -37,8 +37,6 @@ class Acte_naissance extends Controller
     $monthCount = Demande::whereMonth('created_at', Carbon::now()->month)->count();
 
  
-    $actesNaissance = Acte::with('declarant')->latest()->get();
-    $actesCopies = Acte::with('declarant')->latest()->get();
 
 
 
@@ -52,6 +50,20 @@ class Acte_naissance extends Controller
     /**
      * Show the form for creating a new resource.
      */
+    public function listNaissancesVolet(){
+        
+    $actesNaissance = Acte::with('declarant')->latest()->get();
+    // $actesCopies = Acte::with('declarant')->latest()->get();
+    return view('agent_mairie.naissances.volets',compact('actesNaissance'));
+
+    }
+    public function listNaissancesCopie(){
+        
+    // $actesNaissance = Acte::with('declarant')->latest()->get();
+    $actesCopies = Demande::with('acte.declarant')->where('nombre_copie','>',0)    ->whereHas('acte')->latest()->get();
+    return view('agent_mairie.naissances.copies',compact('actesCopies'));
+
+    }
     public function listTraiter(){
          $demandes = Demande::with('volet')->Where('statut','Validé')->get();
         $demandesCopies = Demande::with('acte')->Where('statut','Validé')->get();
@@ -60,7 +72,7 @@ class Acte_naissance extends Controller
     }
      public function listEnattente(){
         $demandes = Demande::with('volet')->where('statut','En attente')->get();
-        $demandesCopies = Demande::with('acte')->where('statut','En attente')->get();
+        $demandesCopies = Demande::with('acte')->where('statut','En attente')->where('nombre_copie','>',0)->get();
         return view('agent_mairie.naissances.listEnattente',compact('demandes','demandesCopies'));
     }
      public function listRejeté(){
@@ -183,7 +195,7 @@ public function stores(Request $request){
 
     
 
-    return redirect()->route('agent.dashboard')->with('success', 'Acte de naissance créé avec succès.');
+    return redirect()->route('copie')->with('success', 'Acte de naissance créé avec succès.');
 
 }
     /**
@@ -238,7 +250,7 @@ public function stores(Request $request){
 
     
 
-    return redirect()->route('agent.dashboard')->with('success', 'Acte de naissance créé avec succès.');
+    return redirect()->route('volet')->with('success', 'Acte de naissance créé avec succès.');
 
     }
 

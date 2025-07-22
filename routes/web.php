@@ -86,6 +86,8 @@ Route::middleware([
         Route::get('/demandesTraiter', [Acte_naissance::class, 'listTraiter'])->name('listTraiter');
         Route::get('/demandesEnattente', [Acte_naissance::class, 'listEnattente'])->name('listEnattente');
         Route::get('/demandesRejeté', [Acte_naissance::class, 'listRejeté'])->name('listRejeté');
+        Route::get('/Naissances/volet', [Acte_naissance::class, 'listNaissancesVolet'])->name('volet');
+        Route::get('/Naissances/copie', [Acte_naissance::class, 'listNaissancesCopie'])->name('copie');
 
 
     

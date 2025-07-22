@@ -34,10 +34,11 @@ class DemandeSeeder extends Seeder
                 'statut' => fake()->randomElement(['En attente', 'En cours de traitement', 'Validé', 'Rejeté']),
                 'message_hopital' => fake()->optional()->sentence(),
                 'remarque_mairie' => fake()->optional()->sentence(),
-                'nombre_copie'=>rand(1, 5),
+                'nombre_copie'=>rand(0, 5),
                                 'num_acte'=>rand(1, 5),
-
-        'id_volet' => fake()->randomElement($volets),
+'id_volet' => $volet->id_volet, 
+//ce que j'ai commente dans la migrations
+        // 'id_volet' => fake()->randomElement($volets),
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);

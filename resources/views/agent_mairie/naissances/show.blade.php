@@ -58,7 +58,7 @@
 
     <!-- Infos déclarant -->
     <div class="border border-black mt-3 p-2">
-        <p><strong>15. Déclarant :</strong> {{ $acte->declarant->nom_declarant ?? '...' }}</p>
+        <p><strong>15. Déclarant :</strong> {{ $acte->declarant->prenom_declarant ?? '...' }} {{ $acte->declarant->nom_declarant ?? '...' }}  </p>
         <p><strong>16. Âge :</strong> {{ $acte->declarant->age_declarant ?? '...' }} ans</p>
         <p><strong>17. Domicile :</strong> {{ $acte->declarant->domicile_declarant ?? '...' }}</p>
         <p><strong>18. Profession :</strong> {{ $acte->declarant->profession_declarant ?? '...' }}</p>
@@ -72,7 +72,7 @@
 
     <!-- Officier état civil -->
     <div class="border border-black mt-3 p-2">
-        <p><strong>21. Officier d'état civil :</strong> {{ $acte->officier->nom ?? '...' }}</p>
+        <p><strong>21. Officier d'état civil :</strong> {{ $acte->officier->nom ?? '...' }}{{ $acte->officier->prenom ?? '...' }}</p>
         {{-- {{ $acte->officier->Mairie->nom_mairie ?? '...' }} --}}
         <p><strong>22. Qualité :</strong> {{ $acte->officier->profession ?? '...' }} </p>
         <p><strong>23. Date :</strong> {{ \Carbon\Carbon::parse($acte->date_enregistrement_acte)->format('d/m/Y') }}</p>
