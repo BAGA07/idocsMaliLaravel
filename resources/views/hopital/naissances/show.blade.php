@@ -396,5 +396,9 @@ modal.querySelector('form')?.addEventListener('submit', function(e) {
   btn.disabled = true;
   btn.innerHTML = 'Envoi...';
 });
+// Ajout : désactiver le bouton d'ouverture du modal après soumission
+modal.querySelector('form')?.addEventListener('submit', function(e) {
+  document.getElementById('openModalBtn').disabled = true;
+});
 </script>
 @endsection

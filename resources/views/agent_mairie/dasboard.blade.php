@@ -1,4 +1,3 @@
-
 @extends('layouts.app')
 @section('titre')Modification du profile @endsection
 @section('content')
@@ -27,7 +26,7 @@
 
 
     <!-- Tableau des déclarations -->
-{{-- 
+    {{--
     <div class="bg-white shadow rounded mb-6">
         <div class="border-b px-6 py-3 font-semibold">Volets de déclaration</div>
         <div class="overflow-x-auto">
@@ -57,7 +56,7 @@
                 </tbody>
             </table>
         </div>
-    </div>  --}}
+    </div> --}}
     <!-- Tableau des demandes en attente pour copie de extrait -->
     <div class="bg-white shadow rounded mb-6">
         <div class="border-b px-6 py-3 font-semibold">Demandes pour copie extrait</div>
@@ -75,18 +74,20 @@
                     </tr>
                 </thead>
                 <tbody>
+
+                    {{-- @dd($demandesCopies) --}}
                     @foreach($demandesCopies as $demande)
-                        {{-- @dd($demande->volet) --}}
+                    {{-- @dd($demande->volet) --}}
 
                     <tr>
                         <td class="px-4 py-2 border">{{ $demande->nom_complet }}</td>
                         <td class="px-4 py-2 border">
-                            {{  $demande->prenom_enfant}} {{$demande->nom_enfant}}
+                            {{ $demande->prenom_enfant}} {{$demande->nom_enfant}}
                         </td>
-                        
+
                         <td class="px-4 py-2 border">{{ $demande->num_acte }}</td>
                         <td class="px-4 py-2 border">{{ $demande->nombre_copie }}</td>
-                        
+
                         <td class="px-4 py-2 border">
                             @switch($demande->statut)
                             @case('Validé')
@@ -99,21 +100,22 @@
                             <span class="bg-yellow-200 text-yellow-800 px-2 py-1 rounded">{{ $demande->statut }}</span>
                             @endswitch
                         </td>
-                
+
 
                         {{-- <td class="px-4 py-2 border">
-                            <a href="{{ route('acteCopies.create',$demande->id) }}"
-                            {{-- <a href="{{ route('acteCopies.create.', $demande->acte->id) }}" --}}
-
-                                {{-- class="relative z-10 inline-block bg-blue-600 text-white text-xs px-3 py-1 rounded hover:bg-blue-700">Traiter</a>  --}}
-                        {{-- </td>
+                            <a href="{{ route('acteCopies.create',$demande->id) }}" {{-- <a
+                                href="{{ route('acteCopies.create.', $demande->acte->id) }}" --}} {{--
+                                class="relative z-10 inline-block bg-blue-600 text-white text-xs px-3 py-1 rounded hover:bg-blue-700">Traiter</a>
+                            --}}
+                            {{--
+                        </td>
                         <td class="px-4 py-2 border">{{$demande->id}}</td> --}}
                     </tr>
                     @endforeach
                 </tbody>
             </table>
         </div>
-    </div>  
+    </div>
 
     <!-- Tableau des demandes en attente -->
     <div class="bg-white shadow rounded mb-6">
@@ -131,7 +133,7 @@
                 </thead>
                 <tbody>
                     @foreach($demandes as $demande)
-                        {{-- @dd($demande->volet) --}}
+                    {{-- @dd($demande->volet) --}}
 
                     <tr>
                         <td class="px-4 py-2 border">{{ $demande->nom_complet }}</td>
@@ -139,8 +141,8 @@
                             {{ $demande->volet ? $demande->volet->prenom_enfant . ' ' . $demande->volet->nom_enfant :
                             'N/A' }}
                         </td>
-                        <td class="px-4 py-2 border">  {{ optional($demande->volet)->num_volet ?? 'N/A' }}
-</td>
+                        <td class="px-4 py-2 border"> {{ optional($demande->volet)->num_volet ?? 'N/A' }}
+                        </td>
                         <td class="px-4 py-2 border">
                             @switch($demande->statut)
                             @case('Validé')
@@ -164,5 +166,5 @@
         </div>
     </div>
 
-    
-@endsection
+
+    @endsection
