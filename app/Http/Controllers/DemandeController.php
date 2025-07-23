@@ -10,6 +10,7 @@ use App\Models\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Acte;
 
 class DemandeController extends Controller
 {
@@ -134,48 +135,58 @@ class DemandeController extends Controller
      */
     public function storeCopieExtrait(Request $request)
     {
+$validatedData = $request->validate([
+        'nom_demandeur' => 'required|string|max:255',
+        'email_demandeur' => 'required|email|max:255',
+        'telephone_demandeur' => 'required|string|max:20',
+        'nom_personne_acte' => 'required|string|max:255',
+        'prenom_personne_acte' => 'required|string|max:255',
+        'date_evenement_acte' => 'required|date',
+        'nombre_copie' => 'required|integer',
+        'num_acte' => 'required|string',
+        'lieu_evenement_acte' => 'required|string|max:255',
+        'type_acte_demande' => 'required|string|max:255',
+        'justificatif_copie' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+        'informations_complementaires_copie' => 'nullable|string',
+    ]);
 
-        $validatedData = $request->validate([
-            'nom_demandeur' => 'required|string|max:255',
-            'email_demandeur' => 'required|email|max:255',
-            'telephone_demandeur' => 'required|string|max:20',
-            'nom_personne_acte' => 'required|string|max:255',
-            'prenom_personne_acte' => 'required|string|max:255',
-            'date_evenement_acte' => 'required|date',
-            'nombre_copie'=>"required",
-            'num_acte'=>'required',
-            'lieu_evenement_acte' => 'required|string|max:255',
-            'type_acte_demande' => 'required|string|max:255',
-            'justificatif_copie' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+    // Vérifie l'existence de l'acte dans la base
+    $acteExiste = Acte::where('numero_acte', $validatedData['num_acte'])->exists();
 
-            'informations_complementaires_copie' => 'nullable|string',
-        ]);
+    // if (!$acteExiste) {
+    //     return back()->withErrors([
+    //         'num_acte' => ' Ce numéro d’acte n’existe pas dans les registres.',
+    //     ])->withInput();
+    // }
 
-        $filePath = null;
-        if ($request->hasFile('justificatif_copie')) {
-            $filePath = $request->file('justificatif_copie')->store('justificatifs_copie_extrait', 'public');
-        }
+    // Enregistrement du justificatif
+    $filePath = null;
+    if ($request->hasFile('justificatif_copie')) {
+        $filePath = $request->file('justificatif_copie')->store('justificatifs_copie_extrait', 'public');
+    }
 
+    // Création de la demande
+    Demande::create([
+        'nom_complet' => $validatedData['nom_demandeur'],
+        'email' => $validatedData['email_demandeur'],
+        'telephone' => $validatedData['telephone_demandeur'],
+        'type_document' => $validatedData['type_acte_demande'],
+        'informations_complementaires' => $validatedData['informations_complementaires_copie'],
+        'justificatif' => $validatedData['justificatif'],
+        'statut' => 'En attente',
+        'num_acte' => $validatedData['num_acte'],
+        'nombre_copie' => $validatedData['nombre_copie'],
+        'nom_personne_concernee' => $validatedData['nom_personne_acte'],
+        'prenom_personne_concernee' => $validatedData['prenom_personne_acte'],
+        'date_evenement' => $validatedData['date_evenement_acte'],
+        'lieu_evenement' => $validatedData['lieu_evenement_acte'],
+    ]);
+    dd($validatedData);
 
-        $demande=Demande::create([
-            'nom_complet' => $validatedData['nom_complet'],
-            'email' => $validatedData['email_demandeur'],
-            'telephone' => $validatedData['telephone_demandeur'],
-            'type_document' => $validatedData['type_acte_demande'],
-            'informations_complementaires' => $validatedData['informations_complementaires_copie'],
-            'justificatif_path' => $filePath,
-            'statut' => 'En attente',
-            'num_acte'=>$validatedData['num_acte'],
-            'nombre_copie'=>$validatedData['nombre_copie'],
-            'nom_personne_concernee' => $validatedData['nom_personne_acte'],
-            'prenom_personne_concernee' => $validatedData['prenom_personne_acte'],
-            'date_evenement' => $validatedData['date_evenement_acte'],
-            'lieu_evenement' => $validatedData['lieu_evenement_acte'],
-        ]);
-         @dd($demande);
+        //  @dd($demande);
 
 
-        $demande->save();
+        // $demande->save();
         //demande log
         Log::create([
             'id_utilisateur' => Auth::id(),

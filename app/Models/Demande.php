@@ -16,7 +16,7 @@ class Demande extends Model
     'telephone',
     'type_document',
     'informations_complementaires',
-    'justificatif_path',
+    'justificatif',
     'statut',
     'num_acte',
     'nombre_copie',

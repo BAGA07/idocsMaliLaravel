@@ -44,11 +44,21 @@
                 
 
                         <td class="px-4 py-2 border">
-                            <a href="{{ route('acteCopies.create',$demande->id) }}"
-                            {{-- <a href="{{ route('acteCopies.create.', $demande->acte->id) }}" --}}
+    
+        @php
+    $acteExiste = \App\Models\Acte::where('num_acte', $demande->num_acte)->exists();
+@endphp
 
-                                class="relative z-10 inline-block bg-blue-600 text-white text-xs px-3 py-1 rounded hover:bg-blue-700">Traiter</a>
-                        </td>
+
+        @if ($acteExiste)
+            <span class="text-gray-400 text-xs">Déjà traité</span>
+        @else
+            <a href="{{ route('acteCopies.create', $demande->id) }}"
+               class="relative z-10 inline-block bg-blue-600 text-white text-xs px-3 py-1 rounded hover:bg-blue-700">
+                Traiter
+            </a>
+        @endif
+    </td>
                         {{-- <td class="px-4 py-2 border">{{$demande->id}}</td> --}}
                     </tr>
                     @endforeach
@@ -106,3 +116,4 @@
         </div>
     </div>
     @endsection
+  
