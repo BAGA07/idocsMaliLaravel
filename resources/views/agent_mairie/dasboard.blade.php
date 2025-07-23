@@ -23,7 +23,7 @@
             <p class="text-xl">{{ $monthCount }}</p>
         </div>
     </div>
-
+{{-- 
     Tableau des déclarations
     <div class="bg-white shadow rounded mb-6">
         <div class="border-b px-6 py-3 font-semibold">Volets de déclaration</div>
@@ -54,7 +54,7 @@
                 </tbody>
             </table>
         </div>
-    </div>
+    </div> --}}
 
     <!-- Tableau des demandes en attente -->
     <div class="bg-white shadow rounded mb-6">
@@ -67,28 +67,18 @@
                         <th class="px-4 py-2 border">Nom Enfant</th>
                         <th class="px-4 py-2 border">Numéro Volet</th>
                         <th class="px-4 py-2 border">Statut</th>
-                        <th class="px-4 py-2 border">Action</th>
+                        {{-- <th class="px-4 py-2 border">Action</th> --}}
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($demandes as $demande)
-<<<<<<< HEAD
-=======
-                    {{-- @dd($demande->volet) --}}
-
->>>>>>> 96da1a2 (test)
                     <tr>
                         <td class="px-4 py-2 border">{{ $demande->nom_complet }}</td>
                         <td class="px-4 py-2 border">
                             {{ $demande->volet ? $demande->volet->prenom_enfant . ' ' . $demande->volet->nom_enfant :
                             'N/A' }}
                         </td>
-<<<<<<< HEAD
                         <td class="px-4 py-2 border">{{ $demande->numero_volet_naissance }}</td>
-=======
-                        <td class="px-4 py-2 border"> {{ optional($demande->volet)->num_volet ?? 'N/A' }}
-                        </td>
->>>>>>> 96da1a2 (test)
                         <td class="px-4 py-2 border">
                             @switch($demande->statut)
                             @case('Validé')
@@ -101,10 +91,10 @@
                             <span class="bg-yellow-200 text-yellow-800 px-2 py-1 rounded">{{ $demande->statut }}</span>
                             @endswitch
                         </td>
-                        <td class="px-4 py-2 border">
+                        {{-- <td class="px-4 py-2 border">
                             <a href="{{ route('acte.create', $demande->id) }}"
                                 class="inline-block bg-blue-600 text-white text-xs px-3 py-1 rounded hover:bg-blue-700">Traiter</a>
-                        </td>
+                        </td> --}}
                     </tr>
                     @endforeach
                 </tbody>
@@ -112,37 +102,47 @@
         </div>
     </div>
 
-<<<<<<< HEAD
     <!-- Liste des actes -->
     <div class="bg-white shadow rounded mb-6">
-        <div class="border-b px-6 py-3 font-semibold">Liste des actes de naissance</div>
+        <div class="border-b px-6 py-3 font-semibold">Demande pour les copie d'acte naissance</div>
         <div class="overflow-x-auto">
             <table class="min-w-full table-auto border text-sm">
                 <thead class="bg-gray-100">
                     <tr>
-                        <th class="px-4 py-2 border">Numéro acte</th>
-                        <th class="px-4 py-2 border">Nom enfant</th>
-                        <th class="px-4 py-2 border">Prénom enfant</th>
-                        <th class="px-4 py-2 border">Date naissance</th>
-                        <th class="px-4 py-2 border">Déclarant</th>
-                        <th class="px-4 py-2 border">Action</th>
+                         <th class="px-4 py-2 border">Nom Demandeur</th>
+                        <th class="px-4 py-2 border">Nom Enfant</th>
+                        <th class="px-4 py-2 border">Num acte</th>
+                        <th class="px-4 py-2 border">Nombre de copie</th>
+
+                        <th class="px-4 py-2 border">Statut</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($actesNaissance as $acte)
+                    @foreach($demandesCopies as $demande)
                     <tr>
-                        <td class="px-4 py-2 border">{{ $acte->num_acte }}</td>
-                        <td class="px-4 py-2 border">{{ $acte->nom }}</td>
-                        <td class="px-4 py-2 border">{{ $acte->prenom }}</td>
-                        <td class="px-4 py-2 border">{{ $acte->date_naissance_enfant }}</td>
-                        <td class="px-4 py-2 border">{{ $acte->declarant->prenom_declarant ?? 'N/A' }} {{
-                            $acte->declarant->nom_declarant ?? '' }}</td>
-                        <td class="px-4 py-2 border space-x-2">
-                            <a href="{{ route('acte.show', $acte->id) }}"
-                                class="inline-block bg-cyan-600 text-white text-xs px-3 py-1 rounded hover:bg-cyan-700">Voir</a>
-                            <a href="{{ route('acte.edit', $acte->id) }}"
-                                class="inline-block bg-yellow-500 text-white text-xs px-3 py-1 rounded hover:bg-yellow-600">Modifier</a>
+                        <td class="px-4 py-2 border">{{ $demande->nom_complet }}</td>
+                        <td class="px-4 py-2 border">
+                            {{ $demande->volet ? $demande->volet->prenom_enfant . ' ' . $demande->volet->nom_enfant :
+                            'N/A' }}
                         </td>
+                        <td class="px-4 py-2 border">{{ $demande->num_acte }}</td>
+                        <td class="px-4 py-2 border">{{ $demande->nombre_copie }}</td>
+                        <td class="px-4 py-2 border">
+                            @switch($demande->statut)
+                            @case('Validé')
+                            <span class="bg-green-200 text-green-800 px-2 py-1 rounded">Validé</span>
+                            @break
+                            @case('Rejeté')
+                            <span class="bg-red-200 text-red-800 px-2 py-1 rounded">Rejeté</span>
+                            @break
+                            @default
+                            <span class="bg-yellow-200 text-yellow-800 px-2 py-1 rounded">{{ $demande->statut }}</span>
+                            @endswitch
+                        </td>
+                        {{-- <td class="px-4 py-2 border">
+                            <a href="{{ route('acte.create', $demande->id) }}"
+                                class="inline-block bg-blue-600 text-white text-xs px-3 py-1 rounded hover:bg-blue-700">Traiter</a>
+                        </td> --}}
                     </tr>
                     @endforeach
                 </tbody>
@@ -151,7 +151,3 @@
     </div>
 </div>
 @endsection
-=======
-
-    @endsection
->>>>>>> 96da1a2 (test)

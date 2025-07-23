@@ -38,7 +38,8 @@ return new class extends Migration
             $table->string('justificatif')->nullable(); // stocker le nom ou chemin du fichier justificatif
             $table->text('remarque_mairie')->nullable();
             $table->text('message_hopital')->nullable();
-
+$table->integer('nombre_copie');
+$table->integer('num_acte');
             // Statut de la demande
             $table->enum('statut', ['En attente', 'En cours de traitement', 'Validé', 'Rejeté'])->default('En attente');
 

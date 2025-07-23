@@ -30,7 +30,7 @@ class Demande extends Model
 
     public function Acte()
     {
-        return $this->hasOne(Acte::class);
+        return $this->hasOne(Acte::class,'id_demande');
     }
     public function volet()
     {

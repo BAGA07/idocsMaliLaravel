@@ -135,7 +135,7 @@ class DemandeController extends Controller
      */
     public function storeCopieExtrait(Request $request)
     {
-        $request->validate([
+        $validatedData = $request->validate([
             'nom_demandeur' => 'required|string',
             'email_demandeur' => 'required|email',
             'telephone_demandeur' => 'required|string',
@@ -171,7 +171,7 @@ class DemandeController extends Controller
         'date_evenement' => $validatedData['date_evenement_acte'],
         'lieu_evenement' => $validatedData['lieu_evenement_acte'],
     ]);
-    dd($validatedData);
+    // dd($validatedData);
 
         //  @dd($demande);
 

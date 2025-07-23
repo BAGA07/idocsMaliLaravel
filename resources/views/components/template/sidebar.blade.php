@@ -45,14 +45,6 @@
             {{-- Agent État civil --}}
             @if(Auth::user()->role === 'agent_mairie')
             <li>
-<<<<<<< HEAD
-=======
-                 <li>
-                <a href="{{ route('agent.dashboard') }}" class="flex items-center p-2 rounded hover:bg-blue-700">
-                    <i class="fa fa-home w-5 mr-2 text-white"></i> Accueil
-                </a>
-            </li>
->>>>>>> 42068e3 (affichage des listes volet et acte de naissance copie)
                 <details class="group">
                     <summary class="flex items-center p-2 rounded hover:bg-blue-700 cursor-pointer">
                         <i class="fa fa-file-text-o w-5 mr-2 text-white"></i> Demandes
