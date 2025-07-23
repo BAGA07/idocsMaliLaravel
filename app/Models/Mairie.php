@@ -29,9 +29,9 @@ class Mairie extends Model
         return $this->hasMany(User::class, 'id_mairie');
     }
 
-    public function acteNaissances()
+    public function acte()
     {
-        return $this->hasMany(ActeNaissance::class, 'id_mairie');
+        return $this->hasMany(Acte::class, 'id_mairie');
     }
 
     public function commune()
@@ -67,13 +67,11 @@ class Mairie extends Model
             $q->where('nom_commune', 'like', "%{$commune}%");
         });
     }
-<<<<<<< HEAD
-}
-=======
+
     public function Officier()
     {
         return $this->hasMany(Officier::class, 'id_mairie');
     }
 }
 
->>>>>>> 96da1a2 (test)
+

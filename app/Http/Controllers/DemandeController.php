@@ -10,6 +10,7 @@ use App\Models\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Acte;
 
 class DemandeController extends Controller
 {
@@ -148,10 +149,31 @@ class DemandeController extends Controller
             'informations_complementaires_copie' => 'nullable|string',
         ]);
 
-        $filePath = null;
-        if ($request->hasFile('justificatif_copie')) {
-            $filePath = $request->file('justificatif_copie')->store('justificatifs_copie_extrait', 'public');
-        }
+    // Enregistrement du justificatif
+    $filePath = null;
+    if ($request->hasFile('justificatif_copie')) {
+        $filePath = $request->file('justificatif_copie')->store('justificatifs_copie_extrait', 'public');
+    }
+
+    // Création de la demande
+    Demande::create([
+        'nom_complet' => $validatedData['nom_demandeur'],
+        'email' => $validatedData['email_demandeur'],
+        'telephone' => $validatedData['telephone_demandeur'],
+        'type_document' => $validatedData['type_acte_demande'],
+        'informations_complementaires' => $validatedData['informations_complementaires_copie'],
+        'justificatif' => $validatedData['justificatif'],
+        'statut' => 'En attente',
+        'num_acte' => $validatedData['num_acte'],
+        'nombre_copie' => $validatedData['nombre_copie'],
+        'nom_personne_concernee' => $validatedData['nom_personne_acte'],
+        'prenom_personne_concernee' => $validatedData['prenom_personne_acte'],
+        'date_evenement' => $validatedData['date_evenement_acte'],
+        'lieu_evenement' => $validatedData['lieu_evenement_acte'],
+    ]);
+    dd($validatedData);
+
+        //  @dd($demande);
 
         $demande = new Demande();
         $demande->nom_complet = $request->nom_demandeur;
