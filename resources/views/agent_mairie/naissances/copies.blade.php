@@ -1,3 +1,6 @@
+@extends('layouts.app')
+
+@section('content')
 <head><script src="https://cdn.tailwindcss.com"></script></head>
 
 <div class="bg-white shadow-md rounded-lg overflow-hidden">
@@ -46,3 +49,4 @@
         </table>
     </div>
 </div>
+@endsection

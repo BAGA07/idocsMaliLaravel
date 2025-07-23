@@ -60,7 +60,7 @@ class Acte_naissance extends Controller
     public function listNaissancesCopie(){
         
     // $actesNaissance = Acte::with('declarant')->latest()->get();
-    $actesCopies = Demande::with('acte.declarant')->where('nombre_copie','>',0)    ->whereHas('acte')->latest()->get();
+    $actesCopies = Demande::with('acte.declarant')->where('nombre_copie','>',0)->whereHas('acte')->latest()->get();
     return view('agent_mairie.naissances.copies',compact('actesCopies'));
 
     }
