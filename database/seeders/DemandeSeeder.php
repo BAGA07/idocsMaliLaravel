@@ -36,9 +36,9 @@ class DemandeSeeder extends Seeder
                 'remarque_mairie' => fake()->optional()->sentence(),
                 'nombre_copie'=>rand(0, 5),
                                 'num_acte'=>rand(1, 5),
-// 'id_volet' => $volet->id_volet, 
+'id_volet' => $volet->id_volet, 
 //ce que j'ai commente dans la migrations
-        'id_volet' => fake()->randomElement($volet),
+        // 'id_volet' => fake()->randomElement($volet),
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);

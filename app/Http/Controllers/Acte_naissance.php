@@ -52,34 +52,63 @@ class Acte_naissance extends Controller
      */
     public function listNaissancesVolet(){
         
-    $actesNaissance = Acte::with('declarant')->latest()->get();
-    // $actesCopies = Acte::with('declarant')->latest()->get();
+    // On récupère les ID des demandes liées à un volet
+    $demandesAvecVolet = Demande::whereNotNull('id_volet')->pluck('id');
+
+    // On récupère les actes liés à ces demandes
+    $actesNaissance = Acte::with(['declarant', 'demande'])
+        ->whereIn('id_demande', $demandesAvecVolet)
+        ->orderBy('created_at', 'desc')
+        ->get();
+
     return view('agent_mairie.naissances.volets',compact('actesNaissance'));
+    
 
     }
     public function listNaissancesCopie(){
         
-    // $actesNaissance = Acte::with('declarant')->latest()->get();
+    // On récupère les ID des demandes avec copie (> 0) et sans volet
+    $demandesAvecCopie = Demande::where('nombre_copie', '>', 0)
+        ->whereNull('id_volet') // pour s'assurer que ce n'est pas une demande de volet
+        ->pluck('id');
 
-    $actesCopies = Demande::with('acte.declarant')->where('nombre_copie','>',0)->whereHas('acte')->latest()->get();
+    // On récupère les actes liés à ces demandes
+    $actesCopies = Acte::with(['declarant', 'demande'])
+        ->whereIn('id_demande', $demandesAvecCopie)
+        ->orderBy('created_at', 'desc')
+        ->get();
 
     return view('agent_mairie.naissances.copies',compact('actesCopies'));
 
     }
     public function listTraiter(){
-         $demandes = Demande::with('volet')->Where('statut','Validé')->get();
-        $demandesCopies = Demande::with('acte')->Where('statut','Validé')->get();
+         $demandes = Demande::with('volet')->Where('statut','Validé')->whereNotNull('id_volet')
+->get();
+        $demandesCopies = Demande::with('acte')->Where('statut','Validé')->whereHas('acte')->get();
+        // ->whereHas('acte') 
+        // ->whereHas('volet')->
+        
  
         return view('agent_mairie.naissances.listTraiter',compact('demandes','demandesCopies'));
     }
      public function listEnattente(){
-        $demandes = Demande::with('volet')->where('statut','En attente')->get();
-        $demandesCopies = Demande::with('acte')->where('statut','En attente')->where('nombre_copie','>',0)->get();
+$demandes = Demande::with('volet')
+        ->where('statut', 'En attente')
+        ->whereNotNull('id_volet')
+        ->get();
+
+    $demandesCopies = Demande::with('acte')
+        ->where('statut', 'En attente')
+        ->where('nombre_copie', '>', 0)
+        ->whereHas('acte')
+        ->get();
+
         return view('agent_mairie.naissances.listEnattente',compact('demandes','demandesCopies'));
     }
      public function listRejeté(){
-        $demandes = Demande::with('volet')->where('statut','Rejeté')->get();
-        $demandesCopies = Demande::with('acte')->where('statut','Rejeté')->get();
+       $demandes = Demande::with('volet')->Where('statut','Rejeté')->whereNotNull('id_volet')
+->get();
+        $demandesCopies = Demande::with('acte')->Where('statut','Rejeté')->get();
         return view('agent_mairie.naissances.listRejeté',compact('demandes','demandesCopies'));
     }
     public function create($id)
