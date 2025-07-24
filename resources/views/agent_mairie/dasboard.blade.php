@@ -78,9 +78,9 @@
                         <td class="px-4 py-2 border">{{ $demande->nom_complet }}</td>
                         <td class="px-4 py-2 border">
                             {{ $demande->volet ? $demande->volet->prenom_enfant . ' ' . $demande->volet->nom_enfant :
-                            'N/A' }}
+                            '------' }}
                         </td>
-                        <td class="px-4 py-2 border">{{ $demande->volet->num_volet }}</td>
+                        <td class="px-4 py-2 border">{{ $demande->volet->num_volet  ?? '-----' }}</td>
                         <td class="px-4 py-2 border">
                             @switch($demande->statut)
                             @case('Validé')
@@ -125,9 +125,9 @@
                         <td class="px-4 py-2 border">{{ $demande->nom_complet }}</td>
                         <td class="px-4 py-2 border">
                             {{ $demande->volet ? $demande->volet->prenom_enfant . ' ' . $demande->volet->nom_enfant :
-                            'N/A' }}
+                            '----' }}
                         </td>
-                        <td class="px-4 py-2 border">{{ $demande->num_acte }}</td>
+                        <td class="px-4 py-2 border">{{ $demande->num_acte  ?? '-----' }}</td>
                         <td class="px-4 py-2 border">{{ $demande->nombre_copie }}</td>
                         <td class="px-4 py-2 border">
                             @switch($demande->statut)

@@ -89,7 +89,7 @@
                         <td class="px-4 py-2 border">{{ $demande->nom_complet }}</td>
                         <td class="px-4 py-2 border">
                             {{ $demande->volet ? $demande->volet->prenom_enfant . ' ' . $demande->volet->nom_enfant :
-                            'N/A' }}
+                            '----' }}
                         </td>
                         <td class="px-4 py-2 border">  {{ optional($demande->volet)->num_volet ?? 'N/A' }}
 </td>

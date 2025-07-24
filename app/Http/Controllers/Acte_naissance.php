@@ -25,9 +25,15 @@ class Acte_naissance extends Controller
         // $demandes = Demande::with('volet')->where('statut', 'En attente')->get();
         // $demandesCopies = Demande::where('nombre_copie')->get();
     
- 
-       $demandes = Demande::with('volet')->get();
-        $demandesCopies = Demande::with('acte')->get();
+ $demandes = Demande::with('volet')
+    ->whereNotNull('id_volet')
+    ->get();
+
+        $demandesCopies = Demande::with('acte')
+    ->where('nombre_copie', '>', 0)
+    ->whereNull('id_volet')
+    ->get();
+
             $total = Demande::count();
                $today = Carbon::today();
     $startOfWeek = Carbon::now()->startOfWeek(); 
@@ -67,24 +73,28 @@ class Acte_naissance extends Controller
     }
     public function listNaissancesCopie(){
         
-    // On récupère les ID des demandes avec copie (> 0) et sans volet
-    $demandesAvecCopie = Demande::where('nombre_copie', '>', 0)
-        ->whereNull('id_volet') // pour s'assurer que ce n'est pas une demande de volet
-        ->pluck('id');
-
-    // On récupère les actes liés à ces demandes
-    $actesCopies = Acte::with(['declarant', 'demande'])
-        ->whereIn('id_demande', $demandesAvecCopie)
+   $actesCopies = Demande::with('acte')
+        ->where('nombre_copie', '>', 0)
+        ->whereNull('id_volet')
+        ->whereHas('acte') // s'assurer que l'acte existe
         ->orderBy('created_at', 'desc')
         ->get();
-
     return view('agent_mairie.naissances.copies',compact('actesCopies'));
 
     }
     public function listTraiter(){
-         $demandes = Demande::with('volet')->Where('statut','Validé')->whereNotNull('id_volet')
-->get();
-        $demandesCopies = Demande::with('acte')->Where('statut','Validé')->whereHas('acte')->get();
+    $demandes = Demande::with('volet')
+        ->where('statut', 'Validé')
+        ->whereNotNull('id_volet')
+        ->get();
+
+    $demandesCopies = Demande::with('acte')
+        ->where('statut', 'Validé')
+        ->whereNull('id_volet') 
+        ->where('nombre_copie', '>', 0)
+        ->whereHas('acte')
+        ->get();
+
         // ->whereHas('acte') 
         // ->whereHas('volet')->
         
@@ -99,16 +109,21 @@ $demandes = Demande::with('volet')
 
     $demandesCopies = Demande::with('acte')
         ->where('statut', 'En attente')
+       -> whereNull('id_volet') 
         ->where('nombre_copie', '>', 0)
-        ->whereHas('acte')
         ->get();
+       
+
 
         return view('agent_mairie.naissances.listEnattente',compact('demandes','demandesCopies'));
     }
      public function listRejeté(){
        $demandes = Demande::with('volet')->Where('statut','Rejeté')->whereNotNull('id_volet')
 ->get();
-        $demandesCopies = Demande::with('acte')->Where('statut','Rejeté')->get();
+        $demandesCopies = Demande::with('acte')->where('statut', 'Rejeté')
+        ->whereNull('id_volet')
+        ->where('nombre_copie', '>', 0)
+        ->get();
         return view('agent_mairie.naissances.listRejeté',compact('demandes','demandesCopies'));
     }
     public function create($id)
@@ -370,10 +385,10 @@ public function stores(Request $request){
     {
 
 $request->validate([
-        'prenom_enfant' => 'required|string',
-        'nom_enfant' => 'required|string',
-        'date_naissance' => 'required|date',
-        'lieu_naissance' => 'required|string',
+        'prenom' => 'required|string',
+        'nom' => 'required|string',
+        'date_naissance_enfant' => 'required|date',
+        'lieu_naissance_enfant' => 'required|string',
         'sexe_enfant' => 'required|string',
         'prenom_pere' => 'nullable|string',
         'nom_pere' => 'nullable|string',
@@ -389,20 +404,20 @@ $request->validate([
 
     $acte = Acte::findOrFail($id);
 
-    $acte->prenom = $request->prenom_enfant;
-    $acte->nom = $request->nom_enfant;
-    $acte->date_naissance_enfant = $request->date_naissance;
-    $acte->lieu_naissance_enfant = $request->lieu_naissance;
+    $acte->prenom = $request->prenom;
+    $acte->nom = $request->nom;
+    $acte->date_naissance_enfant = $request->date_naissance_enfant;
+    $acte->lieu_naissance_enfant = $request->lieu_naissance_enfant;
     $acte->sexe_enfant = $request->sexe_enfant;
 
     $acte->prenom_pere = $request->prenom_pere;
     $acte->nom_pere = $request->nom_pere;
-    $acte->proffesion_pere = $request->profession_pere;
+    $acte->profession_pere = $request->profession_pere;
     $acte->domicile_pere = $request->domicile_pere;
 
     $acte->prenom_mere = $request->prenom_mere;
     $acte->nom_mere = $request->nom_mere;
-    $acte->proffesion_mere = $request->profession_mere;
+    $acte->profession_mere = $request->profession_mere;
     $acte->domicile_mere = $request->domicile_mere;
 
     $acte->id_officier = $request->id_officier;

@@ -4,7 +4,7 @@
 <head><script src="https://cdn.tailwindcss.com"></script></head>
 
 <div class="bg-white shadow-md rounded-lg overflow-hidden">
-    <div class="bg-cyan-700 text-white px-6 py-4 text-lg font-semibold">
+    <div class="bg-indigo-700 text-white px-6 py-4 text-lg font-semibold">
         Liste des extraits de naissance
     </div>
 
