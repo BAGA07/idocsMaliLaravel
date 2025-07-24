@@ -34,7 +34,7 @@
                     </a>
                     
                     <a class="nav-link text-white-50 {{ request()->routeIs('admin.managers.*') ? 'active bg-primary' : '' }}" 
-                       href="{{ route('admin.managers.index') }}">
+                       href="{{ route('managers.index') }}">
                         <i class="fas fa-users me-2"></i>
                         Gestionnaires
                     </a>

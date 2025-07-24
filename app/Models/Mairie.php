@@ -10,7 +10,7 @@ class Mairie extends Model
     use HasFactory;
 
     protected $table = 'mairie';
-    
+
     protected $fillable = [
         'nom_mairie',
         'quartier',
@@ -67,11 +67,9 @@ class Mairie extends Model
             $q->where('nom_commune', 'like', "%{$commune}%");
         });
     }
-
     public function Officier()
     {
         return $this->hasMany(Officier::class, 'id_mairie');
     }
 }
-
 

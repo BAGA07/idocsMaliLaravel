@@ -91,7 +91,7 @@ class Dashboard extends Component
             ->count();
         // Alertes : managers inactifs >15 jours
         $managersInactifs = User::whereIn('role', ['agent_hopital', 'agent_mairie'])
-            ->where(function($q){
+            ->where(function ($q) {
                 $q->whereNull('last_login_at')->orWhere('last_login_at', '<', now()->subDays(15));
             })->count();
         $this->alertes = [

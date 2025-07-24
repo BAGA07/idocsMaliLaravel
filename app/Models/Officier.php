@@ -13,7 +13,7 @@ class Officier extends Model
         'nom',
         'prenom',
         'profession',
-        'id_commune',
+        'id_mairie',
     ];
 
     use HasFactory;

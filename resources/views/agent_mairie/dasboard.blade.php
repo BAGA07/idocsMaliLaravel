@@ -72,6 +72,8 @@
                 </thead>
                 <tbody>
                     @foreach($demandes as $demande)
+                    {{-- @dd($demande->volet) --}}
+
                     <tr>
                         <td class="px-4 py-2 border">{{ $demande->nom_complet }}</td>
                         <td class="px-4 py-2 border">

@@ -10,17 +10,21 @@ class Demande extends Model
     use HasFactory;
 
     protected $fillable = [
-        'nom_complet',
-        'id_volet',
-        'nom_enfant',
-        'prenom_enfant',
-        'email',
-        'telephone',
-        'type_document',
-        'informations_complementaires',
-        'justificatif',
-        'numero_volet_naissance',
-        'statut',
+
+           'nom_complet',
+    'email',
+    'telephone',
+    'type_document',
+    'informations_complementaires',
+    'justificatif',
+    'statut',
+    'num_acte',
+    'nombre_copie',
+    'nom_personne_concernee',
+    'prenom_personne_concernee',
+    'date_evenement',
+    'lieu_evenement',
+
     ];
 
     public function PieceJointe()
@@ -28,13 +32,14 @@ class Demande extends Model
         return $this->hasMany(PieceJointe::class);
     }
 
-    public function Acte()
+
+    public function acte()
     {
         return $this->hasOne(Acte::class,'id_demande');
     }
     public function volet()
     {
 
-        return $this->belongsTo(VoletDeclaration::class, 'id_volet', 'id_volet');
+        return $this->belongsTo(VoletDeclaration::class, 'id_volet');
     }
 }

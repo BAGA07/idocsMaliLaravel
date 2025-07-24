@@ -47,7 +47,7 @@ class Acte_naissance extends Controller
 
     }
 
-    /**
+    /** 
      * Show the form for creating a new resource.
      */
     public function listNaissancesVolet(){
@@ -255,6 +255,61 @@ public function stores(Request $request){
     return redirect()->route('volet')->with('success', 'Acte de naissance créé avec succès.');
 
     }
+    /**
+     * Store a newly created resource in storage.
+     */
+//     public function store(Request $request)
+//     {
+//         // Récupérer la demande avec son volet et déclarant
+//     $demande = Demande::with('volet')->findOrFail($request->demande_id);
+
+//    $lastNum = Acte::max('num_acte');
+
+//     $nextNum = $lastNum ? $lastNum + 1 : 1;
+
+//     // Créer l’acte avec correspondance précise
+//     $acte = new Acte();
+//     $acte->num_acte = $nextNum;
+
+//     $acte->date_naissance_enfant = $request->date_naissance;
+//     $acte->lieu_naissance_enfant = $request->lieu_naissance;
+//     $acte->sexe_enfant = $request->sexe_enfant;
+
+//     $acte->prenom = $request->prenom_enfant;
+//     $acte->nom = $request->nom_enfant;
+
+//         $acte->prenom_pere = $request->prenom_pere;
+//         $acte->nom_pere = $request->nom_pere;
+//         $acte->profession_pere = $request->profession_pere;
+//         $acte->domicile_pere = $request->domicile_pere;
+//         $acte->heure_naissance = $request->heure_naissance;
+
+
+//         $acte->prenom_mere = $request->prenom_mere;
+//         $acte->nom_mere = $request->nom_mere;
+//         $acte->profession_mere = $request->profession_mere;
+//         $acte->domicile_mere = $request->domicile_mere;
+//         $acte->id_declarant = $demande->volet->id_declarant ?? null;
+//         //$acte->heure_naissance = $demande->volet->heure_naissance ?? null;  
+//         $acte->id_demande = $request->demande_id;
+//         $acte->id_officier = $request->id_officier;
+//         $acte->id_commune = $request->id_commune;
+
+//         $acte->date_enregistrement_acte = now();
+//         // $acte->id_volet = $demande->volet->id_volet;
+
+//     $acte->save();
+
+//     // Mettre à jour le statut de la demande
+//     $demande = Demande::find($request->demande_id);
+//     $demande->statut = 'Validé';
+//     $demande->save();
+
+    
+
+//     return redirect()->route('volet')->with('success', 'Acte de naissance créé avec succès.');
+
+//     }
 
     /**
      * Display the specified resource.
