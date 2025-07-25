@@ -105,11 +105,8 @@
     <div class="mb-6">
       <h5 class="font-semibold text-gray-700 mb-2">Informations sur le Père</h5>
       <div class="grid grid-cols-2 gap-2 text-sm">
-        <<<<<<< HEAD <div>10. Prénom et Nom : {{ $declaration->prenom_pere }} {{ $declaration->nom_pere }}
-      </div>
-      =======
-      <div>10. Nom : {{ $declaration->prenom_pere }} {{ $declaration->nom_pere }}</div>
-      >>>>>>> 6fe73e6793f2e6aec92660669b1b3f3cb7f69410
+      <div>10. Prénom et Nom : {{ $declaration->prenom_pere }} {{ $declaration->nom_pere }}</div>
+      <!--<div>10. Nom : {{ $declaration->prenom_pere }} {{ $declaration->nom_pere }}</div>-->
       <div>11. Âge : {{ $declaration->age_pere }}</div>
       <div>12. Domicile : {{ $declaration->domicile_pere }}</div>
       <div>13. Ethnie : {{ $declaration->ethnie_pere }}</div>
@@ -123,11 +120,8 @@
   <div class="mb-6">
     <h5 class="font-semibold text-gray-700 mb-2">Informations sur la Mère</h5>
     <div class="grid grid-cols-2 gap-2 text-sm">
-      <<<<<<< HEAD <div>17. Prénom et Nom : {{ $declaration->prenom_mere }} {{ $declaration->nom_mere }}
-    </div>
-    =======
-    <div>17. Nom : {{ $declaration->prenom_mere }} {{ $declaration->nom_mere }}</div>
-    >>>>>>> 6fe73e6793f2e6aec92660669b1b3f3cb7f69410
+    <div>17. Prénom et Nom : {{ $declaration->prenom_mere }} {{ $declaration->nom_mere }}</div>
+    <!--<div>17. Nom : {{ $declaration->prenom_mere }} {{ $declaration->nom_mere }}</div>-->
     <div>18. Âge : {{ $declaration->age_mere }}</div>
     <div>19. Domicile : {{ $declaration->domicile_mere }}</div>
     <div>20. Ethnie : {{ $declaration->ethnie_mere }}</div>
@@ -140,7 +134,7 @@
 
 <!-- Infos Déclarant -->
 <div class="mb-6">
-  <h5 class="font-semibold text-gray-700 mb-2">🧾 Informations sur le Déclarant</h5>
+  <h5 class="font-semibold text-gray-700 mb-2">Informations sur le Déclarant</h5>
   <div class="grid grid-cols-2 gap-2 text-sm">
     <div>25. Nom : {{ $declaration->declarant->prenom_declarant }} {{ $declaration->declarant->nom_declarant }}</div>
     <div>26. Âge : {{ $declaration->declarant->age_declarant }}</div>
