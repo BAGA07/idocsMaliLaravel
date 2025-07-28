@@ -85,18 +85,23 @@ class Dashboard extends Component
             ->pluck('total', 'statut')
             ->toArray();
 
-        // Alertes : demandes en attente >7 jours
-        $enAttenteRetard = Demande::where('statut', 'En attente')
+        // Alertes : demandes en attente >7 jours avec détails
+        $demandesEnRetard = Demande::where('statut', 'En attente')
             ->where('created_at', '<', now()->subDays(7))
-            ->count();
-        // Alertes : managers inactifs >15 jours
-        $managersInactifs = User::whereIn('role', ['agent_hopital', 'agent_mairie'])
+            ->with('volet')
+            ->get();
+        
+        // Alertes : managers inactifs >15 jours avec détails
+        $managersInactifsList = User::whereIn('role', ['agent_hopital', 'agent_mairie'])
             ->where(function($q){
                 $q->whereNull('last_login_at')->orWhere('last_login_at', '<', now()->subDays(15));
-            })->count();
+            })->get();
+            
         $this->alertes = [
-            'en_attente_retard' => $enAttenteRetard,
-            'managers_inactifs' => $managersInactifs,
+            'en_attente_retard' => $demandesEnRetard->count(),
+            'managers_inactifs' => $managersInactifsList->count(),
+            'demandes_details' => $demandesEnRetard->take(5), // Limiter à 5 pour l'affichage
+            'managers_details' => $managersInactifsList->take(5), // Limiter à 5 pour l'affichage
         ];
 
         // Autres statistiques...

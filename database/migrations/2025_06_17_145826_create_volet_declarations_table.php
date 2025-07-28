@@ -43,6 +43,7 @@ return new class extends Migration
 
             $table->unsignedBigInteger('id_declarant');
             $table->unsignedBigInteger('id_hopital');
+            $table->string('token', 255)->nullable();
 
             $table->foreign('id_declarant')->references('id_declarant')->on('declarants')->onDelete('cascade');
             $table->foreign('id_hopital')->references('id')->on('hopitals')->onDelete('cascade');

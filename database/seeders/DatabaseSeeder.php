@@ -30,14 +30,8 @@ class DatabaseSeeder extends Seeder
             DemandeSeeder::class,
             MairieSeeder::class,
             AdminSeeder::class,
-            CommuneSeeder::class,
+            ManagerSeeder::class,
             OfficierSeeder::class,
-            HopitalSeeder::class,
-            DeclarantSeeder::class,
-            VoletDeclarationSeeder::class,
-            DemandeSeeder::class,
-            MairieSeeder::class,
-            AdminSeeder::class
         ]);
         $this->call([
             //UserSeeder::class,

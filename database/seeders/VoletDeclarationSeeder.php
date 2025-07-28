@@ -75,7 +75,7 @@ class VoletDeclarationSeeder extends Seeder
 
                 'id_declarant' => $declarantIds[array_rand($declarantIds)],
                 'id_hopital' => $hopitalIds[array_rand($hopitalIds)],
-
+                'token' => (string) Str::uuid(),
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);

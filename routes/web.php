@@ -101,18 +101,30 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile/delete', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// Route pour l'administration des managers
-Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
+// Route pour l'administration des managers (Admin crée les managers)
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
 
     Route::get('/dashboard', function () {
         return view('admin.dashboard');
-    })->name('admin.dashboard');
+    })->name('dashboard');
 
     Route::get('/managers/structureList', [AdminManagerController::class, 'structureList'])->name('structure.list');
-    Route::resource('/managers', AdminManagerController::class);
+    Route::resource('managers', AdminManagerController::class);
 
     // Route pour la gestion des structures
-    Route::get('/structures', [App\Http\Controllers\Admin\StructureController::class, 'index'])->name('admin.structures.index');
+    Route::get('/structures', [App\Http\Controllers\Admin\StructureController::class, 'index'])->name('structures.index');
+});
+
+// Routes pour les managers (Manager crée les agents)
+Route::middleware(['auth', 'role:manager'])->prefix('manager')->name('manager.')->group(function () {
+    
+    Route::get('/dashboard', [App\Http\Controllers\Manager\DashboardController::class, 'index'])->name('dashboard');
+
+    // Gestion des agents par le manager
+    Route::resource('agents', App\Http\Controllers\Manager\AgentController::class);
+    
+    // Gestion des structures par le manager
+    Route::resource('structures', App\Http\Controllers\Manager\StructureController::class);
 });
 
 Route::post('/declaration/send-notification/{id}', [App\Http\Controllers\DeclarationController::class, 'sendNotification'])->name('declaration.sendNotification');
