@@ -147,5 +147,37 @@
         </button>
     </form> --}}
 </div>
+</div>
 
+    {{-- Bouton PDF --}}
+    <div class="text-center mb-4">
+        <a href="{{ route('acte.pdf', $acte->id) }}" target="_blank"
+           class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded">
+           Télécharger l'acte (PDF)
+        </a>
+    </div>
+
+    {{-- QR code d'authenticité --}}
+    @if($acte->token)
+    <div class="flex justify-center mb-6">
+        <div class="border-2 border-blue-600 rounded-lg p-6 bg-gray-100">
+            <p class="text-center font-semibold text-blue-600 mb-2">Vérification d'authenticité</p>
+            <div class="flex justify-center mb-4">
+                {!! QrCode::size(120)->generate(url('/verifier-document/' . $acte->token)) !!}
+            </div>
+            <p class="text-center text-gray-600 text-sm">Scannez ce QR code pour vérifier l'authenticité de cet acte de naissance.</p>
+        </div>
+    </div>
+    @endif
+
+    {{-- Suppression
+    <form action="{{ route('acte.destroy', $acte->id) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet acte ?');" class="text-center">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded">
+            Supprimer cet acte
+        </button>
+    </form> --}}
+
+</div>
 @endsection

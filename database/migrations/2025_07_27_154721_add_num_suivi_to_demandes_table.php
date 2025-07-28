@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('demandes', function (Blueprint $table) {
+        Schema::table('demandes', function (Blueprint $table) {        });
             $table->string('num_suivi')->unique()->nullable()->after('justificatif');
-        });
+            $table->string('statut');
+
     }
 
     /**

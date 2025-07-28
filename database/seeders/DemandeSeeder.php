@@ -33,11 +33,13 @@ class DemandeSeeder extends Seeder
                 'telephone' => '+223 6' . rand(1000000, 9999999),
                 'type_document' => fake()->randomElement(['Extrait de naissance', 'Copie intégrale']),
                 'statut' => fake()->randomElement(['En attente', 'En cours de traitement', 'Validé', 'Rejeté']),
-                'message_hopital' => fake()->sentence(),
-                'remarque_mairie' => fake()->sentence(),
-                'nombre_copie'=>rand(1, 5),
+                'message_hopital' => fake()->optional()->sentence(),
+                'remarque_mairie' => fake()->optional()->sentence(),
+                'nombre_copie'=>rand(0, 5),
                                 'num_acte'=>rand(1, 5),
-                'id_volet' => $volet->id_volet, // Correction ici : on prend l'id (entier)
+'id_volet' => $volet->id_volet, 
+//ce que j'ai commente dans la migrations
+        // 'id_volet' => fake()->randomElement($volet),
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);

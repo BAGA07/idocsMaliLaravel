@@ -29,8 +29,7 @@ class Mairie extends Model
         return $this->hasMany(User::class, 'id_mairie');
     }
 
-
-    public function demandes()
+    public function acte()
     {
         return $this->hasMany(Demande::class, 'id_mairie');
     }
