@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Hopital;
 
 use App\Http\Controllers\Controller;
+use App\Models\Acte;
 use App\Models\Declarant;
 use App\Models\Demande;
 use App\Models\VoletDeclaration;
@@ -21,18 +22,21 @@ class DemandeController extends Controller
             return redirect()->back()->with('error', 'Une demande a déjà été envoyée pour ce volet.');
         }
 
-        \App\Models\Demande::create([
+        // Créer la demande
+        $demande = \App\Models\Demande::create([
             'id_volet' => $id_volet,
             'numero_volet_naissance' => $declaration->num_volet,
             'nom_complet' => $declarant->nom_declarant . ' ' . $declarant->prenom_declarant,
             'nom_enfant' => $declaration->nom_enfant,
             'prenom_enfant' => $declaration->prenom_enfant,
             'email' => $declarant->email,
+            'telephone' => $declarant->telephone ,
             'type_document' => 'Extrait original',
             'statut' => 'En attente',
-            'nombre_copies' => 0,
+            'nombre_copie' => 1, 
+            'id_utilisateur' => Auth::id(), 
+            'num_suivi' => null 
         ]);
 
-        return redirect()->back()->with('success', 'Demande envoyée avec succès.');
     }
-}
+    }

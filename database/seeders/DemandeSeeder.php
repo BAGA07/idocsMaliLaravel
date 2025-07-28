@@ -29,15 +29,15 @@ class DemandeSeeder extends Seeder
             Demande::create([
                 'nom_complet' => fake()->name(),
                 'email' => fake()->unique()->safeEmail(),
+                'numero_volet_naissance' => $volet->num_volet,
                 'telephone' => '+223 6' . rand(1000000, 9999999),
                 'type_document' => fake()->randomElement(['Extrait de naissance', 'Copie intégrale']),
                 'statut' => fake()->randomElement(['En attente', 'En cours de traitement', 'Validé', 'Rejeté']),
-                'message_hopital' => fake()->optional()->sentence(),
-                'remarque_mairie' => fake()->optional()->sentence(),
+                'message_hopital' => fake()->sentence(),
+                'remarque_mairie' => fake()->sentence(),
                 'nombre_copie'=>rand(1, 5),
                                 'num_acte'=>rand(1, 5),
-
-        'id_volet' => fake()->randomElement($volets),
+                'id_volet' => $volet->id_volet, // Correction ici : on prend l'id (entier)
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);

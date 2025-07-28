@@ -25,6 +25,7 @@ return new class extends Migration
             // Champs annexes
             $table->text('informations_complementaires')->nullable();
             $table->string('justificatif')->nullable();
+            $table->string('num_suivi')->unique()->nullable();
             $table->timestamps();
         });
     }

@@ -151,7 +151,7 @@
 <!-- Agent -->
 <div class="mb-6 text-center text-sm">
   <h5 class="font-semibold">Agent de Déclaration</h5>
-  <p>{{ Auth::user()->prenom ?? '---' }} {{ Auth::user()->nom }}</p>
+  <p>{{ Auth::user() ? (Auth::user()->prenom ?? '---') . ' ' . (Auth::user()->nom ?? '---') : '---' }}</p>
 </div>
 
 <!-- Signatures -->
