@@ -11,16 +11,19 @@ class Demande extends Model
 
     protected $fillable = [
         'nom_complet',
-        'id_volet',
-        'nom_enfant',
-        'prenom_enfant',
         'email',
         'telephone',
         'type_document',
         'informations_complementaires',
         'justificatif',
-        'numero_volet_naissance',
         'statut',
+        'num_acte',
+        'nombre_copie',
+        'numero_volet_naissance',
+        'id_volet',
+        'numero_suivi', // NULL pour les demandes d'actes originaux (volet), généré pour les demandes de copies (plateforme)
+        'id_utilisateur', // Pour les demandes via volet (actes originaux) qui nécessitent une connexion
+        'id' // Référence vers l'acte créé (original ou copie)
     ];
 
     public function PieceJointe()
@@ -28,13 +31,14 @@ class Demande extends Model
         return $this->hasMany(PieceJointe::class);
     }
 
-    public function Acte()
+
+    public function acte()
     {
-        return $this->hasOne(Acte::class);
+        return $this->hasOne(Acte::class,'id_demande');
     }
     public function volet()
     {
 
-        return $this->belongsTo(VoletDeclaration::class, 'id_volet', 'id_volet');
+        return $this->belongsTo(VoletDeclaration::class, 'id_volet');
     }
 }

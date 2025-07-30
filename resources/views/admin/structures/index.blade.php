@@ -3,51 +3,38 @@
 @section('title', 'Gestion des Structures')
 
 @section('content')
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <div class="page-title-box d-flex align-items-center justify-content-between">
-                <h4 class="mb-0">
-                    <i class="fas fa-hospital me-2"></i>
-                    Gestion des Structures
-                </h4>
-                <div class="page-title-right">
-                    <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Structures</li>
-                    </ol>
-                </div>
-            </div>
-        </div>
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-bold text-gray-700 flex items-center gap-2">
+            <i class="fas fa-hospital"></i> Gestion des Structures
+        </h1>
+        <nav class="text-sm text-gray-500">
+            <ol class="list-reset flex">
+                <li><a href="{{ route('admin.dashboard') }}" class="text-blue-600 hover:underline">Dashboard</a></li>
+                <li><span class="mx-2">/</span></li>
+                <li class="text-gray-700">Structures</li>
+            </ol>
+        </nav>
     </div>
 
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-body">
-                    @livewire('admin.structures-table')
-                </div>
-            </div>
-        </div>
+    <div class="bg-white rounded shadow p-4">
+        @livewire('admin.structures-table')
     </div>
-</div>
 @endsection
 
 @push('scripts')
 <script>
-    // Écouter les événements Livewire pour fermer les modals
     document.addEventListener('livewire:init', () => {
         Livewire.on('structureCreated', () => {
-            // Fermer automatiquement les modals si nécessaire
+            // Actions après création
         });
-        
+
         Livewire.on('structureUpdated', () => {
-            // Fermer automatiquement les modals si nécessaire
+            // Actions après mise à jour
         });
-        
+
         Livewire.on('structureDeleted', () => {
-            // Fermer automatiquement les modals si nécessaire
+            // Actions après suppression
         });
     });
 </script>
-@endpush 
+@endpush

@@ -60,30 +60,30 @@
             <div class="bg-white rounded-lg shadow-md p-6">
                 <h3 class="text-lg font-semibold text-gray-900 mb-4">Gestion des Agents</h3>
                 <div class="space-y-3">
-                    <a href="{{ route('manager.agents.index') }}" 
-                       class="block w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition duration-200 text-center">
+                    <a href="{{ route('manager.agents.index') }}"
+                        class="block w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition duration-200 text-center">
                         <i class="fa fa-users mr-2"></i> Voir tous les agents
                     </a>
-                    <a href="{{ route('manager.agents.create') }}" 
-                       class="block w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 rounded-lg transition duration-200 text-center">
+                    <a href="{{ route('manager.agents.create') }}"
+                        class="block w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 rounded-lg transition duration-200 text-center">
                         <i class="fa fa-user-plus mr-2"></i> Ajouter un agent
                     </a>
                 </div>
             </div>
 
-            <div class="bg-white rounded-lg shadow-md p-6">
+            {{-- <div class="bg-white rounded-lg shadow-md p-6">
                 <h3 class="text-lg font-semibold text-gray-900 mb-4">Gestion des Structures</h3>
                 <div class="space-y-3">
-                    <a href="{{ route('manager.structures.index') }}" 
-                       class="block w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-3 px-4 rounded-lg transition duration-200 text-center">
+                    <a href="{{ route('manager.structures.index') }}"
+                        class="block w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-3 px-4 rounded-lg transition duration-200 text-center">
                         <i class="fa fa-building mr-2"></i> Voir toutes les structures
                     </a>
-                    <a href="{{ route('manager.structures.create') }}" 
-                       class="block w-full bg-orange-600 hover:bg-orange-700 text-white font-medium py-3 px-4 rounded-lg transition duration-200 text-center">
+                    <a href="{{ route('manager.structures.create') }}"
+                        class="block w-full bg-orange-600 hover:bg-orange-700 text-white font-medium py-3 px-4 rounded-lg transition duration-200 text-center">
                         <i class="fa fa-plus mr-2"></i> Ajouter une structure
                     </a>
                 </div>
-            </div>
+            </div> --}}
         </div>
 
         <!-- Activités récentes -->
@@ -108,4 +108,4 @@
         </div>
     </div>
 </div>
-@endsection 
+@endsection

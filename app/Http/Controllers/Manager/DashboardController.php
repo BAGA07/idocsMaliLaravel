@@ -17,13 +17,14 @@ class DashboardController extends Controller
         $totalAgents = User::whereIn('role', ['agent_hopital', 'agent_mairie'])->count();
         $agentsHopital = User::where('role', 'agent_hopital')->count();
         $agentsMairie = User::where('role', 'agent_mairie')->count();
-        
+
         // Statistiques des structures
-        $totalStructures = Hopital::count() + Mairie::count();
-        
+        $userCommuneId = auth()->user()->id;
+        $totalStructures = Hopital::where('id', $userCommuneId)->count();
+
         // Logs récents (activités des agents)
         $recentLogs = Log::with('user')
-            ->whereHas('user', function($query) {
+            ->whereHas('user', function ($query) {
                 $query->whereIn('role', ['agent_hopital', 'agent_mairie']);
             })
             ->latest()
@@ -32,10 +33,10 @@ class DashboardController extends Controller
 
         return view('manager.dashboard', compact(
             'totalAgents',
-            'agentsHopital', 
+            'agentsHopital',
             'agentsMairie',
             'totalStructures',
             'recentLogs'
         ));
     }
-} 
+}

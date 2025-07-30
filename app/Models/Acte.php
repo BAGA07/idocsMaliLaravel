@@ -23,13 +23,13 @@ class Acte extends Model
         // Infos père
         'nom_pere',
         'prenom_pere',
-        'proffesion_pere',
+        'profession_pere',
         'domicile_pere',
 
         // Infos mère
         'nom_mere',
         'prenom_mere',
-        'proffesion_mere',
+        'profession_mere',
         'domicile_mere',
 
         // Clés étrangères
@@ -39,7 +39,10 @@ class Acte extends Model
         'id_demande',
 
         'date_enregistrement_acte',
-        'token'
+        'token',
+        'type',
+        'sequential_num',
+         'statut' 
     ];
 
     use HasFactory;
@@ -57,11 +60,11 @@ class Acte extends Model
    // public function User(){
         //return $this->belongsTo(User::class);
     //}
-    public function Demande(){
-        return $this->belongsTo(Demande::class);
+    public function demande(){
+        return $this->belongsTo(Demande::class,'id_demande');
     }
     public function voletDeclaration(){
-        return $this->belongsTo(VoletDeclaration::class);
+        return $this->belongsTo(VoletDeclaration::class,'id_volet');
 
     }
 }

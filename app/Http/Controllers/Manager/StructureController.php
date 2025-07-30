@@ -15,9 +15,11 @@ class StructureController extends Controller
     // Afficher la liste des structures
     public function index()
     {
-        $hopitaux = Hopital::with('commune')->paginate(10);
+        $userCommuneId = auth()->user()->id_mairie;
+
+        $hopitaux = Hopital::where('id_commune', $userCommuneId)->with('commune')->paginate(10);
         $mairies = Mairie::with('commune')->paginate(10);
-        
+
         return view('manager.structures.index', compact('hopitaux', 'mairies'));
     }
 
@@ -72,9 +74,9 @@ class StructureController extends Controller
     {
         $hopital = Hopital::with('commune')->find($id);
         $mairie = Mairie::with('commune')->find($id);
-        
+
         $structure = $hopital ?? $mairie;
-        
+
         if (!$structure) {
             abort(404);
         }
@@ -87,16 +89,16 @@ class StructureController extends Controller
     {
         $hopital = Hopital::find($id);
         $mairie = Mairie::find($id);
-        
+
         $structure = $hopital ?? $mairie;
-        
+
         if (!$structure) {
             abort(404);
         }
 
         $communes = Commune::all();
         $type = $hopital ? 'hopital' : 'mairie';
-        
+
         return view('manager.structures.edit', compact('structure', 'communes', 'type'));
     }
 
@@ -114,10 +116,10 @@ class StructureController extends Controller
 
         $hopital = Hopital::find($id);
         $mairie = Mairie::find($id);
-        
+
         $structure = $hopital ?? $mairie;
         $type = $hopital ? 'hopital' : 'mairie';
-        
+
         if (!$structure) {
             abort(404);
         }
@@ -151,10 +153,10 @@ class StructureController extends Controller
     {
         $hopital = Hopital::find($id);
         $mairie = Mairie::find($id);
-        
+
         $structure = $hopital ?? $mairie;
         $type = $hopital ? 'hopital' : 'mairie';
-        
+
         if (!$structure) {
             abort(404);
         }
@@ -172,4 +174,4 @@ class StructureController extends Controller
         return redirect()->route('manager.structures.index')
             ->with('success', ucfirst($type) . ' supprimé avec succès.');
     }
-} 
+}

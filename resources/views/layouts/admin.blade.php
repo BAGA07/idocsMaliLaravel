@@ -25,33 +25,39 @@
                     <i class="fas fa-shield-alt me-2"></i>
                     Administration
                 </h4>
-                
+
                 <nav class="nav flex-column">
-                    <a class="nav-link text-white-50 {{ request()->routeIs('admin.dashboard') ? 'active bg-primary' : '' }}" 
-                       href="{{ route('admin.dashboard') }}">
+                    <a class="nav-link text-white-50 {{ request()->routeIs('admin.dashboard') ? 'active bg-primary' : '' }}"
+                        href="{{ route('admin.dashboard') }}">
                         <i class="fas fa-tachometer-alt me-2"></i>
                         Dashboard
                     </a>
-                    
-                    <a class="nav-link text-white-50 {{ request()->routeIs('admin.managers.*') ? 'active bg-primary' : '' }}" 
-                       href="{{ route('admin.managers.index') }}">
+
+                    <a class="nav-link text-white-50 {{ request()->routeIs('admin.managers.*') ? 'active bg-primary' : '' }}"
+                        href="{{ route('manager.managers.index') }}">
                         <i class="fas fa-users me-2"></i>
                         Gestionnaires
                     </a>
-                    
-                    <a class="nav-link text-white-50 {{ request()->routeIs('admin.structures.*') ? 'active bg-primary' : '' }}" 
-                       href="{{ route('admin.structures.index') }}">
+
+                    <a class="nav-link text-white-50 {{ request()->routeIs('admin.u.*') ? 'active bg-primary' : '' }}"
+                        href="{{ route('manager.managers.index') }}">
+                        <i class="fas fa-users me-2"></i>
+                        Liste de Utilisateurs
+                    </a>
+
+                    <a class="nav-link text-white-50 {{ request()->routeIs('admin.structures.*') ? 'active bg-primary' : '' }}"
+                        href="{{ route('admin.structures.index') }}">
                         <i class="fas fa-hospital me-2"></i>
                         Structures
                     </a>
-                    
+
                     <hr class="text-white-50">
-                    
+
                     <a class="nav-link text-white-50" href="{{ route('presentation.index') }}">
                         <i class="fas fa-home me-2"></i>
                         Retour au site
                     </a>
-                    
+
                     <form method="POST" action="{{ route('logout') }}" class="d-inline">
                         @csrf
                         <button type="submit" class="nav-link text-white-50 border-0 bg-transparent w-100 text-start">
@@ -72,7 +78,7 @@
                         <i class="fas fa-user-shield me-2"></i>
                         {{ auth()->user()->name }}
                     </span>
-                    
+
                     <div class="navbar-nav ms-auto">
                         <div class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
@@ -80,7 +86,9 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="{{ route('profile') }}">Profil</a></li>
-                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
                                 <li>
                                     <form method="POST" action="{{ route('logout') }}">
                                         @csrf
@@ -128,4 +136,4 @@
     @stack('scripts')
 </body>
 
-</html> 
+</html>

@@ -62,19 +62,27 @@ use Illuminate\Pagination\Paginator;
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nom du père</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nom de la mère</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Téléphone</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sexe</th>
-                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Date</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Nom du père</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Nom de la mère</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Téléphone</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Sexe</th>
+                            <th
+                                class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Actions</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
                         @forelse ($declarations as $declaration)
                         <tr class="hover:bg-gray-50">
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                {{ \Carbon\Carbon::parse($declaration->date_naissance)->format('d/m/Y') }} à {{ $declaration->heure_naissance }}
+                                {{ \Carbon\Carbon::parse($declaration->date_naissance)->format('d/m/Y') }} à {{
+                                $declaration->heure_naissance }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                 {{ $declaration->prenom_pere }} {{ $declaration->nom_pere }}
@@ -87,15 +95,18 @@ use Illuminate\Pagination\Paginator;
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 @if ($declaration->sexe === 'M')
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                <span
+                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                                     Masculin
                                 </span>
                                 @elseif ($declaration->sexe === 'F')
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-pink-100 text-pink-800">
+                                <span
+                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-pink-100 text-pink-800">
                                     Féminin
                                 </span>
                                 @else
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                <span
+                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
                                     Non défini
                                 </span>
                                 @endif
@@ -120,7 +131,7 @@ use Illuminate\Pagination\Paginator;
                                         <i class="fa fa-paper-plane"></i>
                                     </button>
                                 </div>
-                                
+
                                 <!-- Formulaire de suppression caché -->
                                 <form id="delete-form-{{ $declaration->id_volet }}"
                                     action="{{ route('naissances.destroy', $declaration->id_volet) }}" method="POST"
@@ -128,11 +139,11 @@ use Illuminate\Pagination\Paginator;
                                     @csrf
                                     @method('DELETE')
                                 </form>
-                                
+
                                 <!-- Formulaire d'envoi de notification caché -->
                                 <form id="notification-form-{{ $declaration->id_volet }}"
-                                    action="{{ route('declaration.sendNotification', $declaration->id_volet) }}" method="POST"
-                                    style="display: none;">
+                                    action="{{ route('declaration.sendNotification', $declaration->id_volet) }}"
+                                    method="POST" style="display: none;">
                                     @csrf
                                 </form>
                             </td>
@@ -147,19 +158,19 @@ use Illuminate\Pagination\Paginator;
                     </tbody>
                 </table>
             </div>
-            
+
             <!-- Pagination -->
             @if($declarations->hasPages())
-                <div class="bg-white px-4 py-3 border-t border-gray-200 sm:px-6">
-                    {{ $declarations->links() }}
-                </div>
+            <div class="bg-white px-4 py-3 border-t border-gray-200 sm:px-6">
+                {{ $declarations->links() }}
+            </div>
             @endif
         </div>
     </div>
 </div>
 
 <script>
-function confirmDelete(id) {
+    function confirmDelete(id) {
     if (confirm('Êtes-vous sûr de vouloir supprimer cette déclaration ?')) {
         document.getElementById('delete-form-' + id).submit();
     }
