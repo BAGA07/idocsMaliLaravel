@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nom_mairie');
             $table->string('quartier');
+            $table->string('email');
              $table->foreignId('id_commune')->constrained('communes')->onDelete('cascade');
             $table->timestamps();
         });

@@ -86,9 +86,12 @@ Route::middleware([
         Route::get('/demandesTraiter', [Acte_naissance::class, 'listTraiter'])->name('listTraiter');
         Route::get('/demandesEnattente', [Acte_naissance::class, 'listEnattente'])->name('listEnattente');
         Route::get('/demandesRejeté', [Acte_naissance::class, 'listRejeté'])->name('listRejeté');
+        Route::get('/notifications', [Acte_naissance::class, 'notifications'])->name('mairie.notifications.index');
+    Route::get('/notifications/{id}', [Acte_naissance::class, 'showNotification'])->name('notifications.show');
+    Route::post('/notifications/mark-all-read', [Acte_naissance::class, 'markAllAsRead'])->name('notifications.markAllRead');
 
 
-    
+
 });
 // fin des routes pour le centre d'etat civil
 
@@ -136,5 +139,6 @@ Route::get('/acte/{id}/pdf', [App\Http\Controllers\Acte_naissance::class, 'downl
 
 // Route pour l'envoi de la demande à la mairie depuis l'hôpital
 Route::post('/hopital/demandes/envoyer/{id_volet}', [App\Http\Controllers\Hopital\DemandeController::class, 'envoyerDemande'])->name('hopital.demandes.envoyer');
+
 
 require __DIR__ . '/auth.php';

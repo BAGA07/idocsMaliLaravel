@@ -46,7 +46,7 @@
             @if(Auth::user()->role === 'agent_mairie')
             <li>
                  <li>
-                <a href="{{ route('hopital.dashboard') }}" class="flex items-center p-2 rounded hover:bg-blue-700">
+                <a href="{{ route('agent.dashboard') }}" class="flex items-center p-2 rounded hover:bg-blue-700">
                     <i class="fa fa-home w-5 mr-2 text-white"></i> Accueil
                 </a>
             </li>
@@ -68,6 +68,8 @@
                     </ul>
 
                 </details>
+                <!-- Notifications -->
+
             </li>
             <li>
                 <details class="group">
@@ -82,6 +84,12 @@
                         <li><a href="#" class="block px-2 py-1 hover:text-white">Rejetées</a></li>
                     </ul>
                 </details>
+                  <li>
+                 <li>
+                <a href="{{ route('mairie.notifications.index') }}" class="flex items-center p-2 rounded hover:bg-blue-700">
+                    <i class="fa fa-bell w-5 mr-2 text-white"></i> Notifications
+                </a>
+            </li>
             </li>
 
             @endif
