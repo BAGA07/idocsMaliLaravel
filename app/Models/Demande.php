@@ -10,21 +10,20 @@ class Demande extends Model
     use HasFactory;
 
     protected $fillable = [
-
-           'nom_complet',
-    'email',
-    'telephone',
-    'type_document',
-    'informations_complementaires',
-    'justificatif_path',
-    'statut',
-    'num_acte',
-    'nombre_copie',
-    'nom_personne_concernee',
-    'prenom_personne_concernee',
-    'date_evenement',
-    'lieu_evenement',
-
+        'nom_complet',
+        'email',
+        'telephone',
+        'type_document',
+        'informations_complementaires',
+        'justificatif',
+        'statut',
+        'num_acte',
+        'nombre_copie',
+        'numero_volet_naissance',
+        'id_volet',
+        'numero_suivi', // NULL pour les demandes d'actes originaux (volet), généré pour les demandes de copies (plateforme)
+        'id_utilisateur', // Pour les demandes via volet (actes originaux) qui nécessitent une connexion
+        'id' // Référence vers l'acte créé (original ou copie)
     ];
 
     public function PieceJointe()
@@ -36,7 +35,6 @@ class Demande extends Model
     public function acte()
     {
         return $this->hasOne(Acte::class,'id_demande');
-
     }
     public function volet()
     {

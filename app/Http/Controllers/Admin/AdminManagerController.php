@@ -24,7 +24,9 @@ class AdminManagerController extends Controller
     }
     public function structureList()
     {
-        $structures = Hopital::all()->merge(Mairie::all());
+        $structures = Hopital::where('id_communes', Auth::user()->id_commune)
+            ->get();
+        dd($structures);
         return view('admin.managers.structureList', compact('structures'));
     }
     // Formulaire de création
@@ -79,7 +81,7 @@ class AdminManagerController extends Controller
             'action' => 'Création manager',
             'details' => 'Manager créé : ' . $user->nom . ' ' . $user->prenom . ' (' . $user->email . ')',
         ]);
-        return redirect()->route('managers.create')->with('success', 'Manager créé avec succès.');
+        return redirect()->route('admin.managers.create')->with('success', 'Manager créé avec succès.');
     }
 
     // Afficher le formulaire d'édition
@@ -133,7 +135,7 @@ class AdminManagerController extends Controller
             'action' => 'Mise à jour manager',
             'details' => 'Manager modifié : ' . $user->nom . ' ' . $user->prenom . ' (' . $user->email . ')',
         ]);
-        return redirect()->route('managers.index')->with('success', 'Manager mis à jour avec succès.');
+        return redirect()->route('admin.managers.index')->with('success', 'Manager mis à jour avec succès.');
     }
 
     //voir le manager

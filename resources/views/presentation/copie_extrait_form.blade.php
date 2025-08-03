@@ -29,19 +29,26 @@
                 Demande de copie d'extrait d'acte
             </h1>
 
-            {{-- Message de succès (SweetAlert) --}}
-            @if(session('success'))
-            <script>
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Succès !',
-                    text: '{{ session("success") }}',
-                    confirmButtonColor: '#2563EB'
-                });
-            </script>
+            {{-- NOUVEAU BLOC SweetAlert pour le succès simple --}}
+            @if(session('numero_suivi_succes'))
+                <script>
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Demande soumise avec succès !',
+                        html: `
+                            <p class="mt-2 text-lg">Votre numéro de suivi est : <strong class="text-blue-600">{{ session('numero_suivi_succes') }}</strong></p>
+                            <p class="mt-3 text-sm">Nous vous contacterons par e-mail concernant l'avancement de votre demande.</p>
+                            <p class="mt-4">
+                                <a href="{{ route('presentation.suivre_demande') }}" class="text-blue-500 hover:underline">
+                                    Cliquez ici pour suivre votre demande
+                                </a>
+                            </p>
+                        `,
+                        confirmButtonColor: '#2563EB'
+                    });
+                </script>
             @endif
-
-            {{-- Message d'erreur général (si besoin) --}}
+            {{-- Message d'erreur général --}}
             @if(session('error'))
             <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
                 <strong class="font-bold">Erreur !</strong>
@@ -49,9 +56,20 @@
             </div>
             @endif
 
+            {{-- Message de succès simple (fallback si SweetAlert ne fonctionne pas) --}}
+            @if(session('numero_suivi_succes'))
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+                <strong class="font-bold">Succès !</strong>
+                <span class="block sm:inline">Votre demande a été soumise avec succès. Numéro de suivi : <strong>{{ session('numero_suivi_succes') }}</strong></span>
+            </div>
+            @endif
+
+            {{-- Votre formulaire --}}
             <form method="POST" action="{{ route('demande.copie_extrait.store') }}" enctype="multipart/form-data"
-                class="space-y-6" id="copieExtraitForm">
+                class="space-y-6" id="copieExtraitForm" novalidate>
                 @csrf
+
+
 
                 {{-- Étape 1: Informations du demandeur --}}
                 <div id="step1" class="form-step">
@@ -59,11 +77,22 @@
                     </h2>
                     <div>
                         <label for="nom_demandeur"
-                            class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Nom complet:</label>
+                            class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Nom:</label>
                         <input type="text" name="nom_demandeur" id="nom_demandeur"
                             class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            value="{{ old('nom_demandeur') }}" required>
+                            value="{{ old('nom_demandeur') }}">
                         @error('nom_demandeur')
+                        <p class="text-red-500 text-xs italic mt-2">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label for="prenom_demandeur"
+                            class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Prénom(s):</label>
+                        <input type="text" name="prenom_demandeur" id="prenom_demandeur"
+                            class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            value="{{ old('prenom_demandeur') }}">
+                        @error('prenom_demandeur')
                         <p class="text-red-500 text-xs italic mt-2">{{ $message }}</p>
                         @enderror
                     </div>
@@ -73,7 +102,7 @@
                             class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Email:</label>
                         <input type="email" name="email_demandeur" id="email_demandeur"
                             class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            value="{{ old('email_demandeur') }}" required>
+                            value="{{ old('email_demandeur') }}">
                         @error('email_demandeur')
                         <p class="text-red-500 text-xs italic mt-2">{{ $message }}</p>
                         @enderror
@@ -84,7 +113,7 @@
                             class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Téléphone:</label>
                         <input type="tel" name="telephone_demandeur" id="telephone_demandeur"
                             class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            value="{{ old('telephone_demandeur') }}" required>
+                            value="{{ old('telephone_demandeur') }}">
                         @error('telephone_demandeur')
                         <p class="text-red-500 text-xs italic mt-2">{{ $message }}</p>
                         @enderror
@@ -104,101 +133,32 @@
 
                 {{-- Étape 2: Informations de l'acte demandé --}}
                 <div id="step2" class="form-step hidden">
-                    <h2 class="text-xl font-bold text-gray-800 dark:text-white mt-8 mb-4">Étape 2: Informations de
-                        l'acte demandé</h2>
+                    <h2 class="text-xl font-bold text-gray-800 dark:text-white mt-8 mb-4">Étape 2: Détails de la demande
+                    </h2>
 
+                    {{-- Champ: Nombre de copies --}}
                     <div>
-                        <label for="nom_personne_acte"
-                            class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Nom complet de la
-                            personne concernée par l'acte:</label>
-                        <input type="text" name="nom_personne_acte" id="nom_personne_acte"
-                            class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            value="{{ old('nom_personne_acte') }}"> {{-- Removed required for JS validation --}}
-                        @error('nom_personne_acte')
-                        <p class="text-red-500 text-xs italic mt-2">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <div>
-                        <label for="prenom_personne_acte"
-                            class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Prénom(s) de la
-                            personne concernée par l'acte:</label>
-                        <input type="text" name="prenom_personne_acte" id="prenom_personne_acte"
-                            class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            value="{{ old('prenom_personne_acte') }}"> {{-- Removed required for JS validation --}}
-                        @error('prenom_personne_acte')
-                        <p class="text-red-500 text-xs italic mt-2">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <div>
-                        <label for="date_evenement_acte"
-                            class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Date de l'événement
-                            (naissance):</label>
-                        <input type="date" name="date_evenement_acte" id="date_evenement_acte"
-                            class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            value="{{ old('date_evenement_acte') }}"> {{-- Removed required for JS validation --}}
-                        @error('date_evenement_acte')
-                        <p class="text-red-500 text-xs italic mt-2">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <div>
-                        <label for="lieu_evenement_acte"
-                            class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Lieu de l'événement
-                            (Commune, Ville):</label>
-                        <input type="text" name="lieu_evenement_acte" id="lieu_evenement_acte"
-                            class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            value="{{ old('lieu_evenement_acte') }}"> {{-- Removed required for JS validation --}}
-                        @error('lieu_evenement_acte')
-                        <p class="text-red-500 text-xs italic mt-2">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <div>
-                        <label for="type_acte_demande"
-                            class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Type d'acte
-                            demandé:</label>
-                        <select name="type_acte_demande" id="type_acte_demande"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            <option value="">-- Choisir un type --</option>
-                            <option value="Extrait de naissance" {{ old('type_acte_demande')=='Extrait de naissance'
-                                ? 'selected' : '' }}>Extrait de naissance</option>
-                            <option value="Copie intégrale de naissance" {{
-                                old('type_acte_demande')=='Copie intégrale de naissance' ? 'selected' : '' }}>Copie
-                                intégrale de naissance</option>
-                            <option value="Autre" {{ old('type_acte_demande')=='Autre' ? 'selected' : '' }}>Autre
-                                (préciser dans info complémentaires)</option>
-                        </select>
-                        @error('type_acte_demande')
-                        <p class="text-red-500 text-xs italic mt-2">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    {{-- Nouveau champ: Nombre de copies --}}
-                    <div>
-                        <label for="nombre_copies"
+                        <label for="nombre_copie"
                             class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Nombre de
                             copies:</label>
-                        <input type="number" name="nombre_copies" id="nombre_copies" min="1"
-                            value="{{ old('nombre_copies', 1) }}"
-                            class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            required>
-                        @error('nombre_copies')
+                        <input type="number" name="nombre_copie" id="nombre_copie" min="1"
+                            value="{{ old('nombre_copie', 1) }}"
+                            class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        @error('nombre_copie')
                         <p class="text-red-500 text-xs italic mt-2">{{ $message }}</p>
                         @enderror
                     </div>
 
                     <div>
-                        <label for="justificatif_copie"
+                        <label for="justificatif"
                             class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Pièce justificative
-                            (Ancien acte, CNI si connu - PDF, JPG, PNG):</label>
-                        <input type="file" name="justificatif_copie" id="justificatif_copie"
+                            (Photo de l'extrait d'acte existant - JPG, PNG, PDF):</label>
+                        <input type="file" name="justificatif" id="justificatif"
                             accept=".pdf,.jpg,.jpeg,.png"
                             class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
-                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">Facultatif, mais
-                            aide à accélérer le traitement.</p>
-                        @error('justificatif_copie')
+                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">Veuillez
+                            télécharger une photo claire de l'extrait de naissance existant.</p>
+                        @error('justificatif')
                         <p class="text-red-500 text-xs italic mt-2">{{ $message }}</p>
                         @enderror
                     </div>
@@ -225,7 +185,8 @@
                             </svg>
                             Précédent
                         </button>
-                        <button type="submit"
+                        {{-- CE BOUTON EST DE TYPE SUBMIT, IL ENVERRA LE FORMULAIRE --}}
+                        <button type="submit" id="submitBtn"
                             class="text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-lg px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 transition duration-300 ease-in-out transform hover:scale-105">
                             Soumettre la demande
                         </button>
@@ -251,10 +212,12 @@
         // Valider l'étape 1 avant de passer à l'étape 2
         if (currentStep === 1) {
             const nomDemandeur = document.getElementById('nom_demandeur');
+            const prenomDemandeur = document.getElementById('prenom_demandeur');
             const emailDemandeur = document.getElementById('email_demandeur');
             const telephoneDemandeur = document.getElementById('telephone_demandeur');
 
-            if (!nomDemandeur.value || !emailDemandeur.value || !telephoneDemandeur.value) {
+            // Simple validation client-side pour s'assurer que les champs requis de l'étape 1 sont remplis
+            if (!nomDemandeur.value || !prenomDemandeur.value || !emailDemandeur.value || !telephoneDemandeur.value) {
                 Swal.fire({
                     icon: 'warning',
                     title: 'Champs manquants !',
@@ -264,6 +227,7 @@
                 return; // Empêche de passer à l'étape suivante
             }
         }
+        // Passe simplement à l'étape suivante, le bouton "Soumettre" s'occupe de la soumission finale
         showStep(currentStep + 1);
     }
 
@@ -275,10 +239,23 @@
     document.addEventListener('DOMContentLoaded', () => {
         showStep(1);
 
+        // Gestion simple de la soumission du formulaire
+        const form = document.getElementById('copieExtraitForm');
+        const submitBtn = document.getElementById('submitBtn');
+
+        form.addEventListener('submit', function(e) {
+            // Désactiver le bouton pour éviter les doubles soumissions
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = 'Soumission en cours...';
+            
+            // Laisser le formulaire se soumettre normalement
+            return true;
+        });
+
         // Si des erreurs de validation Laravel existent, revenir à l'étape correspondante
         @if($errors->any())
-            const errorFieldsStep1 = ['nom_demandeur', 'email_demandeur', 'telephone_demandeur'];
-            const errorFieldsStep2 = ['nom_personne_acte', 'prenom_personne_acte', 'date_evenement_acte', 'lieu_evenement_acte', 'type_acte_demande', 'nombre_copies', 'justificatif_copie', 'informations_complementaires_copie']; // Added nombre_copies
+            const errorFieldsStep1 = ['nom_demandeur', 'prenom_demandeur', 'email_demandeur', 'telephone_demandeur'];
+            const errorFieldsStep2 = ['nombre_copie', 'justificatif', 'informations_complementaires_copie'];
 
             let hasErrorInStep1 = false;
             let hasErrorInStep2 = false;
