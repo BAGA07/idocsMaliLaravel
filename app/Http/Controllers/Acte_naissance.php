@@ -26,56 +26,56 @@ class Acte_naissance extends Controller
     /**
      * Display a listing of the resource (Dashboard principal pour l'agent).
      */
-    public function index()
-    {
-        // Statistiques globales pour les déclarations/demandes
-        $total = VoletDeclaration::count(); // Total des volets de déclaration
-        $totalDeclarations = VoletDeclaration::count();
-        $today = Carbon::today();
-        $startOfWeek = Carbon::now()->startOfWeek();
-        $endOfWeek = Carbon::now()->endOfWeek();
-        $todayCount = VoletDeclaration::whereDate('created_at', $today)->count(); // Compteur du jour
-        $todayDeclarationsCount = VoletDeclaration::whereDate('created_at', $today)->count();
-        $weekCount = VoletDeclaration::whereBetween('created_at', [$startOfWeek, $endOfWeek])->count(); // Compteur de la semaine
-        $weekDeclarationsCount = VoletDeclaration::whereBetween('created_at', [$startOfWeek, $endOfWeek])->count();
-        $monthCount = VoletDeclaration::whereMonth('created_at', Carbon::now()->month)->count(); // Compteur du mois
-        $monthDeclarationsCount = VoletDeclaration::whereMonth('created_at', Carbon::now()->month)->count();
+    // public function index()
+    // {
+    //     // Statistiques globales pour les déclarations/demandes
+    //     $total = VoletDeclaration::count(); // Total des volets de déclaration
+    //     $totalDeclarations = VoletDeclaration::count();
+    //     $today = Carbon::today();
+    //     $startOfWeek = Carbon::now()->startOfWeek();
+    //     $endOfWeek = Carbon::now()->endOfWeek();
+    //     $todayCount = VoletDeclaration::whereDate('created_at', $today)->count(); // Compteur du jour
+    //     $todayDeclarationsCount = VoletDeclaration::whereDate('created_at', $today)->count();
+    //     $weekCount = VoletDeclaration::whereBetween('created_at', [$startOfWeek, $endOfWeek])->count(); // Compteur de la semaine
+    //     $weekDeclarationsCount = VoletDeclaration::whereBetween('created_at', [$startOfWeek, $endOfWeek])->count();
+    //     $monthCount = VoletDeclaration::whereMonth('created_at', Carbon::now()->month)->count(); // Compteur du mois
+    //     $monthDeclarationsCount = VoletDeclaration::whereMonth('created_at', Carbon::now()->month)->count();
 
-        // Récupérer les DEMANDES d'actes originaux (via volet de déclaration)
-        $demandes = Demande::where('type_document', 'Extrait original')
-                           ->whereNotNull('id_volet')
-                           ->with('volet')
-                           ->get();
+    //     // Récupérer les DEMANDES d'actes originaux (via volet de déclaration)
+    //     $demandes = Demande::where('type_document', 'Extrait original')
+    //                        ->whereNotNull('id_volet')
+    //                        ->with('volet')
+    //                        ->get();
 
-        // Récupérer les DEMANDES de copies (via plateforme publique)
-        $demandesCopies = Demande::where('type_document', 'Extrait de naissance')
-                                 ->with('acte')
-                                 ->get();
+    //     // Récupérer les DEMANDES de copies (via plateforme publique)
+    //     $demandesCopies = Demande::where('type_document', 'Extrait de naissance')
+    //                              ->with('acte')
+    //                              ->get();
 
-        // Récupérer les ACTES de naissance originaux (ceux avec type='original' ou NULL)
-        $actesNaissanceOriginaux = Acte::where(function ($query) {
-                                            $query->whereNull('type') // Actes sans type défini (présumés originaux)
-                                                  ->orWhere('type', 'original'); // Ou explicitement marqués comme originaux
-                                        })->with('declarant')->latest()->get();
+    //     // Récupérer les ACTES de naissance originaux (ceux avec type='original' ou NULL)
+    //     $actesNaissanceOriginaux = Acte::where(function ($query) {
+    //                                         $query->whereNull('type') // Actes sans type défini (présumés originaux)
+    //                                               ->orWhere('type', 'original'); // Ou explicitement marqués comme originaux
+    //                                     })->with('declarant')->latest()->get();
 
-        // Récupérer les COPIES D'ACTES (ceux avec type='copie')
-        $actesCopies = Acte::where('type', 'copie')->with('declarant')->latest()->get();
+    //     // Récupérer les COPIES D'ACTES (ceux avec type='copie')
+    //     $actesCopies = Acte::where('type', 'copie')->with('declarant')->latest()->get();
 
-        return view('agent_mairie.dasboard', compact(
-            'total',              // Total des volets de déclaration
-            'totalDeclarations',
-            'todayCount',         // Compteur du jour
-            'todayDeclarationsCount',
-            'weekCount',          // Compteur de la semaine
-            'weekDeclarationsCount',
-            'monthCount',         // Compteur du mois
-            'monthDeclarationsCount',
-            'demandes',           // Demandes d'actes originaux
-            'demandesCopies',     // Demandes de copies (qui peuvent être en attente, traitées, etc.)
-            'actesNaissanceOriginaux', // Les enregistrements des actes originaux
-            'actesCopies'         // Les enregistrements des copies d'actes
-        ));
-    }
+    //     return view('agent_mairie.dasboard', compact(
+    //         'total',              // Total des volets de déclaration
+    //         'totalDeclarations',
+    //         'todayCount',         // Compteur du jour
+    //         'todayDeclarationsCount',
+    //         'weekCount',          // Compteur de la semaine
+    //         'weekDeclarationsCount',
+    //         'monthCount',         // Compteur du mois
+    //         'monthDeclarationsCount',
+    //         'demandes',           // Demandes d'actes originaux
+    //         'demandesCopies',     // Demandes de copies (qui peuvent être en attente, traitées, etc.)
+    //         'actesNaissanceOriginaux', // Les enregistrements des actes originaux
+    //         'actesCopies'         // Les enregistrements des copies d'actes
+    //     ));
+    // }
 //     public function index()
 //     {
 
@@ -129,6 +129,7 @@ class Acte_naissance extends Controller
 // }
 //         return view('agent_mairie.dasboard', compact('declarations', 'total', 'todayCount', 'weekCount', 'monthCount', 'demandes', 'actesNaissance', 'actesCopies', 'notifications'));
 //     }
+
 public function index()
 {
     $demandes = Demande::with('volet')->get();
@@ -168,10 +169,15 @@ public function index()
             ->orderBy('created_at', 'desc')
             ->paginate(10); // Pagination (10 par page)
     }
+    $notificationsDropdown = Notification::where('mairie_id', $mairieId)
+    ->orderBy('created_at', 'desc')
+    ->take(5)
+    ->get();
+
 
     return view('agent_mairie.dasboard', compact(
         'total', 'todayCount', 'weekCount', 'monthCount',
-        'demandes', 'actesNaissance', 'demandesCopies', 'actesCopies', 'notifications'
+        'demandes', 'actesNaissance', 'demandesCopies', 'actesCopies', 'notifications','notificationsDropdown'
     ));
 }
 public function notifications()
@@ -209,14 +215,64 @@ public function showNotification($id)
     return view('agent_mairie.notifications.show', compact('notification'));
 }
 
+// public function markAllAsRead()
+// {
+//     Notification::where('mairie_id', Auth::user()->id_mairie)
+//         ->where('is_read', false)
+//         ->update(['is_read' => true]);
+
+//     return redirect()->route('mairie.notifications.index')->with('success', 'Toutes les notifications ont été marquées comme lues.');
+// }
 public function markAllAsRead()
 {
-    Notification::where('mairie_id', Auth::user()->id_mairie)
-        ->where('is_read', false)
-        ->update(['is_read' => true]);
-
-    return redirect()->route('mairie.notifications.index')->with('success', 'Toutes les notifications ont été marquées comme lues.');
+    auth()->user()->notifications()->update(['is_read' => true]);
+    return response()->json(['success' => true]);
 }
+
+// public function ajaxMarkRead($id)
+// {
+//     $notification = Notification::findOrFail($id);
+
+//     if ($notification->mairie_id !== Auth::user()->id_mairie) {
+//         return response()->json(['message' => 'Non autorisé'], 403);
+//     }
+
+//     if (!$notification->is_read) {
+//         $notification->is_read = true;
+//         $notification->save();
+//     }
+
+//     return response()->json(['message' => 'Notification marquée comme lue.']);
+// }
+public function ajaxMarkRead($id)
+{
+    // Trouver la notification par ID
+    $notification = Notification::findOrFail($id);
+
+    // Vérifier si l'utilisateur appartient à la mairie qui a cette notification
+    if ($notification->mairie_id !== Auth::user()->id_mairie) {
+        return response()->json(['message' => 'Non autorisé'], 403);
+    }
+
+    // Si la notification n'est pas déjà lue, on la marque comme lue
+    if (!$notification->is_read) {
+        $notification->is_read = true;
+        $notification->save();
+    }
+
+    // Récupérer le nombre de notifications non lues
+    $unreadCount = Notification::where('mairie_id', Auth::user()->id_mairie)
+                               ->where('is_read', false)
+                               ->count();
+
+    // Retourner la réponse avec le message et le nombre de notifications non lues
+    return response()->json([
+        'message' => 'Notification marquée comme lue.',
+        'unreadCount' => $unreadCount // Envoie le nombre de notifications non lues
+    ]);
+}
+
+
 
 
     /**

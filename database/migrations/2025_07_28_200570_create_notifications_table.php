@@ -18,7 +18,7 @@ return new class extends Migration
         $table->text('message');
         $table->timestamps();
 
-        $table->foreign('mairie_id')->references('id')->on('mairies')->onDelete('cascade');
+        $table->foreign('mairie_id')->references('id')->on('mairie')->onDelete('cascade');
     });
 }
 

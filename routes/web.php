@@ -96,6 +96,8 @@ Route::middleware([
         Route::get('/notifications', [Acte_naissance::class, 'notifications'])->name('mairie.notifications.index');
     Route::get('/notifications/{id}', [Acte_naissance::class, 'showNotification'])->name('notifications.show');
     Route::post('/notifications/mark-all-read', [Acte_naissance::class, 'markAllAsRead'])->name('notifications.markAllRead');
+    Route::post('/notifications/{id}/mark-read', [Acte_naissance::class, 'ajaxMarkRead'])->name('notifications.markRead');
+
 
 
 
