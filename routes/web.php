@@ -90,10 +90,16 @@ Route::middleware([
     // Route::get('/acteCopies/create/{id}', [Acte_naissance::class, 'creates'])->name('acteCopies.create');
     Route::get('/acteCopies/create/{id}', [Acte_naissance::class, 'creates'])->name('acteCopies.create');
     Route::post('/acteCopies/store', [Acte_naissance::class, 'stores'])->name('acteCopies.store');
-    Route::get('/demandesTraiter', [Acte_naissance::class, 'listTraiter'])->name('listTraiter');
-    Route::get('/demandesEnattente', [Acte_naissance::class, 'listEnattente'])->name('listEnattente');
-    Route::get('/demandesRejeté', [Acte_naissance::class, 'listRejeté'])->name('listRejeté');
-    Route::post('/demandes/{id}/rejeter', [Acte_naissance::class, 'rejeterDemande'])->name('mairie.demandes.rejeter');
+        Route::get('/demandesTraiter', [Acte_naissance::class, 'listTraiter'])->name('listTraiter');
+        Route::get('/demandesEnattente', [Acte_naissance::class, 'listEnattente'])->name('listEnattente');
+        Route::get('/demandesRejeté', [Acte_naissance::class, 'listRejeté'])->name('listRejeté');
+        Route::get('/notifications', [Acte_naissance::class, 'notifications'])->name('mairie.notifications.index');
+    Route::get('/notifications/{id}', [Acte_naissance::class, 'showNotification'])->name('notifications.show');
+    Route::post('/notifications/mark-all-read', [Acte_naissance::class, 'markAllAsRead'])->name('notifications.markAllRead');
+    Route::post('/notifications/{id}/mark-read', [Acte_naissance::class, 'ajaxMarkRead'])->name('notifications.markRead');
+
+
+
 
     // Routes pour le dashboard des copies/extraits
     Route::get('/dashboard/copies', [Acte_naissance::class, 'dashboardCopies'])->name('mairie.dashboard.copies');
@@ -214,4 +220,9 @@ Route::middleware(['auth', 'role:manager'])->prefix('manager')->name('manager.')
     Route::resource('structures', App\Http\Controllers\Manager\StructureController::class);
     Route::resource('officers', App\Http\Controllers\Manager\OfficerController::class);
 });
+// Route pour l'envoi de la demande à la mairie depuis l'hôpital
+Route::post('/hopital/demandes/envoyer/{id_volet}', [App\Http\Controllers\Hopital\DemandeController::class, 'envoyerDemande'])->name('hopital.demandes.envoyer');
+
+
 require __DIR__ . '/auth.php';
+
