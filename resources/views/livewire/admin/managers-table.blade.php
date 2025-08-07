@@ -1,4 +1,5 @@
 <div class="bg-white p-6 rounded-xl shadow">
+
     <form wire:submit.prevent="searchManagers" class="flex flex-wrap gap-4 mb-4 items-center">
         <input type="text" wire:model.defer="search" placeholder="Recherche nom, prénom, email..."
             class="rounded border-gray-300 px-3 py-2 w-56" />
@@ -21,7 +22,16 @@
         </select>
         <button type="submit"
             class="px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition">Rechercher</button>
+        <div class="text-center">
+            <a href="{{ route('admin.managers.create') }}"
+                class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition duration-200 inline-block">
+                <i class="fas fa-plus mr-2"></i> Ajouter un Utilisateur
+            </a>
+        </div>
+
+
     </form>
+
     <table class="min-w-full text-sm border">
         <thead class="bg-gray-100">
             <tr>

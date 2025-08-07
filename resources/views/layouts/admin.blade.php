@@ -34,16 +34,12 @@
                     </a>
 
                     <a class="nav-link text-white-50 {{ request()->routeIs('admin.managers.*') ? 'active bg-primary' : '' }}"
-                        href="{{ route('manager.managers.index') }}">
+                        href="{{ route('admin.managers.index') }}">
                         <i class="fas fa-users me-2"></i>
-                        Gestionnaires
+                        Gestionnaires Des utilisateurs
                     </a>
 
-                    <a class="nav-link text-white-50 {{ request()->routeIs('admin.u.*') ? 'active bg-primary' : '' }}"
-                        href="{{ route('manager.managers.index') }}">
-                        <i class="fas fa-users me-2"></i>
-                        Liste de Utilisateurs
-                    </a>
+
 
                     <a class="nav-link text-white-50 {{ request()->routeIs('admin.structures.*') ? 'active bg-primary' : '' }}"
                         href="{{ route('admin.structures.index') }}">

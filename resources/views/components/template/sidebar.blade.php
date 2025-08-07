@@ -121,7 +121,7 @@
                         </li>
                         <li><a href="#" class="block px-2 py-1 hover:text-white">Liste des
                                 managers</a></li>
-                        <li><a href="{{ route('managers.create') }}" class="block px-2 py-1 hover:text-white">Ajouter un
+                        <li><a href="" class="block px-2 py-1 hover:text-white">Ajouter un
                                 manager</a></li>
                     </ul>
                 </details>
@@ -133,11 +133,11 @@
                         <i class="fa fa-chevron-down ml-auto text-xs group-open:rotate-180 transition-transform"></i>
                     </summary>
                     <ul class="ml-6 mt-1 space-y-1 text-white/90">
-                        <li><a href="{{ route('structure.list') }}" class="block px-2 py-1 hover:text-white">Accueil</a>
+                        <li><a href="" class="block px-2 py-1 hover:text-white">Accueil</a>
                         </li>
                         <li><a href="#" class="block px-2 py-1 hover:text-white">Liste des
                                 officiers</a></li>
-                        <li><a href="{{ route('managers.create') }}" class="block px-2 py-1 hover:text-white">Ajouter un
+                        <li><a href="" class="block px-2 py-1 hover:text-white">Ajouter un
                                 officier</a></li>
                     </ul>
                 </details>
@@ -199,10 +199,11 @@
                 </summary>
                 <ul class="ml-6 mt-1 space-y-1 text-white/90">
 
-                    <li><a href="{{ route('manager.agents.index') }}" class="block px-2 py-1 hover:text-white">Liste
+                    <li><a href="{{ route('manager.officers.index') }}" class="block px-2 py-1 hover:text-white">Liste
                             des
                             officiers</a></li>
-                    <li><a href="{{ route('manager.agents.create') }}" class="block px-2 py-1 hover:text-white">Ajouter
+                    <li><a href="{{ route('manager.officers.create') }}"
+                            class="block px-2 py-1 hover:text-white">Ajouter
                             un
                             officier</a></li>
                 </ul>

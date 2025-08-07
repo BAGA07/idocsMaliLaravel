@@ -197,14 +197,14 @@ Route::middleware('auth')->group(function () {
 
 // Route pour l'administration des managers (Admin crée les managers)
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
-
+    Route::get('/manager/dashboard', [App\Http\Controllers\Manager\DashboardController::class, 'index'])->name('managers.index');
     Route::get('/dashboard', function () {
         return view('admin.dashboard');
     })->name('dashboard');
     Route::get('/managers/structureList', [AdminManagerController::class, 'structureList'])->name('structure.list');
+
     Route::resource('managers', AdminManagerController::class);
 
-    // Route pour la gestion des structures
     Route::get('/structures', [App\Http\Controllers\Admin\StructureController::class, 'index'])->name('structures.index');
 });
 
@@ -213,14 +213,16 @@ Route::middleware(['auth', 'role:manager'])->prefix('manager')->name('manager.')
 
     Route::get('/dashboard', [App\Http\Controllers\Manager\DashboardController::class, 'index'])->name('managers.index');
 
-    // Gestion des agents par le manager
+    // Gestion des agents par le manager ou admin
     Route::resource('agents', App\Http\Controllers\Manager\AgentController::class);
 
-    // Gestion des structures par le manager
+    // Gestion des structures par le manager ou admin
     Route::resource('structures', App\Http\Controllers\Manager\StructureController::class);
+    Route::resource('officers', App\Http\Controllers\Manager\OfficerController::class);
 });
 // Route pour l'envoi de la demande à la mairie depuis l'hôpital
 Route::post('/hopital/demandes/envoyer/{id_volet}', [App\Http\Controllers\Hopital\DemandeController::class, 'envoyerDemande'])->name('hopital.demandes.envoyer');
 
 
 require __DIR__ . '/auth.php';
+
