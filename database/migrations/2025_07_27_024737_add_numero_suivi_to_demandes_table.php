@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('demandes', function (Blueprint $table) {
-            //
+         // Ajoute la colonne numero_suivi, de type chaîne, nullable, et unique (pour l'unicité)
+            $table->string('numero_suivi')->unique()->nullable()->after('id');
         });
     }
 
@@ -22,7 +23,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('demandes', function (Blueprint $table) {
-            //
+           // Pour annuler la migration, supprime la colonne
+            $table->dropColumn('numero_suivi');
         });
     }
 };

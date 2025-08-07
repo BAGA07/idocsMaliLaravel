@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('volet_declarations', function (Blueprint $table) {
-            $table->string('token')->nullable();
+            //$table->string('token')->nullable();
         });
     }
 

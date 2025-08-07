@@ -32,7 +32,7 @@ class Declarant extends Model
         return $this->hasMany(VoletDeclaration::class, 'id_declarant', 'id_declarant');
     }
 
-    public function Acte()
+    public function acte()
     {
         return $this->hasMany(Acte::class);
     }
