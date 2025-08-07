@@ -116,7 +116,7 @@ class VoletDeclarationController extends Controller
             'nom_enfant' => $request->nom_enfant,
             'date_naissance' => $request->date_naissance,
             'sexe' => $request->sexe,
-            'heure_naissance' => now()->format('H:i:s'),
+            'heure_naissance' => $request->heure_naissance,
             'date_declaration' => now(),
             'nbreEnfantAccouchement' => $request->nbreEnfantAccouchement ?? 1,
             'nbreEINouvNee' => $request->nbreEINouvNee ?? 1,

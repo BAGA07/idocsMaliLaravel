@@ -23,6 +23,8 @@ class DeclarantSeeder extends Seeder
             $profession = $professions[array_rand($professions)];
             $domicile = $domiciles[array_rand($domiciles)];
             $numero_declaration = rand(1000, 9999);
+            $telephone = rand(76000000, 99000099);
+            $email = fake()->unique()->safeEmail();
             $date_declaration = Carbon::now()->subDays(rand(0, 365))->subHours(rand(0, 23))->subMinutes(rand(0, 59));
 
             Declarant::create([
@@ -33,6 +35,8 @@ class DeclarantSeeder extends Seeder
                 'domicile_declarant' => $domicile,
                 'numero_declaration' => $numero_declaration,
                 'date_declaration' => $date_declaration,
+                'telephone' => '+223 ' . $telephone,
+                'email' => $email,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);

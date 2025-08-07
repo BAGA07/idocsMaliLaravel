@@ -45,17 +45,63 @@
     </div>
 
     @if($alertes['en_attente_retard'] > 0 || $alertes['managers_inactifs'] > 0)
-    <div class="mb-6">
+    <div class="mb-6 space-y-4">
         @if($alertes['en_attente_retard'] > 0)
-        <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-2 rounded">
-            <strong>Attention :</strong> {{ $alertes['en_attente_retard'] }} demande(s) en attente depuis plus de 7
-            jours !
+        <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded">
+            <div class="flex items-center justify-between">
+                <div>
+                    <strong class="text-yellow-800">⚠️ Attention :</strong> 
+                    <span class="font-semibold">{{ $alertes['en_attente_retard'] }} demande(s) en attente depuis plus de 7 jours !</span>
+                </div>
+                <span class="text-sm text-yellow-600">{{ now()->format('d/m/Y H:i') }}</span>
+            </div>
+            
+            @if($alertes['demandes_details']->count() > 0)
+            <div class="mt-3 text-sm">
+                <strong class="text-yellow-800">Détails :</strong>
+                <ul class="mt-1 space-y-1">
+                    @foreach($alertes['demandes_details'] as $demande)
+                    <li class="text-yellow-700">
+                        • Volet N°{{ $demande->volet->num_volet ?? 'N/A' }} - 
+                        Créé le {{ \Carbon\Carbon::parse($demande->created_at)->format('d/m/Y à H:i') }}
+                        @if($demande->volet)
+                            ({{ $demande->volet->prenom_enfant ?? '' }} {{ $demande->volet->nom_enfant ?? '' }})
+                        @endif
+                    </li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
         </div>
         @endif
+        
         @if($alertes['managers_inactifs'] > 0)
         <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded">
-            <strong>Attention :</strong> {{ $alertes['managers_inactifs'] }} manager(s) ne se sont pas connectés depuis
-            plus de 15 jours !
+            <div class="flex items-center justify-between">
+                <div>
+                    <strong class="text-red-800">🚨 Attention :</strong> 
+                    <span class="font-semibold">{{ $alertes['managers_inactifs'] }} manager(s) inactif(s) depuis plus de 15 jours !</span>
+                </div>
+                <span class="text-sm text-red-600">{{ now()->format('d/m/Y H:i') }}</span>
+            </div>
+            
+            @if($alertes['managers_details']->count() > 0)
+            <div class="mt-3 text-sm">
+                <strong class="text-red-800">Détails :</strong>
+                <ul class="mt-1 space-y-1">
+                    @foreach($alertes['managers_details'] as $manager)
+                    <li class="text-red-700">
+                        • {{ $manager->prenom }} {{ $manager->nom }} ({{ $manager->email }})
+                        @if($manager->last_login_at)
+                            - Dernière connexion : {{ \Carbon\Carbon::parse($manager->last_login_at)->format('d/m/Y à H:i') }}
+                        @else
+                            - Jamais connecté
+                        @endif
+                    </li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
         </div>
         @endif
     </div>

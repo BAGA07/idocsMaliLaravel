@@ -61,4 +61,15 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Mairie::class, 'id_mairie');
     }
+
+    /**
+     * Vérifie si l'utilisateur a un rôle spécifique.
+     *
+     * @param string $role
+     * @return bool
+     */
+    public function hasRole($role)
+    {
+        return $this->role === $role;
+    }
 }
