@@ -32,7 +32,6 @@ use Illuminate\Pagination\Paginator;
                     <span class="text-sm text-gray-500">Nés cette année</span>
                 </div>
             </div>
-
             <!-- Total Filles -->
             <div class="bg-white p-6 rounded-lg shadow-md flex items-center gap-4 border-l-4 border-blue-600">
                 <div class="text-blue-600 text-4xl">
