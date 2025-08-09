@@ -103,7 +103,7 @@ class DemandeController extends Controller
         ]);
 
         // 5. Retour avec confirmation
-        return redirect()->route('demande_copie.confirmation')
+        return redirect()->route('demande.copie_extrait.create')
             ->with('success', 'Votre demande a été enregistrée avec succès. Numéro de suivi : ' . $numeroSuivi);
     }
          
