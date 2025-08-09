@@ -42,20 +42,20 @@ class Acte_naissance extends Controller
 
         // Récupérer les DEMANDES d'actes originaux (via volet de déclaration)
         $demandes = Demande::where('type_document', 'Extrait original')
-                           ->whereNotNull('id_volet')
-                           ->with('volet')
-                           ->get();
+            ->whereNotNull('id_volet')
+            ->with('volet')
+            ->get();
 
         // Récupérer les DEMANDES de copies (via plateforme publique)
         $demandesCopies = Demande::where('type_document', 'Extrait de naissance')
-                                 ->with('acte')
-                                 ->get();
+            ->with('acte')
+            ->get();
 
         // Récupérer les ACTES de naissance originaux (ceux avec type='original' ou NULL)
         $actesNaissanceOriginaux = Acte::where(function ($query) {
-                                            $query->whereNull('type') // Actes sans type défini (présumés originaux)
-                                                  ->orWhere('type', 'original'); // Ou explicitement marqués comme originaux
-                                        })->with('declarant')->latest()->get();
+            $query->whereNull('type') // Actes sans type défini (présumés originaux)
+                ->orWhere('type', 'original'); // Ou explicitement marqués comme originaux
+        })->with('declarant')->latest()->get();
 
         // Récupérer les COPIES D'ACTES (ceux avec type='copie')
         $actesCopies = Acte::where('type', 'copie')->with('declarant')->latest()->get();
@@ -200,7 +200,7 @@ class Acte_naissance extends Controller
     public function storeActeOriginal(Request $request) // Renommé pour plus de clarté
     {
         $request->validate([
-            'demande_id' => 'required|exists:demandes,id', // L'ID de la demande liée
+            // 'demande_id' => 'required|exists:demandes,id', // L'ID de la demande liée
             'prenom_enfant' => 'required|string',
             'nom_enfant' => 'required|string',
             'date_naissance' => 'required|date',
@@ -232,8 +232,8 @@ class Acte_naissance extends Controller
 
         // Vérification des doublons pour un ACTE ORIGINAL
         $existingOriginalActe = Acte::where(function ($query) {
-                $query->whereNull('type')->orWhere('type', 'original');
-            })
+            $query->whereNull('type')->orWhere('type', 'original');
+        })
             ->where('prenom', $request->prenom_enfant)
             ->where('nom', $request->nom_enfant)
             ->where('date_naissance_enfant', $request->date_naissance)
@@ -274,8 +274,8 @@ class Acte_naissance extends Controller
         // GÉNERATION DU NUMÉRO UNIQUE POUR L'ACTE ORIGINAL
         $currentYear = Carbon::now()->year;
         $lastSequentialNum = Acte::where(function ($query) {
-                $query->whereNull('type')->orWhere('type', 'original');
-            })
+            $query->whereNull('type')->orWhere('type', 'original');
+        })
             ->whereYear('date_enregistrement_acte', $currentYear)
             ->where('id_commune', $request->id_commune)
             ->max('sequential_num');
@@ -319,7 +319,7 @@ class Acte_naissance extends Controller
         $acte->profession_mere = $request->profession_mere;
         $acte->domicile_mere = $request->domicile_mere;
         $acte->id_declarant = $declarant->id; // Utilise l'ID du déclarant trouvé ou créé (assurez-vous que la PK est bien 'id')
-        $acte->id_demande = $request->demande_id; // Lier à la demande originale
+        // $acte->id_demande = $request->demande_id; // Lier à la demande originale
         $acte->id_officier = $request->id_officier;
         $acte->id_commune = $request->id_commune;
         $acte->date_enregistrement_acte = now();
@@ -330,7 +330,7 @@ class Acte_naissance extends Controller
 
         // Mettre à jour le statut de la demande associée à cet acte original
         $demande->statut = 'Validé'; // La demande est validée une fois l'acte original créé
-        $demande->id = $acte->id; // Lier la demande à l'acte original créé
+        // $demande->id = $acte->id; // Lier la demande à l'acte original créé
         $demande->save();
 
         // Log création acte
@@ -428,13 +428,13 @@ class Acte_naissance extends Controller
         // Récupérer les listes pour les selects du formulaire
         $communes = Commune::all();
         $officiers = Officier::all();
-        
+
         // Récupérer tous les actes existants pour la vérification côté client
-                $actesExistants = Acte::select('num_acte', 'prenom', 'nom', 'date_naissance_enfant', 'type', 'lieu_naissance_enfant', 'heure_naissance', 'sexe_enfant', 'prenom_pere', 'nom_pere', 'profession_pere', 'domicile_pere', 'prenom_mere', 'nom_mere', 'profession_mere', 'domicile_mere')
-                           ->get()
-                           ->keyBy('num_acte')
-                           ->toArray();
-        
+        $actesExistants = Acte::select('num_acte', 'prenom', 'nom', 'date_naissance_enfant', 'type', 'lieu_naissance_enfant', 'heure_naissance', 'sexe_enfant', 'prenom_pere', 'nom_pere', 'profession_pere', 'domicile_pere', 'prenom_mere', 'nom_mere', 'profession_mere', 'domicile_mere')
+            ->get()
+            ->keyBy('num_acte')
+            ->toArray();
+
         // Passez les données à la vue
         return view('agent_mairie.naissances.acteCopies', compact(
             'demande',
@@ -516,7 +516,7 @@ class Acte_naissance extends Controller
                 $copie = new Acte();
                 $copie->num_acte = $request->num_acte; // Même numéro que l'original pour l'authenticité
                 $copie->type = 'copie';
-                
+
                 // Copier toutes les données de l'acte original
                 $copie->prenom = $existingActe->prenom;
                 $copie->nom = $existingActe->nom;
@@ -532,7 +532,7 @@ class Acte_naissance extends Controller
                 $copie->nom_mere = $existingActe->nom_mere;
                 $copie->profession_mere = $existingActe->profession_mere;
                 $copie->domicile_mere = $existingActe->domicile_mere;
-                
+
                 $copie->id_demande = $demande->id;
                 $copie->id_officier = $request->id_officier;
                 $copie->id_commune = $request->id_commune;
@@ -541,7 +541,7 @@ class Acte_naissance extends Controller
                 $copie->sequential_num = 0;
                 $copie->is_virtuelle = true; // Marquer comme copie virtuelle (basée sur un original)
                 $copie->original_acte_num = $request->num_acte; // Référence vers le numéro d'acte original
-                
+
                 $copie->save();
 
                 // Mettre à jour le statut de la demande
@@ -562,12 +562,12 @@ class Acte_naissance extends Controller
         // Optionnel: Vérifier si un ACTE DE COPIE EXACTEMENT IDENTIQUE (même num_acte, même nom, date naissance, etc.) existe déjà.
         // Cela peut arriver si l'agent actualise la page ou soumet deux fois.
         $existingCopieActe = Acte::where('type', 'copie')
-                                ->where('id_demande', $request->demande_id)
-                                ->where('num_acte', $request->num_acte)
-                                ->where('prenom', $request->prenom_enfant)
-                                ->where('nom', $request->nom_enfant)
-                                ->where('date_naissance_enfant', $request->date_naissance_enfant)
-                                ->first();
+            ->where('id_demande', $request->demande_id)
+            ->where('num_acte', $request->num_acte)
+            ->where('prenom', $request->prenom_enfant)
+            ->where('nom', $request->nom_enfant)
+            ->where('date_naissance_enfant', $request->date_naissance_enfant)
+            ->first();
 
         if ($existingCopieActe) {
             return back()->withErrors(['general' => 'Une copie de cet acte a déjà été enregistrée pour cette demande.'])->withInput();
@@ -642,7 +642,7 @@ class Acte_naissance extends Controller
     {
         // Cette méthode doit pouvoir afficher les détails d'un acte original ou d'une copie
         $acte = Acte::with(['demande', 'Commune', 'declarant', 'officier'])->findOrFail($id);
-            return view('agent_mairie.naissances.show', compact('acte'));
+        return view('agent_mairie.naissances.show', compact('acte'));
     }
 
     /**
@@ -688,8 +688,8 @@ class Acte_naissance extends Controller
         // La logique est la même que pour la création d'un original, mais on exclut l'acte en cours d'édition.
         if ($acte->type == 'original' || is_null($acte->type)) { // S'applique uniquement aux originaux
             $existingOriginalActe = Acte::where(function ($query) {
-                    $query->whereNull('type')->orWhere('type', 'original');
-                })
+                $query->whereNull('type')->orWhere('type', 'original');
+            })
                 ->where('id', '!=', $id) // Exclure l'acte actuel de la vérification
                 ->where('prenom', $request->prenom_enfant)
                 ->where('nom', $request->nom_enfant)
@@ -830,7 +830,7 @@ class Acte_naissance extends Controller
             ]);
 
             // Log détaillé des copies trouvées
-            foreach($copies as $copie) {
+            foreach ($copies as $copie) {
                 \Log::info('Copie trouvée', [
                     'id' => $copie->id,
                     'num_acte' => $copie->num_acte,
@@ -845,7 +845,7 @@ class Acte_naissance extends Controller
             $allCopies = Acte::where('type', 'copie')->get();
             \Log::info('Toutes les copies dans la base', [
                 'total_copies' => $allCopies->count(),
-                'copies_details' => $allCopies->map(function($c) {
+                'copies_details' => $allCopies->map(function ($c) {
                     return [
                         'id' => $c->id,
                         'num_acte' => $c->num_acte,
@@ -910,32 +910,32 @@ class Acte_naissance extends Controller
         try {
             // Actes traités par la mairie (prêts à être envoyés à l'officier)
             $actes = Acte::where(function ($query) {
-                    $query->whereNull('type')->orWhere('type', 'original');
-                })
+                $query->whereNull('type')->orWhere('type', 'original');
+            })
                 ->where('statut', 'Traité') // Statut après création
                 ->with(['declarant', 'demande'])
                 ->get();
 
             $actesTraites = Acte::where(function ($query) {
-                    $query->whereNull('type')->orWhere('type', 'original');
-                })
+                $query->whereNull('type')->orWhere('type', 'original');
+            })
                 ->where('statut', 'Traité') // Statut après création
                 ->with(['declarant', 'demande'])
                 ->get();
 
             $actesAFinaliser = Acte::where(function ($query) {
-                    $query->whereNull('type')->orWhere('type', 'original');
-                })
+                $query->whereNull('type')->orWhere('type', 'original');
+            })
                 ->where('statut', 'À finaliser') // Envoyé à l'officier pour finalisation
                 ->with(['declarant', 'demande'])
                 ->get();
 
             $actesFinalises = Acte::where(function ($query) {
-                    $query->whereNull('type')->orWhere('type', 'original');
-                })
+                $query->whereNull('type')->orWhere('type', 'original');
+            })
                 ->where('statut', 'Finalisé') // Finalisé par l'officier
                 ->with(['declarant', 'demande'])
-            ->get();
+                ->get();
 
             \Log::info('Dashboard Actes - Données récupérées', [
                 'actesTraites_count' => $actesTraites->count(),
@@ -990,7 +990,7 @@ class Acte_naissance extends Controller
     {
         try {
             $demande = Demande::findOrFail($id);
-            
+
             // Vérifier que la demande est en attente
             if ($demande->statut !== 'En attente') {
                 return redirect()->back()->with('error', 'Seules les demandes en attente peuvent être rejetées.');
@@ -1008,7 +1008,6 @@ class Acte_naissance extends Controller
             ]);
 
             return redirect()->back()->with('success', 'Demande rejetée avec succès.');
-
         } catch (\Exception $e) {
             \Log::error('Erreur lors du rejet de la demande: ' . $e->getMessage(), [
                 'demande_id' => $id,
@@ -1027,7 +1026,7 @@ class Acte_naissance extends Controller
         try {
             // Requête simple
             $acte = \App\Models\Acte::where('num_acte', $numActe)->first();
-            
+
             if ($acte) {
                 return response()->json([
                     'exists' => true,
@@ -1041,13 +1040,12 @@ class Acte_naissance extends Controller
                     'type' => $acte->type
                 ]);
             }
-            
+
             return response()->json([
                 'exists' => false,
                 'acte' => null,
                 'type' => null
             ]);
-            
         } catch (\Exception $e) {
             return response()->json([
                 'exists' => false,
@@ -1056,4 +1054,3 @@ class Acte_naissance extends Controller
         }
     }
 }
-
