@@ -38,96 +38,76 @@ class DemandeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function storeDemandeCopiePublique(Request $request)
+   public function storeDemandeCopiePublique(Request $request)
     {
-        \Log::info('storeDemandeCopiePublique appelée'); // Log temporaire pour vérifier l'appel
-
-        // 1. Validation des données du formulaire.
-        // Tous les champs de contact sont obligatoires car l'utilisateur n'est pas connecté.
+        // 1. Validation des données
         $request->validate([
             'nom_demandeur' => 'required|string|max:255',
             'prenom_demandeur' => 'required|string|max:255',
             'email_demandeur' => 'required|email|max:255',
             'telephone_demandeur' => 'required|string|max:20',
-            'justificatif' => 'required|file|mimes:jpeg,png,jpg,pdf|max:5120', // Augmenté la taille max à 5MB
+            'justificatif' => 'required|file|mimes:jpeg,png,jpg,pdf|max:5120', // max 5 Mo
             'nombre_copie' => 'required|integer|min:1',
             'informations_complementaires_copie' => 'nullable|string',
         ]);
 
-                    // 2. Gérer le téléchargement du justificatif (photo de l'extrait de naissance)
-            $cheminJustificatif = null;
-            if ($request->hasFile('justificatif') && $request->file('justificatif')->isValid()) {
-                $fichier = $request->file('justificatif');
-                // Générer un nom de fichier unique pour éviter les conflits
-                $nomFichier = time() . '_' . Str::random(10) . '.' . $fichier->getClientOriginalExtension();
-                // Stocker le fichier dans le dossier 'justificatifs_copie_extrait'
-                $cheminJustificatif = $fichier->storeAs('justificatifs_copie_extrait', $nomFichier, 'public');
-                
-                if (!$cheminJustificatif) {
-                    return back()->withInput()->withErrors(['justificatif' => 'Erreur lors du téléchargement du fichier.']);
-                }
-                
-                // Synchroniser le fichier vers public/storage pour Windows
-                $sourcePath = storage_path('app/public/' . $cheminJustificatif);
-                $destPath = public_path('storage/' . $cheminJustificatif);
-                $destDir = dirname($destPath);
-                
-                if (!is_dir($destDir)) {
-                    mkdir($destDir, 0755, true);
-                }
-                
-                if (file_exists($sourcePath)) {
-                    copy($sourcePath, $destPath);
-                }
-            } else {
-                return back()->withInput()->withErrors(['justificatif' => 'Le justificatif est requis et doit être un fichier valide.']);
+        // 2. Gestion du fichier justificatif
+        $cheminJustificatif = null;
+        if ($request->hasFile('justificatif') && $request->file('justificatif')->isValid()) {
+            $fichier = $request->file('justificatif');
+
+            // Nom unique
+            $nomFichier = time() . '_' . Str::random(10) . '.' . $fichier->getClientOriginalExtension();
+
+            // Stockage
+            $cheminJustificatif = $fichier->storeAs('justificatifs_copie_extrait', $nomFichier, 'public');
+
+            if (!$cheminJustificatif) {
+                return back()->withInput()->withErrors(['justificatif' => 'Erreur lors du téléchargement du fichier.']);
             }
 
-        // 3. Générer le numéro de suivi unique pour la demande de copie
-        do {
-            // Ex: DCOP-2025-XXXXXX (Demande Copie - Année - 6 caractères alphanumériques)
-            $numeroSuivi = 'DCOP-' . date('Y') . '-' . Str::upper(Str::random(6));
-        } while (Demande::where('numero_suivi', $numeroSuivi)->exists()); // Assure l'unicité
+            // Copie vers public/storage pour Windows (optionnel selon config)
+            $sourcePath = storage_path('app/public/' . $cheminJustificatif);
+            $destPath = public_path('storage/' . $cheminJustificatif);
+            $destDir = dirname($destPath);
 
-        try {
-            // 4. Créer la demande dans la base de données
-            $demande = Demande::create([
-                'numero_suivi' => $numeroSuivi,
-                'statut' => 'En attente',
-                'nombre_copie' => $request->nombre_copie,
-                'justificatif' => $cheminJustificatif,
-                'nom_complet' => $request->prenom_demandeur . ' ' . $request->nom_demandeur,
-                'email' => $request->email_demandeur,
-                'telephone' => $request->telephone_demandeur,
-                'informations_complementaires' => $request->informations_complementaires_copie,
-                'id_utilisateur' => null,
-                'type_document' => 'Extrait de naissance'
-            ]);
+            if (!is_dir($destDir)) {
+                mkdir($destDir, 0755, true);
+            }
 
-            // 5. Enregistrer l'action dans les logs
-            Log::create([
-                'id_utilisateur' => null,
-                'action' => 'Demande de copie publique déposée',
-                'details' => 'Demande de copie déposée par ' . $demande->nom_complet . ' (ID Demande: ' . $demande->id . ').',
-            ]);
-
-            // 6. Redirection avec message de succès et le numéro de suivi
-            return redirect()->route('demande.copie_extrait.create')
-                ->with('numero_suivi_succes', $numeroSuivi);
-        } catch (\Exception $e) {
-            // Log de l'erreur
-            \Log::error('Erreur lors de la création de la demande de copie', [
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
-            ]);
-
-            // Rediriger avec un message d'erreur
-            return redirect()->route('demande.copie_extrait.create')
-                ->with('error', 'Une erreur est survenue lors de la soumission de votre demande. Veuillez réessayer.');
+            if (file_exists($sourcePath)) {
+                copy($sourcePath, $destPath);
+            }
+        } else {
+            return back()->withInput()->withErrors(['justificatif' => 'Le justificatif est requis et doit être un fichier valide.']);
         }
+
+        // 3. Génération d’un numéro de suivi unique
+        do {
+            $numeroSuivi = 'DCOP-' . date('Y') . '-' . Str::upper(Str::random(6));
+        } while (Demande::where('numero_suivi', $numeroSuivi)->exists());
+
+        // 4. Enregistrement dans la base
+        $demande = Demande::create([
+            'numero_suivi' => $numeroSuivi,
+            'statut' => 'En attente',
+            'nombre_copie' => $request->nombre_copie,
+            'justificatif' => $cheminJustificatif,
+            'nom_complet' => $request->prenom_demandeur . ' ' . $request->nom_demandeur,
+            'email' => $request->email_demandeur,
+            'telephone' => $request->telephone_demandeur,
+            'informations_complementaires' => $request->informations_complementaires_copie,
+            'id_utilisateur' => null, // Public donc pas d'utilisateur lié
+            'type_document' => 'Extrait de naissance',
+            'numero_volet_naissance' => null, // Nullable dans la migration
+        ]);
+
+        // 5. Retour avec confirmation
+        return redirect()->route('demande_copie.confirmation')
+            ->with('success', 'Votre demande a été enregistrée avec succès. Numéro de suivi : ' . $numeroSuivi);
     }
          
-    
+
 
 
     // =========================================================

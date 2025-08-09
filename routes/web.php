@@ -90,14 +90,17 @@ Route::middleware([
     // Route::get('/acteCopies/create/{id}', [Acte_naissance::class, 'creates'])->name('acteCopies.create');
     Route::get('/acteCopies/create/{id}', [Acte_naissance::class, 'creates'])->name('acteCopies.create');
     Route::post('/acteCopies/store', [Acte_naissance::class, 'stores'])->name('acteCopies.store');
+        Route::get('/demandes/{id}/rejeter', [Acte_naissance::class, 'rejeterDemande'])->name('mairie.demandes.rejeter');
         Route::get('/demandesTraiter', [Acte_naissance::class, 'listTraiter'])->name('listTraiter');
         Route::get('/demandesEnattente', [Acte_naissance::class, 'listEnattente'])->name('listEnattente');
         Route::get('/demandesRejeté', [Acte_naissance::class, 'listRejeté'])->name('listRejeté');
+        Route::get('/d', [Acte_naissance::class, 'listRejeté'])->name('listRejeté');
+
         Route::get('/notifications', [Acte_naissance::class, 'notifications'])->name('mairie.notifications.index');
     Route::get('/notifications/{id}', [Acte_naissance::class, 'showNotification'])->name('notifications.show');
     Route::post('/notifications/mark-all-read', [Acte_naissance::class, 'markAllAsRead'])->name('notifications.markAllRead');
     Route::post('/notifications/{id}/mark-read', [Acte_naissance::class, 'ajaxMarkRead'])->name('notifications.markRead');
-
+   
 
 
 

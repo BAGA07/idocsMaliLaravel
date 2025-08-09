@@ -25,19 +25,19 @@ return new class extends Migration
             // Informations du père
             $table->string('nom_pere');
             $table->string('prenom_pere');
-           // $table->string('profession_pere');
+            $table->string('profession_pere');
             $table->string('domicile_pere');
 
             // Informations de la mère
             $table->string('nom_mere');
             $table->string('prenom_mere');
-          //  $table->string('profession_mere');
+            $table->string('profession_mere');
             $table->string('domicile_mere');
 
             // Liaisons avec les autres entités
             $table->foreignId('id_officier')->constrained('officier_etat_civil')->onDelete('cascade');
             $table->unsignedBigInteger('id_declarant');
-$table->foreign('id_declarant')->references('id_declarant')->on('declarants')->onDelete('cascade');
+            $table->foreign('id_declarant')->references('id_declarant')->on('declarants')->onDelete('cascade');
             $table->foreignId('id_commune')->constrained('communes')->onDelete('cascade');
             $table->foreignId('id_demande')->constrained('demandes')->onDelete('cascade');
     //         $table->foreignId('id_volet')

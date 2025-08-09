@@ -35,9 +35,9 @@ class DemandeController extends Controller
             'statut' => 'En attente',
             'nombre_copie' => 0,
             'id_utilisateur' => Auth::id(),
-            'num_suivi' => null
+            'numero_suivi' => null
         ]);
         return redirect()->route('naissances.show', $id_volet)
-            ->with('success', 'Demande envoyée avec succès. Numéro de suivi : ' . $demande->num_suivi);
+            ->with('success', 'Demande envoyée avec succès. Numéro de suivi : ' . $demande->numero_suivi);
     }
 }

@@ -1249,7 +1249,7 @@ public function ajaxMarkRead($id)
             Log::create([
                 'id_utilisateur' => Auth::id() ?? null,
                 'action' => 'Demande rejetée',
-                'details' => 'Demande ' . $demande->type_document . ' rejetée - ID: ' . $demande->id . ' - Numéro de suivi: ' . ($demande->num_suivi ?? 'N/A'),
+                'details' => 'Demande ' . $demande->type_document . ' rejetée - ID: ' . $demande->id . ' - Numéro de suivi: ' . ($demande->numero_suivi ?? 'N/A'),
             ]);
 
             return redirect()->back()->with('success', 'Demande rejetée avec succès.');
