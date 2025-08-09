@@ -9,13 +9,20 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
-    {
-        Schema::table('demandes', function (Blueprint $table) {        });
-            $table->string('num_suivi')->unique()->nullable()->after('justificatif');
-            $table->string('statut');
+    // public function up(): void
+    // {
+    //     Schema::table('demandes', function (Blueprint $table) {        });
+    //         $table->string('num_suivi')->unique()->nullable()->after('justificatif');
+    //         $table->string('statut');
 
-    }
+    // }
+    public function up(): void
+{
+    Schema::table('demandes', function (Blueprint $table) {
+        $table->string('num_suivi')->unique()->nullable()->after('justificatif');
+        $table->string('statut');
+    });
+}
 
     /**
      * Reverse the migrations.
