@@ -419,8 +419,7 @@ class Acte_naissance extends Controller
         } else {
             // Copie sur demande - vérifier le justificatif
             if ($demande->justificatif) {
-                // Utiliser la route personnalisée pour servir l'image
-                $urlJustificatif = route('images.show', $demande->justificatif);
+                $urlJustificatif = url('/storage/' . $demande->justificatif);
             } else {
                 $urlJustificatif = null;
             }
@@ -430,6 +429,12 @@ class Acte_naissance extends Controller
         $communes = Commune::all();
         $officiers = Officier::all();
         
+        // Récupérer tous les actes existants pour la vérification côté client
+                $actesExistants = Acte::select('num_acte', 'prenom', 'nom', 'date_naissance_enfant', 'type', 'lieu_naissance_enfant', 'heure_naissance', 'sexe_enfant', 'prenom_pere', 'nom_pere', 'profession_pere', 'domicile_pere', 'prenom_mere', 'nom_mere', 'profession_mere', 'domicile_mere')
+                           ->get()
+                           ->keyBy('num_acte')
+                           ->toArray();
+        
         // Passez les données à la vue
         return view('agent_mairie.naissances.acteCopies', compact(
             'demande',
@@ -437,7 +442,8 @@ class Acte_naissance extends Controller
             'officiers',
             'urlJustificatif',
             'isVoletCopy',
-            'volet'
+            'volet',
+            'actesExistants'
         ));
     }
 
@@ -486,6 +492,73 @@ class Acte_naissance extends Controller
             return back()->withErrors(['general' => 'Cette demande a déjà été traitée et une copie a été générée.'])->withInput();
         }
 
+        // Vérifier si un acte avec ce numéro existe déjà (original ou copie)
+        $existingActe = Acte::where('num_acte', $request->num_acte)->first();
+
+        if ($existingActe) {
+            // Vérifier si c'est une copie existante
+            if ($existingActe->type === 'copie') {
+                // Si c'est une copie existante, rediriger vers cette copie
+                $demande->statut = 'Traitée';
+                $demande->acte_id = $existingActe->id; // Lier à la copie existante
+                $demande->save();
+
+                Log::create([
+                    'id_utilisateur' => Auth::id(),
+                    'action' => 'Redirection vers copie existante',
+                    'details' => 'Demande ID ' . $demande->id . ' redirigée vers la copie existante N°' . $request->num_acte . ' (ID: ' . $existingActe->id . ')',
+                ]);
+
+                return redirect()->route('mairie.dashboard.copies')->with('info', 'Une copie avec le numéro ' . $request->num_acte . ' existe déjà. La demande a été liée à cette copie existante. Nom: ' . $existingActe->prenom . ' ' . $existingActe->nom . ' - Date: ' . $existingActe->date_naissance_enfant);
+            } else {
+                // Si c'est un acte original, créer une copie avec le même numéro d'acte
+                // La contrainte composite permet d'avoir le même numéro avec des types différents
+                $copie = new Acte();
+                $copie->num_acte = $request->num_acte; // Même numéro que l'original pour l'authenticité
+                $copie->type = 'copie';
+                
+                // Copier toutes les données de l'acte original
+                $copie->prenom = $existingActe->prenom;
+                $copie->nom = $existingActe->nom;
+                $copie->date_naissance_enfant = $existingActe->date_naissance_enfant;
+                $copie->lieu_naissance_enfant = $existingActe->lieu_naissance_enfant;
+                $copie->heure_naissance = $existingActe->heure_naissance;
+                $copie->sexe_enfant = $existingActe->sexe_enfant;
+                $copie->prenom_pere = $existingActe->prenom_pere;
+                $copie->nom_pere = $existingActe->nom_pere;
+                $copie->profession_pere = $existingActe->profession_pere;
+                $copie->domicile_pere = $existingActe->domicile_pere;
+                $copie->prenom_mere = $existingActe->prenom_mere;
+                $copie->nom_mere = $existingActe->nom_mere;
+                $copie->profession_mere = $existingActe->profession_mere;
+                $copie->domicile_mere = $existingActe->domicile_mere;
+                
+                $copie->id_demande = $demande->id;
+                $copie->id_officier = $request->id_officier;
+                $copie->id_commune = $request->id_commune;
+                $copie->date_enregistrement_acte = now();
+                $copie->statut = 'Traité';
+                $copie->sequential_num = 0;
+                $copie->is_virtuelle = true; // Marquer comme copie virtuelle (basée sur un original)
+                $copie->original_acte_num = $request->num_acte; // Référence vers le numéro d'acte original
+                
+                $copie->save();
+
+                // Mettre à jour le statut de la demande
+                $demande->statut = 'Traitée';
+                $demande->acte_id = $copie->id;
+                $demande->save();
+
+                Log::create([
+                    'id_utilisateur' => Auth::id(),
+                    'action' => 'Création copie - Acte original existant',
+                    'details' => 'Copie créée pour l\'acte original N°' . $request->num_acte . ' (demande ID ' . $demande->id . ') - Copie avec le même numéro créée avec les données de l\'original.',
+                ]);
+
+                return redirect()->route('agent.dashboard')->with('success', 'Copie créée avec succès ! Basée sur l\'acte original N°' . $request->num_acte . '. Nom: ' . $existingActe->prenom . ' ' . $existingActe->nom . ' - Date: ' . $existingActe->date_naissance_enfant . '. La copie apparaîtra dans le tableau des copies.');
+            }
+        }
+
         // Optionnel: Vérifier si un ACTE DE COPIE EXACTEMENT IDENTIQUE (même num_acte, même nom, date naissance, etc.) existe déjà.
         // Cela peut arriver si l'agent actualise la page ou soumet deux fois.
         $existingCopieActe = Acte::where('type', 'copie')
@@ -531,6 +604,15 @@ class Acte_naissance extends Controller
         $copie->sequential_num = 0; // Valeur par défaut pour les copies
 
         $copie->save();
+
+        \Log::info('Copie créée avec succès', [
+            'copie_id' => $copie->id,
+            'num_acte' => $copie->num_acte,
+            'type' => $copie->type,
+            'statut' => $copie->statut,
+            'demande_id' => $demande->id,
+            'user_id' => Auth::id()
+        ]);
 
         // 4. Mettre à jour le statut de la demande et la lier à l'acte de copie créé
         $demande->statut = 'Traitée'; // La demande est passée de 'En attente' à 'Traitée'
@@ -715,6 +797,7 @@ class Acte_naissance extends Controller
             $copies = Acte::where('type', 'copie')
                 ->where('statut', 'Traité') // Les copies fraîchement générées
                 ->with(['declarant', 'demande'])
+                ->orderBy('created_at', 'desc')
                 ->get();
 
             $copiesTraitees = Acte::where('type', 'copie')
@@ -738,11 +821,38 @@ class Acte_naissance extends Controller
                 ->get();
 
             \Log::info('Dashboard Copies - Données récupérées', [
+                'copies_count' => $copies->count(),
                 'copiesTraitees_count' => $copiesTraitees->count(),
                 'copiesEnAttenteSignature_count' => $copiesEnAttenteSignature->count(),
                 'copiesFinalises_count' => $copiesFinalises->count(),
                 'user_id' => Auth::id(),
                 'user_role' => Auth::user() ? Auth::user()->role : 'non connecté'
+            ]);
+
+            // Log détaillé des copies trouvées
+            foreach($copies as $copie) {
+                \Log::info('Copie trouvée', [
+                    'id' => $copie->id,
+                    'num_acte' => $copie->num_acte,
+                    'type' => $copie->type,
+                    'statut' => $copie->statut,
+                    'prenom' => $copie->prenom,
+                    'nom' => $copie->nom
+                ]);
+            }
+
+            // Debug: Voir toutes les copies dans la base
+            $allCopies = Acte::where('type', 'copie')->get();
+            \Log::info('Toutes les copies dans la base', [
+                'total_copies' => $allCopies->count(),
+                'copies_details' => $allCopies->map(function($c) {
+                    return [
+                        'id' => $c->id,
+                        'num_acte' => $c->num_acte,
+                        'statut' => $c->statut,
+                        'created_at' => $c->created_at
+                    ];
+                })->toArray()
             ]);
 
             return view('agent_mairie.dashboard_copies', compact('copies', 'copiesTraitees', 'copiesEnAttente', 'copiesEnAttenteSignature', 'copiesFinalises'));
@@ -906,6 +1016,43 @@ class Acte_naissance extends Controller
             ]);
 
             return redirect()->back()->with('error', 'Une erreur est survenue lors du rejet de la demande.');
+        }
+    }
+
+    /**
+     * Vérifier l'existence d'un acte par son numéro (API endpoint).
+     */
+    public function checkActeExists($numActe)
+    {
+        try {
+            // Requête simple
+            $acte = \App\Models\Acte::where('num_acte', $numActe)->first();
+            
+            if ($acte) {
+                return response()->json([
+                    'exists' => true,
+                    'acte' => [
+                        'num_acte' => $acte->num_acte,
+                        'prenom' => $acte->prenom,
+                        'nom' => $acte->nom,
+                        'date_naissance_enfant' => $acte->date_naissance_enfant,
+                        'type' => $acte->type
+                    ],
+                    'type' => $acte->type
+                ]);
+            }
+            
+            return response()->json([
+                'exists' => false,
+                'acte' => null,
+                'type' => null
+            ]);
+            
+        } catch (\Exception $e) {
+            return response()->json([
+                'exists' => false,
+                'error' => $e->getMessage()
+            ], 500);
         }
     }
 }
