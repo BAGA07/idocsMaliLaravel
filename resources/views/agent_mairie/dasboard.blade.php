@@ -1,8 +1,16 @@
 @extends('layouts.app')
-@section('titre')Modification du profile @endsection
+
+@section('titre')
+Modification du profile
+@endsection
+
 @section('content')
 <div class="right_col" role="main">
     <h2 class="text-2xl font-semibold mb-6">Tableau de bord - Agent de Mairie</h2>
+
+    <div align="right">
+        @include('agent_mairie.partials.notifications', ['notifications' => $notifications])
+    </div>
 
     <!-- Statistiques -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
@@ -82,7 +90,6 @@
                         <th class="px-4 py-2 border">Nom Enfant</th>
                         <th class="px-4 py-2 border">Num acte</th>
                         <th class="px-4 py-2 border">Nombre de copie</th>
-
                         <th class="px-4 py-2 border">Statut</th>
                     </tr>
                 </thead>

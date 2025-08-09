@@ -13,17 +13,21 @@
             </tr>
         </thead>
         <tbody>
+            @dd($demandes)
             @foreach($demandes as $demande)
             <tr>
                 <td class="px-4 py-2 border">{{ $demande->nom_complet }}</td>
-                <td class="px-4 py-2 border">{{ $demande->volet ? $demande->volet->prenom_enfant . ' ' . $demande->volet->nom_enfant : 'N/A' }}</td>
+                <td class="px-4 py-2 border">{{ $demande->volet ? $demande->volet->prenom_enfant . ' ' .
+                    $demande->volet->nom_enfant : 'N/A' }}</td>
                 <td class="px-4 py-2 border">{{ optional($demande->volet)->num_volet ?? 'N/A' }}</td>
                 <td class="px-4 py-2 border">{{ $demande->statut }}</td>
                 <td class="px-4 py-2 border space-x-2">
-                    <a href="{{ route('mairie.demandes.traiter', $demande->id) }}" class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700">Traiter</a>
+                    <a href="{{ route('mairie.demandes.traiter', $demande->id) }}"
+                        class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700">Traiter</a>
                     <form action="{{ route('mairie.demandes.rejeter', $demande->id) }}" method="POST" class="inline">
                         @csrf
-                        <button type="submit" class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700">Rejeter</button>
+                        <button type="submit"
+                            class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700">Rejeter</button>
                     </form>
                 </td>
             </tr>
@@ -31,4 +35,4 @@
         </tbody>
     </table>
 </div>
-@endsection 
+@endsection

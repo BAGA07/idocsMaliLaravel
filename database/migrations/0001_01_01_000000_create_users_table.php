@@ -25,9 +25,6 @@ return new class extends Migration
             $table->index('prenom');
             $table->index('email');
             $table->index('role');
-            // Foreign keys (optionnel, commenter si les tables n'existent pas encore)
-            // $table->foreign('id_hopital')->references('id')->on('hopitals')->onDelete('set null');
-            // $table->foreign('id_mairie')->references('id')->on('mairie')->onDelete('set null');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
