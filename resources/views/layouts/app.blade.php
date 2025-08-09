@@ -80,6 +80,8 @@
         }
     </script>
     @stack('scripts')
+    @livewireStyles
+    @livewireScripts
 </body>
 
 </html>

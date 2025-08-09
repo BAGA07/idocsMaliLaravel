@@ -162,7 +162,7 @@ class DemandeController extends Controller
         }
 
         // URL publique pour afficher l'image du justificatif
-        $urlJustificatif = Storage::disk('public')->url($demande->justificatif);
+        $urlJustificatif = url('/storage/' . $demande->justificatif);
 
         // Déterminer si c'est une copie depuis un volet ou depuis un justificatif
         $isVoletCopy = !empty($demande->id_volet);

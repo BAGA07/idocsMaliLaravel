@@ -98,6 +98,14 @@ Route::middleware([
         // Routes pour le dashboard des copies/extraits
     Route::get('/dashboard/copies', [Acte_naissance::class, 'dashboardCopies'])->name('mairie.dashboard.copies');
     Route::get('/copies/{id}/show', [Acte_naissance::class, 'showCopie'])->name('copies.show');
+    
+    // Route API pour vérifier l'existence d'un acte
+    Route::get('/api/check-acte-exists/{numActe}', [Acte_naissance::class, 'checkActeExists'])->name('api.check-acte-exists');
+    
+    // Route de test simple
+    Route::get('/api/test', function() {
+        return response()->json(['message' => 'API fonctionne']);
+    });
     Route::post('/copies/{id}/envoyer-officier', [Acte_naissance::class, 'envoyerCopieOfficier'])->name('copies.envoyer_officier');
     
     // Routes pour le dashboard des actes de naissance
@@ -116,6 +124,26 @@ Route::get('/debug-auth', function() {
         'session' => session()->all()
     ]);
 })->name('debug.auth');
+
+// Route API de test en dehors du middleware
+Route::get('/api/test-acte/{numActe}', function($numActe) {
+    try {
+        $acte = \App\Models\Acte::where('num_acte', $numActe)->first();
+        return response()->json([
+            'exists' => $acte ? true : false,
+            'acte' => $acte ? [
+                'num_acte' => $acte->num_acte,
+                'prenom' => $acte->prenom,
+                'nom' => $acte->nom,
+                'date_naissance_enfant' => $acte->date_naissance_enfant,
+                'type' => $acte->type
+            ] : null,
+            'type' => $acte ? $acte->type : null
+        ]);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+})->name('api.test-acte');
 
 // Route de test pour la signature
 Route::get('/test-signature', function() {

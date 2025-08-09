@@ -125,6 +125,53 @@
                             @if(!$isVoletCopy)
                                 <p class="text-sm text-gray-500 mt-1">Entrez le numéro d'acte tel qu'il apparaît sur le justificatif</p>
                             @endif
+                            
+                            {{-- Vérification de l'existence de l'acte --}}
+                            @if(isset($existingActe) && $existingActe)
+                                @if($existingActe->type === 'copie')
+                                    {{-- Si c'est une copie existante --}}
+                                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mt-3" role="alert">
+                                        <div class="flex">
+                                            <div class="py-1">
+                                                <svg class="fill-current h-4 w-4 text-red-500 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <p class="font-bold">⚠️ Copie existante détectée !</p>
+                                                <p class="text-sm">Une <strong>copie</strong> avec le numéro <strong>{{ $existingActe->num_acte }}</strong> existe déjà dans notre base.</p>
+                                                <p class="text-sm mt-1">
+                                                    <strong>Nom:</strong> {{ $existingActe->prenom }} {{ $existingActe->nom }} | 
+                                                    <strong>Date:</strong> {{ $existingActe->date_naissance_enfant }}
+                                                </p>
+                                                <p class="text-sm mt-2">Cette demande sera automatiquement liée à la copie existante lors de la soumission.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @else
+                                    {{-- Si c'est un acte original --}}
+                                    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mt-3" role="alert">
+                                        <div class="flex">
+                                            <div class="py-1">
+                                                <svg class="fill-current h-4 w-4 text-green-500 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <p class="font-bold">✅ Acte original trouvé !</p>
+                                                <p class="text-sm">Un <strong>acte original</strong> avec le numéro <strong>{{ $existingActe->num_acte }}</strong> existe déjà dans notre base.</p>
+                                                @if($existingActe)
+                                                    <p class="text-sm mt-1">
+                                                        <strong>Nom:</strong> {{ $existingActe->prenom }} {{ $existingActe->nom }} | 
+                                                        <strong>Date:</strong> {{ $existingActe->date_naissance_enfant }}
+                                                    </p>
+                                                @endif
+                                                <p class="text-sm mt-2">Une copie virtuelle sera créée (sans enregistrement en base) et la demande sera traitée.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+                            @endif
                         </div>
                         
                         <div>
@@ -346,4 +393,139 @@
         </div>
     </div>
 </div>
+
+{{-- Script pour vérifier l'existence de l'acte en temps réel --}}
+<script>
+// Données des actes existants passées depuis le contrôleur
+const actesExistants = @json($actesExistants);
+
+document.addEventListener('DOMContentLoaded', function() {
+    const numActeInput = document.getElementById('num_acte');
+    let checkTimeout;
+
+    // Vérifier au chargement de la page si un numéro d'acte est déjà présent
+    if (numActeInput.value.trim().length >= 5) {
+        checkActeExists(numActeInput.value.trim());
+    }
+
+    // Écouter les changements de valeur (pour les champs non readonly)
+    numActeInput.addEventListener('input', function() {
+        clearTimeout(checkTimeout);
+        const numActe = this.value.trim();
+        
+        // Supprimer les messages d'alerte existants
+        const existingAlerts = document.querySelectorAll('.acte-check-alert');
+        existingAlerts.forEach(alert => alert.remove());
+        
+        if (numActe.length >= 5) {
+            checkTimeout = setTimeout(() => {
+                checkActeExists(numActe);
+            }, 500);
+        }
+    });
+
+    // Écouter aussi les changements de propriété (pour les champs readonly)
+    numActeInput.addEventListener('change', function() {
+        const numActe = this.value.trim();
+        if (numActe.length >= 5) {
+            checkActeExists(numActe);
+        }
+    });
+
+    function checkActeExists(numActe) {
+        console.log('Vérification du numéro d\'acte:', numActe);
+        console.log('Actes existants:', actesExistants);
+        
+        // Vérifier si l'acte existe dans les données locales
+        const acteExistant = actesExistants[numActe];
+        
+        if (acteExistant) {
+            showActeAlert(acteExistant, acteExistant.type);
+        } else {
+            console.log('Aucun acte trouvé pour le numéro:', numActe);
+        }
+    }
+
+             function showActeAlert(acte, type) {
+             const alertDiv = document.createElement('div');
+             alertDiv.className = 'acte-check-alert mt-3 px-4 py-3 rounded';
+             
+             if (type === 'copie') {
+                 alertDiv.className += ' bg-red-100 border border-red-400 text-red-700';
+                 alertDiv.innerHTML = `
+                     <div class="flex">
+                         <div class="py-1">
+                             <svg class="fill-current h-4 w-4 text-red-500 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                             </svg>
+                         </div>
+                         <div>
+                             <p class="font-bold">⚠️ Copie existante détectée !</p>
+                             <p class="text-sm">Une <strong>copie</strong> avec le numéro <strong>${acte.num_acte}</strong> existe déjà dans notre base.</p>
+                             <p class="text-sm mt-1">
+                                 <strong>Nom:</strong> ${acte.prenom} ${acte.nom} | 
+                                 <strong>Date:</strong> ${acte.date_naissance_enfant}
+                             </p>
+                             <p class="text-sm mt-2">Cette demande sera automatiquement liée à la copie existante lors de la soumission.</p>
+                         </div>
+                     </div>
+                 `;
+             } else {
+                 // Pré-remplir le formulaire avec les données de l'acte original
+                 prefillFormWithActeData(acte);
+                 
+                 alertDiv.className += ' bg-green-100 border border-green-400 text-green-700';
+                 alertDiv.innerHTML = `
+                     <div class="flex">
+                         <div class="py-1">
+                             <svg class="fill-current h-4 w-4 text-green-500 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                             </svg>
+                         </div>
+                         <div>
+                             <p class="font-bold">✅ Acte original trouvé !</p>
+                             <p class="text-sm">Un <strong>acte original</strong> avec le numéro <strong>${acte.num_acte}</strong> existe déjà dans notre base.</p>
+                             <p class="text-sm mt-1">
+                                 <strong>Nom:</strong> ${acte.prenom} ${acte.nom} | 
+                                 <strong>Date:</strong> ${acte.date_naissance_enfant}
+                             </p>
+                             <p class="text-sm mt-2">Le formulaire a été automatiquement pré-rempli avec les données de l'acte original. Une copie sera créée avec le même numéro d'acte pour l'authenticité.</p>
+                         </div>
+                     </div>
+                 `;
+             }
+             
+             numActeInput.parentNode.appendChild(alertDiv);
+         }
+
+         function prefillFormWithActeData(acte) {
+             // Informations de l'enfant
+             document.getElementById('prenom_enfant').value = acte.prenom || '';
+             document.getElementById('nom_enfant').value = acte.nom || '';
+             document.getElementById('date_naissance_enfant').value = acte.date_naissance_enfant || '';
+             document.getElementById('heure_naissance').value = acte.heure_naissance || '';
+             document.getElementById('lieu_naissance_enfant').value = acte.lieu_naissance_enfant || '';
+             
+             // Sexe de l'enfant
+             if (acte.sexe_enfant) {
+                 document.getElementById('sexe_enfant').value = acte.sexe_enfant;
+             }
+             
+             // Informations du père
+             document.getElementById('prenom_pere').value = acte.prenom_pere || '';
+             document.getElementById('nom_pere').value = acte.nom_pere || '';
+             document.getElementById('profession_pere').value = acte.profession_pere || '';
+             document.getElementById('domicile_pere').value = acte.domicile_pere || '';
+             
+             // Informations de la mère
+             document.getElementById('prenom_mere').value = acte.prenom_mere || '';
+             document.getElementById('nom_mere').value = acte.nom_mere || '';
+             document.getElementById('profession_mere').value = acte.profession_mere || '';
+             document.getElementById('domicile_mere').value = acte.domicile_mere || '';
+             
+             console.log('Formulaire pré-rempli avec les données de l\'acte original:', acte);
+         }
+});
+</script>
+
 @endsection
