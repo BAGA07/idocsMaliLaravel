@@ -23,7 +23,7 @@ class Demande extends Model
         'id_volet',
         'numero_suivi', // NULL pour les demandes d'actes originaux (volet), généré pour les demandes de copies (plateforme)
         'id_utilisateur', // Pour les demandes via volet (actes originaux) qui nécessitent une connexion
-        'acte_id' // Référence vers l'acte créé (original ou copie)
+        'id' // Référence vers l'acte créé (original ou copie)
     ];
 
     public function PieceJointe()

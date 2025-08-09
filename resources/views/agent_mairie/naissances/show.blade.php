@@ -16,13 +16,13 @@
     <div class="grid grid-cols-2 gap-2 border border-black p-2">
         <div>
             @if($acte->Commune)
-                <p><strong>RÉGION DE :</strong> {{ $acte->Commune->region ?? '...' }}</p>
-                <p><strong>CERCLE DE :</strong> {{ $acte->Commune->cercle ?? '...' }}</p>
-                <p><strong>COMMUNE DE :</strong> {{ $acte->Commune->nom_commune ?? '...' }}</p>
+            <p><strong>RÉGION DE :</strong> {{ $acte->Commune->region ?? '...' }}</p>
+            <p><strong>CERCLE DE :</strong> {{ $acte->Commune->cercle ?? '...' }}</p>
+            <p><strong>COMMUNE DE :</strong> {{ $acte->Commune->nom_commune ?? '...' }}</p>
             @else
-                <p><strong>RÉGION DE :</strong> ...</p>
-                <p><strong>CERCLE DE :</strong> ...</p>
-                <p><strong>COMMUNE DE :</strong> ...</p>
+            <p><strong>RÉGION DE :</strong> ...</p>
+            <p><strong>CERCLE DE :</strong> ...</p>
+            <p><strong>COMMUNE DE :</strong> ...</p>
             @endif
             <p><strong>CENTRE :</strong> Principal</p>
             <p><strong>DE :</strong> La Commune IV</p>
@@ -48,9 +48,9 @@
         <p><strong>7. Nom du père :</strong> {{ $acte->nom_pere }}</p>
         <p><strong>8. Âge :</strong>
             @if($acte->demande && $acte->demande->volet)
-                {{ $acte->demande->volet->age_pere ?? '...' }} ans
+            {{ $acte->demande->volet->age_pere ?? '...' }} ans
             @else
-                ...
+            ...
             @endif
         </p>
         <p><strong>9. Domicile :</strong> {{ $acte->domicile_pere }}</p>
@@ -61,9 +61,9 @@
         <p><strong>11. Nom de la mère :</strong> {{ $acte->nom_mere }}</p>
         <p><strong>12. Âge :</strong>
             @if($acte->demande && $acte->demande->volet)
-                {{ $acte->demande->volet->age_mere ?? '...' }} ans
+            {{ $acte->demande->volet->age_mere ?? '...' }} ans
             @else
-                ...
+            ...
             @endif
         </p>
         <p><strong>13. Domicile :</strong> {{ $acte->domicile_mere }}</p>
@@ -72,24 +72,25 @@
 
     <div class="border border-black mt-3 p-2">
         @if($acte->declarant)
-            <p><strong>15. Déclarant :</strong> {{ $acte->declarant->nom_declarant ?? '...' }}</p>
-            <p><strong>16. Âge :</strong> {{ $acte->declarant->age_declarant ?? '...' }} ans</p>
-            <p><strong>17. Domicile :</strong> {{ $acte->declarant->domicile_declarant ?? '...' }}</p>
-            <p><strong>18. Profession :</strong> {{ $acte->declarant->profession_declarant ?? '...' }}</p>
+        <p><strong>15. Déclarant :</strong> {{ $acte->declarant->nom_declarant ?? '...' }}</p>
+        <p><strong>16. Âge :</strong> {{ $acte->declarant->age_declarant ?? '...' }} ans</p>
+        <p><strong>17. Domicile :</strong> {{ $acte->declarant->domicile_declarant ?? '...' }}</p>
+        <p><strong>18. Profession :</strong> {{ $acte->declarant->profession_declarant ?? '...' }}</p>
         @else
-            <p><strong>15. Déclarant :</strong> ...</p>
-            <p><strong>16. Âge :</strong> ...</p>
-            <p><strong>17. Domicile :</strong> ...</p>
-            <p><strong>18. Profession :</strong> ...</p>
+        <p><strong>15. Déclarant :</strong> ...</p>
+        <p><strong>16. Âge :</strong> ...</p>
+        <p><strong>17. Domicile :</strong> ...</p>
+        <p><strong>18. Profession :</strong> ...</p>
         @endif
     </div>
 
     <div class="border border-black mt-3 p-2">
         <p><strong>19. N° de déclaration et date :</strong>
             @if($acte->declarant)
-                {{ $acte->declarant->numero_declaration ?? '...' }} du {{ \Carbon\Carbon::parse($acte->declarant->date_declaration)->format('d/m/Y') }}
+            {{ $acte->declarant->numero_declaration ?? '...' }} du {{
+            \Carbon\Carbon::parse($acte->declarant->date_declaration)->format('d/m/Y') }}
             @else
-                ...
+            ...
             @endif
         </p>
         <p><strong>20. Centre :</strong> {{ $acte->lieu_naissance_enfant }}</p>
@@ -97,12 +98,12 @@
 
     <div class="border border-black mt-3 p-2">
         @if($acte->officier)
-            <p><strong>21. Officier d'état civil :</strong> {{ $acte->officier->nom ?? '...' }}</p>
-            {{-- {{ $acte->officier->Mairie->nom_mairie ?? '...' }} --}}
-            <p><strong>22. Qualité :</strong> {{ $acte->officier->profession ?? '...' }} </p>
+        <p><strong>21. Officier d'état civil :</strong> {{ $acte->officier->nom ?? '...' }}</p>
+        {{-- {{ $acte->officier->Mairie->nom_mairie ?? '...' }} --}}
+        <p><strong>22. Qualité :</strong> {{ $acte->officier->profession ?? '...' }} </p>
         @else
-            <p><strong>21. Officier d'état civil :</strong> ...</p>
-            <p><strong>22. Qualité :</strong> ...</p>
+        <p><strong>21. Officier d'état civil :</strong> ...</p>
+        <p><strong>22. Qualité :</strong> ...</p>
         @endif
         <p><strong>23. Date :</strong> {{ \Carbon\Carbon::parse($acte->date_enregistrement_acte)->format('d/m/Y') }}</p>
     </div>
@@ -117,9 +118,9 @@
                 <img src="{{ asset('images/cacher.png') }}" alt="Cachet" style="width:150px; margin-bottom: 5px;">
             </div>
         @elseif($acte->statut === 'À finaliser')
-            <p class="text-right text-yellow-700 font-semibold mt-2">En attente de finalisation par l'officier</p>
+        <p class="text-right text-yellow-700 font-semibold mt-2">En attente de finalisation par l'officier</p>
         @else
-            <p class="text-right text-gray-500 font-semibold mt-2">Acte en cours de traitement</p>
+        <p class="text-right text-gray-500 font-semibold mt-2">Acte en cours de traitement</p>
         @endif
         <br>
     </div>
@@ -189,4 +190,37 @@
     }
 </script>
 
+{{-- Bouton PDF --}}
+{{-- <div class="text-center mb-4">
+    <a href="{{ route('acte.pdf', $acte->id) }}" target="_blank"
+        class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded">
+        Télécharger l'acte (PDF)
+    </a>
+</div> --}}
+
+{{-- QR code d'authenticité --}}
+@if($acte->token)
+<div class="flex justify-center mb-6">
+    <div class="border-2 border-blue-600 rounded-lg p-6 bg-gray-100">
+        <p class="text-center font-semibold text-blue-600 mb-2">Vérification d'authenticité</p>
+        <div class="flex justify-center mb-4">
+            {!! QrCode::size(120)->generate(url('/verifier-document/' . $acte->token)) !!}
+        </div>
+        <p class="text-center text-gray-600 text-sm">Scannez ce QR code pour vérifier l'authenticité de cet acte de
+            naissance.</p>
+    </div>
+</div>
+@endif
+
+{{-- Suppression
+<form action="{{ route('acte.destroy', $acte->id) }}" method="POST"
+    onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet acte ?');" class="text-center">
+    @csrf
+    @method('DELETE')
+    <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded">
+        Supprimer cet acte
+    </button>
+</form> --}}
+
+</div>
 @endsection

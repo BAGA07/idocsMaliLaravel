@@ -9,21 +9,21 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    /* public function up(): void
     {
         Schema::table('demandes', function (Blueprint $table) {
            $table->string('numero_volet_naissance')->nullable()->change();
 
         });
-    }
+    } */
 
     /**
      * Reverse the migrations.
      */
-    public function down(): void
+   /*  public function down(): void
     {
         Schema::table('demandes', function (Blueprint $table) {
            $table->string('numero_volet_naissance')->nullable(false)->change();
         });
-    }
+    } */
 };

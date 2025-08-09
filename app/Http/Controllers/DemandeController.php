@@ -224,7 +224,7 @@ class DemandeController extends Controller
 
         // Optionnel : Vérifier si une copie pour cette DEMANDE a déjà été générée
         // Cela évite de créer plusieurs copies pour la même demande.
-        if ($demande->acte_id !== null) { // Si la demande a déjà un acte lié (sa copie)
+        if ($demande->id !== null) { // Si la demande a déjà un acte lié (sa copie)
             return back()->withErrors(['general' => 'Une copie a déjà été générée pour cette demande.']);
         }
         // Autre vérification : Une copie avec le même numéro d'acte pour la même demande
@@ -271,7 +271,7 @@ class DemandeController extends Controller
 
         // 4. Mettre à jour le statut de la demande et la lier à l'acte de copie créé
         $demande->statut = 'Traitée'; // La demande est passée de 'En attente' à 'Traitée'
-        $demande->acte_id = $copie->id; // Lier la demande à la COPIE qui vient d'être créée.
+        $demande->id = $copie->id; // Lier la demande à la COPIE qui vient d'être créée.
         $demande->save();
 
         // 5. Enregistrer l'action dans les logs

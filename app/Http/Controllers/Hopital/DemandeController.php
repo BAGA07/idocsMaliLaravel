@@ -16,11 +16,11 @@ class DemandeController extends Controller
         $declaration = \App\Models\VoletDeclaration::findOrFail($id_volet);
         $declarant = \App\Models\Declarant::where('id_declarant', $declaration->id_declarant)->first();
 
-        // Vérifier s'il existe déjà une demande pour ce volet
+        /* // Vérifier s'il existe déjà une demande pour ce volet
         $existe = \App\Models\Demande::where('id_volet', $id_volet)->first();
         if ($existe) {
             return redirect()->back()->with('error', 'Une demande a déjà été envoyée pour ce volet.');
-        }
+        } */
 
         // Créer la demande
         $demande = \App\Models\Demande::create([
@@ -30,13 +30,14 @@ class DemandeController extends Controller
             'nom_enfant' => $declaration->nom_enfant,
             'prenom_enfant' => $declaration->prenom_enfant,
             'email' => $declarant->email,
-            'telephone' => $declarant->telephone ,
+            'telephone' => $declarant->telephone,
             'type_document' => 'Extrait original',
             'statut' => 'En attente',
-            'nombre_copie' => 1, 
-            'id_utilisateur' => Auth::id(), 
-            'num_suivi' => null 
+            'nombre_copie' => 0,
+            'id_utilisateur' => Auth::id(),
+            'num_suivi' => null
         ]);
-
+        return redirect()->route('naissances.show', $id_volet)
+            ->with('success', 'Demande envoyée avec succès. Numéro de suivi : ' . $demande->num_suivi);
     }
-    }
+}

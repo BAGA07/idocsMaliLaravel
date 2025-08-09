@@ -70,7 +70,7 @@ Route::post('/presentation/copie-extrait', [DemandeController::class, 'storeDema
 
 // Route de test pour vérifier les justificatifs (à supprimer en production)
 Route::get('/test-justificatifs', [DemandeController::class, 'testJustificatifs'])->name('test.justificatifs');
-Route::get('/diagnostic-justificatifs', function() {
+Route::get('/diagnostic-justificatifs', function () {
     return view('diagnostic_justificatifs');
 })->name('diagnostic.justificatifs');
 
@@ -93,9 +93,15 @@ Route::middleware([
         Route::get('/demandesTraiter', [Acte_naissance::class, 'listTraiter'])->name('listTraiter');
         Route::get('/demandesEnattente', [Acte_naissance::class, 'listEnattente'])->name('listEnattente');
         Route::get('/demandesRejeté', [Acte_naissance::class, 'listRejeté'])->name('listRejeté');
-        Route::post('/demandes/{id}/rejeter', [Acte_naissance::class, 'rejeterDemande'])->name('mairie.demandes.rejeter');
+        Route::get('/notifications', [Acte_naissance::class, 'notifications'])->name('mairie.notifications.index');
+    Route::get('/notifications/{id}', [Acte_naissance::class, 'showNotification'])->name('notifications.show');
+    Route::post('/notifications/mark-all-read', [Acte_naissance::class, 'markAllAsRead'])->name('notifications.markAllRead');
+    Route::post('/notifications/{id}/mark-read', [Acte_naissance::class, 'ajaxMarkRead'])->name('notifications.markRead');
 
-        // Routes pour le dashboard des copies/extraits
+
+
+
+    // Routes pour le dashboard des copies/extraits
     Route::get('/dashboard/copies', [Acte_naissance::class, 'dashboardCopies'])->name('mairie.dashboard.copies');
     Route::get('/copies/{id}/show', [Acte_naissance::class, 'showCopie'])->name('copies.show');
     
@@ -107,16 +113,15 @@ Route::middleware([
         return response()->json(['message' => 'API fonctionne']);
     });
     Route::post('/copies/{id}/envoyer-officier', [Acte_naissance::class, 'envoyerCopieOfficier'])->name('copies.envoyer_officier');
-    
+
     // Routes pour le dashboard des actes de naissance
     Route::get('/dashboard/actes', [Acte_naissance::class, 'dashboardActes'])->name('mairie.dashboard.actes');
     Route::post('/actes/{id}/envoyer-officier', [Acte_naissance::class, 'envoyerActeOfficier'])->name('acte.envoyer_officier');
-    
 });
 // fin des routes pour le centre d'etat civil
 
 // Route de test en dehors du middleware pour diagnostiquer
-Route::get('/debug-auth', function() {
+Route::get('/debug-auth', function () {
     return response()->json([
         'user' => Auth::user(),
         'role' => Auth::user() ? Auth::user()->role : 'non connecté',
@@ -146,7 +151,7 @@ Route::get('/api/test-acte/{numActe}', function($numActe) {
 })->name('api.test-acte');
 
 // Route de test pour la signature
-Route::get('/test-signature', function() {
+Route::get('/test-signature', function () {
     return view('test_signature');
 })->name('test.signature');
 
@@ -161,6 +166,7 @@ Route::middleware([
     'role:agent_hopital',
 ])->prefix('hopital')->group(function () {
     Route::get('/dashboard', [VoletDeclarationController::class, 'dashboard'])->name('hopital.dashboard');
+    Route::post('/hopital/demandes/envoyer/{id_volet}', [App\Http\Controllers\Hopital\DemandeController::class, 'envoyerDemande'])->name('hopital.demandes.envoyer');
     Route::resource('naissances', VoletDeclarationController::class);
 });
 // fin des routes pour les agents de l'hopital
@@ -172,20 +178,20 @@ Route::middleware([
     Route::get('/dashboard', [OfficierActeController::class, 'dashboard'])->name('officier.dashboard');
     Route::get('/finaliser/{id}', [OfficierActeController::class, 'showFinalisation'])->name('officier.finaliser');
     Route::post('/finaliser/{id}', [OfficierActeController::class, 'finaliser'])->name('officier.finaliser.store');
-    
+
     // Routes pour les actes (compatibilité avec les vues)
     Route::get('/actes/finaliser/{id}', [OfficierActeController::class, 'showFinalisation'])->name('officier.actes.finaliser');
     Route::post('/actes/finaliser/{id}', [OfficierActeController::class, 'finaliser'])->name('officier.actes.finaliser.post');
     Route::get('/finaliser-copie/{id}', [OfficierActeController::class, 'showFinalisationCopie'])->name('officier.finaliser.copie');
     Route::post('/finaliser-copie/{id}', [OfficierActeController::class, 'finaliserCopie'])->name('officier.finaliser.copie.store');
-    
+
     // Routes supplémentaires pour compatibilité avec les vues
     Route::get('/copies/finaliser/{id}', [OfficierActeController::class, 'showFinalisationCopie'])->name('officier.copies.finaliser');
     Route::post('/copies/finaliser/{id}', [OfficierActeController::class, 'finaliserCopie'])->name('officier.copies.finaliser.post');
-    
+
     Route::get('/pdf/{id}', [OfficierActeController::class, 'generatePdf'])->name('officier.pdf');
     Route::get('/pdf-copie/{id}', [OfficierActeController::class, 'generatePdfCopie'])->name('officier.pdf.copie');
-    
+
     // Routes supplémentaires pour les PDFs
     Route::get('/actes/pdf/{id}', [OfficierActeController::class, 'generatePdf'])->name('officier.actes.pdf');
     Route::get('/copies/pdf/{id}', [OfficierActeController::class, 'generatePdfCopie'])->name('officier.copies.pdf');
@@ -193,26 +199,6 @@ Route::middleware([
 });
 // fin des routes pour l'officier
 
-//route pour la gestion de profile
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile');
-    Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile/delete', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
-
-// Route pour l'administration des managers
-Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
-
-    Route::get('/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('admin.dashboard');
-
-    Route::get('/managers/structureList', [AdminManagerController::class, 'structureList'])->name('structure.list');
-    Route::resource('/managers', AdminManagerController::class);
-
-    // Route pour la gestion des structures
-    Route::get('/structures', [App\Http\Controllers\Admin\StructureController::class, 'index'])->name('admin.structures.index');
-});
 
 Route::post('/declaration/send-notification/{id}', [App\Http\Controllers\DeclarationController::class, 'sendNotification'])->name('declaration.sendNotification');
 
@@ -225,7 +211,46 @@ Route::get('/verifier-document/{token}', [App\Http\Controllers\VerificationContr
 
 Route::get('/acte/{id}/pdf', [App\Http\Controllers\Acte_naissance::class, 'downloadPdf'])->name('acte.pdf');
 
+
+
+
+
+
+//route pour la gestion de profile
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile');
+    Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile/delete', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+// Route pour l'administration des managers (Admin crée les managers)
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/manager/dashboard', [App\Http\Controllers\Manager\DashboardController::class, 'index'])->name('managers.index');
+    Route::get('/dashboard', function () {
+        return view('admin.dashboard');
+    })->name('dashboard');
+    Route::get('/managers/structureList', [AdminManagerController::class, 'structureList'])->name('structure.list');
+
+    Route::resource('managers', AdminManagerController::class);
+
+    Route::get('/structures', [App\Http\Controllers\Admin\StructureController::class, 'index'])->name('structures.index');
+});
+
+// Routes pour les managers (Manager crée les agents)
+Route::middleware(['auth', 'role:manager'])->prefix('manager')->name('manager.')->group(function () {
+
+    Route::get('/dashboard', [App\Http\Controllers\Manager\DashboardController::class, 'index'])->name('managers.index');
+
+    // Gestion des agents par le manager ou admin
+    Route::resource('agents', App\Http\Controllers\Manager\AgentController::class);
+
+    // Gestion des structures par le manager ou admin
+    Route::resource('structures', App\Http\Controllers\Manager\StructureController::class);
+    Route::resource('officers', App\Http\Controllers\Manager\OfficerController::class);
+});
 // Route pour l'envoi de la demande à la mairie depuis l'hôpital
 Route::post('/hopital/demandes/envoyer/{id_volet}', [App\Http\Controllers\Hopital\DemandeController::class, 'envoyerDemande'])->name('hopital.demandes.envoyer');
 
+
 require __DIR__ . '/auth.php';
+

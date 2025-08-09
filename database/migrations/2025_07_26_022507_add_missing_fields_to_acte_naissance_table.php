@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::table('acte_naissance', function (Blueprint $table) {
             // Vérifier et ajouter les colonnes manquantes
             if (!Schema::hasColumn('acte_naissance', 'nina')) {
-                $table->string('nina')->nullable()->after('id_volet');
+                $table->string('nina')->nullable();
             }
             if (!Schema::hasColumn('acte_naissance', 'region')) {
                 $table->string('region')->nullable()->after('nina');
