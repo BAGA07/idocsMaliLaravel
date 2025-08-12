@@ -20,11 +20,13 @@
                 <td class="px-4 py-2 border">{{ $acte->date_naissance_enfant }}</td>
                 <td class="px-4 py-2 border">{{ $acte->statut }}</td>
                 <td class="px-4 py-2 border space-x-2">
-                    <a href="{{ route('acte.show', $acte->id) }}" class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700">Show</a>
+                    <a href="{{ route('acte.show', $acte->id) }}"
+                        class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700">Show</a>
                     <form action="{{ route('acte.destroy', $acte->id) }}" method="POST" class="inline">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700">Supprimer</button>
+                        <button type="submit"
+                            class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700">Supprimer</button>
                     </form>
                 </td>
             </tr>

@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\VoletDeclaration; 
-use App\Models\PieceJointe; 
+use App\Models\VoletDeclaration;
+use App\Models\PieceJointe;
 use App\Models\Demande;
 use App\Models\Log;
-use App\Models\Acte; 
-use App\Models\Commune; 
-use App\Models\Officier; 
+use App\Models\Acte;
+use App\Models\Commune;
+use App\Models\Officier;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth; 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -38,35 +38,36 @@ class DemandeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-   public function storeDemandeCopiePublique(Request $request)
+    public function storeDemandeCopiePublique(Request $request)
     {
-        // 1. Validation des données
+        \Log::info('storeDemandeCopiePublique appelée'); // Log temporaire pour vérifier l'appel
+
+        // 1. Validation des données du formulaire.
+        // Tous les champs de contact sont obligatoires car l'utilisateur n'est pas connecté.
         $request->validate([
             'nom_demandeur' => 'required|string|max:255',
             'prenom_demandeur' => 'required|string|max:255',
             'email_demandeur' => 'required|email|max:255',
             'telephone_demandeur' => 'required|string|max:20',
-            'justificatif' => 'required|file|mimes:jpeg,png,jpg,pdf|max:5120', // max 5 Mo
+            'justificatif' => 'required|file|mimes:jpeg,png,jpg,pdf|max:5120', // Augmenté la taille max à 5MB
             'nombre_copie' => 'required|integer|min:1',
             'informations_complementaires_copie' => 'nullable|string',
         ]);
 
-        // 2. Gestion du fichier justificatif
+        // 2. Gérer le téléchargement du justificatif (photo de l'extrait de naissance)
         $cheminJustificatif = null;
         if ($request->hasFile('justificatif') && $request->file('justificatif')->isValid()) {
             $fichier = $request->file('justificatif');
-
-            // Nom unique
+            // Générer un nom de fichier unique pour éviter les conflits
             $nomFichier = time() . '_' . Str::random(10) . '.' . $fichier->getClientOriginalExtension();
-
-            // Stockage
+            // Stocker le fichier dans le dossier 'justificatifs_copie_extrait'
             $cheminJustificatif = $fichier->storeAs('justificatifs_copie_extrait', $nomFichier, 'public');
 
             if (!$cheminJustificatif) {
                 return back()->withInput()->withErrors(['justificatif' => 'Erreur lors du téléchargement du fichier.']);
             }
 
-            // Copie vers public/storage pour Windows (optionnel selon config)
+            // Synchroniser le fichier vers public/storage pour Windows
             $sourcePath = storage_path('app/public/' . $cheminJustificatif);
             $destPath = public_path('storage/' . $cheminJustificatif);
             $destDir = dirname($destPath);
@@ -82,31 +83,50 @@ class DemandeController extends Controller
             return back()->withInput()->withErrors(['justificatif' => 'Le justificatif est requis et doit être un fichier valide.']);
         }
 
-        // 3. Génération d’un numéro de suivi unique
+        // 3. Générer le numéro de suivi unique pour la demande de copie
         do {
+            // Ex: DCOP-2025-XXXXXX (Demande Copie - Année - 6 caractères alphanumériques)
             $numeroSuivi = 'DCOP-' . date('Y') . '-' . Str::upper(Str::random(6));
-        } while (Demande::where('numero_suivi', $numeroSuivi)->exists());
+        } while (Demande::where('numero_suivi', $numeroSuivi)->exists()); // Assure l'unicité
 
-        // 4. Enregistrement dans la base
-        $demande = Demande::create([
-            'numero_suivi' => $numeroSuivi,
-            'statut' => 'En attente',
-            'nombre_copie' => $request->nombre_copie,
-            'justificatif' => $cheminJustificatif,
-            'nom_complet' => $request->prenom_demandeur . ' ' . $request->nom_demandeur,
-            'email' => $request->email_demandeur,
-            'telephone' => $request->telephone_demandeur,
-            'informations_complementaires' => $request->informations_complementaires_copie,
-            'id_utilisateur' => null, // Public donc pas d'utilisateur lié
-            'type_document' => 'Extrait de naissance',
-            'numero_volet_naissance' => null, // Nullable dans la migration
-        ]);
+        try {
+            // 4. Créer la demande dans la base de données
+            $demande = Demande::create([
+                'numero_suivi' => $numeroSuivi,
+                'statut' => 'En attente',
+                'nombre_copie' => $request->nombre_copie,
+                'justificatif' => $cheminJustificatif,
+                'nom_complet' => $request->prenom_demandeur . ' ' . $request->nom_demandeur,
+                'email' => $request->email_demandeur,
+                'telephone' => $request->telephone_demandeur,
+                'informations_complementaires' => $request->informations_complementaires_copie,
+                'id_utilisateur' => null,
+                'type_document' => 'Extrait de naissance'
+            ]);
 
-        // 5. Retour avec confirmation
-        return redirect()->route('demande.copie_extrait.create')
-            ->with('success', 'Votre demande a été enregistrée avec succès. Numéro de suivi : ' . $numeroSuivi);
+            // 5. Enregistrer l'action dans les logs
+            Log::create([
+                'id_utilisateur' => null,
+                'action' => 'Demande de copie publique déposée',
+                'details' => 'Demande de copie déposée par ' . $demande->nom_complet . ' (ID Demande: ' . $demande->id . ').',
+            ]);
+
+            // 6. Redirection avec message de succès et le numéro de suivi
+            return redirect()->route('demande.copie_extrait.create')
+                ->with('numero_suivi_succes', $numeroSuivi);
+        } catch (\Exception $e) {
+            // Log de l'erreur
+            \Log::error('Erreur lors de la création de la demande de copie', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            // Rediriger avec un message d'erreur
+            return redirect()->route('demande.copie_extrait.create')
+                ->with('error', 'Une erreur est survenue lors de la soumission de votre demande. Veuillez réessayer.');
+        }
     }
-         
+
 
 
 
@@ -204,14 +224,14 @@ class DemandeController extends Controller
 
         // Optionnel : Vérifier si une copie pour cette DEMANDE a déjà été générée
         // Cela évite de créer plusieurs copies pour la même demande.
-        if ($demande->id !== null) { // Si la demande a déjà un acte lié (sa copie)
+        if ($demande->acte_id !== null) { // Si la demande a déjà un acte lié (sa copie)
             return back()->withErrors(['general' => 'Une copie a déjà été générée pour cette demande.']);
         }
         // Autre vérification : Une copie avec le même numéro d'acte pour la même demande
         $existingCopie = Acte::where('type', 'copie')
-                             ->where('id_demande', $request->demande_id)
-                             ->where('num_acte', $request->num_acte)
-                             ->first();
+            ->where('id_demande', $request->demande_id)
+            ->where('num_acte', $request->num_acte)
+            ->first();
         if ($existingCopie) {
             return back()->withErrors(['general' => 'Une copie de cet acte (' . $request->num_acte . ') a déjà été générée pour cette demande.']);
         }
@@ -251,7 +271,7 @@ class DemandeController extends Controller
 
         // 4. Mettre à jour le statut de la demande et la lier à l'acte de copie créé
         $demande->statut = 'Traitée'; // La demande est passée de 'En attente' à 'Traitée'
-        $demande->id = $copie->id; // Lier la demande à la COPIE qui vient d'être créée.
+        $demande->acte_id = $copie->id; // Lier la demande à la COPIE qui vient d'être créée.
         $demande->save();
 
         // 5. Enregistrer l'action dans les logs
@@ -306,12 +326,12 @@ class DemandeController extends Controller
     {
         $demandes = Demande::whereNotNull('justificatif')->get();
         $resultats = [];
-        
+
         foreach ($demandes as $demande) {
             $chemin = $demande->justificatif;
             $existe = Storage::disk('public')->exists($chemin);
             $url = $existe ? Storage::disk('public')->url($chemin) : null;
-            
+
             $resultats[] = [
                 'id' => $demande->id,
                 'nom_complet' => $demande->nom_complet,
@@ -322,7 +342,7 @@ class DemandeController extends Controller
                 'statut' => $demande->statut
             ];
         }
-        
+
         return response()->json([
             'total' => count($resultats),
             'demandes' => $resultats

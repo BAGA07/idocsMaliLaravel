@@ -19,7 +19,7 @@ class CreateCopieActe extends Component
     public $isVoletCopy;
     public $volet;
     public $urlJustificatif;
-    
+
     // Champs du formulaire
     public $numActe = '';
     public $prenomEnfant = '';
@@ -38,7 +38,7 @@ class CreateCopieActe extends Component
     public $domicileMere = '';
     public $idOfficier = '';
     public $idCommune = '';
-    
+
     // Vérification du numéro d'acte
     public $acteExists = false;
     public $existingActe = null;
@@ -46,7 +46,7 @@ class CreateCopieActe extends Component
     public function mount($id, $demande = null, $communes = null, $officiers = null, $urlJustificatif = null, $isVoletCopy = false, $volet = null)
     {
         $this->demandeId = $id;
-        
+
         // Si les données sont passées directement, les utiliser
         if ($demande) {
             $this->demande = $demande;
@@ -59,14 +59,14 @@ class CreateCopieActe extends Component
             // Sinon, charger les données normalement
             $this->loadDemande();
         }
-        
+
         $this->loadFormData();
     }
 
     public function loadDemande()
     {
         $this->demande = Demande::findOrFail($this->demandeId);
-        
+
         // Vérifier les autorisations
         if (!Auth::check() || !Auth::user()->hasRole('agent_mairie')) {
             return redirect()->route('login')->withErrors('Accès non autorisé.');
@@ -77,7 +77,7 @@ class CreateCopieActe extends Component
         }
 
         $this->isVoletCopy = !empty($this->demande->id_volet);
-        
+
         if ($this->isVoletCopy) {
             $this->volet = $this->demande->volet;
             if (!$this->volet) {
@@ -98,7 +98,7 @@ class CreateCopieActe extends Component
         if ($this->isVoletCopy && $this->volet) {
             $annee = date('Y');
             $numeroActe = '1729/MCVI/REG/' . $annee . '/' . str_pad(rand(1, 999), 3, '0', STR_PAD_LEFT);
-            
+
             $this->numActe = $numeroActe;
             $this->prenomEnfant = $this->volet->prenom_enfant ?? '';
             $this->nomEnfant = $this->volet->nom_enfant ?? '';
