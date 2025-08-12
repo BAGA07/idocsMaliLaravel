@@ -95,7 +95,7 @@ Route::middleware([
     Route::get('/demandesRejeté', [Acte_naissance::class, 'listRejeté'])->name('listRejeté');
     Route::get('/notifications', [Acte_naissance::class, 'notifications'])->name('mairie.notifications.index');
 ======= */
-    Route::get('/demandes/{id}/rejeter', [Acte_naissance::class, 'rejeterDemande'])->name('mairie.demandes.rejeter');
+    Route::post('/demandes/{id}/rejeter', [Acte_naissance::class, 'rejeterDemande'])->name('mairie.demandes.rejeter');
     Route::get('/demandesTraiter', [Acte_naissance::class, 'listTraiter'])->name('listTraiter');
     Route::get('/demandesEnattente', [Acte_naissance::class, 'listEnattente'])->name('listEnattente');
     Route::get('/demandesRejeté', [Acte_naissance::class, 'listRejeté'])->name('listRejeté');
