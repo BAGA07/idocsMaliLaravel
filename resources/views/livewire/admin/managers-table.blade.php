@@ -73,6 +73,10 @@
                     </span>
                 </td>
                 <td class="p-2 border">
+                    <button onclick="window.location='{{ route('admin.managers.show', $manager->id) }}'" type="button"
+                        class="px-2 py-1 rounded bg-blue-500 hover:bg-blue-600 text-white text-xs">
+                        Voir
+                    </button>
                     <button wire:click="toggleStatus({{ $manager->id }})"
                         class="px-2 py-1 rounded {{ $manager->actif ? 'bg-red-500 hover:bg-red-600' : 'bg-green-500 hover:bg-green-600' }} text-white text-xs">
                         {{ $manager->actif ? 'Désactiver' : 'Activer' }}
