@@ -61,9 +61,13 @@ class AgentController extends Controller
         if ($request->structure === 'hopital') {
             $user->role     = 'agent_hopital';
             $user->id_hopital = $request->structure_id;
-        } else {
+        } elseif ($request->structure === 'mairie') {
+            # code...
             $user->role     = 'agent_mairie';
             $user->id_mairie = $request->structure_id;
+        } else{
+            $user->role     = 'officier';
+            $user->id_mairie = $request->structure_id; 
         }
 
         $user->save();
