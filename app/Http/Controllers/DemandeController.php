@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\VoletDeclaration; 
-use App\Models\PieceJointe; 
+use App\Models\VoletDeclaration;
+use App\Models\PieceJointe;
 use App\Models\Demande;
 use App\Models\Log;
-use App\Models\Acte; 
-use App\Models\Commune; 
-use App\Models\Officier; 
+use App\Models\Acte;
+use App\Models\Commune;
+use App\Models\Officier;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth; 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -54,34 +54,34 @@ class DemandeController extends Controller
             'informations_complementaires_copie' => 'nullable|string',
         ]);
 
-                    // 2. Gérer le téléchargement du justificatif (photo de l'extrait de naissance)
-            $cheminJustificatif = null;
-            if ($request->hasFile('justificatif') && $request->file('justificatif')->isValid()) {
-                $fichier = $request->file('justificatif');
-                // Générer un nom de fichier unique pour éviter les conflits
-                $nomFichier = time() . '_' . Str::random(10) . '.' . $fichier->getClientOriginalExtension();
-                // Stocker le fichier dans le dossier 'justificatifs_copie_extrait'
-                $cheminJustificatif = $fichier->storeAs('justificatifs_copie_extrait', $nomFichier, 'public');
-                
-                if (!$cheminJustificatif) {
-                    return back()->withInput()->withErrors(['justificatif' => 'Erreur lors du téléchargement du fichier.']);
-                }
-                
-                // Synchroniser le fichier vers public/storage pour Windows
-                $sourcePath = storage_path('app/public/' . $cheminJustificatif);
-                $destPath = public_path('storage/' . $cheminJustificatif);
-                $destDir = dirname($destPath);
-                
-                if (!is_dir($destDir)) {
-                    mkdir($destDir, 0755, true);
-                }
-                
-                if (file_exists($sourcePath)) {
-                    copy($sourcePath, $destPath);
-                }
-            } else {
-                return back()->withInput()->withErrors(['justificatif' => 'Le justificatif est requis et doit être un fichier valide.']);
+        // 2. Gérer le téléchargement du justificatif (photo de l'extrait de naissance)
+        $cheminJustificatif = null;
+        if ($request->hasFile('justificatif') && $request->file('justificatif')->isValid()) {
+            $fichier = $request->file('justificatif');
+            // Générer un nom de fichier unique pour éviter les conflits
+            $nomFichier = time() . '_' . Str::random(10) . '.' . $fichier->getClientOriginalExtension();
+            // Stocker le fichier dans le dossier 'justificatifs_copie_extrait'
+            $cheminJustificatif = $fichier->storeAs('justificatifs_copie_extrait', $nomFichier, 'public');
+
+            if (!$cheminJustificatif) {
+                return back()->withInput()->withErrors(['justificatif' => 'Erreur lors du téléchargement du fichier.']);
             }
+
+            // Synchroniser le fichier vers public/storage pour Windows
+            $sourcePath = storage_path('app/public/' . $cheminJustificatif);
+            $destPath = public_path('storage/' . $cheminJustificatif);
+            $destDir = dirname($destPath);
+
+            if (!is_dir($destDir)) {
+                mkdir($destDir, 0755, true);
+            }
+
+            if (file_exists($sourcePath)) {
+                copy($sourcePath, $destPath);
+            }
+        } else {
+            return back()->withInput()->withErrors(['justificatif' => 'Le justificatif est requis et doit être un fichier valide.']);
+        }
 
         // 3. Générer le numéro de suivi unique pour la demande de copie
         do {
@@ -126,8 +126,8 @@ class DemandeController extends Controller
                 ->with('error', 'Une erreur est survenue lors de la soumission de votre demande. Veuillez réessayer.');
         }
     }
-         
-    
+
+
 
 
     // =========================================================
@@ -162,7 +162,7 @@ class DemandeController extends Controller
         }
 
         // URL publique pour afficher l'image du justificatif
-        $urlJustificatif = Storage::disk('public')->url($demande->justificatif);
+        $urlJustificatif = url('/storage/' . $demande->justificatif);
 
         // Déterminer si c'est une copie depuis un volet ou depuis un justificatif
         $isVoletCopy = !empty($demande->id_volet);
@@ -224,14 +224,14 @@ class DemandeController extends Controller
 
         // Optionnel : Vérifier si une copie pour cette DEMANDE a déjà été générée
         // Cela évite de créer plusieurs copies pour la même demande.
-        if ($demande->id !== null) { // Si la demande a déjà un acte lié (sa copie)
+        if ($demande->acte_id !== null) { // Si la demande a déjà un acte lié (sa copie)
             return back()->withErrors(['general' => 'Une copie a déjà été générée pour cette demande.']);
         }
         // Autre vérification : Une copie avec le même numéro d'acte pour la même demande
         $existingCopie = Acte::where('type', 'copie')
-                             ->where('id_demande', $request->demande_id)
-                             ->where('num_acte', $request->num_acte)
-                             ->first();
+            ->where('id_demande', $request->demande_id)
+            ->where('num_acte', $request->num_acte)
+            ->first();
         if ($existingCopie) {
             return back()->withErrors(['general' => 'Une copie de cet acte (' . $request->num_acte . ') a déjà été générée pour cette demande.']);
         }
@@ -271,7 +271,7 @@ class DemandeController extends Controller
 
         // 4. Mettre à jour le statut de la demande et la lier à l'acte de copie créé
         $demande->statut = 'Traitée'; // La demande est passée de 'En attente' à 'Traitée'
-        $demande->id = $copie->id; // Lier la demande à la COPIE qui vient d'être créée.
+        $demande->acte_id = $copie->id; // Lier la demande à la COPIE qui vient d'être créée.
         $demande->save();
 
         // 5. Enregistrer l'action dans les logs
@@ -326,12 +326,12 @@ class DemandeController extends Controller
     {
         $demandes = Demande::whereNotNull('justificatif')->get();
         $resultats = [];
-        
+
         foreach ($demandes as $demande) {
             $chemin = $demande->justificatif;
             $existe = Storage::disk('public')->exists($chemin);
             $url = $existe ? Storage::disk('public')->url($chemin) : null;
-            
+
             $resultats[] = [
                 'id' => $demande->id,
                 'nom_complet' => $demande->nom_complet,
@@ -342,7 +342,7 @@ class DemandeController extends Controller
                 'statut' => $demande->statut
             ];
         }
-        
+
         return response()->json([
             'total' => count($resultats),
             'demandes' => $resultats

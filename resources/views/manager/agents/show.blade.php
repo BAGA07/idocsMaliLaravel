@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.app')
 
 @section('content')
 <div class="min-h-screen bg-gray-50 py-8">
@@ -8,7 +8,7 @@
                 <h2 class="text-lg font-semibold flex items-center">
                     <i class="fa fa-user mr-2"></i>Détails du Manager
                 </h2>
-                <a href="{{ route('admin.managers.edit', $manager->id) }}"
+                <a href="{{ route('manager.agents.edit', $manager->id) }}"
                     class="bg-white text-blue-600 hover:bg-blue-50 px-3 py-1 rounded-md text-sm font-medium transition duration-200">
                     <i class="fa fa-edit mr-1"></i>Modifier
                 </a>
@@ -68,7 +68,7 @@
 
             <div class="bg-gray-50 px-6 py-4 border-t border-gray-200">
                 <div class="flex justify-end">
-                    <a href="{{ route('admin.managers.index') }}"
+                    <a href="{{ route('manager.agents.index') }}"
                         class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition duration-200">
                         <i class="fa fa-arrow-left mr-2"></i>Retour à la liste
                     </a>

@@ -4,7 +4,6 @@ use App\Http\Controllers\Acte_naissance;
 use App\Http\Controllers\Admin\AdminManagerController;
 use App\Http\Controllers\PresentationController;
 use App\Http\Controllers\DemandeController;
-use App\Http\Controllers\Hopital\NaissanceController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VoletDeclarationController;
 use App\Http\Controllers\OfficierActeController;
@@ -90,10 +89,20 @@ Route::middleware([
     // Route::get('/acteCopies/create/{id}', [Acte_naissance::class, 'creates'])->name('acteCopies.create');
     Route::get('/acteCopies/create/{id}', [Acte_naissance::class, 'creates'])->name('acteCopies.create');
     Route::post('/acteCopies/store', [Acte_naissance::class, 'stores'])->name('acteCopies.store');
-        Route::get('/demandesTraiter', [Acte_naissance::class, 'listTraiter'])->name('listTraiter');
-        Route::get('/demandesEnattente', [Acte_naissance::class, 'listEnattente'])->name('listEnattente');
-        Route::get('/demandesRejeté', [Acte_naissance::class, 'listRejeté'])->name('listRejeté');
-        Route::get('/notifications', [Acte_naissance::class, 'notifications'])->name('mairie.notifications.index');
+
+    /*  Route::get('/demandesTraiter', [Acte_naissance::class, 'listTraiter'])->name('listTraiter');
+    Route::get('/demandesEnattente', [Acte_naissance::class, 'listEnattente'])->name('listEnattente');
+    Route::get('/demandesRejeté', [Acte_naissance::class, 'listRejeté'])->name('listRejeté');
+    Route::get('/notifications', [Acte_naissance::class, 'notifications'])->name('mairie.notifications.index');
+======= */
+    Route::post('/demandes/{id}/rejeter', [Acte_naissance::class, 'rejeterDemande'])->name('mairie.demandes.rejeter');
+    Route::get('/demandesTraiter', [Acte_naissance::class, 'listTraiter'])->name('listTraiter');
+    Route::get('/demandesEnattente', [Acte_naissance::class, 'listEnattente'])->name('listEnattente');
+    Route::get('/demandesRejeté', [Acte_naissance::class, 'listRejeté'])->name('listRejeté');
+    Route::get('/d', [Acte_naissance::class, 'listRejeté'])->name('listRejeté');
+
+    Route::get('/notifications', [Acte_naissance::class, 'notifications'])->name('mairie.notifications.index');
+
     Route::get('/notifications/{id}', [Acte_naissance::class, 'showNotification'])->name('notifications.show');
     Route::post('/notifications/mark-all-read', [Acte_naissance::class, 'markAllAsRead'])->name('notifications.markAllRead');
     Route::post('/notifications/{id}/mark-read', [Acte_naissance::class, 'ajaxMarkRead'])->name('notifications.markRead');
@@ -104,6 +113,14 @@ Route::middleware([
     // Routes pour le dashboard des copies/extraits
     Route::get('/dashboard/copies', [Acte_naissance::class, 'dashboardCopies'])->name('mairie.dashboard.copies');
     Route::get('/copies/{id}/show', [Acte_naissance::class, 'showCopie'])->name('copies.show');
+
+    // Route API pour vérifier l'existence d'un acte
+    Route::get('/api/check-acte-exists/{numActe}', [Acte_naissance::class, 'checkActeExists'])->name('api.check-acte-exists');
+
+    // Route de test simple
+    Route::get('/api/test', function () {
+        return response()->json(['message' => 'API fonctionne']);
+    });
     Route::post('/copies/{id}/envoyer-officier', [Acte_naissance::class, 'envoyerCopieOfficier'])->name('copies.envoyer_officier');
 
     // Routes pour le dashboard des actes de naissance
@@ -121,6 +138,26 @@ Route::get('/debug-auth', function () {
         'session' => session()->all()
     ]);
 })->name('debug.auth');
+
+// Route API de test en dehors du middleware
+Route::get('/api/test-acte/{numActe}', function ($numActe) {
+    try {
+        $acte = \App\Models\Acte::where('num_acte', $numActe)->first();
+        return response()->json([
+            'exists' => $acte ? true : false,
+            'acte' => $acte ? [
+                'num_acte' => $acte->num_acte,
+                'prenom' => $acte->prenom,
+                'nom' => $acte->nom,
+                'date_naissance_enfant' => $acte->date_naissance_enfant,
+                'type' => $acte->type
+            ] : null,
+            'type' => $acte ? $acte->type : null
+        ]);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+})->name('api.test-acte');
 
 // Route de test pour la signature
 Route::get('/test-signature', function () {
@@ -225,4 +262,3 @@ Route::post('/hopital/demandes/envoyer/{id_volet}', [App\Http\Controllers\Hopita
 
 
 require __DIR__ . '/auth.php';
-

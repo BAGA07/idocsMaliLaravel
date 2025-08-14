@@ -42,7 +42,9 @@ class Acte extends Model
         'token',
         'type',
         'sequential_num',
-         'statut' 
+         'statut',
+         'is_virtuelle',
+         'original_acte_num'
     ];
 
     use HasFactory;
