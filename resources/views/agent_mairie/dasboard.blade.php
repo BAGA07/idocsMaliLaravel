@@ -117,6 +117,7 @@
                         <th class="px-4 py-2 border">Nombre de copie</th>
 
                         <th class="px-4 py-2 border">Statut</th>
+                        {{-- <th>Naissance inferieur</th> --}}
                     </tr>
                 </thead>
                 <tbody>
@@ -147,6 +148,14 @@
                         </td> --}}
                     </tr>
                     @endforeach
+                    
+                    {{-- @foreach($demandeNaissance as $demande)
+                    <tr>
+                        <td>{{$demande->acte->date_naissance_enfant}}</td>
+                    </tr>
+                    @endforeach --}}
+
+                    
                 </tbody>
             </table>
         </div>

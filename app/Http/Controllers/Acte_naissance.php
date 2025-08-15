@@ -24,7 +24,7 @@ class Acte_naissance extends Controller
  
         // $demandes = Demande::with('volet')->where('statut', 'En attente')->get();
         // $demandesCopies = Demande::where('nombre_copie')->get();
-    
+ // $demandeNaissance=Demande::whereHas('acte')->WhereRelation('acte','date_naissance_enfant','<',now())->get();  
  $demandes = Demande::with('volet')
     ->whereNotNull('id_volet')
     ->get();

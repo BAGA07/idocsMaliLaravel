@@ -162,7 +162,8 @@ class DemandeController extends Controller
         'telephone' => $validatedData['telephone_demandeur'],
         'type_document' => $validatedData['type_acte_demande'],
         'informations_complementaires' => $validatedData['informations_complementaires_copie'],
-        'justificatif' => $validatedData['justificatif'],
+                'justificatif' => $filePath,
+
         'statut' => 'En attente',
         'num_acte' => $validatedData['num_acte'],
         'nombre_copie' => $validatedData['nombre_copie'],
