@@ -2,15 +2,13 @@
 
 namespace App\Livewire\Admin;
 
-use App\Models\Demande;
 use Livewire\Component;
 use App\Models\User;
-use App\Models\VoletDeclaration;
+use App\Models\Demande;
 use App\Models\Hopital;
 use App\Models\Mairie;
-use App\Models\Log;
-use Symfony\Component\HttpFoundation\StreamedResponse;
-use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class Dashboard extends Component
 {
@@ -18,144 +16,108 @@ class Dashboard extends Component
     public $documentsEnAttente;
     public $totalStructures;
     public $totalUsers;
-    public $statsByStatus = [];
+
+    public $alertes = [
+        'En attente_retard' => 0,
+        'managers_inactifs' => 0,
+        'demandes_details' => [],
+        'managers_details' => []
+    ];
+
     public $structuresGeo = [];
-    public $recentLogs = [];
-    public $periode = 'mois';
-    public $alertes = [];
-
-    public function updatedPeriode()
-    {
-        $this->recalculerStats();
-    }
-
-    public function recalculerStats()
-    {
-        $periode = $this->periode;
-        $queryVolet = VoletDeclaration::query();
-        $queryDemande = Demande::query();
-        $queryUser = User::query();
-        $queryHopital = Hopital::query();
-        $queryMairie = Mairie::query();
-
-        switch ($periode) {
-            case 'jour':
-                $date = now()->toDateString();
-                $queryVolet->whereDate('created_at', $date);
-                $queryDemande->whereDate('created_at', $date);
-                $queryUser->whereDate('created_at', $date);
-                break;
-            case 'semaine':
-                $queryVolet->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()]);
-                $queryDemande->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()]);
-                $queryUser->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()]);
-                break;
-            case 'annee':
-                $queryVolet->whereYear('created_at', now()->year);
-                $queryDemande->whereYear('created_at', now()->year);
-                $queryUser->whereYear('created_at', now()->year);
-                break;
-            case 'mois':
-            default:
-                $queryVolet->whereMonth('created_at', now()->month);
-                $queryDemande->whereMonth('created_at', now()->month);
-                $queryUser->whereMonth('created_at', now()->month);
-                break;
-        }
-        $this->totalDocuments = $queryVolet->count();
-        $this->documentsEnAttente = $queryDemande->where('statut', 'En attente')->count();
-        $this->totalStructures = $queryHopital->count() + $queryMairie->count();
-        $this->totalUsers = $queryUser->count();
-        $this->statsByStatus = $queryDemande->selectRaw('statut, COUNT(*) as total')
-            ->groupBy('statut')
-            ->pluck('total', 'statut')
-            ->toArray();
-    }
+    public $statsByStatus = [];
+    public $periode = 'jour';
 
     public function mount()
     {
-        $this->recalculerStats();
-        $this->totalDocuments = VoletDeclaration::count();
-        $this->documentsEnAttente = Demande::where('statut', 'En attente')->count();
+        $this->loadData();
+    }
+
+    public function updatedPeriode()
+    {
+        $this->loadData();
+    }
+
+    protected function loadData()
+    {
+        // Filtrage par période
+        $dateDebut = match ($this->periode) {
+            'jour'    => Carbon::today(),
+            'semaine' => Carbon::now()->startOfWeek(),
+            'mois'    => Carbon::now()->startOfMonth(),
+            'annee'   => Carbon::now()->startOfYear(),
+            default   => Carbon::today(),
+        };
+
+        // 📊 Statistiques globales
+        $this->totalDocuments = Demande::where('statut', 'Valide')->count();
+
+        $this->documentsEnAttente = Demande::where('statut', 'En attente')
+            ->count();
+
         $this->totalStructures = Hopital::count() + Mairie::count();
+
         $this->totalUsers = User::count();
 
-        $this->statsByStatus = Demande::selectRaw('statut, COUNT(*) as total')
+        // ⚠️ Documents en attente depuis > 7 jours
+        $this->alertes['en_attente_retard'] = Demande::where('statut', 'En attente')
+            ->where('created_at', '<', Carbon::now()->subDays(7))
+            ->count();
+
+        $this->alertes['demandes_details'] = Demande::where('statut', 'En attente')
+            ->where('created_at', '<', Carbon::now()->subDays(7))
+            ->with('volet')
+            ->get();
+
+        // ⚠️ Managers inactifs depuis > 15 jours
+        $this->alertes['managers_inactifs'] = User::where('role', 'manager')
+            ->where(function ($q) {
+                $q->whereNull('last_login_at')
+                    ->orWhere('last_login_at', '<', Carbon::now()->subDays(15));
+            })
+            ->count();
+
+        $this->alertes['managers_details'] = User::where('role', 'manager')
+            ->where(function ($q) {
+                $q->whereNull('last_login_at')
+                    ->orWhere('last_login_at', '<', Carbon::now()->subDays(15));
+            })
+            ->get();
+
+        // 📍 Structures avec coordonnées GPS
+        $this->structuresGeo = Hopital::all()->merge(Mairie::all())
+            ->filter(function ($structure) {
+                return !is_null($structure->latitude) && !is_null($structure->longitude);
+            })->map(function ($structure) {
+                return [
+                    'id' => $structure->id,
+                    'name' => $structure->name,
+                    'latitude' => $structure->latitude,
+                    'longitude' => $structure->longitude,
+                ];
+            })->toArray();
+
+        // 📊 Statistiques par statut pour Chart.js
+        $this->statsByStatus = Demande::select('statut', DB::raw('COUNT(*) as total'))
             ->groupBy('statut')
             ->pluck('total', 'statut')
             ->toArray();
+    }
 
-        // Alertes : demandes en attente >7 jours
-        $enAttenteRetard = Demande::where('statut', 'En attente')
-            ->where('created_at', '<', now()->subDays(7))
-            ->count();
-        // Alertes : managers inactifs >15 jours
-        $managersInactifs = User::whereIn('role', ['agent_hopital', 'agent_mairie'])
-            ->where(function ($q) {
-                $q->whereNull('last_login_at')->orWhere('last_login_at', '<', now()->subDays(15));
-            })->count();
-        $this->alertes = [
-            'en_attente_retard' => $enAttenteRetard,
-            'managers_inactifs' => $managersInactifs,
-        ];
+    public function exportCsv()
+    {
+        // 🔹 Ici tu peux utiliser Laravel Excel
+        session()->flash('message', 'Export CSV lancé (à implémenter)');
+    }
 
-        // Autres statistiques...
-
-        $hopitaux = Hopital::select('nom_hopital', 'latitude', 'longitude')->get();
-        $mairies = Mairie::select('nom_mairie', 'latitude', 'longitude')->get();
-
-        $this->structuresGeo = $hopitaux
-            ->merge($mairies)
-            ->filter(fn($s) => $s->latitude && $s->longitude)
-            ->values();
-
-        $this->recentLogs = Log::with('user')->latest()->take(10)->get();
+    public function exportPdf()
+    {
+        // 🔹 Ici tu peux utiliser DomPDF ou Snappy
+        session()->flash('message', 'Export PDF lancé (à implémenter)');
     }
 
     public function render()
     {
         return view('livewire.admin.dashboard');
-    }
-
-    public function exportCsv()
-    {
-        $filename = 'statistiques_dashboard_' . now()->format('Ymd_His') . '.csv';
-        $headers = [
-            'Content-type' => 'text/csv',
-            'Content-Disposition' => 'attachment; filename=' . $filename,
-        ];
-        $data = [
-            ['Statistique', 'Valeur'],
-            ['Documents traités', $this->totalDocuments],
-            ['En attente', $this->documentsEnAttente],
-            ['Structures', $this->totalStructures],
-            ['Utilisateurs', $this->totalUsers],
-        ];
-        foreach ($this->statsByStatus as $statut => $total) {
-            $data[] = ['Demandes ' . $statut, $total];
-        }
-        return new StreamedResponse(function () use ($data) {
-            $handle = fopen('php://output', 'w');
-            foreach ($data as $row) {
-                fputcsv($handle, $row);
-            }
-            fclose($handle);
-        }, 200, $headers);
-    }
-
-    public function exportPdf()
-    {
-        $data = [
-            'totalDocuments' => $this->totalDocuments,
-            'documentsEnAttente' => $this->documentsEnAttente,
-            'totalStructures' => $this->totalStructures,
-            'totalUsers' => $this->totalUsers,
-            'statsByStatus' => $this->statsByStatus,
-            'periode' => $this->periode,
-        ];
-        $pdf = Pdf::loadView('admin.dashboard_pdf', $data);
-        return response()->streamDownload(function () use ($pdf) {
-            echo $pdf->output();
-        }, 'statistiques_dashboard_' . now()->format('Ymd_His') . '.pdf');
     }
 }

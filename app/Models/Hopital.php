@@ -10,7 +10,7 @@ class Hopital extends Model
     use HasFactory;
 
     protected $fillable = [
-        'nom_hopital', 
+        'nom_hopital',
         'id_commune',
         'latitude',
         'longitude'

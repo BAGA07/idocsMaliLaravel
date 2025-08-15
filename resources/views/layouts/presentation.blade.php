@@ -28,6 +28,9 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+  {{-- SweetAlert2 pour les notifications --}}
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
   {{-- AJOUT IMPORTANT : Styles Livewire --}}
   @livewireStyles
 </head>
@@ -216,6 +219,51 @@
 
     {{-- AJOUT IMPORTANT : Scripts Livewire --}}
     @livewireScripts
+    @if(session('success'))
+    <script>
+        Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: '{{ session("success") }}',
+            showConfirmButton: false,
+            timer: 2000
+        });
+    </script>
+    @endif
+
+    {{-- SweetAlert : Messages d'erreur --}}
+    @if(session('error'))
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Erreur',
+            text: '{{ session("error") }}',
+            confirmButtonColor: '#d33'
+        });
+    </script>
+    @endif
+
+    {{-- Fonction de suppression avec confirmation --}}
+    <script>
+        function confirmDelete(id) {
+            Swal.fire({
+                title: 'Confirmation',
+                text: "Voulez-vous vraiment supprimer cet élément ?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Oui, supprimer',
+                cancelButtonText: 'Annuler'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + id).submit();
+                }
+            })
+        }
+    </script>
+
+    
   </body>
 
 </html>

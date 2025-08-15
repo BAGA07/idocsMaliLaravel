@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('demandes', function (Blueprint $table) {
-            //
+        Schema::table('acte_naissance', function (Blueprint $table) {
+            $table->string('num_acte', 100)->change(); // Augmenter la taille pour accepter le format officiel
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('demandes', function (Blueprint $table) {
-            //
+        Schema::table('acte_naissance', function (Blueprint $table) {
+            $table->integer('num_acte')->change(); // Revenir au type original
         });
     }
 };

@@ -50,18 +50,29 @@ class ManagersTable extends Component
         $this->resetPage();
         // Le render() sera appelé automatiquement
     }
+    public function edit($id)
+    {
+        $manager = User::with(['hopital', 'mairie'])->findOrFail($id);
+        return view('admin.managers.edit', compact('manager'));
+    }
+    public function show($id)
+    {
+        // Logic to show manager details
+        $manager = User::with(['hopital', 'mairie'])->findOrFail($id);
+        return view('manager.agents.show', compact('manager'));
+    }
 
     public function render()
     {
         $query = User::query()
             ->select(['id', 'nom', 'prenom', 'email', 'role', 'id_hopital', 'id_mairie', 'actif'])
-            ->whereIn('role', ['agent_hopital', 'agent_mairie', 'admin', 'superadmin']);
+            ->whereIn('role', ['agent_hopital', 'agent_mairie', 'officier', 'manager']);
 
         if ($this->search) {
-            $query->where(function($q) {
-                $q->where('nom', 'like', '%'.$this->search.'%')
-                  ->orWhere('prenom', 'like', '%'.$this->search.'%')
-                  ->orWhere('email', 'like', '%'.$this->search.'%');
+            $query->where(function ($q) {
+                $q->where('nom', 'like', '%' . $this->search . '%')
+                    ->orWhere('prenom', 'like', '%' . $this->search . '%')
+                    ->orWhere('email', 'like', '%' . $this->search . '%');
             });
         }
         if ($this->role) {
@@ -77,6 +88,7 @@ class ManagersTable extends Component
         if ($this->status !== '') {
             $query->where('actif', $this->status === '1');
         }
+
 
         $managers = $query->orderBy('nom')->paginate($this->perPage);
 

@@ -44,7 +44,7 @@
 
 
                     {{-- <td class="px-4 py-2 border">
-                        <a href="{{ route('acteCopies.create',$demande->id) }}" --}} {{-- <a
+                        <a href="{{ route('acteCopies.create',$demande->id) }}" --}} {{-- ></a>
                             href="{{ route('acteCopies.create.', $demande->acte->id) }}" --}} {{--
                             class="relative z-10 inline-block bg-blue-600 text-white text-xs px-3 py-1 rounded hover:bg-blue-700">Traiter</a>
                     </td>

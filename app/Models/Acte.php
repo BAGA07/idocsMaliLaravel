@@ -23,13 +23,13 @@ class Acte extends Model
         // Infos père
         'nom_pere',
         'prenom_pere',
-        'proffesion_pere',
+        'profession_pere',
         'domicile_pere',
 
         // Infos mère
         'nom_mere',
         'prenom_mere',
-        'proffesion_mere',
+        'profession_mere',
         'domicile_mere',
 
         // Clés étrangères
@@ -39,13 +39,18 @@ class Acte extends Model
         'id_demande',
 
         'date_enregistrement_acte',
-        'token'
+        'token',
+        'type',
+        'sequential_num',
+         'statut',
+         'is_virtuelle',
+         'original_acte_num'
     ];
 
     use HasFactory;
     public function declarant()
    {
-    return $this->belongsTo(Declarant::class,'id_declarant');
+    return $this->belongsTo(Declarant::class,'id_declarant','id_declarant');
    }
    public function Commune()
   {

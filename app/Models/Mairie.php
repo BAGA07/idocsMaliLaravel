@@ -31,7 +31,12 @@ class Mairie extends Model
 
     public function acte()
     {
-        return $this->hasMany(Acte::class, 'id_mairie');
+        return $this->hasMany(Demande::class, 'id_mairie');
+    }
+
+    public function hopitaux()
+    {
+        return $this->hasMany(Hopital::class, 'id_mairie');
     }
 
     public function commune()
