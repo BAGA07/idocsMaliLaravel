@@ -34,7 +34,7 @@
                             @if(!$acte->finalized)
                                 <a href="{{ route('officier.actes.finaliser', $acte->id) }}" class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700">Finaliser</a>
                             @else
-                                <a href="{{ route('officier.actes.pdf', $acte->id) }}" class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700">PDF</a>
+                                {{-- <a href="{{ route('officier.actes.pdf', $acte->id) }}" class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700">PDF</a> --}}
                             @endif
                         </td>
                     </tr>
@@ -105,7 +105,7 @@
                     <td class="px-4 py-2 border">{{ $acte->date_naissance_enfant }}</td>
                     <td class="px-4 py-2 border">{{ $acte->signed_at }}</td>
                     <td class="px-4 py-2 border">
-                        <a href="{{ route('officier.actes.pdf', $acte->id) }}" class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700">PDF</a>
+                        {{-- <a href="{{ route('officier.actes.pdf', $acte->id) }}" class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700">PDF</a> --}}
                     </td>
                 </tr>
                 @endforeach
@@ -135,7 +135,7 @@
                     <td class="px-4 py-2 border">{{ $copie->date_naissance_enfant }}</td>
                     <td class="px-4 py-2 border">{{ $copie->signed_at }}</td>
                     <td class="px-4 py-2 border">
-                        <a href="{{ route('officier.copies.pdf', $copie->id) }}" class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700">PDF</a>
+                        {{-- <a href="{{ route('officier.copies.pdf', $copie->id) }}" class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700">PDF</a> --}}
                     </td>
                 </tr>
                 @endforeach

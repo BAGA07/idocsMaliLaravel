@@ -5,8 +5,9 @@
             class="rounded border-gray-300 px-3 py-2 w-56" />
         <select wire:model="role" class="rounded border-gray-300 px-2 py-2">
             <option value="">Tous rôles</option>
-            <option value="superadmin">Superadmin</option>
-            <option value="admin">Admin</option>
+            <option value="superadmin">Admin</option>
+            <option value="admin">Manager</option>
+            <option value="admin">Officier</option>
             <option value="agent_hopital">Agent hôpital</option>
             <option value="agent_mairie">Agent mairie</option>
         </select>

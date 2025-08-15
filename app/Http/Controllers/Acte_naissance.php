@@ -663,9 +663,14 @@ class Acte_naissance extends Controller
         // Récupérer la demande avec son volet et déclarant
         $demande = Demande::with('volet')->findOrFail($request->demande_id);
 
-        $lastNum = Acte::max('num_acte');
+        /* $lastNum = Acte::max('num_acte');
 
-        $nextNum = $lastNum ? $lastNum + 1 : 1;
+        $nextNum = $lastNum ? $lastNum + 1 : 1; */
+
+        //nouveaau logiqqqqque je vaaaais caster la valeur en entier pour éviter ce souci
+        $lastNum = (int) Acte::max('num_acte');
+        $nextNum = $lastNum + 1;
+
 
         // Créer l’acte avec correspondance précise
         $acte = new Acte();
