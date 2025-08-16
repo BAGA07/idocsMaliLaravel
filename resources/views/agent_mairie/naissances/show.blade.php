@@ -45,7 +45,7 @@
     </div>
 
     <div class="border border-black mt-3 p-2">
-        <p><strong>7. Nom du père :</strong> {{ $acte->nom_pere }}</p>
+        <p><strong>7. Père :</strong> {{ $acte->nom_pere }} {{ $acte->prenom_pere }}</p>
         <p><strong>8. Âge :</strong>
             @if($acte->demande && $acte->demande->volet)
             {{ $acte->demande->volet->age_pere ?? '...' }} ans
@@ -58,7 +58,7 @@
     </div>
 
     <div class="border border-black mt-3 p-2">
-        <p><strong>11. Nom de la mère :</strong> {{ $acte->nom_mere }}</p>
+        <p><strong>11. Mère :</strong> {{ $acte->nom_mere }} {{ $acte->prenom_mere }}</p>
         <p><strong>12. Âge :</strong>
             @if($acte->demande && $acte->demande->volet)
             {{ $acte->demande->volet->age_mere ?? '...' }} ans
@@ -72,7 +72,7 @@
 
     <div class="border border-black mt-3 p-2">
         @if($acte->declarant)
-        <p><strong>15. Déclarant :</strong> {{ $acte->declarant->nom_declarant ?? '...' }}</p>
+        <p><strong>15. Déclarant :</strong> {{ $acte->declarant->nom_declarant ?? '...' }} {{ $acte->declarant->prenom_declarant ?? '...' }}</p>
         <p><strong>16. Âge :</strong> {{ $acte->declarant->age_declarant ?? '...' }} ans</p>
         <p><strong>17. Domicile :</strong> {{ $acte->declarant->domicile_declarant ?? '...' }}</p>
         <p><strong>18. Profession :</strong> {{ $acte->declarant->profession_declarant ?? '...' }}</p>
@@ -98,7 +98,7 @@
 
     <div class="border border-black mt-3 p-2">
         @if($acte->officier)
-        <p><strong>21. Officier d'état civil :</strong> {{ $acte->officier->nom ?? '...' }}</p>
+        <p><strong>21. Officier d'état civil :</strong> {{ $acte->officier->nom ?? '...' }} {{ $acte->officier->prenom ?? '...' }}</p>
         {{-- {{ $acte->officier->Mairie->nom_mairie ?? '...' }} --}}
         <p><strong>22. Qualité :</strong> {{ $acte->officier->profession ?? '...' }} </p>
         @else
@@ -158,10 +158,10 @@
             Supprimer l'acte
     </button>
 
-    <a href="{{ route('acte.pdf', $acte->id) }}" target="_blank"
+    {{-- <a href="{{ route('acte.pdf', $acte->id) }}" target="_blank"
        class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded">
         Télécharger l'acte (PDF)
-    </a>
+    </a> --}}
 </div>
 
 {{-- Script pour la confirmation de suppression, si ce n'est pas déjà dans un fichier JS externe --}}

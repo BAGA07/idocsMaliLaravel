@@ -137,7 +137,7 @@
 
     <!-- Infos Déclarant -->
     <div class="mb-6">
-      <h5 class="font-semibold text-gray-700 mb-2">🧾 Informations sur le Déclarant</h5>
+      <h5 class="font-semibold text-gray-700 mb-2">Informations sur le Déclarant</h5>
       <div class="grid grid-cols-2 gap-2 text-sm">
         <div>25. Nom : {{ $declaration->declarant->prenom_declarant }} {{ $declaration->declarant->nom_declarant }}
         </div>
