@@ -814,7 +814,7 @@ class Acte_naissance extends Controller
 
         // Vérification si une COPIE a déjà été générée pour cette DEMANDE SPÉCIFIQUE
         // Cela évite de créer plusieurs copies pour la même demande.
-        if ($demande->statut === 'Traitée' || $demande->id !== null) {
+        if ($demande->statut === 'Traitée' || $demande->acte_id !== null) {
             return back()->withErrors(['general' => 'Cette demande a déjà été traitée et une copie a été générée.'])->withInput();
         }
 
