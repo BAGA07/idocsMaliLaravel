@@ -825,7 +825,7 @@ class Acte_naissance extends Controller
             // Vérifier si c'est une copie existante
             if ($existingActe->type === 'copie') {
                 // Si c'est une copie existante, rediriger vers cette copie
-                $demande->statut = 'Traitée';
+                $demande->statut = 'Validé';
                 $demande->acte_id = $existingActe->id; // Lier à la copie existante
                 $demande->save();
 
@@ -863,7 +863,7 @@ class Acte_naissance extends Controller
                 $copie->id_officier = $request->id_officier;
                 $copie->id_commune = $request->id_commune;
                 $copie->date_enregistrement_acte = now();
-                $copie->statut = 'Traité';
+                $copie->statut = 'Traitée';
                 $copie->sequential_num = 0;
                 $copie->is_virtuelle = true; // Marquer comme copie virtuelle (basée sur un original)
                 $copie->original_acte_num = $request->num_acte; // Référence vers le numéro d'acte original
