@@ -5,7 +5,7 @@
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="bg-white rounded-lg shadow-md p-6">
             <h2 class="text-2xl font-semibold text-gray-900 mb-6 flex items-center">
-                <i class="fa fa-user-plus text-blue-500 mr-2"></i> Ajouter un nouveau manager
+                <i class="fa fa-user-plus text-blue-500 mr-2"></i> Ajouter un nouveau utilisateur
             </h2>
 
             @if ($errors->any())

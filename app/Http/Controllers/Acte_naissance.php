@@ -31,17 +31,17 @@ class Acte_naissance extends Controller
     public function index()
     {
         // Statistiques globales pour les déclarations/demandes
-        $total = VoletDeclaration::count(); // Total des volets de déclaration
-        $totalDeclarations = VoletDeclaration::count();
+        $total = Demande::count(); // Total des volets de déclaration
+        $totalDeclarations = Demande::count();
         $today = Carbon::today();
         $startOfWeek = Carbon::now()->startOfWeek();
         $endOfWeek = Carbon::now()->endOfWeek();
-        $todayCount = VoletDeclaration::whereDate('created_at', $today)->count(); // Compteur du jour
-        $todayDeclarationsCount = VoletDeclaration::whereDate('created_at', $today)->count();
-        $weekCount = VoletDeclaration::whereBetween('created_at', [$startOfWeek, $endOfWeek])->count(); // Compteur de la semaine
-        $weekDeclarationsCount = VoletDeclaration::whereBetween('created_at', [$startOfWeek, $endOfWeek])->count();
-        $monthCount = VoletDeclaration::whereMonth('created_at', Carbon::now()->month)->count(); // Compteur du mois
-        $monthDeclarationsCount = VoletDeclaration::whereMonth('created_at', Carbon::now()->month)->count();
+        $todayCount = Demande::whereDate('created_at', $today)->count(); // Compteur du jour
+        $todayDeclarationsCount = Demande::whereDate('created_at', $today)->count();
+        $weekCount = Demande::whereBetween('created_at', [$startOfWeek, $endOfWeek])->count(); // Compteur de la semaine
+        $weekDeclarationsCount = Demande::whereBetween('created_at', [$startOfWeek, $endOfWeek])->count();
+        $monthCount = Demande::whereMonth('created_at', Carbon::now()->month)->count(); // Compteur du mois
+        $monthDeclarationsCount = Demande::whereMonth('created_at', Carbon::now()->month)->count();
 
         // Récupérer les DEMANDES d'actes originaux (via volet de déclaration)
         $demandes = Demande::where('type_document', 'Extrait original')
@@ -603,7 +603,7 @@ class Acte_naissance extends Controller
         $acte->id_officier = $request->id_officier;
         $acte->id_commune = $request->id_commune;
         $acte->date_enregistrement_acte = now();
-        $acte->date_etablissement_acte= now();
+        $acte->date_etablissement= now();
         
        
         $acte->type = 'original'; // MARQUER COMME UN ACTE ORIGINAL
