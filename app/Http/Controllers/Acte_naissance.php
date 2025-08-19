@@ -373,13 +373,13 @@ class Acte_naissance extends Controller
 
         // Demandes de copies d'actes traitées
         $demandesCopies = Demande::where('type_document', 'Extrait de naissance')
-            ->where('statut', 'Traitée')
+            ->where('statut', 'Validé')
             ->whereNotNull('id')
             ->with('acte')
             ->get();
 
         $demandesCopiesTraitees = Demande::where('type_document', 'Extrait de naissance')
-            ->where('statut', 'Traitée')
+            ->where('statut', 'Validé')
             ->whereNotNull('id')
             ->with('acte')
             ->get();
@@ -529,24 +529,24 @@ class Acte_naissance extends Controller
         // Créer ou récupérer le déclarant. Priorise les données du volet de la demande si elles existent,
         // sinon utilise les données du formulaire si l'agent les a saisies (si la demande n'avait pas de volet complet).
         // Ajustez la logique si le déclarant est TOUJOURS issu du volet.
-        $declarantData = [
-            'prenom_declarant' => $request->prenom_declarant ?? ($demande->volet->declarant->prenom_declarant ?? null),
-            'nom_declarant' => $request->nom_declarant ?? ($demande->volet->declarant->nom_declarant ?? null),
-            'age_declarant' => $request->age_declarant ?? ($demande->volet->declarant->age_declarant ?? null),
-            'profession_declarant' => $request->profession_declarant ?? ($demande->volet->declarant->profession_declarant ?? null),
-            'domicile_declarant' => $request->domicile_declarant ?? ($demande->volet->declarant->domicile_declarant ?? null),
-        ];
+        // $declarantData = [
+        //     'prenom_declarant' => $request->prenom_declarant ?? ($demande->volet->declarant->prenom_declarant ?? null),
+        //     'nom_declarant' => $request->nom_declarant ?? ($demande->volet->declarant->nom_declarant ?? null),
+        //     'age_declarant' => $request->age_declarant ?? ($demande->volet->declarant->age_declarant ?? null),
+        //     'profession_declarant' => $request->profession_declarant ?? ($demande->volet->declarant->profession_declarant ?? null),
+        //     'domicile_declarant' => $request->domicile_declarant ?? ($demande->volet->declarant->domicile_declarant ?? null),
+        // ];
 
-        $declarant = Declarant::firstOrCreate(
-            $declarantData,
-            array_merge($declarantData, [ // Attributes to create if not found
-                'ethnie_declarant' => $request->ethnie_declarant ?? ($demande->volet->declarant->ethnie_declarant ?? null),
-                'email' => $request->email ?? ($demande->volet->declarant->email ?? null),
-                'telephone' => $request->telephone ?? ($demande->volet->declarant->telephone ?? null),
-                'date_declaration' => now(), // Date de la déclaration au moment de la création de l'acte
-                'numero_declaration' => Declarant::max('numero_declaration') + 1, // Assure l'unicité du numéro
-            ])
-        );
+        // $declarant = Declarant::firstOrCreate(
+        //     $declarantData,
+        //     array_merge($declarantData, [ // Attributes to create if not found
+        //         'ethnie_declarant' => $request->ethnie_declarant ?? ($demande->volet->declarant->ethnie_declarant ?? null),
+        //         'email' => $request->email ?? ($demande->volet->declarant->email ?? null),
+        //         'telephone' => $request->telephone ?? ($demande->volet->declarant->telephone ?? null),
+        //         'date_declaration' => now(), // Date de la déclaration au moment de la création de l'acte
+        //         'numero_declaration' => Declarant::max('numero_declaration') + 1, // Assure l'unicité du numéro
+        //     ])
+        // );
 
         // GÉNERATION DU NUMÉRO UNIQUE POUR L'ACTE ORIGINAL
         $currentYear = Carbon::now()->year;
@@ -595,7 +595,7 @@ class Acte_naissance extends Controller
         $acte->nom_mere = $request->nom_mere;
         $acte->profession_mere = $request->profession_mere;
         $acte->domicile_mere = $request->domicile_mere;
-        $acte->id_declarant = $declarant->id; // Utilise l'ID du déclarant trouvé ou créé (assurez-vous que la PK est bien 'id')
+         $acte->id_declarant = $demande->volet->id_declarant ?? null; // Utilise l'ID du déclarant trouvé ou créé (assurez-vous que la PK est bien 'id')
         //  $acte->id_demande = $request->demande_id; // Lier à la demande originale
         // $acte->id_declarant = $demande->volet->id_declarant ?? null;
         //$acte->heure_naissance = $demande->volet->heure_naissance ?? null;
@@ -603,6 +603,9 @@ class Acte_naissance extends Controller
         $acte->id_officier = $request->id_officier;
         $acte->id_commune = $request->id_commune;
         $acte->date_enregistrement_acte = now();
+        $acte->date_etablissement_acte= now();
+        
+       
         $acte->type = 'original'; // MARQUER COMME UN ACTE ORIGINAL
         $acte->statut = 'Traité'; // Statut initial de l'acte original créé
 
@@ -704,7 +707,7 @@ class Acte_naissance extends Controller
         // $acte->id_volet = $demande->volet->id_volet;
 
 
-        $acte->date_enregistrement_acte = now();
+       $acte->date_etablissement = now();
         // $acte->id_volet = $demande->volet->id_volet;
         return $this->storeActeOriginal($request);
     }
@@ -814,7 +817,7 @@ class Acte_naissance extends Controller
 
         // Vérification si une COPIE a déjà été générée pour cette DEMANDE SPÉCIFIQUE
         // Cela évite de créer plusieurs copies pour la même demande.
-        if ($demande->statut === 'Traitée' || $demande->acte_id !== null) {
+        if ($demande->statut === 'Validé' ) {
             return back()->withErrors(['general' => 'Cette demande a déjà été traitée et une copie a été générée.'])->withInput();
         }
 
@@ -863,7 +866,8 @@ class Acte_naissance extends Controller
                 $copie->id_officier = $request->id_officier;
                 $copie->id_commune = $request->id_commune;
                 $copie->date_enregistrement_acte = now();
-                $copie->statut = 'Traitée';
+                   $copie->date_etablissement = now();
+                $copie->statut = 'Traité';
                 $copie->sequential_num = 0;
                 $copie->is_virtuelle = true; // Marquer comme copie virtuelle (basée sur un original)
                 $copie->original_acte_num = $request->num_acte; // Référence vers le numéro d'acte original
@@ -871,8 +875,8 @@ class Acte_naissance extends Controller
                 $copie->save();
 
                 // Mettre à jour le statut de la demande
-                $demande->statut = 'Traitée';
-                $demande->acte_id = $copie->id;
+                $demande->statut = 'Validé';
+                // $demande->id_demande = $copie->id;
                 $demande->save();
 
                 Log::create([
@@ -925,6 +929,7 @@ class Acte_naissance extends Controller
         $copie->id_demande = $demande->id; // Lier la copie à la demande utilisateur
         $copie->id_officier = $request->id_officier;
         $copie->id_commune = $request->id_commune;
+           $copie->date_etablissement = now();
         $copie->date_enregistrement_acte = now(); // Date de création de la COPIE dans le système
         $copie->statut = 'Traité'; // Le statut initial de la copie est "Traité" après sa création
         $copie->sequential_num = 0; // Valeur par défaut pour les copies
@@ -939,10 +944,10 @@ class Acte_naissance extends Controller
             'demande_id' => $demande->id,
             'user_id' => Auth::id()
         ]);
-
+     
         // 4. Mettre à jour le statut de la demande et la lier à l'acte de copie créé
-        $demande->statut = 'Traitée'; // La demande est passée de 'En attente' à 'Traitée'
-        $demande->id = $copie->id; // Lier la demande à la COPIE qui vient d'être créée.
+        $demande->statut = 'Validé'; // La demande est passée de 'En attente' à 'Traitée'
+        // $demande->id_demande = $copie->id; // Lier la demande à la COPIE qui vient d'être créée.
         $demande->save();
 
         // 5. Enregistrer l'action dans les logs
@@ -990,10 +995,10 @@ class Acte_naissance extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'prenom_enfant' => 'required|string',
-            'nom_enfant' => 'required|string',
-            'date_naissance' => 'required|date',
-            'lieu_naissance' => 'required|string',
+            'prenom' => 'required|string',
+            'nom' => 'required|string',
+            'date_naissance_enfant' => 'required|date',
+            'lieu_naissance_enfant' => 'required|string',
             'sexe_enfant' => 'required|in:M,F',
             'heure_naissance' => 'nullable|string|max:20', // Ajouté validation pour heure
             'prenom_pere' => 'required|string', // Rendu required
@@ -1037,10 +1042,10 @@ class Acte_naissance extends Controller
         // Si une modification est permise, les champs doivent correspondre à ceux de l'original ou être validés différemment.
         // Ici, je suppose que l'agent peut modifier les champs pour une copie aussi, mais sans la vérification des doublons d'originaux.
 
-        $acte->prenom = $request->prenom_enfant;
-        $acte->nom = $request->nom_enfant;
-        $acte->date_naissance_enfant = $request->date_naissance;
-        $acte->lieu_naissance_enfant = $request->lieu_naissance;
+        $acte->prenom = $request->prenom;
+        $acte->nom = $request->nom;
+        $acte->date_naissance_enfant = $request->date_naissance_enfant;
+        $acte->lieu_naissance_enfant = $request->lieu_naissance_enfant;
         $acte->heure_naissance = $request->heure_naissance;
         $acte->sexe_enfant = $request->sexe_enfant;
 
@@ -1065,37 +1070,48 @@ class Acte_naissance extends Controller
             'details' => 'Acte ' . ($acte->type ?? 'original') . ' ID ' . $acte->id . ' modifié par l\'agent.',
         ]);
 
-        return redirect()->route('agent.dashboard')->with('success', 'Acte de naissance modifié avec succès.');
+if ($acte->type === 'copie') {
+    return redirect()->route('mairie.dashboard.copies')->with('success', 'Copie de l’acte modifiée avec succès.');
+}
+
+return redirect()->route('mairie.dashboard.actes')->with('success', 'Acte de naissance original modifié avec succès.');
+
     }
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
-    {
-        $acte = Acte::findOrFail($id);
-        $typeActe = $acte->type ?? 'original';
+{
+    $acte = Acte::findOrFail($id);
+    // dd($acte->type);
+    $typeActe = $acte->type ?? 'original';
 
-        // Si l'acte est lié à une demande, mettre à jour la demande
-        if ($acte->id_demande) {
-            $demande = Demande::find($acte->id_demande);
-            if ($demande) {
-                $demande->statut = 'Rejeté'; // Ou 'Annulée' si la suppression d'un acte signifie l'annulation de la demande
-                $demande->id = null; // Dé-lier l'acte
-                $demande->save();
-            }
+    // Si l'acte est lié à une demande, mettre à jour le statut seulement
+    if ($acte->id_demande) {
+        $demande = Demande::find($acte->id_demande);
+        if ($demande) {
+            $demande->statut = 'Rejeté'; 
+            $demande->save(); 
         }
-
-        $acte->delete();
-
-        Log::create([
-            'id_utilisateur' => Auth::id() ?? null,
-            'action' => 'Suppression acte',
-            'details' => ucfirst($typeActe) . ' supprimé pour ' . $acte->nom . ' ' . $acte->prenom . ' (N°' . $acte->num_acte . ')',
-        ]);
-
-        return redirect()->route('agent.dashboard')->with('success', 'Acte de naissance supprimé avec succès.');
     }
+
+    $acte->delete();
+
+    Log::create([
+        'id_utilisateur' => Auth::id() ?? null,
+        'action' => 'Suppression acte',
+        'details' => ucfirst($typeActe) . ' supprimé pour ' . $acte->nom . ' ' . $acte->prenom . ' (N°' . $acte->num_acte . ')',
+    ]);
+
+if ($acte->type === 'copie') {
+    return redirect()->route('mairie.dashboard.copies')->with('success', 'Copie de l’acte supprimée avec succès.');
+}
+
+return redirect()->route('mairie.dashboard.actes')->with('success', 'Acte de naissance original supprimée avec succès.');
+
+}
+
 
     /**
      * Download PDF for a specific act (original or copy).
@@ -1323,7 +1339,7 @@ class Acte_naissance extends Controller
             }
 
             // Mettre à jour le statut de la demande
-            $demande->statut = 'Rejetée';
+            $demande->statut = 'Rejeté';
             $demande->save();
 
             // Enregistrer l'action dans les logs

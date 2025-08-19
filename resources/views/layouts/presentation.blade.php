@@ -168,7 +168,7 @@
             <h3 class="text-xl font-semibold mb-4 text-blue-400">Contact</h3>
             <ul class="space-y-2 text-blue-200 text-sm">
               <li><i class="fas fa-map-marker-alt mr-2"></i> Bamako, Mali</li>
-              <li><i class="fas fa-phone mr-2"></i> +223 XXXX XXXX</li>
+              <li><i class="fas fa-phone mr-2"></i> +223 12 34 56 78</li>
               <li><i class="fas fa-envelope mr-2"></i> contact@IdocsMali.com</li>
             </ul>
           </div>
@@ -211,7 +211,7 @@
         </div>
 
         <div class="border-t border-blue-700 pt-6 text-center text-blue-300 text-sm">
-          <p>&copy; 2024 Votre Nom ou Nom de l'Entreprise. Tous droits réservés.</p>
+          <p>&copy; 2025 IdocsMali. Tous droits réservés.</p>
         </div>
       </div>
     </footer>

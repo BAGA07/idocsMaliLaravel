@@ -1,107 +1,116 @@
 @extends('layouts.app')
-@section('titre')Liste de tous les demandes @endsection
+
+@section('titre')
+    Liste de toutes les demandes
+@endsection
+
 @section('content')
-<div class="bg-white shadow rounded mb-6">
-    <div class="border-b px-6 py-3 font-semibold">Demandes pour copie extrait</div>
-    <div class="overflow-x-auto">
-        <table class="min-w-full table-auto border text-sm">
-            <thead class="bg-gray-100">
-                <tr>
-                    <th class="px-4 py-2 border">Nom Demandeur</th>
-                    <th class="px-4 py-2 border">Nom Enfant</th>
-                    <th class="px-4 py-2 border">Numéro acte</th>
-                    <th class="px-4 py-2 border">nombre_copie</th>
-                    <th class="px-4 py-2 border">Statut</th>
-                    {{-- <th class="px-4 py-2 border">Action</th>
-                    <th class="px-4 py-2 border">ID</th> --}}
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($demandesCopies as $demande)
-                {{-- @dd($demande->volet) --}}
+<div class="max-w-6xl mx-auto mt-10 p-6 bg-white rounded shadow-lg">
 
-                <tr>
-                    <td class="px-4 py-2 border">{{ $demande->nom_complet }}</td>
-                    <td class="px-4 py-2 border">
-                        {{ $demande->prenom_enfant}} {{$demande->nom_enfant}}
-                    </td>
+    <h1 class="text-3xl font-extrabold text-gray-900 mb-8 text-center">Liste de toutes les Demandes</h1>
 
-                    <td class="px-4 py-2 border">{{ $demande->num_acte }}</td>
-                    <td class="px-4 py-2 border">{{ $demande->nombre_copie }}</td>
+    {{-- Demandes de copies d’extrait --}}
+    <h2 class="text-2xl font-bold mb-4 text-gray-800 border-b-2 border-green-400 pb-2">
+        Demandes pour Copies d’Extrait
+    </h2>
 
-                    <td class="px-4 py-2 border">
-                        @switch($demande->statut)
-                        @case('Validé')
-                        <span class="bg-green-200 text-green-800 px-2 py-1 rounded">Validé</span>
-                        @break
-                        @case('Rejeté')
-                        <span class="bg-red-200 text-red-800 px-2 py-1 rounded">Rejeté</span>
-                        @break
-                        @default
-                        <span class="bg-yellow-200 text-yellow-800 px-2 py-1 rounded">{{ $demande->statut }}</span>
-                        @endswitch
-                    </td>
+    @if($demandesCopies->isEmpty())
+        <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded mb-12" role="alert">
+            <p class="font-bold">Information</p>
+            <p>Aucune demande de copie n’est disponible.</p>
+        </div>
+    @else
+        <div class="overflow-x-auto shadow-md rounded-lg mb-12">
+            <table class="min-w-full table-auto border border-gray-300 text-sm">
+                <thead class="bg-green-100">
+                    <tr>
+                        <th class="px-4 py-3 border text-left font-semibold text-gray-700 uppercase">Nom Demandeur</th>
+                        <th class="px-4 py-3 border text-left font-semibold text-gray-700 uppercase">Nom Enfant</th>
+                        <th class="px-4 py-3 border text-left font-semibold text-gray-700 uppercase">Nombre Copies</th>
+                        <th class="px-4 py-3 border text-left font-semibold text-gray-700 uppercase">Statut</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    @foreach($demandesCopies as $demande)
+                    <tr class="{{ $loop->even ? 'bg-gray-50' : 'bg-white' }}">
+                        <td class="px-4 py-3 border">{{ $demande->nom_complet }}</td>
+                        <td>
+            @if($demande->acte)
+                {{ $demande->acte->prenom }} {{ $demande->acte->nom }}
+            @else
+                <span class="text-gray-400 italic">Acte non créé</span>
+            @endif
+        </td>
+                        <td class="px-4 py-3 border">{{ $demande->nombre_copie ?? 'N/A' }}</td>
+                        <td class="px-4 py-3 border">
+                            @switch($demande->statut)
+                                @case('Validé')
+                                    <span class="px-3 py-1 inline-flex text-xs font-semibold rounded-full bg-green-100 text-green-800">Validé</span>
+                                    @break
+                                @case('Rejeté')
+                                    <span class="px-3 py-1 inline-flex text-xs font-semibold rounded-full bg-red-100 text-red-800">Rejeté</span>
+                                    @break
+                                @default
+                                    <span class="px-3 py-1 inline-flex text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">{{ $demande->statut }}</span>
+                            @endswitch
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    @endif
 
+    {{-- Séparateur --}}
+    <hr class="my-12 border-gray-300">
 
-                    {{-- <td class="px-4 py-2 border">
-                        <a href="{{ route('acteCopies.create',$demande->id) }}" --}} {{-- ></a>
-                            href="{{ route('acteCopies.create.', $demande->acte->id) }}" --}} {{--
-                            class="relative z-10 inline-block bg-blue-600 text-white text-xs px-3 py-1 rounded hover:bg-blue-700">Traiter</a>
-                    </td>
-                    <td class="px-4 py-2 border">{{$demande->id}}</td> --}}
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
-</div>
+    {{-- Demandes d’acte de naissance (volet) --}}
+    <h2 class="text-2xl font-bold mb-4 text-gray-800 border-b-2 border-blue-400 pb-2">
+        Demandes pour Actes de Naissance (Originaux)
+    </h2>
 
-<!-- Tableau des demandes en attente -->
-<div class="bg-white shadow rounded mb-6">
-    <div class="border-b px-6 py-3 font-semibold">Demandes en Volet</div>
-    <div class="overflow-x-auto">
-        <table class="min-w-full table-auto border text-sm">
-            <thead class="bg-gray-100">
-                <tr>
-                    <th class="px-4 py-2 border">Nom Demandeur</th>
-                    <th class="px-4 py-2 border">Nom Enfant</th>
-                    <th class="px-4 py-2 border">Numéro Volet</th>
-                    <th class="px-4 py-2 border">Statut</th>
-                    {{-- <th class="px-4 py-2 border">Action</th> --}}
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($demandes as $demande)
-                {{-- @dd($demande->volet) --}}
+    @if($demandes->isEmpty())
+        <div class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 rounded" role="alert">
+            <p class="font-bold">Information</p>
+            <p>Aucune demande d’acte de naissance n’est disponible.</p>
+        </div>
+    @else
+        <div class="overflow-x-auto shadow-md rounded-lg">
+            <table class="min-w-full table-auto border border-gray-300 text-sm">
+                <thead class="bg-blue-100">
+                    <tr>
+                        <th class="px-4 py-3 border text-left font-semibold text-gray-700 uppercase">Nom Demandeur</th>
+                        <th class="px-4 py-3 border text-left font-semibold text-gray-700 uppercase">Nom Enfant</th>
+                        <th class="px-4 py-3 border text-left font-semibold text-gray-700 uppercase">Numéro Volet</th>
+                        <th class="px-4 py-3 border text-left font-semibold text-gray-700 uppercase">Statut</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    @foreach($demandes as $demande)
+                    <tr class="{{ $loop->even ? 'bg-gray-50' : 'bg-white' }}">
+                        <td class="px-4 py-3 border">{{ $demande->nom_complet }}</td>
+                        <td class="px-4 py-3 border">
+                            {{ optional($demande->volet)->prenom_enfant }} {{ optional($demande->volet)->nom_enfant }}
+                        </td>
+                        <td class="px-4 py-3 border">{{ optional($demande->volet)->num_volet ?? '----' }}</td>
+                        <td class="px-4 py-3 border">
+                            @switch($demande->statut)
+                                @case('Validé')
+                                    <span class="px-3 py-1 inline-flex text-xs font-semibold rounded-full bg-green-100 text-green-800">Validé</span>
+                                    @break
+                                @case('Rejeté')
+                                    <span class="px-3 py-1 inline-flex text-xs font-semibold rounded-full bg-red-100 text-red-800">Rejeté</span>
+                                    @break
+                                @default
+                                    <span class="px-3 py-1 inline-flex text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">{{ $demande->statut }}</span>
+                            @endswitch
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    @endif
 
-                <tr>
-                    <td class="px-4 py-2 border">{{ $demande->nom_complet }}</td>
-                    <td class="px-4 py-2 border">
-                        {{ $demande->volet ? $demande->volet->prenom_enfant . ' ' . $demande->volet->nom_enfant :
-                        'N/A' }}
-                    </td>
-                    <td class="px-4 py-2 border"> {{ optional($demande->volet)->num_volet ?? 'N/A' }}
-                    </td>
-                    <td class="px-4 py-2 border">
-                        @switch($demande->statut)
-                        @case('Validé')
-                        <span class="bg-green-200 text-green-800 px-2 py-1 rounded">Validé</span>
-                        @break
-                        @case('Rejeté')
-                        <span class="bg-red-200 text-red-800 px-2 py-1 rounded">Rejeté</span>
-                        @break
-                        @default
-                        <span class="bg-yellow-200 text-yellow-800 px-2 py-1 rounded">{{ $demande->statut }}</span>
-                        @endswitch
-                    </td>
-                    {{-- <td class="px-4 py-2 border">
-                        <a href="{{ route('acte.create', $demande->id) }}"
-                            class="relative z-10 inline-block bg-blue-600 text-white text-xs px-3 py-1 rounded hover:bg-blue-700">Traiter</a>
-                    </td> --}}
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
 </div>
 @endsection

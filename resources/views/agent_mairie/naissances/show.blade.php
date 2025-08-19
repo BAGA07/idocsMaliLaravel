@@ -13,7 +13,7 @@
         {{-- <img src="{{ asset('images/tampon_officiel.png') }}" alt="Tampon Officiel" class="w-24 h-auto"> --}}
     </div>
 
-    <div class="grid grid-cols-2 gap-2 border border-black p-2">
+    <div class="grid grid-cols-2 gap-2  p-2">
         <div>
             @if($acte->Commune)
             <p><strong>RÉGION DE :</strong> {{ $acte->Commune->region ?? '...' }}</p>
@@ -34,79 +34,218 @@
         </div>
     </div>
 
-    <div class="border border-black mt-3 p-2">
-        <p><strong>1. Date de naissance :</strong> {{
-            \Carbon\Carbon::parse($acte->date_naissance_enfant)->translatedFormat('d F Y') }}</p>
-        <p><strong>2. Heure de naissance :</strong> {{ $acte->heure_naissance ?? '...' }}</p>
-        <p><strong>3. Prénom(s) :</strong> {{ $acte->prenom }}</p>
-        <p><strong>4. Nom :</strong> {{ $acte->nom }}</p>
-        <p><strong>5. Sexe :</strong> {{ $acte->sexe_enfant }}</p>
-        <p><strong>6. Lieu de naissance :</strong> {{ $acte->lieu_naissance_enfant }}</p>
+    <div class="border border-black mx-2 mb-2 flex">
+    {{-- CADRE ENFANT --}}
+    <div class="w-[5%] flex items-center justify-center text-center px-1 border-r border-black"
+        style="writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg);">
+        <p class="font-bold text-[10px] tracking-wider">ENFANT</p>
+    </div>
+    <div class="flex-1 p-2">
+        <div style="font-size: 11px;">
+            <p class="flex items-end mb-1">
+                <strong class="mr-1">1. Date de naissance :</strong>
+                <span class="uppercase border-b border-black flex-grow text-left px-1">
+                    {{ \Carbon\Carbon::parse($acte->date_naissance_enfant)->translatedFormat('d F Y') }}
+                </span>
+            </p>
+            <p class="flex items-end mb-1">
+                <strong class="mr-1">2. Heure de naissance :</strong>
+                <span class="uppercase border-b border-black flex-grow text-left px-1">
+                    {{ $acte->heure_naissance ?? '...' }}
+                </span>
+            </p>
+            <p class="flex items-end mb-1">
+                <strong class="mr-1">3. Prénom(s) :</strong>
+                <span class="uppercase border-b border-black flex-grow text-left px-1">
+                    {{ $acte->prenom }}
+                </span>
+            </p>
+            <p class="flex items-end mb-1">
+                <strong class="mr-1">4. Nom :</strong>
+                <span class="uppercase border-b border-black flex-grow text-left px-1">
+                    {{ $acte->nom }}
+                </span>
+            </p>
+            <p class="flex items-end mb-1">
+                <strong class="mr-1">5. Sexe :</strong>
+                <span class="uppercase border-b border-black flex-grow text-left px-1">
+                    {{ $acte->sexe_enfant }}
+                </span>
+            </p>
+            <p class="flex items-end mb-1">
+                <strong class="mr-1">6. Lieu de naissance :</strong>
+                <span class="uppercase border-b border-black flex-grow text-left px-1">
+                    {{ $acte->lieu_naissance_enfant }}
+                </span>
+            </p>
+        </div>
+    </div>
+</div>
+
+
+    <div class="border border-black mx-2 mb-2 flex">
+        {{-- CADRE PÈRE --}}
+        <div class="w-[5%] flex items-center justify-center text-center px-1 border-r border-black" style="writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg);">
+            <p class="font-bold text-[10px] tracking-wider">PÈRE</p>
+        </div>
+        <div class="flex-1 p-2">
+            <div style="font-size: 11px;">
+                <p class="flex items-end mb-1">
+                    <strong class="mr-1">6 Prénom(s) :</strong>
+                    <span class="uppercase border-b border-black flex-grow text-left px-1">
+                        {{ $acte->prenom_pere }}
+                    </span>
+                </p>
+                <p class="flex items-end mb-1">
+                    <strong class="mr-1">7 Nom :</strong>
+                    <span class="uppercase border-b border-black flex-grow text-left px-1">
+                        {{ $acte->nom_pere }}
+                    </span>
+                </p>
+                <p class="flex items-end mb-1">
+                    <strong class="mr-1">8 Profession :</strong>
+                    <span class="uppercase border-b border-black flex-grow text-left px-1">
+                        {{ $acte->profession_pere }}
+                    </span>
+                </p>
+                <p class="flex items-end mb-1">
+                    <strong class="mr-1">9 Domicile :</strong>
+                    <span class="uppercase border-b border-black flex-grow text-left px-1">
+                        {{ $acte->domicile_pere }}
+                    </span>
+                </p>
+            </div>
+        </div>
     </div>
 
-    <div class="border border-black mt-3 p-2">
-        <p><strong>7. Nom du père :</strong> {{ $acte->nom_pere }}</p>
-        <p><strong>8. Âge :</strong>
-            @if($acte->demande && $acte->demande->volet)
-            {{ $acte->demande->volet->age_pere ?? '...' }} ans
-            @else
-            ...
-            @endif
-        </p>
-        <p><strong>9. Domicile :</strong> {{ $acte->domicile_pere }}</p>
-        <p><strong>10. Profession :</strong> {{ $acte->profession_pere }}</p>
+    <div class="border border-black mx-2 mb-2 flex">
+        {{-- CADRE MÈRE --}}
+        <div class="w-[5%] flex items-center justify-center text-center px-1 border-r border-black" style="writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg);">
+            <p class="font-bold text-[10px] tracking-wider">MÈRE</p>
+        </div>
+        <div class="flex-1 p-2">
+            <div style="font-size: 11px;">
+                <p class="flex items-end mb-1">
+                    <strong class="mr-1">10 Prénom(s) :</strong>
+                    <span class="uppercase border-b border-black flex-grow text-left px-1">
+                        {{ $acte->prenom_mere }}
+                    </span>
+                </p>
+                <p class="flex items-end mb-1">
+                    <strong class="mr-1">11 Nom :</strong>
+                    <span class="uppercase border-b border-black flex-grow text-left px-1">
+                        {{ $acte->nom_mere }}
+                    </span>
+                </p>
+                <p class="flex items-end mb-1">
+                    <strong class="mr-1">12 Profession :</strong>
+                    <span class="uppercase border-b border-black flex-grow text-left px-1">
+                        {{ $acte->profession_mere }}
+                    </span>
+                </p>
+                <p class="flex items-end mb-1">
+                    <strong class="mr-1">13 Domicile :</strong>
+                    <span class="uppercase border-b border-black flex-grow text-left px-1">
+                        {{ $acte->domicile_mere }}
+                    </span>
+                </p>
+            </div>
+        </div>
     </div>
 
-    <div class="border border-black mt-3 p-2">
-        <p><strong>11. Nom de la mère :</strong> {{ $acte->nom_mere }}</p>
-        <p><strong>12. Âge :</strong>
-            @if($acte->demande && $acte->demande->volet)
-            {{ $acte->demande->volet->age_mere ?? '...' }} ans
-            @else
-            ...
-            @endif
-        </p>
-        <p><strong>13. Domicile :</strong> {{ $acte->domicile_mere }}</p>
-        <p><strong>14. Profession :</strong> {{ $acte->profession_mere }}</p>
+    <div class="border border-black mx-2 mb-2 flex">
+    {{-- CADRE DÉCLARANT --}}
+    <div class="w-[5%] flex items-center justify-center text-center px-1 border-r border-black"
+        style="writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg);">
+        <p class="font-bold text-[10px] tracking-wider">DÉCLARANT</p>
+    </div>
+    <div class="flex-1 p-2">
+        <div style="font-size: 11px;">
+            <p class="flex items-end mb-1">
+                <strong class="mr-1">15. Nom :</strong>
+                <span class="uppercase border-b border-black flex-grow text-left px-1">
+                    {{ $acte->declarant->nom_declarant ?? '...' }}
+                </span>
+            </p>
+            <p class="flex items-end mb-1">
+                <strong class="mr-1">16. Âge :</strong>
+                <span class="uppercase border-b border-black flex-grow text-left px-1">
+                    {{ $acte->declarant->age_declarant ?? '...' }} ans
+                </span>
+            </p>
+            <p class="flex items-end mb-1">
+                <strong class="mr-1">17. Domicile :</strong>
+                <span class="uppercase border-b border-black flex-grow text-left px-1">
+                    {{ $acte->declarant->domicile_declarant ?? '...' }}
+                </span>
+            </p>
+            <p class="flex items-end mb-1">
+                <strong class="mr-1">18. Profession :</strong>
+                <span class="uppercase border-b border-black flex-grow text-left px-1">
+                    {{ $acte->declarant->profession_declarant ?? '...' }}
+                </span>
+            </p>
+            <p class="flex items-end mb-1">
+                <strong class="mr-1">19. N° de déclaration et date :</strong>
+                <span class="uppercase border-b border-black flex-grow text-left px-1">
+                    @if($acte->declarant)
+                        {{ $acte->declarant->numero_declaration ?? '...' }} du 
+                        {{ \Carbon\Carbon::parse($acte->declarant->date_declaration)->format('d/m/Y') }}
+                    @else
+                        ...
+                    @endif
+                </span>
+            </p>
+            <p class="flex items-end mb-1">
+                <strong class="mr-1">20. Centre :</strong>
+                <span class="uppercase border-b border-black flex-grow text-left px-1">
+                    {{ $acte->lieu_naissance_enfant ?? '...' }}
+                </span>
+            </p>
+        </div>
+    </div>
+</div>
+
+   <div class="border border-black mx-2 mb-2 flex">
+    {{-- Étiquette verticale OFFICIER --}}
+    <div class="w-[5%] flex items-center justify-center text-center px-1 border-r border-black"
+        style="writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg);">
+        <p class="font-bold text-[10px] tracking-wider">OFFICIER</p>
     </div>
 
-    <div class="border border-black mt-3 p-2">
-        @if($acte->declarant)
-        <p><strong>15. Déclarant :</strong> {{ $acte->declarant->nom_declarant ?? '...' }}</p>
-        <p><strong>16. Âge :</strong> {{ $acte->declarant->age_declarant ?? '...' }} ans</p>
-        <p><strong>17. Domicile :</strong> {{ $acte->declarant->domicile_declarant ?? '...' }}</p>
-        <p><strong>18. Profession :</strong> {{ $acte->declarant->profession_declarant ?? '...' }}</p>
-        @else
-        <p><strong>15. Déclarant :</strong> ...</p>
-        <p><strong>16. Âge :</strong> ...</p>
-        <p><strong>17. Domicile :</strong> ...</p>
-        <p><strong>18. Profession :</strong> ...</p>
-        @endif
-    </div>
-
-    <div class="border border-black mt-3 p-2">
-        <p><strong>19. N° de déclaration et date :</strong>
-            @if($acte->declarant)
-            {{ $acte->declarant->numero_declaration ?? '...' }} du {{
-            \Carbon\Carbon::parse($acte->declarant->date_declaration)->format('d/m/Y') }}
-            @else
-            ...
-            @endif
-        </p>
-        <p><strong>20. Centre :</strong> {{ $acte->lieu_naissance_enfant }}</p>
-    </div>
-
-    <div class="border border-black mt-3 p-2">
+    {{-- Contenu --}}
+    <div class="flex-1 p-2" style="font-size: 11px;">
         @if($acte->officier)
-        <p><strong>21. Officier d'état civil :</strong> {{ $acte->officier->nom ?? '...' }}</p>
-        {{-- {{ $acte->officier->Mairie->nom_mairie ?? '...' }} --}}
-        <p><strong>22. Qualité :</strong> {{ $acte->officier->profession ?? '...' }} </p>
+            <p class="flex items-end mb-1">
+                <strong class="mr-1">21. Officier d'état civil :</strong>
+                <span class="uppercase border-b border-black flex-grow text-left px-1">
+                    {{ $acte->officier->nom ?? '...' }}
+                </span>
+            </p>
+            <p class="flex items-end mb-1">
+                <strong class="mr-1">22. Qualité :</strong>
+                <span class="uppercase border-b border-black flex-grow text-left px-1">
+                    {{ $acte->officier->profession ?? '...' }}
+                </span>
+            </p>
         @else
-        <p><strong>21. Officier d'état civil :</strong> ...</p>
-        <p><strong>22. Qualité :</strong> ...</p>
+            <p class="flex items-end mb-1">
+                <strong class="mr-1">21. Officier d'état civil :</strong>
+                <span class="uppercase border-b border-black flex-grow text-left px-1">...</span>
+            </p>
+            <p class="flex items-end mb-1">
+                <strong class="mr-1">22. Qualité :</strong>
+                <span class="uppercase border-b border-black flex-grow text-left px-1">...</span>
+            </p>
         @endif
-        <p><strong>23. Date :</strong> {{ \Carbon\Carbon::parse($acte->date_enregistrement_acte)->format('d/m/Y') }}</p>
+        <p class="flex items-end mb-1">
+            <strong class="mr-1">23. Date :</strong>
+            <span class="uppercase border-b border-black flex-grow text-left px-1">
+                {{ \Carbon\Carbon::parse($acte->date_enregistrement_acte)->format('d/m/Y') }}
+            </span>
+        </p>
     </div>
+</div>
 
     <div class="mt-10 relative h-32 print-pagebreak-avoid">
         <p class="text-right font-semibold">24. Signature et cachet de l'officier d'état civil</p>
@@ -158,10 +297,10 @@
             Supprimer l'acte
     </button>
 
-    <a href="{{ route('acte.pdf', $acte->id) }}" target="_blank"
+    {{-- <a href="{{ route('acte.pdf', $acte->id) }}" target="_blank"
        class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded">
         Télécharger l'acte (PDF)
-    </a>
+    </a> --}}
 </div>
 
 {{-- Script pour la confirmation de suppression, si ce n'est pas déjà dans un fichier JS externe --}}

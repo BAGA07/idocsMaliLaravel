@@ -91,6 +91,8 @@
                             </td>
                             <td class="px-4 py-2 border space-x-2">
                                 <a href="{{ route('copies.show', $copie->id) }}" class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 text-sm">Voir</a>
+                            <a href="{{ route('acte.edit', $copie->id) }}" class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 text-sm">Modifier</a>
+
                                 @if(!$copie->statut || $copie->statut != 'En attente de signature')
                                     <form method="POST" action="{{ route('copies.envoyer_officier', $copie->id) }}" class="inline">
                                         @csrf

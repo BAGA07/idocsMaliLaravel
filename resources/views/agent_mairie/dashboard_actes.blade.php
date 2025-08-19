@@ -38,6 +38,7 @@
                         </td>
                         <td class="px-4 py-2 border space-x-2">
                             <a href="{{ route('acte.show', $acte->id) }}" class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 text-sm">Voir</a>
+                            <a href="{{ route('acte.edit', $acte->id) }}" class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 text-sm">Modifier</a>
                             <form action="{{ route('acte.envoyer_officier', $acte->id) }}" method="POST" class="inline">
                                 @csrf
                                 <button type="submit" class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 text-sm" 
