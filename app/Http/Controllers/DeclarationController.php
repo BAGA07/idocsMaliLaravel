@@ -59,6 +59,7 @@ class DeclarationController extends Controller
             \Log::info('SMS envoyé à : ' . $telephone);
             \Log::info('Réponse Sendchamp SMS:', ['response' => $smsResponse]);
         }
+        //mes modification
 
         // Envoi email à la mairie de la commune correspondant à l'hôpital
         $mairieEmail = null;
