@@ -1,315 +1,244 @@
 @extends('layouts.app')
 
 @section('content')
+
+{{-- Conteneur de l'acte de naissance à imprimer --}}
+{{-- <div class="max-w-3xl mx-auto bg-white p-6 font-serif text-sm border border-black print:p-4 print:w-full print:max-w-full print:border-none print:shadow-none relative">
+     --}}
+    {{-- //Mon nouveau methode pour imprimer l'acte --}}
+    @section('content')
+<style>
+    @media print {
+        /* Masquer tous les éléments du corps de la page par défaut */
+        body * {
+            visibility: hidden;
+        }
+        /* Rendre l'acte visible et le centrer */
+        .acte-imprimable, .acte-imprimable * {
+            visibility: visible;
+        }
+        .acte-imprimable {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            border: none !important;
+            box-shadow: none !important;
+            padding: 0 !important;
+        }
+    }
+</style>
 <div
-    class="max-w-3xl mx-auto bg-white border border-black p-6 text-[16px] font-[Times New Roman] print:p-4 print:w-full print:max-w-full print:border-none">
+    class="acte-imprimable max-w-3xl mx-auto bg-white border border-black p-6 font-serif text-sm print:p-4 print:w-full print:max-w-full print:border-none print:shadow-none relative">
 
-    <div class="flex justify-between items-start mb-4">
-        {{-- <img src="{{ asset('images/logo_mali.png') }}" alt="Logo Mali" class="w-24 h-auto"> --}}
-        <div class="text-center flex-1">
+    {{-- Cachet de l'officier en filigrane sur le côté (pour simuler celui de la photo) --}}
+    <div class="absolute inset-y-0 left-0 w-16 h-full opacity-20 transform -translate-x-1/2 -rotate-90 origin-bottom-left print:block" style="writing-mode: vertical-rl;">
+        <p class="text-[12px] font-bold tracking-wider text-center flex items-center justify-center h-full">L'OFFICIER D'ÉTAT CIVIL</p>
+        {{-- Vous pouvez remplacer ce texte par une image semi-transparente de votre cachet si vous en avez une --}}
+    </div>
+
+    {{-- En-tête du document --}}
+    <div class="flex justify-between items-start mb-4 relative z-10">
+        <div class="text-left w-1/2">
+            <div class="font-bold text-lg mb-1">AN</div>
             <p class="uppercase font-bold">République du Mali</p>
-            <p><em>Un Peuple - Un But - Une Foi</em></p>
+            <p class="italic text-xs">Un Peuple - Un But - Une Foi</p>
         </div>
-        {{-- <img src="{{ asset('images/tampon_officiel.png') }}" alt="Tampon Officiel" class="w-24 h-auto"> --}}
-    </div>
-
-    <div class="grid grid-cols-2 gap-2  p-2">
-        <div>
-            @if($acte->Commune)
-            <p><strong>RÉGION DE :</strong> {{ $acte->Commune->region ?? '...' }}</p>
-            <p><strong>CERCLE DE :</strong> {{ $acte->Commune->cercle ?? '...' }}</p>
-            <p><strong>COMMUNE DE :</strong> {{ $acte->Commune->nom_commune ?? '...' }}</p>
-            @else
-            <p><strong>RÉGION DE :</strong> ...</p>
-            <p><strong>CERCLE DE :</strong> ...</p>
-            <p><strong>COMMUNE DE :</strong> ...</p>
-            @endif
-            <p><strong>CENTRE :</strong> Principal</p>
-            <p><strong>DE :</strong> La Commune IV</p>
-        </div>
-        <div class="text-right">
-            <p><strong>Acte de naissance</strong> N° {{ $acte->num_acte }}</p>
-            <p class="text-sm">(Volet N°3 – Original remis au déclarant)</p>
-            <p><strong>NINA :</strong> ......................................</p>
+        <div class="text-right w-1/2">
+            <p class="font-bold">Acte de naissance</p>
+            <p class="text-xs">N° <span class="text-blue-700 font-bold text-sm">{{ $acte->num_acte }}</span></p>
+            <p class="text-xs">VOLET N°<span class="text-blue-700 font-bold text-sm">3</span></p>
+            <p class="text-xs italic">(Original remis au déclarant)</p>
         </div>
     </div>
 
-    <div class="border border-black mx-2 mb-2 flex">
+    {{-- Informations de la commune --}}
+    <div class="grid grid-cols-2 gap-2 mb-2 relative z-10">
+        <div class="space-y-1">
+            <p><strong>RÉGION DE :</strong> <span class="uppercase font-bold text-blue-700">{{ $acte->Commune->region ?? '...' }}</span></p>
+            <p><strong>CERCLE DE :</strong> <span class="uppercase font-bold text-blue-700">{{ $acte->Commune->cercle ?? '...' }}</span></p>
+            <p><strong>COMMUNE DE :</strong> <span class="uppercase font-bold text-blue-700">{{ $acte->Commune->nom_commune ?? '...' }}</span></p>
+            <p><strong>CENTRE :</strong> <span class="uppercase font-bold text-blue-700">Principal</span></p>
+            <p><strong>DE :</strong> <span class="uppercase font-bold text-blue-700">La Commune IV</span></p>
+        </div>
+        <div class="text-right flex flex-col justify-between">
+            <div>
+                <p>NINA</p>
+                <div class="border border-black w-full h-8 flex justify-end">
+                    <div class="border-l border-black w-1/3"></div>
+                    <div class="border-l border-black w-1/3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     {{-- CADRE ENFANT --}}
-    <div class="w-[5%] flex items-center justify-center text-center px-1 border-r border-black"
-        style="writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg);">
-        <p class="font-bold text-[10px] tracking-wider">ENFANT</p>
-    </div>
-    <div class="flex-1 p-2">
-        <div style="font-size: 11px;">
-            <p class="flex items-end mb-1">
-                <strong class="mr-1">1. Date de naissance :</strong>
-                <span class="uppercase border-b border-black flex-grow text-left px-1">
-                    {{ \Carbon\Carbon::parse($acte->date_naissance_enfant)->translatedFormat('d F Y') }}
-                </span>
-            </p>
-            <p class="flex items-end mb-1">
-                <strong class="mr-1">2. Heure de naissance :</strong>
-                <span class="uppercase border-b border-black flex-grow text-left px-1">
-                    {{ $acte->heure_naissance ?? '...' }}
-                </span>
-            </p>
-            <p class="flex items-end mb-1">
-                <strong class="mr-1">3. Prénom(s) :</strong>
-                <span class="uppercase border-b border-black flex-grow text-left px-1">
-                    {{ $acte->prenom }}
-                </span>
-            </p>
-            <p class="flex items-end mb-1">
-                <strong class="mr-1">4. Nom :</strong>
-                <span class="uppercase border-b border-black flex-grow text-left px-1">
-                    {{ $acte->nom }}
-                </span>
-            </p>
-            <p class="flex items-end mb-1">
-                <strong class="mr-1">5. Sexe :</strong>
-                <span class="uppercase border-b border-black flex-grow text-left px-1">
-                    {{ $acte->sexe_enfant }}
-                </span>
-            </p>
-            <p class="flex items-end mb-1">
-                <strong class="mr-1">6. Lieu de naissance :</strong>
-                <span class="uppercase border-b border-black flex-grow text-left px-1">
-                    {{ $acte->lieu_naissance_enfant }}
-                </span>
-            </p>
+    <div class="border border-black mx-2 mb-2 flex relative z-10">
+        <div class="w-[5%] flex items-center justify-center text-center px-1 border-r border-black" style="writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg);">
+            <p class="font-bold text-[10px] tracking-wider">ENFANT</p>
+        </div>
+        <div class="flex-1 p-2 space-y-1">
+            <p><strong>1. Date de naissance :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">{{ \Carbon\Carbon::parse($acte->date_naissance_enfant)->translatedFormat('d F Y') }}</span></p>
+            <p><strong>2. Heure de naissance :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">{{ $acte->heure_naissance ?? '...' }}</span></p>
+            <p><strong>3. Prénom(s) :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">{{ $acte->prenom }}</span></p>
+            <p><strong>4. Nom :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">{{ $acte->nom }}</span></p>
+            <p><strong>5. Sexe :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">{{ $acte->sexe_enfant }}</span></p>
+            <p><strong>6. Localité ou pays de naissance :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">{{ $acte->lieu_naissance_enfant }}</span></p>
         </div>
     </div>
-</div>
-
-
-    <div class="border border-black mx-2 mb-2 flex">
-        {{-- CADRE PÈRE --}}
+    
+    {{-- CADRE PÈRE --}}
+    <div class="border border-black mx-2 mb-2 flex relative z-10">
         <div class="w-[5%] flex items-center justify-center text-center px-1 border-r border-black" style="writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg);">
             <p class="font-bold text-[10px] tracking-wider">PÈRE</p>
         </div>
-        <div class="flex-1 p-2">
-            <div style="font-size: 11px;">
-                <p class="flex items-end mb-1">
-                    <strong class="mr-1">6 Prénom(s) :</strong>
-                    <span class="uppercase border-b border-black flex-grow text-left px-1">
-                        {{ $acte->prenom_pere }}
-                    </span>
-                </p>
-                <p class="flex items-end mb-1">
-                    <strong class="mr-1">7 Nom :</strong>
-                    <span class="uppercase border-b border-black flex-grow text-left px-1">
-                        {{ $acte->nom_pere }}
-                    </span>
-                </p>
-                <p class="flex items-end mb-1">
-                    <strong class="mr-1">8 Profession :</strong>
-                    <span class="uppercase border-b border-black flex-grow text-left px-1">
-                        {{ $acte->profession_pere }}
-                    </span>
-                </p>
-                <p class="flex items-end mb-1">
-                    <strong class="mr-1">9 Domicile :</strong>
-                    <span class="uppercase border-b border-black flex-grow text-left px-1">
-                        {{ $acte->domicile_pere }}
-                    </span>
-                </p>
-            </div>
+        <div class="flex-1 p-2 space-y-1">
+            <p><strong>7. Prénom(s) et Nom :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">{{ $acte->prenom_pere }} {{ $acte->nom_pere }}</span></p>
+            <p><strong>8. Âge :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">{{ $acte->age_pere ?? '...' }} ans</span></p>
+            <p><strong>9. Domicile :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">{{ $acte->domicile_pere }}</span></p>
+            <p><strong>10. Profession :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">{{ $acte->profession_pere }}</span></p>
         </div>
     </div>
 
-    <div class="border border-black mx-2 mb-2 flex">
-        {{-- CADRE MÈRE --}}
+    {{-- CADRE MÈRE --}}
+    <div class="border border-black mx-2 mb-2 flex relative z-10">
         <div class="w-[5%] flex items-center justify-center text-center px-1 border-r border-black" style="writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg);">
             <p class="font-bold text-[10px] tracking-wider">MÈRE</p>
         </div>
-        <div class="flex-1 p-2">
-            <div style="font-size: 11px;">
-                <p class="flex items-end mb-1">
-                    <strong class="mr-1">10 Prénom(s) :</strong>
-                    <span class="uppercase border-b border-black flex-grow text-left px-1">
-                        {{ $acte->prenom_mere }}
-                    </span>
-                </p>
-                <p class="flex items-end mb-1">
-                    <strong class="mr-1">11 Nom :</strong>
-                    <span class="uppercase border-b border-black flex-grow text-left px-1">
-                        {{ $acte->nom_mere }}
-                    </span>
-                </p>
-                <p class="flex items-end mb-1">
-                    <strong class="mr-1">12 Profession :</strong>
-                    <span class="uppercase border-b border-black flex-grow text-left px-1">
-                        {{ $acte->profession_mere }}
-                    </span>
-                </p>
-                <p class="flex items-end mb-1">
-                    <strong class="mr-1">13 Domicile :</strong>
-                    <span class="uppercase border-b border-black flex-grow text-left px-1">
-                        {{ $acte->domicile_mere }}
-                    </span>
-                </p>
-            </div>
+        <div class="flex-1 p-2 space-y-1">
+            <p><strong>11. Prénom(s) et Nom :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">{{ $acte->prenom_mere }} {{ $acte->nom_mere }}</span></p>
+            <p><strong>12. Âge :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">{{ $acte->age_mere ?? '...' }} ans</span></p>
+            <p><strong>13. Domicile :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">{{ $acte->domicile_mere }}</span></p>
+            <p><strong>14. Profession :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">{{ $acte->profession_mere }}</span></p>
         </div>
     </div>
-
-    <div class="border border-black mx-2 mb-2 flex">
+    
     {{-- CADRE DÉCLARANT --}}
-    <div class="w-[5%] flex items-center justify-center text-center px-1 border-r border-black"
-        style="writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg);">
+    {{-- <div class="border border-black mx-2 mb-2 flex relative z-10">
+        <div class="w-[5%] flex items-center justify-center text-center px-1 border-r border-black" style="writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg);">
+            <p class="font-bold text-[10px] tracking-wider">DÉCLARANT</p>
+        </div>
+        <div class="flex-1 p-2 space-y-1">
+            <p><strong>15. Prénom(s) et Nom :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">{{ $acte->declarant->prenom_declarant ?? '...' }} {{ $acte->declarant->nom_declarant ?? '...' }}</span></p>
+            <p><strong>16. Âge :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">{{ $acte->declarant->age_declarant ?? '...' }} ans</span></p>
+            <p><strong>17. Domicile :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">{{ $acte->declarant->domicile_declarant ?? '...' }}</span></p>
+            <p><strong>18. Profession :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">{{ $acte->declarant->profession_declarant ?? '...' }}</span></p>
+            <p><strong>19. N° de la déclaration et date :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">{{ $acte->declarant->numero_declaration ?? '...' }} du {{ \Carbon\Carbon::parse($acte->declarant->date_declaration)->format('d/m/Y') }}</span></p>
+            <p><strong>20. Centre de l'hôpital ou district :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">{{ $acte->lieu_naissance_enfant ?? '...' }}</span></p>
+        </div>
+    </div> --}}
+    <div class="border border-black mx-2 mb-2 flex relative z-10">
+    <div class="w-[5%] flex items-center justify-center text-center px-1 border-r border-black" style="writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg);">
         <p class="font-bold text-[10px] tracking-wider">DÉCLARANT</p>
     </div>
-    <div class="flex-1 p-2">
-        <div style="font-size: 11px;">
-            <p class="flex items-end mb-1">
-                <strong class="mr-1">15. Nom :</strong>
-                <span class="uppercase border-b border-black flex-grow text-left px-1">
-                    {{ $acte->declarant->nom_declarant ?? '...' }}
-                </span>
-            </p>
-            <p class="flex items-end mb-1">
-                <strong class="mr-1">16. Âge :</strong>
-                <span class="uppercase border-b border-black flex-grow text-left px-1">
-                    {{ $acte->declarant->age_declarant ?? '...' }} ans
-                </span>
-            </p>
-            <p class="flex items-end mb-1">
-                <strong class="mr-1">17. Domicile :</strong>
-                <span class="uppercase border-b border-black flex-grow text-left px-1">
-                    {{ $acte->declarant->domicile_declarant ?? '...' }}
-                </span>
-            </p>
-            <p class="flex items-end mb-1">
-                <strong class="mr-1">18. Profession :</strong>
-                <span class="uppercase border-b border-black flex-grow text-left px-1">
-                    {{ $acte->declarant->profession_declarant ?? '...' }}
-                </span>
-            </p>
-            <p class="flex items-end mb-1">
-                <strong class="mr-1">19. N° de déclaration et date :</strong>
-                <span class="uppercase border-b border-black flex-grow text-left px-1">
-                    @if($acte->declarant)
-                        {{ $acte->declarant->numero_declaration ?? '...' }} du 
-                        {{ \Carbon\Carbon::parse($acte->declarant->date_declaration)->format('d/m/Y') }}
-                    @else
-                        ...
+    <div class="flex-1 p-2 space-y-1">
+        <p><strong>15. Prénom(s) et Nom :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">
+            {{ $acte->declarant->prenom_declarant ?? '...' }} {{ $acte->declarant->nom_declarant ?? '...' }}
+        </span></p>
+        <p><strong>16. Âge :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">
+            {{ $acte->declarant->age_declarant ?? '...' }} ans
+        </span></p>
+        <p><strong>17. Domicile :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">
+            {{ $acte->declarant->domicile_declarant ?? '...' }}
+        </span></p>
+        <p><strong>18. Profession :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">
+            {{ $acte->declarant->profession_declarant ?? '...' }}
+        </span></p>
+        <p><strong>19. N° de la déclaration et date :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">
+            @if($acte->declarant && $acte->declarant->numero_declaration)
+                {{ $acte->declarant->numero_declaration }}
+            @else
+                ...
+            @endif
+            du
+            @if($acte->declarant && $acte->declarant->date_declaration)
+                {{ \Carbon\Carbon::parse($acte->declarant->date_declaration)->format('d/m/Y') }}
+            @else
+                ...
+            @endif
+        </span></p>
+        <p><strong>20. Centre de l'hôpital ou district :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">
+            {{ $acte->lieu_naissance_enfant ?? '...' }}
+        </span></p>
+    </div>
+  </div>
+    
+    {{-- Cachet et Signature --}}
+    <div class="border border-black mx-2 flex items-center mb-2 relative z-10">
+        <div class="w-[5%] flex items-center justify-center text-center px-1 border-r border-black" style="writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg);">
+            <p class="font-bold text-[10px] tracking-wider">OFFICIER</p>
+        </div>
+        <div class="flex-1 p-2 grid grid-cols-2 gap-4 items-center">
+            <div class="space-y-1">
+                <p><strong>21. Prénom(s) et Nom :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">{{ $acte->officier->prenom ?? '...' }} {{ $acte->officier->nom ?? '...' }}</span></p>
+                <p><strong>22. Qualité :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">{{ $acte->officier->profession ?? '...' }}</span></p>
+                <p><strong>23. Date :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">{{ \Carbon\Carbon::parse($acte->date_enregistrement_acte)->format('d/m/Y') }}</span></p>
+            </div>
+            <div class="text-center relative pt-8">
+                <p class="font-bold">24. Signature et cachet de l'officier d'état civil</p>
+                <div class="flex justify-center items-end mt-2 h-32">
+                    @if($acte->statut === 'Finalisé')
+                        <div class="absolute inset-0">
+                             <div class="w-full h-full flex items-end justify-between">
+                                 {{-- Cachet --}}
+                                 {{-- <img src="{{ asset('images/cachet_circulaire.png') }}" alt="Cachet de la mairie" class="w-40 opacity-70 absolute left-0 bottom-0 transform -translate-x-1/4"> --}}
+                                 <img src="{{ asset('images/cacher.png') }}" alt="Cachet" style="width:120px; height: auto; object-fit: contain;">
+                                 {{-- Signature --}}
+                                 @if($acte->signature_image)
+                                     <img src="{{ $acte->signature_image }}" alt="Signature Officier" class="w-40 absolute right-0 bottom-0 transform -translate-x-1/4">
+                                 @endif
+                             </div>
+                        </div>
                     @endif
-                </span>
-            </p>
-            <p class="flex items-end mb-1">
-                <strong class="mr-1">20. Centre :</strong>
-                <span class="uppercase border-b border-black flex-grow text-left px-1">
-                    {{ $acte->lieu_naissance_enfant ?? '...' }}
-                </span>
-            </p>
+                </div>
+            </div>
         </div>
     </div>
-</div>
-
-   <div class="border border-black mx-2 mb-2 flex">
-    {{-- Étiquette verticale OFFICIER --}}
-    <div class="w-[5%] flex items-center justify-center text-center px-1 border-r border-black"
-        style="writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg);">
-        <p class="font-bold text-[10px] tracking-wider">OFFICIER</p>
+    
+    {{-- Pied de page --}}
+    <div class="relative z-10">
+        <p class="text-xs italic text-gray-500 mt-4">Document généré via la plateforme iDocsMali. {{-- L'authenticité peut être vérifiée en scannant le QR code sur la version web. --}}</p>
     </div>
+ </div>
 
-    {{-- Contenu --}}
-    <div class="flex-1 p-2" style="font-size: 11px;">
-        @if($acte->officier)
-            <p class="flex items-end mb-1">
-                <strong class="mr-1">21. Officier d'état civil :</strong>
-                <span class="uppercase border-b border-black flex-grow text-left px-1">
-                    {{ $acte->officier->nom ?? '...' }}
-                </span>
-            </p>
-            <p class="flex items-end mb-1">
-                <strong class="mr-1">22. Qualité :</strong>
-                <span class="uppercase border-b border-black flex-grow text-left px-1">
-                    {{ $acte->officier->profession ?? '...' }}
-                </span>
-            </p>
-        @else
-            <p class="flex items-end mb-1">
-                <strong class="mr-1">21. Officier d'état civil :</strong>
-                <span class="uppercase border-b border-black flex-grow text-left px-1">...</span>
-            </p>
-            <p class="flex items-end mb-1">
-                <strong class="mr-1">22. Qualité :</strong>
-                <span class="uppercase border-b border-black flex-grow text-left px-1">...</span>
-            </p>
-        @endif
-        <p class="flex items-end mb-1">
-            <strong class="mr-1">23. Date :</strong>
-            <span class="uppercase border-b border-black flex-grow text-left px-1">
-                {{ \Carbon\Carbon::parse($acte->date_enregistrement_acte)->format('d/m/Y') }}
-            </span>
-        </p>
-    </div>
-</div>
-
-    <div class="mt-10 relative h-32 print-pagebreak-avoid">
-        <p class="text-right font-semibold">24. Signature et cachet de l'officier d'état civil</p>
-        @if($acte->statut === 'Finalisé')
-            <div class="flex flex-row items-end justify-end mt-2 gap-4" style="align-items: center; margin-top: -20px;">
-                @if($acte->signature_image)
-                    <img src="{{ $acte->signature_image }}" alt="Signature Officier" style="width:140px; border:1px solid #ccc; align-self:center; margin-bottom:0; margin-top:0;">
-                @endif
-                <img src="{{ asset('images/cacher.png') }}" alt="Cachet" style="width:150px; margin-bottom: 5px;">
-            </div>
-        @elseif($acte->statut === 'À finaliser')
-        <p class="text-right text-yellow-700 font-semibold mt-2">En attente de finalisation par l'officier</p>
-        @else
-        <p class="text-right text-gray-500 font-semibold mt-2">Acte en cours de traitement</p>
-        @endif
-        <br>
-    </div>
-
-    {{--- Section du QR code d'authenticité ---}}
-    <div class="flex flex-col items-center gap-4 mt-6 print:hidden">
-        {{-- La condition @if($acte->token) vérifie si un token d'authenticité est bien présent pour cet acte.
-             Le QR code ne sera généré que si le token existe. Si le token est absent, rien ne s'affichera ici. --}}
-        @if($acte->token)
-            {{-- Conteneur stylisé pour le QR code et son message --}}
-            <div class="mt-6 border-2 border-blue-600 rounded-lg p-6 bg-gray-100">
-                <p class="text-center font-semibold text-blue-600 mb-2">Vérification d'authenticité</p>
-                <div class="flex justify-center mb-4">
-                    {{-- La fonction QrCode::size()->generate() est utilisée pour créer le QR code.
-                         Elle prend en paramètre l'URL vers laquelle le QR code doit pointer.
-                         Ici, c'est l'URL de vérification de document, incluant le token unique de l'acte. --}}
-                    {!! QrCode::size(120)->generate(url('/verifier-document/' . $acte->token)) !!}
-                </div>
-                <p class="text-center text-gray-600 text-sm">Scannez ce QR code pour vérifier l'authenticité de cet acte de naissance.</p>
-            </div>
-        @endif {{-- Fin de la condition @if($acte->token) --}}
-    </div>
-
-</div> {{-- Fin du conteneur principal de l'acte --}}
-
-<div class="max-w-3xl mx-auto flex justify-center items-center gap-4 mt-6 print:hidden">
+ {{-- Boutons et QR code non-imprimables --}}
+ <div class="max-w-3xl mx-auto flex flex-col items-center gap-4 mt-6 print:hidden">
+    <div class="max-w-3xl mx-auto flex justify-center items-center gap-4 mt-6 print:hidden">
+    {{-- Bouton d'impression --}}
+    <button onclick="window.print()"
+            class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-lg">
+        Imprimer l'acte
+    </button>
+    
+    {{-- Bouton de retour au tableau de bord --}}
     <a href="{{ route('agent.dashboard') }}"
-        class="inline-flex items-center bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300 shadow">
+       class="inline-flex items-center bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300 shadow">
         ← Retour au Tableau de Bord
     </a>
-
-    {{-- Assurez-vous que l'ID passé à confirmDelete est le bon ID de l'acte, pas id_volet si ce n'est pas le cas --}}
-    <button onclick="confirmDelete({{ $acte->id }})"
-            class="text-white py-2 px-4 rounded-lg bg-red-600 hover:bg-red-700" title="Supprimer">
-            Supprimer l'acte
+    </div>
+    {{-- Boutons d'action suppression --}}
+    <button onclick="confirmDelete({{ $acte->id }})" class="text-white py-2 px-4 rounded-lg bg-red-600 hover:bg-red-700" title="Supprimer">
+        Supprimer l'acte
     </button>
+    
+       {{-- Section QR code --}}
+       {{-- @if($acte->token)
+        <div class="mt-6 border-2 border-blue-600 rounded-lg p-6 bg-gray-100">
+            <p class="text-center font-semibold text-blue-600 mb-2">Vérification d'authenticité</p>
+            <div class="flex justify-center mb-4">
+                {!! QrCode::size(120)->generate(url('/verifier-document/' . $acte->token)) !!}
+            </div>
+            <p class="text-center text-gray-600 text-sm">Scannez ce QR code pour vérifier l'authenticité de cet acte de naissance.</p>
+        </div>
+        @endif --}}
+ </div> 
 
-    {{-- <a href="{{ route('acte.pdf', $acte->id) }}" target="_blank"
-       class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded">
-        Télécharger l'acte (PDF)
-    </a> --}}
-</div>
-
-{{-- Script pour la confirmation de suppression, si ce n'est pas déjà dans un fichier JS externe --}}
-<script>
+ {{-- Script de suppression --}}
+ <script>
     function confirmDelete(acteId) {
         if (confirm('Êtes-vous sûr de vouloir supprimer cet acte de naissance ? Cette action est irréversible.')) {
-            // Créer un formulaire temporaire pour envoyer la requête DELETE
             let form = document.createElement('form');
-            form.action = `/actes/${acteId}`; // Assurez-vous que cette route correspond à votre route destroy
+            form.action = `/actes/${acteId}`;
             form.method = 'POST';
             form.style.display = 'none';
 
@@ -327,39 +256,22 @@
             form.submit();
         }
     }
-</script>
+ </script>
 
-{{-- Bouton PDF --}}
-{{-- <div class="text-center mb-4">
-    <a href="{{ route('acte.pdf', $acte->id) }}" target="_blank"
-        class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded">
-        Télécharger l'acte (PDF)
-    </a>
-</div> --}}
+</div>
 
-{{-- QR code d'authenticité --}}
-@if($acte->token)
-<div class="flex justify-center mb-6">
-    <div class="border-2 border-blue-600 rounded-lg p-6 bg-gray-100">
-        <p class="text-center font-semibold text-blue-600 mb-2">Vérification d'authenticité</p>
-        <div class="flex justify-center mb-4">
-            {!! QrCode::size(120)->generate(url('/verifier-document/' . $acte->token)) !!}
-        </div>
-        <p class="text-center text-gray-600 text-sm">Scannez ce QR code pour vérifier l'authenticité de cet acte de
-            naissance.</p>
+{{-- Boutons et QR code non-imprimables --}}
+{{-- <div class="max-w-3xl mx-auto flex flex-col items-center gap-4 mt-6 print:hidden">
+    <div class="max-w-3xl mx-auto flex justify-center mt-6 print:hidden">
+     <button onclick="window.print()"
+            class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-lg">
+        Imprimer l'acte
+     </button>
     </div>
-</div>
-@endif
+     ... (Code pour les boutons et le QR code) ... 
+</div> --}}
+{{-- </div> --}}
 
-{{-- Suppression
-<form action="{{ route('acte.destroy', $acte->id) }}" method="POST"
-    onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet acte ?');" class="text-center">
-    @csrf
-    @method('DELETE')
-    <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded">
-        Supprimer cet acte
-    </button>
-</form> --}}
+{{-- Fin du conteneur de l'acte de naissance --}}           
 
-</div>
 @endsection
