@@ -972,7 +972,7 @@ class Acte_naissance extends Controller
     public function show(string $id)
     {
         // Cette méthode doit pouvoir afficher les détails d'un acte original ou d'une copie
-        $acte = Acte::with(['demande', 'Commune', 'declarant', 'officier'])->findOrFail($id);
+        $acte = Acte::with(['demande.volet', 'Commune', 'declarant', 'officier'])->findOrFail($id);
         return view('agent_mairie.naissances.show', compact('acte'));
     }
 

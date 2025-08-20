@@ -94,7 +94,7 @@
         </div>
         <div class="flex-1 p-2 space-y-1">
             <p><strong>7. Prénom(s) et Nom :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">{{ $acte->prenom_pere }} {{ $acte->nom_pere }}</span></p>
-            <p><strong>8. Âge :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">{{ $acte->age_pere ?? '...' }} ans</span></p>
+            <p><strong>8. Âge :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">{{ $acte->demande->volet->age_pere ?? '...' }} ans</span></p>
             <p><strong>9. Domicile :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">{{ $acte->domicile_pere }}</span></p>
             <p><strong>10. Profession :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">{{ $acte->profession_pere }}</span></p>
         </div>
@@ -107,7 +107,7 @@
         </div>
         <div class="flex-1 p-2 space-y-1">
             <p><strong>11. Prénom(s) et Nom :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">{{ $acte->prenom_mere }} {{ $acte->nom_mere }}</span></p>
-            <p><strong>12. Âge :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">{{ $acte->age_mere ?? '...' }} ans</span></p>
+            <p><strong>12. Âge :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">{{ $acte->demande->volet->age_mere  ?? '...' }} ans</span></p>
             <p><strong>13. Domicile :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">{{ $acte->domicile_mere }}</span></p>
             <p><strong>14. Profession :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">{{ $acte->profession_mere }}</span></p>
         </div>
