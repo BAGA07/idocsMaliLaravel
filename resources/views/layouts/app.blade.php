@@ -32,7 +32,9 @@
             {{-- Contenu dynamique --}}
             <main class="p-6">
                 @yield('content')
+               
             </main>
+             @yield('scripts')
         </div>
     </div>
 
