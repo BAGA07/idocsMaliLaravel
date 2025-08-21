@@ -288,6 +288,10 @@
             </div>
             <div class="line">
                 <div class="field">
+                    <label>Profession</label>
+                    <input type="text" name="professsion_declarant" required>
+                </div>
+                <div class="field">
                     <label>Ethnie</label>
                     <input type="text" name="ethnie_declarant" required>
                 </div>

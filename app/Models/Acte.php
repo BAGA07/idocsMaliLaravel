@@ -50,7 +50,7 @@ class Acte extends Model
     use HasFactory;
     public function declarant()
    {
-    return $this->belongsTo(Declarant::class,'id_declarant');
+    return $this->belongsTo(Declarant::class,'id_declarant','id_declarant');
    }
    public function Commune()
   {

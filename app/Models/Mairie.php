@@ -38,6 +38,10 @@ class Mairie extends Model
     {
         return $this->hasMany(Hopital::class, 'id_mairie');
     }
+    /* public function acteNaissances()
+    {
+        return $this->hasMany(ActeNaissance::class, 'id_mairie');
+    } */
 
     public function commune()
     {

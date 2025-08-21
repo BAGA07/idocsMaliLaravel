@@ -59,7 +59,7 @@
             <h3 class="text-lg font-semibold mb-4">Informations du père</h3>
             <p><strong>Prénom :</strong> {{ $copie->prenom_pere }}</p>
             <p><strong>Nom :</strong> {{ $copie->nom_pere }}</p>
-            <p><strong>Profession :</strong> {{ $copie->proffesion_pere }}</p>
+            <p><strong>Profession :</strong> {{ $copie->profession_pere }}</p>
             <p><strong>Domicile :</strong> {{ $copie->domicile_pere }}</p>
         </div>
 
@@ -67,7 +67,7 @@
             <h3 class="text-lg font-semibold mb-4">Informations de la mère</h3>
             <p><strong>Prénom :</strong> {{ $copie->prenom_mere }}</p>
             <p><strong>Nom :</strong> {{ $copie->nom_mere }}</p>
-            <p><strong>Profession :</strong> {{ $copie->proffesion_mere }}</p>
+            <p><strong>Profession :</strong> {{ $copie->profession_mere }}</p>
             <p><strong>Domicile :</strong> {{ $copie->domicile_mere }}</p>
         </div>
     </div>
@@ -187,7 +187,7 @@
                 <p class="flex items-end mb-1">
                     <strong class="mr-1">8 Profession :</strong>
                     <span class="uppercase border-b border-black flex-grow text-left px-1">
-                        {{ $copie->proffesion_pere }}
+                        {{ $copie->profession_pere }}
                     </span>
                 </p>
                 <p class="flex items-end mb-1">
@@ -222,7 +222,7 @@
                 <p class="flex items-end mb-1">
                     <strong class="mr-1">12 Profession :</strong>
                     <span class="uppercase border-b border-black flex-grow text-left px-1">
-                        {{ $copie->proffesion_mere }}
+                        {{ $copie->profession_mere }}
                     </span>
                 </p>
                 <p class="flex items-end mb-1">
@@ -306,9 +306,9 @@
     </div>
 
 
-    <div class="text-right text-[9px] absolute bottom-0 right-2">
+    {{-- <div class="text-right text-[9px] absolute bottom-0 right-2">
         <p>Socodima tel. +223 20 22 00 19</p>
-    </div>
+    </div> --}}
 
     {{-- Boutons d'action (masqués à l'impression) --}}
     <div class="flex justify-end mb-4 print:hidden" style="position: absolute; bottom: -50px; right: 0;"> {{-- Positionnement ajusté --}}
@@ -322,6 +322,11 @@
             class="inline-flex items-center bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300 shadow">
             ← Retour
         </a>
+<form action="{{ route('acte.destroy', $copie->id) }}" method="POST" onsubmit="return confirm('Confirmer la suppression ?')">
+    @csrf
+    @method('DELETE')
+    <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded">Supprimer</button>
+</form>
 
         @if($copie->statut !== 'En attente de signature' && $copie->statut !== 'Finalisé')
         <form action="{{ route('copies.envoyer_officier', $copie->id) }}" method="POST">

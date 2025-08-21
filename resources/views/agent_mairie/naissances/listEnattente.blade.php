@@ -27,12 +27,12 @@
                     <th
                         class="px-4 py-3 border border-gray-300 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">
                         Nom Demandeur</th>
-                    <th
+                    {{-- <th
                         class="px-4 py-3 border border-gray-300 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">
                         Nom Enfant</th>
                     <th
                         class="px-4 py-3 border border-gray-300 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">
-                        Numéro Acte Source</th>
+                        Numéro Acte Source</th> --}}
                     <th
                         class="px-4 py-3 border border-gray-300 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">
                         Nombre Copies</th>
@@ -48,12 +48,12 @@
                 @foreach($demandesCopiesEnAttente as $demandeCopie)
                 <tr class="{{ $loop->even ? 'bg-gray-50' : 'bg-white' }} hover:bg-gray-100">
                     <td class="px-4 py-3 border border-gray-300 whitespace-nowrap">{{ $demandeCopie->nom_complet }}</td>
-                    <td class="px-4 py-3 border border-gray-300 whitespace-nowrap">
+                    {{-- <td class="px-4 py-3 border border-gray-300 whitespace-nowrap">
                         {{ $demandeCopie->prenom_enfant }} {{ $demandeCopie->nom_enfant }}
                     </td>
                     <td class="px-4 py-3 border border-gray-300 whitespace-nowrap">
                         {{ $demandeCopie->num_acte_source ?? 'N/A' }}
-                    </td>
+                    </td> --}}
                     <td class="px-4 py-3 border border-gray-300 whitespace-nowrap">
                         {{ $demandeCopie->nombre_copie ?? 'N/A' }} {{-- Assurez-vous que 'nombre_copie' existe sur le
                         modèle Demande ou Acte --}}
