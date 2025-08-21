@@ -40,7 +40,7 @@
     {{-- En-tête du document --}}
     <div class="flex justify-between items-start mb-4 relative z-10">
         <div class="text-left w-1/2">
-            <div class="font-bold text-lg mb-1">AN</div>
+            {{-- <div class="font-bold text-lg mb-1">AN</div> --}}
             <p class="uppercase font-bold">République du Mali</p>
             <p class="italic text-xs">Un Peuple - Un But - Une Foi</p>
         </div>
