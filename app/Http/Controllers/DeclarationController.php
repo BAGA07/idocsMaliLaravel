@@ -47,7 +47,7 @@ class DeclarationController extends Controller
             \Log::info('Envoi mail à : ' . $declarant->email);
         }
 
-        // Envoi SMS si téléphone disponible
+        // Envoi SMS si téléphone disponible ici dans ce code
         if ($hasPhone) {
             $telephone = $declarant->telephone;
             // Format international
