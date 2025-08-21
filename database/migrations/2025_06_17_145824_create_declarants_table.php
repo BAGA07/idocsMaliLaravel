@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('prenom_declarant', 100);
             $table->integer('age_declarant');
             $table->string('profession_declarant', 100);
+           // $table->string('ethnie_declarant', 100)->nullable();
             $table->string('domicile_declarant', 255);
             $table->integer('numero_declaration');
             $table->dateTime('date_declaration');
