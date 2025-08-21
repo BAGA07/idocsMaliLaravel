@@ -40,7 +40,7 @@
     {{-- En-tête du document --}}
     <div class="flex justify-between items-start mb-4 relative z-10">
         <div class="text-left w-1/2">
-            <div class="font-bold text-lg mb-1">AN</div>
+            {{-- <div class="font-bold text-lg mb-1">AN</div> --}}
             <p class="uppercase font-bold">République du Mali</p>
             <p class="italic text-xs">Un Peuple - Un But - Une Foi</p>
         </div>
@@ -62,54 +62,64 @@
             <p><strong>DE :</strong> <span class="uppercase font-bold text-blue-700">La Commune IV</span></p>
         </div>
         <div class="text-right flex flex-col justify-between">
-            <div>
+            {{-- <div>
                 <p>NINA</p>
                 <div class="border border-black w-full h-8 flex justify-end">
                     <div class="border-l border-black w-1/3"></div>
                     <div class="border-l border-black w-1/3"></div>
                 </div>
+            </div> --}}
+            <div class="text-center">
+                <p class="mb-1">NINA</p>
+                <div class="border border-black w-32 h-5 flex justify-around mx-auto">
+                <div class="border-r border-black w-[20%]"></div>
+                <div class="border-r border-black w-[20%]"></div>
+                <div class="border-r border-black w-[20%]"></div>
+                <div class="border-r border-black w-[20%]"></div>
+                <div class="w-[20%]"></div>
+                </div>
+                </div>
             </div>
         </div>
-    </div>
 
     {{-- CADRE ENFANT --}}
     <div class="border border-black mx-2 mb-2 flex relative z-10">
-        <div class="w-[5%] flex items-center justify-center text-center px-1 border-r border-black" style="writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg);">
+        <div class="w-[5%] flex items-center justify-center text-center px-1 border-r border-black" style="writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg); background-color: hsla(0, 93%, 6%, 0.10);">
             <p class="font-bold text-[10px] tracking-wider">ENFANT</p>
         </div>
         <div class="flex-1 p-2 space-y-1">
-            <p><strong>1. Date de naissance :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">{{ \Carbon\Carbon::parse($acte->date_naissance_enfant)->translatedFormat('d F Y') }}</span></p>
-            <p><strong>2. Heure de naissance :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">{{ $acte->heure_naissance ?? '...' }}</span></p>
-            <p><strong>3. Prénom(s) :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">{{ $acte->prenom }}</span></p>
-            <p><strong>4. Nom :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">{{ $acte->nom }}</span></p>
-            <p><strong>5. Sexe :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">{{ $acte->sexe_enfant }}</span></p>
-            <p><strong>6. Localité ou pays de naissance :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">{{ $acte->lieu_naissance_enfant }}</span></p>
+            <p><strong>1. Date de naissance :</strong> <span class="uppercase font-bold text-blue-700 w-full">{{ \Carbon\Carbon::parse($acte->date_naissance_enfant)->translatedFormat('d F Y') }}</span></p>
+            <p><strong>2. Heure de naissance :</strong> <span class="uppercase font-bold text-blue-700 w-full">{{ $acte->heure_naissance ?? '...' }}</span></p>
+            <p><strong>3. Prénom(s) :</strong> <span class="uppercase font-bold text-blue-700 w-full">{{ $acte->prenom }}</span></p>
+            <p><strong>4. Nom :</strong> <span class="uppercase font-bold text-blue-700 w-full">{{ $acte->nom }}</span></p>
+            <p><strong>5. Sexe :</strong> <span class="uppercase font-bold text-blue-700 w-full">{{ $acte->sexe_enfant }}</span></p>
+            <p><strong>6. Localité ou pays de naissance :</strong> <span class="uppercase font-bold text-blue-700 w-full">{{ $acte->lieu_naissance_enfant }}</span></p>
         </div>
     </div>
     
     {{-- CADRE PÈRE --}}
     <div class="border border-black mx-2 mb-2 flex relative z-10">
-        <div class="w-[5%] flex items-center justify-center text-center px-1 border-r border-black" style="writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg);">
+        <div class="w-[5%] flex items-center justify-center text-center px-1 border-r border-black" style="writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg); background-color: hsla(0, 93%, 6%, 0.10);">
             <p class="font-bold text-[10px] tracking-wider">PÈRE</p>
         </div>
         <div class="flex-1 p-2 space-y-1">
-            <p><strong>7. Prénom(s) et Nom :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">{{ $acte->prenom_pere }} {{ $acte->nom_pere }}</span></p>
-            <p><strong>8. Âge :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">{{ $acte->demande->volet->age_pere ?? '...' }} ans</span></p>
-            <p><strong>9. Domicile :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">{{ $acte->domicile_pere }}</span></p>
-            <p><strong>10. Profession :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">{{ $acte->profession_pere }}</span></p>
+            <p><strong>7. Prénom(s) et Nom :</strong> <span class="uppercase font-bold text-blue-700 w-full">{{ $acte->prenom_pere }} {{ $acte->nom_pere }}</span></p>
+            <p><strong>8. Âge :</strong> <span class="uppercase font-bold text-blue-700 w-full">{{ $acte->demande->volet->age_pere ?? '...' }} ans</span></p>
+            <p><strong>9. Domicile :</strong> <span class="uppercase font-bold text-blue-700 w-full">{{ $acte->domicile_pere }}</span></p>
+            <p><strong>10. Profession :</strong> <span class="uppercase font-bold text-blue-700 w-full">{{ $acte->profession_pere }}</span></p>
         </div>
     </div>
 
     {{-- CADRE MÈRE --}}
     <div class="border border-black mx-2 mb-2 flex relative z-10">
-        <div class="w-[5%] flex items-center justify-center text-center px-1 border-r border-black" style="writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg);">
+        <div class="w-[5%] flex items-center justify-center text-center px-1 border-r border-black" style="writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg); background-color: hsla(0, 93%, 6%, 0.10);">
             <p class="font-bold text-[10px] tracking-wider">MÈRE</p>
         </div>
         <div class="flex-1 p-2 space-y-1">
-            <p><strong>11. Prénom(s) et Nom :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">{{ $acte->prenom_mere }} {{ $acte->nom_mere }}</span></p>
-            <p><strong>12. Âge :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">{{ $acte->demande->volet->age_mere  ?? '...' }} ans</span></p>
-            <p><strong>13. Domicile :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">{{ $acte->domicile_mere }}</span></p>
-            <p><strong>14. Profession :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">{{ $acte->profession_mere }}</span></p>
+            <p><strong>11. Prénom(s) et Nom :</strong> <span class="uppercase font-bold text-blue-700 w-full">{{ $acte->prenom_mere }} {{ $acte->nom_mere }}</span></p>
+            <p><strong>12. Âge :</strong> <span class="uppercase font-bold text-blue-700 w-full">{{ $acte->demande->volet->age_mere  ?? '...' }} ans</span></p>
+            <p><strong>13. Domicile :</strong> <span class="uppercase font-bold text-blue-700 w-full">{{ $acte->domicile_mere }}</span></p>
+            <p><strong>14. Profession :</strong> <span class="uppercase font-bold text-blue-700 w-full">{{ $acte->profession_mere }}</span></p>
         </div>
     </div>
     
@@ -128,23 +138,23 @@
         </div>
     </div> --}}
     <div class="border border-black mx-2 mb-2 flex relative z-10">
-    <div class="w-[5%] flex items-center justify-center text-center px-1 border-r border-black" style="writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg);">
+    <div class="w-[5%] flex items-center justify-center text-center px-1 border-r border-black" style="writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg); background-color: hsla(0, 93%, 6%, 0.10);">
         <p class="font-bold text-[10px] tracking-wider">DÉCLARANT</p>
     </div>
     <div class="flex-1 p-2 space-y-1">
-        <p><strong>15. Prénom(s) et Nom :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">
+        <p><strong>15. Prénom(s) et Nom :</strong> <span class="uppercase font-bold text-blue-700 w-full">
             {{ $acte->declarant->prenom_declarant ?? '...' }} {{ $acte->declarant->nom_declarant ?? '...' }}
         </span></p>
-        <p><strong>16. Âge :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">
+        <p><strong>16. Âge :</strong> <span class="uppercase font-bold text-blue-700  w-full">
             {{ $acte->declarant->age_declarant ?? '...' }} ans
         </span></p>
-        <p><strong>17. Domicile :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">
+        <p><strong>17. Domicile :</strong> <span class="uppercase font-bold text-blue-700 w-full">
             {{ $acte->declarant->domicile_declarant ?? '...' }}
         </span></p>
-        <p><strong>18. Profession :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">
+        <p><strong>18. Profession :</strong> <span class="uppercase font-bold text-blue-700 w-full">
             {{ $acte->declarant->profession_declarant ?? '...' }}
         </span></p>
-        <p><strong>19. N° de la déclaration et date :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">
+        <p><strong>19. N° de la déclaration et date :</strong> <span class="uppercase font-bold text-blue-700 w-full">
             @if($acte->declarant && $acte->declarant->numero_declaration)
                 {{ $acte->declarant->numero_declaration }}
             @else
@@ -157,22 +167,23 @@
                 ...
             @endif
         </span></p>
-        <p><strong>20. Centre de l'hôpital ou district :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">
+        <p><strong>20. Centre de l'hôpital ou district :</strong> <span class="uppercase font-bold text-blue-700 w-full">
             {{ $acte->lieu_naissance_enfant ?? '...' }}
         </span></p>
     </div>
   </div>
     
     {{-- Cachet et Signature --}}
-    <div class="border border-black mx-2 flex items-center mb-2 relative z-10">
-        <div class="w-[5%] flex items-center justify-center text-center px-1 border-r border-black" style="writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg);">
+    <div class="border border-black mx-2 flex items-center mb-2 relative z-10" {{-- style="background-color: hsla(0, 93%, 6%, 0.10); --}}">
+        {{-- Cachet de l'officier d'état civil --}}
+        <div class="w-[5%] flex items-center justify-center text-center px-1 border-r border-black" style="writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg); background-color: hsla(0, 93%, 6%, 0.10);">
             <p class="font-bold text-[10px] tracking-wider">OFFICIER</p>
         </div>
         <div class="flex-1 p-2 grid grid-cols-2 gap-4 items-center">
             <div class="space-y-1">
-                <p><strong>21. Prénom(s) et Nom :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">{{ $acte->officier->prenom ?? '...' }} {{ $acte->officier->nom ?? '...' }}</span></p>
-                <p><strong>22. Qualité :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">{{ $acte->officier->profession ?? '...' }}</span></p>
-                <p><strong>23. Date :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black w-full inline-block">{{ \Carbon\Carbon::parse($acte->date_enregistrement_acte)->format('d/m/Y') }}</span></p>
+                <p><strong>21. Prénom(s) et Nom :</strong> <span class="uppercase font-bold text-blue-700 w-full">{{ $acte->officier->prenom ?? '...' }} {{ $acte->officier->nom ?? '...' }}</span></p>
+                <p><strong>22. Qualité :</strong> <span class="uppercase font-bold text-blue-700 w-full">{{ $acte->officier->profession ?? '...' }}</span></p>
+                <p><strong>23. Date :</strong> <span class="uppercase font-bold text-blue-700 w-full">{{ \Carbon\Carbon::parse($acte->date_enregistrement_acte)->format('d/m/Y') }}</span></p>
             </div>
             <div class="text-center relative pt-8">
                 <p class="font-bold">24. Signature et cachet de l'officier d'état civil</p>
