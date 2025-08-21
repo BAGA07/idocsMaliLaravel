@@ -124,11 +124,7 @@ use Illuminate\Pagination\Paginator;
                                         class="text-red-600 hover:text-red-900" title="Supprimer">
                                         <i class="fa fa-trash"></i>
                                     </button>
-                                    <!-- Bouton d'envoi de notification -->
-                                    <button onclick="sendNotification({{ $declaration->id_volet }})"
-                                        class="text-green-600 hover:text-green-900" title="Envoyer notification">
-                                        <i class="fa fa-paper-plane"></i>
-                                    </button>
+
                                 </div>
 
                                 <!-- Formulaire de suppression caché -->
