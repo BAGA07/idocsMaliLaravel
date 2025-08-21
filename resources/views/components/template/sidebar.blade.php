@@ -183,10 +183,10 @@
                 </summary>
                 <ul class="ml-6 mt-1 space-y-1 text-white/90">
 
-                    <li><a href="{{ route('manager.officers.index') }}" class="block px-2 py-1 hover:text-white">Liste
+                    <li><a href="{{ route('manager.officiers.index') }}" class="block px-2 py-1 hover:text-white">Liste
                             des
                             officiers</a></li>
-                    <li><a href="{{ route('manager.officers.create') }}"
+                    <li><a href="{{ route('manager.officiers.create') }}"
                             class="block px-2 py-1 hover:text-white">Ajouter
                             un
                             officier</a></li>

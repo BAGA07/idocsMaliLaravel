@@ -255,7 +255,7 @@ Route::middleware(['auth', 'role:manager'])->prefix('manager')->name('manager.')
 
     // Gestion des structures par le manager ou admin
     Route::resource('structures', App\Http\Controllers\Manager\StructureController::class);
-    Route::resource('officers', App\Http\Controllers\Manager\OfficerController::class);
+    Route::resource('officiers', App\Http\Controllers\Manager\OfficerController::class);
 });
 // Route pour l'envoi de la demande à la mairie depuis l'hôpital
 Route::post('/hopital/demandes/envoyer/{id_volet}', [App\Http\Controllers\Hopital\DemandeController::class, 'envoyerDemande'])->name('hopital.demandes.envoyer');
