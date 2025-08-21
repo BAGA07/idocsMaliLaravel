@@ -47,12 +47,17 @@ class Acte_naissance extends Controller
         $demandes = Demande::where('type_document', 'Extrait original')
             ->whereNotNull('id_volet')
             ->with('volet')
-            ->get();
+             ->latest()
+            ->paginate(10);
+           
+            
 
         // Récupérer les DEMANDES de copies (via plateforme publique)
         $demandesCopies = Demande::where('type_document', 'Extrait de naissance')
             ->with('acte')
-            ->get();
+             ->latest()
+            ->paginate(10);
+           
 
         // Récupérer les ACTES de naissance originaux (ceux avec type='original' ou NULL)
         $actesNaissanceOriginaux = Acte::where(function ($query) {
