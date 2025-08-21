@@ -2,13 +2,13 @@
 
 @section('content')
 {{-- Section détails (masquée à l'impression) --}}
-<div class="max-w-6xl mx-auto mt-10 p-6 bg-white rounded shadow print:hidden">
+{{-- <div class="max-w-6xl mx-auto mt-10 p-6 bg-white rounded shadow print:hidden">
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-2xl font-bold">Détails de la copie/extrait</h2>
         <div class="space-x-2">
-            <a href="{{ route('mairie.dashboard.copies') }}" class="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700">Retour</a>
-            <button onclick="window.print()" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">Imprimer</button>
-        </div>
+            <a href="{{ route('officier.historique') }}" class="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700">Retour</a>
+            {{-- <button onclick="window.print()" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">Imprimer</button> --}}
+        {{-- </div>
     </div>
 
     <div class="bg-gray-50 p-4 rounded mb-6">
@@ -80,11 +80,18 @@
         <p><strong>Date de création :</strong> {{ $copie->demande->created_at }}</p>
     </div>
     @endif
-</div>
+</div> --}} 
 
 {{-- Le titre doit s'afficher à l'écran pour séparer les sections, mais être masqué à l'impression --}}
 {{-- <h2 class="text-2xl font-bold text-center mt-8 mb-4 print:hidden">Aperçu PDF de la copie - Le bloc à imprimer</h2> --}}
-
+ <div class="max-w-3xl mx-auto flex flex-col items-center gap-4 mt-6 print:hidden">
+    <div class="max-w-3xl mx-auto flex justify-center items-center gap-4 mt-6 print:hidden">
+    
+    <a href="{{ route('officier.historique') }}"
+       class="inline-flex items-center bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300 shadow">
+        ← Retour
+    </a>
+    </div>
 <div
     class="relative max-w-[210mm] mx-auto bg-white border border-black p-4 text-[12px] font-[Times New Roman] print:p-0 print:w-[210mm] print:h-[350mm] print:max-w-full print:border-none print-acte-singlepage"
     style="break-inside: avoid; page-break-inside: avoid; box-sizing: border-box; font-family: 'Times New Roman', Times, serif;"
@@ -311,13 +318,13 @@
     </div> --}}
 
     {{-- Boutons d'action (masqués à l'impression) --}}
-    <div class="flex justify-end mb-4 print:hidden" style="position: absolute; bottom: -50px; right: 0;"> {{-- Positionnement ajusté --}}
+    {{-- <div class="flex justify-end mb-4 print:hidden" style="position: absolute; bottom: -50px; right: 0;"> 
         @if($copie->statut === 'Finalisé')
             <button onclick="window.print()" class="bg-green-600 text-white px-4 py-2 rounded shadow hover:bg-green-700">Imprimer</button>
         @endif
-    </div>
+    </div> --}}
 
-    <div class="flex items-center gap-4 mt-6 print:hidden" style="position: absolute; bottom: -100px; left: 0;"> {{-- Positionnement ajusté --}}
+    {{-- <div class="flex items-center gap-4 mt-6 print:hidden" style="position: absolute; bottom: -100px; left: 0;"> 
         <a href="{{ route('mairie.dashboard.copies') }}"
             class="inline-flex items-center bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300 shadow">
             ← Retour
@@ -326,7 +333,7 @@
     @csrf
     @method('DELETE')
     <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded">Supprimer</button>
-</form>
+</form> --}}
 
         @if($copie->statut !== 'En attente de signature' && $copie->statut !== 'Finalisé')
         <form action="{{ route('copies.envoyer_officier', $copie->id) }}" method="POST">

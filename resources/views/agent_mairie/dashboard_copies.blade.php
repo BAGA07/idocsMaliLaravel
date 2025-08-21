@@ -168,7 +168,7 @@
                         </td>
                         <td class="px-4 py-2 border space-x-2">
                             <a href="{{ route('copies.show', $copie->id) }}" class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 text-sm">Voir</a>
-                            <a href="{{ route('acte.pdf', $copie->id) }}" class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 text-sm">PDF</a>
+                            {{-- <a href="{{ route('acte.pdf', $copie->id) }}" class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 text-sm">PDF</a> --}}
                         </td>
                     </tr>
                     @endforeach

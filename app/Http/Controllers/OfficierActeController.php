@@ -81,7 +81,22 @@ class OfficierActeController extends Controller
         $copie = Acte::findOrFail($id);
         return view('officier.finaliser_copie', compact('copie'));
     }
+    //show de l'acte originale signe par l'officier
+     public function show(string $id)
+    {
+        // Cette méthode doit pouvoir afficher les détails d'un acte original ou d'une copie
+        $acte = Acte::with(['demande.volet', 'Commune', 'declarant', 'officier'])->findOrFail($id);
+        return view('officier.showActe', compact('acte'));
+    }
+//show de la copie signe par l'officier
+ public function showCopie($id)
+    {
+        $copie = Acte::with(['declarant', 'demande', 'Commune', 'officier'])
+            ->where('type', 'copie')
+            ->findOrFail($id);
 
+        return view('officier.show', compact('copie'));
+    }
     // Enregistrement de la signature électronique et finalisation pour copie/extrait
     public function finaliserCopie(Request $request, $id)
     {

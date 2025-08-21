@@ -106,7 +106,9 @@
                     <td class="px-4 py-2 border">{{ $acte->signed_at }}</td>
                     <td class="px-4 py-2 border">
                         {{-- <a href="{{ route('officier.actes.pdf', $acte->id) }}" class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700">PDF</a> --}}
-                    </td>
+                        <a href="{{ route('acte.show', $acte->id) }}" class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 text-sm">Voir</a>
+                    </td>                                                                                
+
                 </tr>
                 @endforeach
             </tbody>
@@ -135,6 +137,7 @@
                     <td class="px-4 py-2 border">{{ $copie->date_naissance_enfant }}</td>
                     <td class="px-4 py-2 border">{{ $copie->signed_at }}</td>
                     <td class="px-4 py-2 border">
+                                                                                                        <a href="{{ route('copies.show', $copie->id) }}" class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 text-sm">Voir</a>
                         {{-- <a href="{{ route('officier.copies.pdf', $copie->id) }}" class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700">PDF</a> --}}
                     </td>
                 </tr>
