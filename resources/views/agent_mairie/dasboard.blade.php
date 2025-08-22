@@ -8,7 +8,7 @@
 <div class="max-w-7xl mx-auto py-10 px-6">
 
     {{-- Notifications --}}
-    @foreach (['success' => 'green', 'info' => 'blue', 'error' => 'red'] as $type => $color)
+    {{-- @foreach (['success' => 'green', 'info' => 'blue', 'error' => 'red'] as $type => $color)
         @if(session($type))
         <div class="flex items-start bg-{{ $color }}-100 border-l-4 border-{{ $color }}-500 text-{{ $color }}-700 px-4 py-3 rounded mb-4">
             <svg class="h-5 w-5 mr-3 mt-1 text-{{ $color }}-500" fill="currentColor" viewBox="0 0 20 20">
@@ -22,7 +22,10 @@
             </div>
         </div>
         @endif
-    @endforeach
+       @endforeach --}}
+    <div align="right">
+        @include('agent_mairie.partials.notifications', ['notifications' => $notifications])
+    </div>
 
     {{-- Statistiques --}}
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
