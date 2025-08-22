@@ -190,8 +190,8 @@ Route::middleware([
     Route::post('/finaliser/{id}', [OfficierActeController::class, 'finaliser'])->name('officier.finaliser.store');
 
     // Routes pour les actes (compatibilité avec les vues)
-        Route::get('actes/copies/{id}/show', [OfficierActeController::class, 'showCopie'])->name('copies.show');
-            Route::get('/actes/original/{id}', [OfficierActeController::class, 'show'])->name('acte.show');
+        Route::get('actes/copies/{id}/show', [OfficierActeController::class, 'showCopie'])->name('officier.copies.show');
+            Route::get('/actes/original/{id}', [OfficierActeController::class, 'show'])->name('officier.acte.show');
     Route::get('/actes/finaliser/{id}', [OfficierActeController::class, 'showFinalisation'])->name('officier.actes.finaliser');
     Route::post('/actes/finaliser/{id}', [OfficierActeController::class, 'finaliser'])->name('officier.actes.finaliser.post');
     Route::get('/finaliser-copie/{id}', [OfficierActeController::class, 'showFinalisationCopie'])->name('officier.finaliser.copie');
