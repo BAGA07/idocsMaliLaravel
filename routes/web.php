@@ -4,6 +4,7 @@ use App\Http\Controllers\Acte_naissance;
 use App\Http\Controllers\Admin\AdminManagerController;
 use App\Http\Controllers\PresentationController;
 use App\Http\Controllers\DemandeController;
+use App\Http\Controllers\Manager\OfficerController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VoletDeclarationController;
 use App\Http\Controllers\OfficierActeController;
@@ -189,6 +190,8 @@ Route::middleware([
     Route::post('/finaliser/{id}', [OfficierActeController::class, 'finaliser'])->name('officier.finaliser.store');
 
     // Routes pour les actes (compatibilité avec les vues)
+        Route::get('actes/copies/{id}/show', [OfficierActeController::class, 'showCopie'])->name('officier.copies.show');
+            Route::get('/actes/original/{id}', [OfficierActeController::class, 'show'])->name('officier.acte.show');
     Route::get('/actes/finaliser/{id}', [OfficierActeController::class, 'showFinalisation'])->name('officier.actes.finaliser');
     Route::post('/actes/finaliser/{id}', [OfficierActeController::class, 'finaliser'])->name('officier.actes.finaliser.post');
     Route::get('/finaliser-copie/{id}', [OfficierActeController::class, 'showFinalisationCopie'])->name('officier.finaliser.copie');

@@ -26,6 +26,7 @@ class ManagerSeeder extends Seeder
             'last_login_at' => Carbon::now()->subDays(2),
             'id_mairie' => 1,
             'role' => 'manager',
+            'photo' => 'photos/manager.jpg',
         ]);
         User::create([
             'nom' => 'Officier',
@@ -36,6 +37,7 @@ class ManagerSeeder extends Seeder
             'password' => Hash::make('password'),
             'id_mairie' => 1,
             'role' => 'officier',
+            'photo' => 'photos/officier.jpg',
             'last_login_at' => Carbon::now()->subDays(5),
         ]);
         User::create([
@@ -48,6 +50,7 @@ class ManagerSeeder extends Seeder
             'last_login_at' => now(),
             'id_hopital' => 1,
             'role' => 'agent_hopital',
+            'photo' => 'photos/agentdeclaration.png',
         ]);
         User::create([
             'nom' => 'Agent',
@@ -58,6 +61,7 @@ class ManagerSeeder extends Seeder
             'password' => Hash::make('password'),
             'id_mairie' => 1,
             'role' => 'agent_mairie',
+            'photo' => 'photos/agentmairie.jpg',
             'last_login_at' => Carbon::now()->subDays(10),
         ]);
 
