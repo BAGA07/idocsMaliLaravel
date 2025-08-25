@@ -84,7 +84,8 @@
 
 {{-- Le titre doit s'afficher à l'écran pour séparer les sections, mais être masqué à l'impression --}}
 {{-- <h2 class="text-2xl font-bold text-center mt-8 mb-4 print:hidden">Aperçu PDF de la copie - Le bloc à imprimer</h2> --}}
-
+<br>
+<br>
 <div
     class="relative max-w-[210mm] mx-auto bg-white border border-black p-4 text-[12px] font-[Times New Roman] print:p-0 print:w-[210mm] print:h-[350mm] print:max-w-full print:border-none print-acte-singlepage"
     style="break-inside: avoid; page-break-inside: avoid; box-sizing: border-box; font-family: 'Times New Roman', Times, serif;"
