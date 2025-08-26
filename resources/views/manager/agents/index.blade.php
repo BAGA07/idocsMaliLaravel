@@ -14,8 +14,6 @@
             </a>
         </div>
 
-
-
         <!-- Filtres -->
         <div class="bg-white rounded-lg shadow-md p-6 mb-6">
             <div class="flex flex-wrap gap-4">
@@ -33,19 +31,13 @@
                         <option value="agent_mairie">Agent Mairie</option>
                     </select>
                 </div>
-                <div class="flex items-end">
-                    <button type="button"
-                        class="bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-4 rounded-md transition duration-200">
-                        <i class="fa fa-search mr-2"></i> Filtrer
-                    </button>
-                </div>
             </div>
         </div>
 
         <!-- Tableau des agents -->
         <div class="bg-white rounded-lg shadow-md overflow-hidden">
             <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200">
+                <table id="usersTable" class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                         <tr>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -71,7 +63,8 @@
                     <tbody class="bg-white divide-y divide-gray-200">
                         @forelse($agents as $agent)
                         <tr class="hover:bg-gray-50">
-                            <td class="px-6 py-4 whitespace-nowrap">
+                            <!-- Nom + email -->
+                            <td class="px-6 py-4 whitespace-nowrap name">
                                 <div class="flex items-center">
                                     <div class="flex-shrink-0 h-10 w-10">
                                         <div
@@ -86,13 +79,15 @@
                                         <div class="text-sm font-medium text-gray-900">
                                             {{ $agent->prenom }} {{ $agent->nom }}
                                         </div>
-                                        <div class="text-sm text-gray-500">
+                                        <div class="text-sm text-gray-500 email">
                                             {{ $agent->email }}
                                         </div>
                                     </div>
                                 </div>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
+
+                            <!-- Rôle -->
+                            <td class="px-6 py-4 whitespace-nowrap role" data-role="{{ $agent->role }}">
                                 @if($agent->role === 'agent_hopital')
                                 <span
                                     class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
@@ -105,6 +100,8 @@
                                 </span>
                                 @endif
                             </td>
+
+                            <!-- Structure -->
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                 @if($agent->hopital)
                                 {{ $agent->hopital->nom_hopital }}
@@ -114,10 +111,14 @@
                                 <span class="text-gray-400">Non assigné</span>
                                 @endif
                             </td>
+
+                            <!-- Contact -->
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                 <div>{{ $agent->telephone }}</div>
                                 <div class="text-gray-500">{{ $agent->adresse }}</div>
                             </td>
+
+                            <!-- Connexion -->
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                 @if($agent->last_login_at)
                                 {{ \Carbon\Carbon::parse($agent->last_login_at)->diffForHumans() }}
@@ -125,24 +126,32 @@
                                 <span class="text-gray-400">Jamais connecté</span>
                                 @endif
                             </td>
+
+                            <!-- Actions -->
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                 <div class="flex space-x-2">
                                     <a href="{{ route('manager.agents.show', $agent->id) }}"
                                         class="text-blue-600 hover:text-blue-900" title="Voir">
                                         <i class="fa fa-eye"></i>
                                     </a>
+
                                     <a href="{{ route('manager.agents.edit', $agent->id) }}"
                                         class="text-green-600 hover:text-green-900" title="Modifier">
                                         <i class="fa fa-edit"></i>
                                     </a>
-                                    <form action="{{ route('manager.agents.destroy', $agent->id) }}" method="POST"
-                                        class="inline">
+
+                                    {{-- Bouton visible --}}
+                                    <button type="button" onclick="confirmDelete({{ $agent->id }})"
+                                        class="text-red-600 hover:text-red-900" title="Supprimer">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+
+                                    {{-- Formulaire caché --}}
+                                    <form id="delete-form-{{ $agent->id }}"
+                                        action="{{ route('manager.agents.destroy', $agent->id) }}" method="POST"
+                                        class="hidden">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="text-red-600 hover:text-red-900"
-                                            onclick="return confirmDelete('{{ $agent->id }}')">
-                                            <i class="fa fa-trash"></i>
-                                        </button>
                                     </form>
                                 </div>
                             </td>
@@ -167,4 +176,27 @@
         @endif
     </div>
 </div>
+
+<script>
+    document.getElementById('search').addEventListener('input', filterData);
+    document.getElementById('role').addEventListener('change', filterData);
+
+    function filterData() {
+        let search = document.getElementById('search').value.toLowerCase();
+        let role = document.getElementById('role').value;
+
+        let rows = document.querySelectorAll("#usersTable tbody tr");
+
+        rows.forEach(row => {
+            let name = row.querySelector(".name").textContent.toLowerCase();
+            let email = row.querySelector(".email").textContent.toLowerCase();
+            let userRole = row.querySelector(".role").dataset.role;
+
+            let matchSearch = name.includes(search) || email.includes(search);
+            let matchRole = role === "" || userRole === role;
+
+            row.style.display = (matchSearch && matchRole) ? "" : "none";
+        });
+    }
+</script>
 @endsection
