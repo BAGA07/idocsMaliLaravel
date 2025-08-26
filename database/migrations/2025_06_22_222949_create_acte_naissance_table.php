@@ -44,7 +44,7 @@ return new class extends Migration
     //   ->nullable()
     //   ->constrained('volet_declarations', 'id_volet')
     //   ->onDelete('set null');
-
+            $table->string('original_num_acte')->nullable();
             $table->date('date_enregistrement_acte');
 
             $table->timestamps();
