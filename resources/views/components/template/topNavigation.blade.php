@@ -11,8 +11,10 @@
         <!-- Profil utilisateur -->
         <div class="relative">
             <button class="flex items-center gap-2 focus:outline-none" id="userDropdownBtn">
-                <img src="{{ Auth::user() && Auth::user()->photo ? Auth::user()->photo : asset('images/user.png') }}" alt="Profil" class="w-8 h-8 rounded-full border border-white">
-                <span class="hidden md:inline">{{ Auth::user() ? (Auth::user()->nom ?? 'Utilisateur') : 'Utilisateur' }}</span>
+                <img src="{{ Auth::user() && Auth::user()->photo ? Auth::user()->photo : asset('gentelella/assets/images/avataridocs.jpg') }}"
+                    alt="Profil" class="w-8 h-8 rounded-full border border-white">
+                <span class="hidden md:inline">{{ Auth::user() ? (Auth::user()->nom ?? 'Utilisateur') : 'Utilisateur'
+                    }}</span>
                 <i class="fa fa-chevron-down text-xs"></i>
             </button>
 

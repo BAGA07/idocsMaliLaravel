@@ -7,7 +7,7 @@
 
     <!-- Infos utilisateur -->
     <div class="p-4 border-b border-blue-700 text-center">
-        <img src="{{ Auth::user() && Auth::user()->photo ? Auth::user()->photo : asset('images/user.png') }}"
+        <img src="{{ Auth::user() && Auth::user()->photo ? Auth::user()->photo : asset('gentelella/assets/images/avataridocs.jpg') }}"
             class="w-16 h-16 mx-auto rounded-full border-2 border-white object-cover" alt="Avatar">
         <p class="mt-2 text-sm text-white/80">Bienvenue,</p>
         <p class="font-bold">{{ Auth::user() ? (Auth::user()->nom ?? 'Utilisateur') : 'Utilisateur' }}</p>
@@ -217,7 +217,7 @@
                     </ul>
                 </details>
             </li> --}}
-            <li>
+            {{-- <li>
                 <details class="group">
                     <summary class="flex items-center p-2 rounded hover:bg-blue-700 cursor-pointer">
                         <i class="fa fa-edit w-5 mr-2 text-white"></i> Structures
@@ -230,7 +230,7 @@
                         <li><a href="#" class="block px-2 py-1 hover:text-white">Ajouter un hopital</a></li>
                     </ul>
                 </details>
-            </li>
+            </li> --}}
             <li>
                 <details class="group">
                     <summary class="flex items-center p-2 rounded hover:bg-blue-700 cursor-pointer">
