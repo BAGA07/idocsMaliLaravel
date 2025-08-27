@@ -5,10 +5,10 @@
 <div class="max-w-6xl mx-auto mt-10 p-6 bg-white rounded shadow print:hidden">
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-2xl font-bold">Détails de la copie/extrait</h2>
-        <div class="space-x-2">
+        {{-- <div class="space-x-2">
             <a href="{{ route('mairie.dashboard.copies') }}" class="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700">Retour</a>
             <button onclick="window.print()" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">Imprimer</button>
-        </div>
+        </div> --}}
     </div>
 
     <div class="bg-gray-50 p-4 rounded mb-6">
@@ -258,17 +258,17 @@
     </div>
 </div>
     {{-- Boutons et QR code non-imprimables --}}
-    {{-- <div class="max-w-3xl mx-auto flex flex-col items-center gap-4 mt-6 print:hidden">
+    <div class="max-w-3xl mx-auto flex flex-col items-center gap-4 mt-6 print:hidden">
         <div class="max-w-3xl mx-auto flex justify-center items-center gap-4 mt-6 print:hidden">
             {{-- Bouton d'impression --}}
-            {{-- <button onclick="window.print()" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-lg">
+            <button onclick="window.print()" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-lg">
                 Imprimer l'acte
-            </button> --}}
+            </button>
             {{-- Bouton de retour au tableau de bord --}}
-            {{-- <a href="{{ route('agent.dashboard') }}" class="inline-flex items-center bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300 shadow">
-                ← Retour au Tableau de Bord
+            <a href="{{ route('mairie.dashboard.copies') }}" class="inline-flex items-center bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300 shadow">
+                ← Retour
             </a>
-        </div> --}} 
+        </div> 
     </div>
 </div>
 

@@ -204,15 +204,15 @@
         </button>
         
         {{-- Bouton de retour au tableau de bord --}}
-        <a href="{{ route('agent.dashboard') }}"
+        <a href="{{ route('mairie.dashboard.actes') }}"
            class="inline-flex items-center bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300 shadow">
-            ← Retour au Tableau de Bord
+            ← Retour
         </a>
     </div>
     {{-- Boutons d'action suppression --}}
-    <button onclick="confirmDelete({{ $acte->id }})" class="text-white py-2 px-4 rounded-lg bg-red-600 hover:bg-red-700" title="Supprimer">
+    {{-- <button onclick="confirmDelete({{ $acte->id }})" class="text-white py-2 px-4 rounded-lg bg-red-600 hover:bg-red-700" title="Supprimer">
         Supprimer l'acte
-    </button>
+    </button> --}}
 </div> 
 
 {{-- Script de suppression --}}
