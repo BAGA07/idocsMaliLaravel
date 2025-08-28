@@ -163,11 +163,7 @@
                   class="text-blue-200 hover:text-white transition duration-200 text-sm">La Démarche</a></li>
               {{-- Correction : 'demander_acte' n'était pas défini, utilisation de 'choix_type' --}}
               <li><a href="{{ route('demande.copie_extrait.create') }}"
-<<<<<<< HEAD
-                  class="text-blue-200 hover:text-white transition duration-200 text-sm">Demander une copie d'extrait</a></li>
-=======
                   class="text-blue-200 hover:text-white transition duration-200 text-sm">Demander un Extrait d'Acte</a></li>
->>>>>>> salimamodif
               <li><a href="{{ route('presentation.suivre_demande') }}"
                   class="text-blue-200 hover:text-white transition duration-200 text-sm">Suivre ma Demande</a></li>
               <li><a href="{{ route('presentation.faq') }}"

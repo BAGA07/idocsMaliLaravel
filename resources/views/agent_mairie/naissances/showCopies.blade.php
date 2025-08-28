@@ -291,13 +291,10 @@
             <a href="{{ route('mairie.dashboard.copies') }}" class="inline-flex items-center bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300 shadow">
                 ← Retour
             </a>
-<<<<<<< HEAD
             {{-- Boutons d'action suppression --}}
             <button onclick="confirmDelete({{ $copie->id }})" class="text-white py-2 px-4 rounded-lg bg-red-600 hover:bg-red-700" title="Supprimer">
                 Supprimer l'acte
             </button>
-=======
->>>>>>> salimamodif
         </div> 
     </div>
 </div>
