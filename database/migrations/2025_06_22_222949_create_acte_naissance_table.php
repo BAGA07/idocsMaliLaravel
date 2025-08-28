@@ -37,14 +37,14 @@ return new class extends Migration
             // Liaisons avec les autres entités
             $table->foreignId('id_officier')->constrained('officier_etat_civil')->onDelete('cascade');
             $table->unsignedBigInteger('id_declarant');
-$table->foreign('id_declarant')->references('id_declarant')->on('declarants')->onDelete('cascade');
+            $table->foreign('id_declarant')->references('id_declarant')->on('declarants')->onDelete('cascade');
             $table->foreignId('id_commune')->constrained('communes')->onDelete('cascade');
             $table->foreignId('id_demande')->constrained('demandes')->onDelete('cascade');
     //         $table->foreignId('id_volet')
     //   ->nullable()
     //   ->constrained('volet_declarations', 'id_volet')
     //   ->onDelete('set null');
-
+            $table->string('original_num_acte')->nullable();
             $table->date('date_enregistrement_acte');
 
             $table->timestamps();

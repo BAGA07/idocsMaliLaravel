@@ -58,6 +58,29 @@ class OfficierActeController extends Controller
         $acte->cachet_applique = true;
         $acte->statut = 'Finalisé';
         $acte->save();
+        //Envoie du mail au declarant
+         try {
+            $email = optional($acte->declarant)->email
+                ?? optional($acte->demande)->email
+                ?? null;
+
+            if ($email) {
+                \Mail::to($email)->send(new \App\Mail\ActeFinaliseMail($acte));
+                \Log::info('Email acte finalisé envoyé au déclarant', [
+                    'acte_id' => $acte->id,
+                    'email' => $email,
+                ]);
+            } else {
+                \Log::warning('Aucun email pour le déclarant/demande; notification non envoyée', [
+                    'acte_id' => $acte->id,
+                ]);
+            }
+        } catch (\Throwable $e) {
+            \Log::error('Erreur lors de l\'envoi de l\'email (finalisation acte)', [
+                'acte_id' => $acte->id,
+                'error' => $e->getMessage(),
+            ]);
+        }
         return redirect()->route('officier.dashboard')->with('success', 'Acte finalisé avec succès.');
     }
 
@@ -81,7 +104,22 @@ class OfficierActeController extends Controller
         $copie = Acte::findOrFail($id);
         return view('officier.finaliser_copie', compact('copie'));
     }
+    //show de l'acte originale signe par l'officier
+     public function show(string $id)
+    {
+        // Cette méthode doit pouvoir afficher les détails d'un acte original ou d'une copie
+        $acte = Acte::with(['demande.volet', 'Commune', 'declarant', 'officier'])->findOrFail($id);
+        return view('officier.showActe', compact('acte'));
+    }
+//show de la copie signe par l'officier
+ public function showCopie($id)
+    {
+        $copie = Acte::with(['declarant', 'demande', 'Commune', 'officier'])
+            ->where('type', 'copie')
+            ->findOrFail($id);
 
+        return view('officier.show', compact('copie'));
+    }
     // Enregistrement de la signature électronique et finalisation pour copie/extrait
     public function finaliserCopie(Request $request, $id)
     {
@@ -91,19 +129,19 @@ class OfficierActeController extends Controller
                 'user_id' => Auth::id(),
                 'request_data' => $request->all()
             ]);
-            
+
             $request->validate([
                 'signature_image' => 'required|string', // base64
             ]);
-            
+
             $copie = \App\Models\Acte::findOrFail($id);
-            
+
             \Log::info('Copie trouvée', [
                 'copie_id' => $copie->id,
                 'copie_num_acte' => $copie->num_acte,
                 'signature_length' => strlen($request->signature_image)
             ]);
-            
+
             $copie->signature_image = $request->signature_image; // Enregistre la signature électronique
             $copie->signed_at = now();
             $copie->finalized_by_officier_id = \Auth::id();
@@ -111,20 +149,42 @@ class OfficierActeController extends Controller
             $copie->cachet_applique = true;
             $copie->statut = 'Finalisé';
             $copie->save();
-            
+            // Envoi de l'email au déclarant/demandeur pour la copie
+            try {
+                $email = optional($copie->declarant)->email
+                    ?? optional($copie->demande)->email
+                    ?? null;
+
+                if ($email) {
+                    \Mail::to($email)->send(new \App\Mail\ActeFinaliseMail($copie));
+                    \Log::info('Email copie/extrait finalisé envoyé', [
+                        'acte_id' => $copie->id,
+                        'email' => $email,
+                    ]);
+                } else {
+                    \Log::warning('Aucun email pour le déclarant/demandeur; notification non envoyée (copie)', [
+                        'acte_id' => $copie->id,
+                    ]);
+                }
+            } catch (\Throwable $e) {
+                \Log::error('Erreur lors de l\'envoi de l\'email (finalisation copie)', [
+                    'acte_id' => $copie->id,
+                    'error' => $e->getMessage(),
+                ]);
+            }
             \Log::info('Copie finalisée avec succès', [
                 'copie_id' => $copie->id,
                 'statut' => $copie->statut
             ]);
-            
-            return redirect()->route('officier.dashboard')->with('success', 'Copie/Extrait finalisé avec succès.');
+
+            return redirect()->route('officier.dashboard')->with('success', 'Copie/Extrait finalisé avec succès.Un email de notification a été envoyé.');
         } catch (\Exception $e) {
             \Log::error('Erreur lors de la finalisation de la copie', [
                 'copie_id' => $id,
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
             ]);
-            
+
             return redirect()->back()->with('error', 'Erreur lors de la finalisation: ' . $e->getMessage());
         }
     }
@@ -149,4 +209,4 @@ class OfficierActeController extends Controller
         $copiesFinalisees = \App\Models\Acte::where('type', 'copie')->where('statut', 'Finalisé')->get();
         return view('officier.historique', compact('actesFinalises', 'copiesFinalisees'));
     }
-} 
+}

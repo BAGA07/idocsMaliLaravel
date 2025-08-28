@@ -8,7 +8,7 @@
                 <h2 class="text-lg font-semibold flex items-center">
                     <i class="fa fa-user mr-2"></i>Détails du Manager
                 </h2>
-                <a href="{{ route('managers.edit', $manager->id) }}"
+                <a href="{{ route('admin.managers.edit', $manager->id) }}"
                     class="bg-white text-blue-600 hover:bg-blue-50 px-3 py-1 rounded-md text-sm font-medium transition duration-200">
                     <i class="fa fa-edit mr-1"></i>Modifier
                 </a>
@@ -39,15 +39,18 @@
                     <div class="flex items-center">
                         <span class="font-semibold text-gray-900 mr-2">Structure :</span>
                         @if($manager->hopital)
-                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                        <span
+                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                             Hôpital – {{ $manager->hopital->nom_hopital }}
                         </span>
                         @elseif($manager->mairie)
-                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                        <span
+                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                             Mairie – {{ $manager->mairie->nom_mairie }}
                         </span>
                         @else
-                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                        <span
+                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
                             Non assigné
                         </span>
                         @endif
@@ -65,7 +68,7 @@
 
             <div class="bg-gray-50 px-6 py-4 border-t border-gray-200">
                 <div class="flex justify-end">
-                    <a href="{{ route('managers.index') }}"
+                    <a href="{{ route('admin.managers.index') }}"
                         class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition duration-200">
                         <i class="fa fa-arrow-left mr-2"></i>Retour à la liste
                     </a>

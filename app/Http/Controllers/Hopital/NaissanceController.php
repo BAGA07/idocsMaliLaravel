@@ -21,7 +21,7 @@ class NaissanceController extends Controller
         $anneeActuelle = Carbon::now()->year;
 
         $totalGarçons = VoletDeclaration::whereYear('created_at', $anneeActuelle)
-            ->where('sexe_enfant', 'M')
+            ->where('sexe', 'M')
             ->count();
 
         $totalFilles = VoletDeclaration::whereYear('created_at', $anneeActuelle)

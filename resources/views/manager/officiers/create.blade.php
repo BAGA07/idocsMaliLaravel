@@ -6,10 +6,10 @@
         <div class="mb-8">
             <div class="flex items-center justify-between">
                 <div>
-                    <h1 class="text-3xl font-bold text-gray-900">Créer un nouvel officer</h1>
-                    <p class="text-gray-600 mt-2">Ajoutez un nouvel officer hôpital ou mairie</p>
+                    <h1 class="text-3xl font-bold text-gray-900">Créer un nouvel officier</h1>
+                    <p class="text-gray-600 mt-2">Ajoutez un nouvel officier hôpital ou mairie</p>
                 </div>
-                <a href="{{ route('manager.officers.index') }}"
+                <a href="{{ route('manager.officiers.index') }}"
                     class="bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-4 rounded-lg transition duration-200">
                     <i class="fa fa-arrow-left mr-2"></i> Retour
                 </a>
@@ -17,7 +17,7 @@
         </div>
 
         <div class="bg-white rounded-lg shadow-md p-6">
-            <form action="{{ route('manager.officers.store') }}" method="POST">
+            <form action="{{ route('manager.officiers.store') }}" method="POST">
                 @csrf
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -110,13 +110,13 @@
                 </div>
 
                 <div class="mt-8 flex justify-end space-x-4">
-                    <a href="{{ route('manager.officers.index') }}"
+                    <a href="{{ route('manager.officiers.index') }}"
                         class="bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-6 rounded-lg transition duration-200">
                         Annuler
                     </a>
                     <button type="submit"
                         class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg transition duration-200">
-                        <i class="fa fa-save mr-2"></i> Créer l'officer
+                        <i class="fa fa-save mr-2"></i> Créer l'officier
                     </button>
                 </div>
             </form>

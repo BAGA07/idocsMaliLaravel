@@ -84,7 +84,8 @@ class VoletDeclarationController extends Controller
             'nom_declarant' => $request->nom_declarant,
             'age_declarant' => $request->age_declarant,
             'domicile_declarant' => $request->domicile_declarant,
-            'profession_declarant' => '-', // Peut être remplacé plus tard
+            'profession_declarant' => $request->professsion_declarant,
+            'ethnie_declarant' => $request->ethnie_declarant,
             'numero_declaration' => rand(1000, 9999),
             'date_declaration' => now(),
             'telephone' => $request->telephone ?? null,
@@ -146,7 +147,7 @@ class VoletDeclarationController extends Controller
         return view('hopital.naissances.show', compact('declaration', 'demandeExistante', 'mairieCommune'));
     }
 
-    
+
     public function edit($id)
     {
         $volet = VoletDeclaration::with('declarant')->findOrFail($id);

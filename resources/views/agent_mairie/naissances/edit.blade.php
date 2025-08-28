@@ -53,8 +53,8 @@
                     <div>
                         <label class="block font-medium">Sexe</label>
                         <select name="sexe_enfant" class="w-full border rounded px-3 py-2">
-                            <option value="masculin" {{ $acte->sexe_enfant == 'masculin' ? 'selected' : '' }}>Masculin</option>
-                            <option value="féminin" {{ $acte->sexe_enfant == 'féminin' ? 'selected' : '' }}>Féminin</option>
+                            <option value="M" {{ $acte->sexe_enfant == 'M' ? 'selected' : '' }}>Masculin</option>
+                            <option value="F" {{ $acte->sexe_enfant == 'F' ? 'selected' : '' }}>Féminin</option>
                         </select>
                     </div>
                 </div>

@@ -47,7 +47,7 @@ class DeclarationController extends Controller
             \Log::info('Envoi mail à : ' . $declarant->email);
         }
 
-        // Envoi SMS si téléphone disponible
+        // Envoi SMS si téléphone disponible ici dans ce code
         if ($hasPhone) {
             $telephone = $declarant->telephone;
             // Format international
@@ -59,6 +59,7 @@ class DeclarationController extends Controller
             \Log::info('SMS envoyé à : ' . $telephone);
             \Log::info('Réponse Sendchamp SMS:', ['response' => $smsResponse]);
         }
+        //mes modification
 
         // Envoi email à la mairie de la commune correspondant à l'hôpital
         $mairieEmail = null;

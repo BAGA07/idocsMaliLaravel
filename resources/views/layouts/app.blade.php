@@ -9,8 +9,9 @@
     <link rel="icon" type="image" href="{{ asset('favicon.png') }}">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    {{--
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script> --}}
 
 </head>
 
@@ -31,7 +32,9 @@
             {{-- Contenu dynamique --}}
             <main class="p-6">
                 @yield('content')
+               
             </main>
+             @yield('scripts')
         </div>
     </div>
 
@@ -60,6 +63,29 @@
     </script>
     @endif
 
+    {{-- Alert pour envoyer à l'officier --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+    function confirmSend(id) {
+        Swal.fire({
+            title: 'Confirmation',
+            text: "Êtes-vous sûr de vouloir envoyer cet acte à l'officier ?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#16a34a', // vert
+            cancelButtonColor: '#6b7280',  // gris
+            confirmButtonText: 'Oui, envoyer',
+            cancelButtonText: 'Annuler'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('send-form-' + id).submit();
+            }
+        });
+    }
+    </script>
+
+
+
     {{-- Fonction de suppression avec confirmation --}}
     <script>
         function confirmDelete(id) {
@@ -80,6 +106,8 @@
         }
     </script>
     @stack('scripts')
+    @livewireStyles
+    @livewireScripts
 </body>
 
 </html>

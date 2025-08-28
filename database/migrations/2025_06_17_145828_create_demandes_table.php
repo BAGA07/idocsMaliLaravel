@@ -17,22 +17,24 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->string('telephone');
             $table->string('type_document');
-            $table->string('numero_volet_naissance');
+            $table->string('numero_volet_naissance')->nullable();
             $table->unsignedBigInteger('id_volet')->nullable();
-            $table->foreign('id_volet')->references('id_volet')->on('volet_declarations')->onDelete('cascade');
+            $table->foreign('id_volet')->references('id_volet')->on('volet_declarations')->onDelete('cascade')->nullable();
             $table->integer('nombre_copie');
             $table->integer('num_acte')->nullable();
             // Champs annexes
             $table->text('informations_complementaires')->nullable();
             $table->string('justificatif')->nullable();
-            $table->string('num_suivi')->unique()->nullable();
+            //$table->string('numero_suivi')->unique()->nullable();
+            // stocker le nom ou chemin du fichier justificatif
+            $table->string('numero_suivi')->unique()->nullable();
             //$table->string('justificatif')->nullable(); // stocker le nom ou chemin du fichier justificatif
             $table->text('remarque_mairie')->nullable();
             $table->text('message_hopital')->nullable();
             // $table->integer('nombre_copie');
             // $table->integer('num_acte');
             // Statut de la demande
-            $table->enum('statut', ['En attente', 'En cours de traitement', 'Validé', 'Rejeté'])->default('En attente');
+           $table->enum('statut', ['En attente', 'En cours de traitement', 'Validé', 'Rejeté'])->default('En attente');
 
             $table->timestamps();
         });

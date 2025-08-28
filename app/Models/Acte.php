@@ -42,13 +42,15 @@ class Acte extends Model
         'token',
         'type',
         'sequential_num',
-         'statut' 
+         'statut',
+         'is_virtuelle',
+         'original_num_acte'
     ];
 
     use HasFactory;
     public function declarant()
    {
-    return $this->belongsTo(Declarant::class,'id_declarant');
+    return $this->belongsTo(Declarant::class,'id_declarant','id_declarant');
    }
    public function Commune()
   {

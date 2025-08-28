@@ -2,16 +2,7 @@
 @section('titre')Détails @endsection
 @section('content')
 
-@if(session('success'))
-<div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
-  {{ session('success') }}
-</div>
-@endif
-@if(session('error'))
-<div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-  {{ session('error') }}
-</div>
-@endif
+
 
 <div class="text-center mb-4">
   <a href="{{ route('hopital.dashboard') }}"
@@ -137,7 +128,7 @@
 
     <!-- Infos Déclarant -->
     <div class="mb-6">
-      <h5 class="font-semibold text-gray-700 mb-2">🧾 Informations sur le Déclarant</h5>
+      <h5 class="font-semibold text-gray-700 mb-2">Informations sur le Déclarant</h5>
       <div class="grid grid-cols-2 gap-2 text-sm">
         <div>25. Nom : {{ $declaration->declarant->prenom_declarant }} {{ $declaration->declarant->nom_declarant }}
         </div>
@@ -194,7 +185,7 @@
             <label for="email" class="block mb-2 text-sm font-medium text-blue-700">Email</label>
             <input type="email" name="email" id="email"
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
-              placeholder="renseigner l'email du declarant">
+              placeholder="{{ $declaration->declarant->email ?? 'Non renseigné' }}">
           </div>
           <div>
             <label for="telephone" class="block mb-2 text-sm font-medium text-blue-700">Téléphone</label>

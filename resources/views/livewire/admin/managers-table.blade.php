@@ -5,8 +5,9 @@
             class="rounded border-gray-300 px-3 py-2 w-56" />
         <select wire:model="role" class="rounded border-gray-300 px-2 py-2">
             <option value="">Tous rôles</option>
-            <option value="superadmin">Superadmin</option>
-            <option value="admin">Admin</option>
+            <option value="superadmin">Admin</option>
+            <option value="admin">Manager</option>
+            <option value="admin">Officier</option>
             <option value="agent_hopital">Agent hôpital</option>
             <option value="agent_mairie">Agent mairie</option>
         </select>
@@ -73,6 +74,10 @@
                     </span>
                 </td>
                 <td class="p-2 border">
+                    <button onclick="window.location='{{ route('admin.managers.show', $manager->id) }}'" type="button"
+                        class="px-2 py-1 rounded bg-blue-500 hover:bg-blue-600 text-white text-xs">
+                        Voir
+                    </button>
                     <button wire:click="toggleStatus({{ $manager->id }})"
                         class="px-2 py-1 rounded {{ $manager->actif ? 'bg-red-500 hover:bg-red-600' : 'bg-green-500 hover:bg-green-600' }} text-white text-xs">
                         {{ $manager->actif ? 'Désactiver' : 'Activer' }}

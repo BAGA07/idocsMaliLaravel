@@ -151,11 +151,13 @@
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                             <div class="flex space-x-2">
-                                <button wire:click="openEditModal({{ $structure->id }})"
+                                <button
+                                    wire:click="openEditModal('{{ $activeTab === 'hopitaux' ? 'hopital' : 'mairie' }}', {{ $structure->id }})"
                                     class="text-blue-600 hover:text-blue-900" title="Modifier">
                                     <i class="fas fa-edit"></i>
                                 </button>
-                                <button wire:click="openDeleteModal({{ $structure->id }})"
+                                <button
+                                    wire:click="openDeleteModal('{{ $activeTab === 'hopitaux' ? 'hopital' : 'mairie' }}', {{ $structure->id }})"
                                     class="text-red-600 hover:text-red-900" title="Supprimer">
                                     <i class="fas fa-trash"></i>
                                 </button>

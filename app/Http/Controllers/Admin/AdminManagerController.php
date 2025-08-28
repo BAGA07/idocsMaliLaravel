@@ -26,7 +26,7 @@ class AdminManagerController extends Controller
     {
         $structures = Hopital::where('id_communes', Auth::user()->id_commune)
             ->get();
-        dd($structures);
+
         return view('admin.managers.structureList', compact('structures'));
     }
     // Formulaire de création
@@ -78,10 +78,10 @@ class AdminManagerController extends Controller
         // Log création manager
         Log::create([
             'id_utilisateur' => Auth::id(),
-            'action' => 'Création manager',
+            'action' => 'Création utilisateur',
             'details' => 'Manager créé : ' . $user->nom . ' ' . $user->prenom . ' (' . $user->email . ')',
         ]);
-        return redirect()->route('admin.managers.index')->with('success', 'Manager créé avec succès.');
+        return redirect()->route('admin.managers.index')->with('success', 'Utilisateur créé avec succès.');
     }
 
     // Afficher le formulaire d'édition

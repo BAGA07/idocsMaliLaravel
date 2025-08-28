@@ -119,7 +119,7 @@
             <li class="md:ml-4">
               <a href="{{ route('demande.copie_extrait.create') }}"
                 class="text-white bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 md:px-5 md:py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-                Demander un Acte
+                Demander une copie d'extrait
               </a>
             </li>
           </ul>
@@ -155,7 +155,7 @@
                   class="text-blue-200 hover:text-white transition duration-200 text-sm">La Démarche</a></li>
               {{-- Correction : 'demander_acte' n'était pas défini, utilisation de 'choix_type' --}}
               <li><a href="{{ route('demande.copie_extrait.create') }}"
-                  class="text-blue-200 hover:text-white transition duration-200 text-sm">Demander un Acte</a></li>
+                  class="text-blue-200 hover:text-white transition duration-200 text-sm">Demander une copie d'extrait</a></li>
               <li><a href="{{ route('presentation.suivre_demande') }}"
                   class="text-blue-200 hover:text-white transition duration-200 text-sm">Suivre ma Demande</a></li>
               <li><a href="{{ route('presentation.faq') }}"
@@ -168,7 +168,7 @@
             <h3 class="text-xl font-semibold mb-4 text-blue-400">Contact</h3>
             <ul class="space-y-2 text-blue-200 text-sm">
               <li><i class="fas fa-map-marker-alt mr-2"></i> Bamako, Mali</li>
-              <li><i class="fas fa-phone mr-2"></i> +223 XXXX XXXX</li>
+              <li><i class="fas fa-phone mr-2"></i> +223 12 34 56 78</li>
               <li><i class="fas fa-envelope mr-2"></i> contact@IdocsMali.com</li>
             </ul>
           </div>
@@ -211,7 +211,7 @@
         </div>
 
         <div class="border-t border-blue-700 pt-6 text-center text-blue-300 text-sm">
-          <p>&copy; 2024 Votre Nom ou Nom de l'Entreprise. Tous droits réservés.</p>
+          <p>&copy; 2025 IdocsMali. Tous droits réservés.</p>
         </div>
       </div>
     </footer>
@@ -219,6 +219,51 @@
 
     {{-- AJOUT IMPORTANT : Scripts Livewire --}}
     @livewireScripts
+    @if(session('success'))
+    <script>
+        Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: '{{ session("success") }}',
+            showConfirmButton: false,
+            timer: 2000
+        });
+    </script>
+    @endif
+
+    {{-- SweetAlert : Messages d'erreur --}}
+    @if(session('error'))
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Erreur',
+            text: '{{ session("error") }}',
+            confirmButtonColor: '#d33'
+        });
+    </script>
+    @endif
+
+    {{-- Fonction de suppression avec confirmation --}}
+    <script>
+        function confirmDelete(id) {
+            Swal.fire({
+                title: 'Confirmation',
+                text: "Voulez-vous vraiment supprimer cet élément ?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Oui, supprimer',
+                cancelButtonText: 'Annuler'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + id).submit();
+                }
+            })
+        }
+    </script>
+
+    
   </body>
 
 </html>

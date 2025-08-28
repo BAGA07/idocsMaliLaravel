@@ -21,7 +21,7 @@
             </div>
 
             <div class="px-6 py-6">
-                <form action="{{ route('managers.update', $manager->id) }}" method="POST">
+                <form action="{{ route('admin.managers.update', $manager->id) }}" method="POST">
                     @csrf
                     @method('PUT')
 
@@ -33,7 +33,8 @@
                                     <i class="fa fa-user"></i>
                                 </span>
                                 <input type="text" name="nom" value="{{ $manager->nom }}"
-                                    class="w-full pl-10 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500" required>
+                                    class="w-full pl-10 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                                    required>
                             </div>
                         </div>
 
@@ -44,7 +45,8 @@
                                     <i class="fa fa-user"></i>
                                 </span>
                                 <input type="text" name="prenom" value="{{ $manager->prenom }}"
-                                    class="w-full pl-10 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500" required>
+                                    class="w-full pl-10 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                                    required>
                             </div>
                         </div>
 
@@ -55,7 +57,8 @@
                                     <i class="fa fa-map-marker"></i>
                                 </span>
                                 <input type="text" name="adresse" value="{{ $manager->adresse }}"
-                                    class="w-full pl-10 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500" required>
+                                    class="w-full pl-10 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                                    required>
                             </div>
                         </div>
 
@@ -66,7 +69,8 @@
                                     <i class="fa fa-phone"></i>
                                 </span>
                                 <input type="text" name="telephone" value="{{ $manager->telephone }}"
-                                    class="w-full pl-10 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500" required>
+                                    class="w-full pl-10 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                                    required>
                             </div>
                         </div>
 
@@ -95,18 +99,24 @@
 
                     <div class="mt-4">
                         <label class="block mb-1 font-medium text-gray-700">Structure</label>
-                        <select name="structure" id="structure" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500" required>
+                        <select name="structure" id="structure"
+                            class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                            required>
                             <option value="">-- Sélectionner --</option>
                             <option value="hopital" {{ $manager->id_hopital ? 'selected' : '' }}>Hôpital</option>
                             <option value="mairie" {{ $manager->id_mairie ? 'selected' : '' }}>Mairie</option>
                         </select>
                     </div>
 
-                    <div class="mt-4" id="select_hopital" style="display: {{ $manager->id_hopital ? 'block' : 'none' }};">
+                    <div class="mt-4" id="select_hopital"
+                        style="display: {{ $manager->id_hopital ? 'block' : 'none' }};">
                         <label class="block mb-1 font-medium text-gray-700">Hôpital concerné</label>
-                        <select name="structure_id" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500" {{ $manager->id_hopital ? '' : 'disabled' }}>
+                        <select name="structure_id"
+                            class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                            {{ $manager->id_hopital ? '' : 'disabled' }}>
                             @foreach($hopitaux as $hopital)
-                            <option value="{{ $hopital->id }}" {{ $manager->id_hopital == $hopital->id ? 'selected' : '' }}>
+                            <option value="{{ $hopital->id }}" {{ $manager->id_hopital == $hopital->id ? 'selected' : ''
+                                }}>
                                 {{ $hopital->nom_hopital }}
                             </option>
                             @endforeach
@@ -115,9 +125,12 @@
 
                     <div class="mt-4" id="select_mairie" style="display: {{ $manager->id_mairie ? 'block' : 'none' }};">
                         <label class="block mb-1 font-medium text-gray-700">Mairie concernée</label>
-                        <select name="structure_id" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500" {{ $manager->id_mairie ? '' : 'disabled' }}>
+                        <select name="structure_id"
+                            class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                            {{ $manager->id_mairie ? '' : 'disabled' }}>
                             @foreach($mairies as $mairie)
-                            <option value="{{ $mairie->id }}" {{ $manager->id_mairie == $mairie->id ? 'selected' : '' }}>
+                            <option value="{{ $mairie->id }}" {{ $manager->id_mairie == $mairie->id ? 'selected' : ''
+                                }}>
                                 {{ $mairie->nom_mairie }}
                             </option>
                             @endforeach
@@ -125,11 +138,12 @@
                     </div>
 
                     <div class="flex justify-end gap-4 mt-6">
-                        <a href="{{ route('managers.index') }}" 
-                           class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition duration-200">
+                        <a href="{{ route('admin.managers.index') }}"
+                            class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition duration-200">
                             <i class="fa fa-arrow-left mr-2"></i>Retour
                         </a>
-                        <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition duration-200">
+                        <button type="submit"
+                            class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition duration-200">
                             Mettre à jour
                         </button>
                     </div>

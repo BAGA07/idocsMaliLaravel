@@ -9,21 +9,20 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
-{
-    Schema::table('notifications', function (Blueprint $table) {
-        $table->boolean('is_read')->default(false);
-    });
-}
-
+    public function up(): void
+    {
+        Schema::table('acte_naissance', function (Blueprint $table) {
+            $table->boolean('is_virtuelle')->default(false)->after('statut');
+        });
+    }
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::table('notifications', function (Blueprint $table) {
-            //
+        Schema::table('acte_naissance', function (Blueprint $table) {
+            $table->dropColumn('is_virtuelle');
         });
     }
 };

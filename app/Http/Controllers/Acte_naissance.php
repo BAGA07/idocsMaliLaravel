@@ -26,7 +26,74 @@ class Acte_naissance extends Controller
     /**
      * Display a listing of the resource (Dashboard principal pour l'agent).
      */
-    // public function index()
+
+
+    public function index()
+    {
+        // Statistiques globales pour les déclarations/demandes
+        $total = Demande::count(); // Total des volets de déclaration
+        $totalDeclarations = Demande::count();
+        $today = Carbon::today();
+        $startOfWeek = Carbon::now()->startOfWeek();
+        $endOfWeek = Carbon::now()->endOfWeek();
+        $todayCount = Demande::whereDate('created_at', $today)->count(); // Compteur du jour
+        $todayDeclarationsCount = Demande::whereDate('created_at', $today)->count();
+        $weekCount = Demande::whereBetween('created_at', [$startOfWeek, $endOfWeek])->count(); // Compteur de la semaine
+        $weekDeclarationsCount = Demande::whereBetween('created_at', [$startOfWeek, $endOfWeek])->count();
+        $monthCount = Demande::whereMonth('created_at', Carbon::now()->month)->count(); // Compteur du mois
+        $monthDeclarationsCount = Demande::whereMonth('created_at', Carbon::now()->month)->count();
+
+        // Récupérer les DEMANDES d'actes originaux (via volet de déclaration)
+        $demandes = Demande::where('type_document', 'Extrait original')
+            ->whereNotNull('id_volet')
+            ->with('volet')
+             ->latest()
+            ->paginate(10);
+           
+            
+
+        // Récupérer les DEMANDES de copies (via plateforme publique)
+        $demandesCopies = Demande::where('type_document', 'Extrait de naissance')
+            ->with('acte')
+             ->latest()
+            ->paginate(10);
+           
+
+        // Récupérer les ACTES de naissance originaux (ceux avec type='original' ou NULL)
+        $actesNaissanceOriginaux = Acte::where(function ($query) {
+            $query->whereNull('type') // Actes sans type défini (présumés originaux)
+                ->orWhere('type', 'original'); // Ou explicitement marqués comme originaux
+        })->with('declarant')->latest()->get();
+
+        // Récupérer les COPIES D'ACTES (ceux avec type='copie')
+        $actesCopies = Acte::where('type', 'copie')->with('declarant')->latest()->get();
+        $mairieId = Auth::user()->id_mairie ?? null;
+        $notifications = collect();
+        if ($mairieId) {
+            $notifications = Notification::where('mairie_id', $mairieId)
+                ->orderBy('created_at', 'desc')
+                ->paginate(10); // Pagination (10 par page)
+        }
+        $notificationsDropdown = Notification::where('mairie_id', $mairieId)
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
+
+
+        return view('agent_mairie.dasboard', compact(
+            'total',
+            'todayCount',
+            'weekCount',
+            'monthCount',
+            'demandes',
+            'actesNaissanceOriginaux',
+            'demandesCopies',
+            'actesCopies',
+            'notifications',
+            'notificationsDropdown'
+        ));
+    }
+    // // public function index()
     // {
     //     // Statistiques globales pour les déclarations/demandes
     //     $total = VoletDeclaration::count(); // Total des volets de déclaration
@@ -43,20 +110,20 @@ class Acte_naissance extends Controller
 
     //     // Récupérer les DEMANDES d'actes originaux (via volet de déclaration)
     //     $demandes = Demande::where('type_document', 'Extrait original')
-    //                        ->whereNotNull('id_volet')
-    //                        ->with('volet')
-    //                        ->get();
+    //         ->whereNotNull('id_volet')
+    //         ->with('volet')
+    //         ->get();
 
     //     // Récupérer les DEMANDES de copies (via plateforme publique)
     //     $demandesCopies = Demande::where('type_document', 'Extrait de naissance')
-    //                              ->with('acte')
-    //                              ->get();
+    //         ->with('acte')
+    //         ->get();
 
     //     // Récupérer les ACTES de naissance originaux (ceux avec type='original' ou NULL)
     //     $actesNaissanceOriginaux = Acte::where(function ($query) {
-    //                                         $query->whereNull('type') // Actes sans type défini (présumés originaux)
-    //                                               ->orWhere('type', 'original'); // Ou explicitement marqués comme originaux
-    //                                     })->with('declarant')->latest()->get();
+    //         $query->whereNull('type') // Actes sans type défini (présumés originaux)
+    //             ->orWhere('type', 'original'); // Ou explicitement marqués comme originaux
+    //     })->with('declarant')->latest()->get();
 
     //     // Récupérer les COPIES D'ACTES (ceux avec type='copie')
     //     $actesCopies = Acte::where('type', 'copie')->with('declarant')->latest()->get();
@@ -75,81 +142,62 @@ class Acte_naissance extends Controller
     //         'actesNaissanceOriginaux', // Les enregistrements des actes originaux
     //         'actesCopies'         // Les enregistrements des copies d'actes
     //     ));
+    //     return view('agent_mairie.dasboard', compact(
+    //         'total',
+    //         'todayCount',
+    //         'weekCount',
+    //         'monthCount',
+    //         'demandes',
+    //         'actesNaissance',
+    //         'demandesCopies',
+    //         'actesCopies',
+    //         'notifications'
+    //     ));
     // }
-//     public function index()
-//     {
+    //     public function index()
+    //     {
 
-//         //  $statut = $request->input('statut');
+    //         //  $statut = $request->input('statut');
 
-//         // $demandes = Demande::with('volet')->where('statut', 'En attente')->get();
-//         // $demandesCopies = Demande::where('nombre_copie')->get();
-
-
-//         $demandes = Demande::with('volet')->get();
-//         $demandesCopies = Demande::with('acte')->get();
-//         $total = Demande::count();
-//         $today = Carbon::today();
-//         $startOfWeek = Carbon::now()->startOfWeek();
-//         $endOfWeek = Carbon::now()->endOfWeek();
-//         $todayCount = Demande::whereDate('created_at', $today)->count();
-//         $weekCount = Demande::whereBetween('created_at', [$startOfWeek, $endOfWeek])->count();
-//         $monthCount = Demande::whereMonth('created_at', Carbon::now()->month)->count();
+    //         // $demandes = Demande::with('volet')->where('statut', 'En attente')->get();
+    //         // $demandesCopies = Demande::where('nombre_copie')->get();
 
 
-//         $actesNaissance = Acte::with('declarant')->latest()->get();
-//         $actesCopies = Acte::with('declarant')->latest()->get();
+    //         $demandes = Demande::with('volet')->get();
+    //         $demandesCopies = Demande::with('acte')->get();
+    //         $total = Demande::count();
+    //         $today = Carbon::today();
+    //         $startOfWeek = Carbon::now()->startOfWeek();
+    //         $endOfWeek = Carbon::now()->endOfWeek();
+    //         $todayCount = Demande::whereDate('created_at', $today)->count();
+    //         $weekCount = Demande::whereBetween('created_at', [$startOfWeek, $endOfWeek])->count();
+    //         $monthCount = Demande::whereMonth('created_at', Carbon::now()->month)->count();
 
 
-
-//         // Statistiques
-//         $total = VoletDeclaration::count();
-//         $todayCount = VoletDeclaration::whereDate('created_at', $today)->count();
-//         $weekCount = VoletDeclaration::whereBetween('created_at', [$startOfWeek, $endOfWeek])->count();
-//         $monthCount = VoletDeclaration::whereMonth('created_at', Carbon::now()->month)->count();
-//         // Récupérer la liste des actes de naissance
-//         $actesNaissance = Acte::with('declarant')->latest()->get();
-//         return view('agent_mairie.dasboard', compact('total', 'todayCount', 'weekCount', 'monthCount', 'demandes', 'actesNaissance', 'demandesCopies','notifications'));
+    //         $actesNaissance = Acte::with('declarant')->latest()->get();
+    //         $actesCopies = Acte::with('declarant')->latest()->get();
 
 
 
-//         // Statistiques
-//         $total = Demande::count();
-//         $todayCount = Demande::whereDate('created_at', $today)->count();
-//         $weekCount = Demande::whereBetween('created_at', [$startOfWeek, $endOfWeek])->count();
-//         $monthCount = Demande::whereMonth('created_at', Carbon::now()->month)->count();
-//         // Récupérer la liste des actes de naissance
-//         $actesNaissance = Acte::with('declarant')->latest()->get();
-//         $mairieId = Auth::user()->mairie_id ?? null;
-// $notifications = [];
-// if ($mairieId) {
-//     $notifications = Notification::where('mairie_id', $mairieId)
-//         ->orderBy('created_at', 'desc')
-//         ->take(20)
-//         ->get();
-// }
-//         return view('agent_mairie.dasboard', compact('declarations', 'total', 'todayCount', 'weekCount', 'monthCount', 'demandes', 'actesNaissance', 'actesCopies', 'notifications'));
-//     }
+    //         // Statistiques
+    //         $total = VoletDeclaration::count();
+    //         $todayCount = VoletDeclaration::whereDate('created_at', $today)->count();
+    //         $weekCount = VoletDeclaration::whereBetween('created_at', [$startOfWeek, $endOfWeek])->count();
+    //         $monthCount = VoletDeclaration::whereMonth('created_at', Carbon::now()->month)->count();
+    //         // Récupérer la liste des actes de naissance
+    //         $actesNaissance = Acte::with('declarant')->latest()->get();
+    //         return view('agent_mairie.dasboard', compact('total', 'todayCount', 'weekCount', 'monthCount', 'demandes', 'actesNaissance', 'demandesCopies','notifications'));
 
-public function index()
-{
-    $demandes = Demande::with('volet')->get();
-    $demandesCopies = Demande::with('acte')->get();
-    $today = Carbon::today();
-    $startOfWeek = Carbon::now()->startOfWeek();
-    $endOfWeek = Carbon::now()->endOfWeek();
 
-    // Statistiques sur les volets de déclaration
-    $total = VoletDeclaration::count();
-    $todayCount = VoletDeclaration::whereDate('created_at', $today)->count();
-    $weekCount = VoletDeclaration::whereBetween('created_at', [$startOfWeek, $endOfWeek])->count();
-    $monthCount = VoletDeclaration::whereMonth('created_at', Carbon::now()->month)->count();
 
-    // Liste des actes de naissance
-    $actesNaissance = Acte::with('declarant')->latest()->get();
-    $actesCopies = Acte::with('declarant')->latest()->get();
-
-    // Notifications pour la mairie de l'agent connecté
-    // $mairieId = Auth::user()->id_mairie ?? null;
+    //         // Statistiques
+    //         $total = Demande::count();
+    //         $todayCount = Demande::whereDate('created_at', $today)->count();
+    //         $weekCount = Demande::whereBetween('created_at', [$startOfWeek, $endOfWeek])->count();
+    //         $monthCount = Demande::whereMonth('created_at', Carbon::now()->month)->count();
+    //         // Récupérer la liste des actes de naissance
+    //         $actesNaissance = Acte::with('declarant')->latest()->get();
+    //         $mairieId = Auth::user()->mairie_id ?? null;
     // $notifications = [];
     // if ($mairieId) {
     //     $notifications = Notification::where('mairie_id', $mairieId)
@@ -157,120 +205,153 @@ public function index()
     //         ->take(20)
     //         ->get();
     // }
+    //         return view('agent_mairie.dasboard', compact('declarations', 'total', 'todayCount', 'weekCount', 'monthCount', 'demandes', 'actesNaissance', 'actesCopies', 'notifications'));
+    //     }
 
-    // return view('agent_mairie.dasboard', compact(
-    //     'total', 'todayCount', 'weekCount', 'monthCount',
-    //     'demandes', 'actesNaissance', 'demandesCopies', 'actesCopies', 'notifications'
-    // ));
-    $mairieId = Auth::user()->id_mairie ?? null;
-    $notifications = collect();
-    if ($mairieId) {
+
+    // public function index()
+    // {
+    //     $demandes = Demande::with('volet')->get();
+    //     $demandesCopies = Demande::with('acte')->get();
+    //     $today = Carbon::today();
+    //     $startOfWeek = Carbon::now()->startOfWeek();
+    //     $endOfWeek = Carbon::now()->endOfWeek();
+
+    //     // Statistiques sur les volets de déclaration
+    //     $total = VoletDeclaration::count();
+    //     $todayCount = VoletDeclaration::whereDate('created_at', $today)->count();
+    //     $weekCount = VoletDeclaration::whereBetween('created_at', [$startOfWeek, $endOfWeek])->count();
+    //     $monthCount = VoletDeclaration::whereMonth('created_at', Carbon::now()->month)->count();
+
+    //     // Liste des actes de naissance
+    //     $actesNaissance = Acte::with('declarant')->latest()->get();
+    //     $actesCopies = Acte::with('declarant')->latest()->get();
+
+    //     // Notifications pour la mairie de l'agent connecté
+    //     // $mairieId = Auth::user()->id_mairie ?? null;
+    //     // $notifications = [];
+    //     // if ($mairieId) {
+    //     //     $notifications = Notification::where('mairie_id', $mairieId)
+    //     //         ->orderBy('created_at', 'desc')
+    //     //         ->take(20)
+    //     //         ->get();
+    //     // }
+
+    //     // return view('agent_mairie.dasboard', compact(
+    //     //     'total', 'todayCount', 'weekCount', 'monthCount',
+    //     //     'demandes', 'actesNaissance', 'demandesCopies', 'actesCopies', 'notifications'
+    //     // ));
+    //     $mairieId = Auth::user()->id_mairie ?? null;
+    //     $notifications = collect();
+    //     if ($mairieId) {
+    //         $notifications = Notification::where('mairie_id', $mairieId)
+    //             ->orderBy('created_at', 'desc')
+    //             ->paginate(10); // Pagination (10 par page)
+    //     }
+    //     $notificationsDropdown = Notification::where('mairie_id', $mairieId)
+    //     ->orderBy('created_at', 'desc')
+    //     ->take(5)
+    //     ->get();
+
+
+    //     return view('agent_mairie.dasboard', compact(
+    //         'total', 'todayCount', 'weekCount', 'monthCount',
+    //         'demandes', 'actesNaissance', 'demandesCopies', 'actesCopies', 'notifications','notificationsDropdown'
+    //     ));
+    // }
+
+
+    public function notifications()
+    {
+        $mairieId = Auth::user()->id_mairie;
         $notifications = Notification::where('mairie_id', $mairieId)
             ->orderBy('created_at', 'desc')
-            ->paginate(10); // Pagination (10 par page)
+            ->paginate(20);
+
+        return view('agent_mairie.notifications.index', compact('notifications'));
     }
-    $notificationsDropdown = Notification::where('mairie_id', $mairieId)
-    ->orderBy('created_at', 'desc')
-    ->take(5)
-    ->get();
-
-
-    return view('agent_mairie.dasboard', compact(
-        'total', 'todayCount', 'weekCount', 'monthCount',
-        'demandes', 'actesNaissance', 'demandesCopies', 'actesCopies', 'notifications','notificationsDropdown'
-    ));
-}
-public function notifications()
-{
-    $mairieId = Auth::user()->id_mairie;
-    $notifications = Notification::where('mairie_id', $mairieId)
-        ->orderBy('created_at', 'desc')
-        ->paginate(20);
-
-    return view('agent_mairie.notifications.index', compact('notifications'));
-}
-// public function showNotification($id)
-// {
-//     $notification = Notification::findOrFail($id);
+    // public function showNotification($id)
+    // {
+    //     $notification = Notification::findOrFail($id);
 
 
 
-//     return view('agent_mairie.notifications.show', compact('notification'));
-// }
-public function showNotification($id)
-{
-    $notification = Notification::findOrFail($id);
+    //     return view('agent_mairie.notifications.show', compact('notification'));
+    // }
+    public function showNotification($id)
+    {
+        $notification = Notification::findOrFail($id);
 
-    // Vérifie que la notification appartient à la mairie connectée
-    if ($notification->mairie_id !== Auth::user()->id_mairie) {
-        abort(403, 'Accès non autorisé');
+        // Vérifie que la notification appartient à la mairie connectée
+        if ($notification->mairie_id !== Auth::user()->id_mairie) {
+            abort(403, 'Accès non autorisé');
+        }
+
+        // Marquer comme lue si ce n'est pas déjà fait
+        if (!$notification->is_read) {
+            $notification->is_read = true;
+            $notification->save();
+        }
+
+        return view('agent_mairie.notifications.show', compact('notification'));
     }
 
-    // Marquer comme lue si ce n'est pas déjà fait
-    if (!$notification->is_read) {
-        $notification->is_read = true;
-        $notification->save();
+    // public function markAllAsRead()
+    // {
+    //     Notification::where('mairie_id', Auth::user()->id_mairie)
+    //         ->where('is_read', false)
+    //         ->update(['is_read' => true]);
+
+    //     return redirect()->route('mairie.notifications.index')->with('success', 'Toutes les notifications ont été marquées comme lues.');
+    // }
+    public function markAllAsRead()
+    {
+        auth()->user()->notifications()->update(['is_read' => true]);
+        return response()->json(['success' => true]);
     }
 
-    return view('agent_mairie.notifications.show', compact('notification'));
-}
+    // public function ajaxMarkRead($id)
+    // {
+    //     $notification = Notification::findOrFail($id);
 
-// public function markAllAsRead()
-// {
-//     Notification::where('mairie_id', Auth::user()->id_mairie)
-//         ->where('is_read', false)
-//         ->update(['is_read' => true]);
+    //     if ($notification->mairie_id !== Auth::user()->id_mairie) {
+    //         return response()->json(['message' => 'Non autorisé'], 403);
+    //     }
 
-//     return redirect()->route('mairie.notifications.index')->with('success', 'Toutes les notifications ont été marquées comme lues.');
-// }
-public function markAllAsRead()
-{
-    auth()->user()->notifications()->update(['is_read' => true]);
-    return response()->json(['success' => true]);
-}
+    //     if (!$notification->is_read) {
+    //         $notification->is_read = true;
+    //         $notification->save();
+    //     }
 
-// public function ajaxMarkRead($id)
-// {
-//     $notification = Notification::findOrFail($id);
+    //     return response()->json(['message' => 'Notification marquée comme lue.']);
+    // }
+    public function ajaxMarkRead($id)
+    {
+        // Trouver la notification par ID
+        $notification = Notification::findOrFail($id);
 
-//     if ($notification->mairie_id !== Auth::user()->id_mairie) {
-//         return response()->json(['message' => 'Non autorisé'], 403);
-//     }
+        // Vérifier si l'utilisateur appartient à la mairie qui a cette notification
+        if ($notification->mairie_id !== Auth::user()->id_mairie) {
+            return response()->json(['message' => 'Non autorisé'], 403);
+        }
 
-//     if (!$notification->is_read) {
-//         $notification->is_read = true;
-//         $notification->save();
-//     }
+        // Si la notification n'est pas déjà lue, on la marque comme lue
+        if (!$notification->is_read) {
+            $notification->is_read = true;
+            $notification->save();
+        }
 
-//     return response()->json(['message' => 'Notification marquée comme lue.']);
-// }
-public function ajaxMarkRead($id)
-{
-    // Trouver la notification par ID
-    $notification = Notification::findOrFail($id);
+        // Récupérer le nombre de notifications non lues
+        $unreadCount = Notification::where('mairie_id', Auth::user()->id_mairie)
+            ->where('is_read', false)
+            ->count();
 
-    // Vérifier si l'utilisateur appartient à la mairie qui a cette notification
-    if ($notification->mairie_id !== Auth::user()->id_mairie) {
-        return response()->json(['message' => 'Non autorisé'], 403);
+        // Retourner la réponse avec le message et le nombre de notifications non lues
+        return response()->json([
+            'message' => 'Notification marquée comme lue.',
+            'unreadCount' => $unreadCount // Envoie le nombre de notifications non lues
+        ]);
     }
-
-    // Si la notification n'est pas déjà lue, on la marque comme lue
-    if (!$notification->is_read) {
-        $notification->is_read = true;
-        $notification->save();
-    }
-
-    // Récupérer le nombre de notifications non lues
-    $unreadCount = Notification::where('mairie_id', Auth::user()->id_mairie)
-                               ->where('is_read', false)
-                               ->count();
-
-    // Retourner la réponse avec le message et le nombre de notifications non lues
-    return response()->json([
-        'message' => 'Notification marquée comme lue.',
-        'unreadCount' => $unreadCount // Envoie le nombre de notifications non lues
-    ]);
-}
 
 
 
@@ -297,13 +378,13 @@ public function ajaxMarkRead($id)
 
         // Demandes de copies d'actes traitées
         $demandesCopies = Demande::where('type_document', 'Extrait de naissance')
-            ->where('statut', 'Traitée')
+            ->where('statut', 'Validé')
             ->whereNotNull('id')
             ->with('acte')
             ->get();
 
         $demandesCopiesTraitees = Demande::where('type_document', 'Extrait de naissance')
-            ->where('statut', 'Traitée')
+            ->where('statut', 'Validé')
             ->whereNotNull('id')
             ->with('acte')
             ->get();
@@ -332,7 +413,7 @@ public function ajaxMarkRead($id)
         // Demandes de copies en attente
         $demandesCopiesEnAttente = Demande::where('type_document', 'Extrait de naissance')
             ->where('statut', 'En attente')
-            ->whereNull('id')
+            ->whereNull('id_volet')
             ->get();
 
         return view('agent_mairie.naissances.listEnattente', compact('demandesOriginalesEnAttente', 'demandesActesOriginauxEnAttente', 'demandesCopiesEnAttente'));
@@ -401,7 +482,7 @@ public function ajaxMarkRead($id)
     public function storeActeOriginal(Request $request) // Renommé pour plus de clarté
     {
         $request->validate([
-            'demande_id' => 'required|exists:demandes,id', // L'ID de la demande liée
+            // 'demande_id' => 'required|exists:demandes,id', // L'ID de la demande liée
             'prenom_enfant' => 'required|string',
             'nom_enfant' => 'required|string',
             'date_naissance' => 'required|date',
@@ -433,8 +514,8 @@ public function ajaxMarkRead($id)
 
         // Vérification des doublons pour un ACTE ORIGINAL
         $existingOriginalActe = Acte::where(function ($query) {
-                $query->whereNull('type')->orWhere('type', 'original');
-            })
+            $query->whereNull('type')->orWhere('type', 'original');
+        })
             ->where('prenom', $request->prenom_enfant)
             ->where('nom', $request->nom_enfant)
             ->where('date_naissance_enfant', $request->date_naissance)
@@ -453,30 +534,30 @@ public function ajaxMarkRead($id)
         // Créer ou récupérer le déclarant. Priorise les données du volet de la demande si elles existent,
         // sinon utilise les données du formulaire si l'agent les a saisies (si la demande n'avait pas de volet complet).
         // Ajustez la logique si le déclarant est TOUJOURS issu du volet.
-        $declarantData = [
-            'prenom_declarant' => $request->prenom_declarant ?? ($demande->volet->declarant->prenom_declarant ?? null),
-            'nom_declarant' => $request->nom_declarant ?? ($demande->volet->declarant->nom_declarant ?? null),
-            'age_declarant' => $request->age_declarant ?? ($demande->volet->declarant->age_declarant ?? null),
-            'profession_declarant' => $request->profession_declarant ?? ($demande->volet->declarant->profession_declarant ?? null),
-            'domicile_declarant' => $request->domicile_declarant ?? ($demande->volet->declarant->domicile_declarant ?? null),
-        ];
+        // $declarantData = [
+        //     'prenom_declarant' => $request->prenom_declarant ?? ($demande->volet->declarant->prenom_declarant ?? null),
+        //     'nom_declarant' => $request->nom_declarant ?? ($demande->volet->declarant->nom_declarant ?? null),
+        //     'age_declarant' => $request->age_declarant ?? ($demande->volet->declarant->age_declarant ?? null),
+        //     'profession_declarant' => $request->profession_declarant ?? ($demande->volet->declarant->profession_declarant ?? null),
+        //     'domicile_declarant' => $request->domicile_declarant ?? ($demande->volet->declarant->domicile_declarant ?? null),
+        // ];
 
-        $declarant = Declarant::firstOrCreate(
-            $declarantData,
-            array_merge($declarantData, [ // Attributes to create if not found
-                'ethnie_declarant' => $request->ethnie_declarant ?? ($demande->volet->declarant->ethnie_declarant ?? null),
-                'email' => $request->email ?? ($demande->volet->declarant->email ?? null),
-                'telephone' => $request->telephone ?? ($demande->volet->declarant->telephone ?? null),
-                'date_declaration' => now(), // Date de la déclaration au moment de la création de l'acte
-                'numero_declaration' => Declarant::max('numero_declaration') + 1, // Assure l'unicité du numéro
-            ])
-        );
+        // $declarant = Declarant::firstOrCreate(
+        //     $declarantData,
+        //     array_merge($declarantData, [ // Attributes to create if not found
+        //         'ethnie_declarant' => $request->ethnie_declarant ?? ($demande->volet->declarant->ethnie_declarant ?? null),
+        //         'email' => $request->email ?? ($demande->volet->declarant->email ?? null),
+        //         'telephone' => $request->telephone ?? ($demande->volet->declarant->telephone ?? null),
+        //         'date_declaration' => now(), // Date de la déclaration au moment de la création de l'acte
+        //         'numero_declaration' => Declarant::max('numero_declaration') + 1, // Assure l'unicité du numéro
+        //     ])
+        // );
 
         // GÉNERATION DU NUMÉRO UNIQUE POUR L'ACTE ORIGINAL
         $currentYear = Carbon::now()->year;
         $lastSequentialNum = Acte::where(function ($query) {
-                $query->whereNull('type')->orWhere('type', 'original');
-            })
+            $query->whereNull('type')->orWhere('type', 'original');
+        })
             ->whereYear('date_enregistrement_acte', $currentYear)
             ->where('id_commune', $request->id_commune)
             ->max('sequential_num');
@@ -519,14 +600,17 @@ public function ajaxMarkRead($id)
         $acte->nom_mere = $request->nom_mere;
         $acte->profession_mere = $request->profession_mere;
         $acte->domicile_mere = $request->domicile_mere;
-        $acte->id_declarant = $declarant->id; // Utilise l'ID du déclarant trouvé ou créé (assurez-vous que la PK est bien 'id')
-        $acte->id_demande = $request->demande_id; // Lier à la demande originale
+         $acte->id_declarant = $demande->volet->id_declarant ?? null; // Utilise l'ID du déclarant trouvé ou créé (assurez-vous que la PK est bien 'id')
+        //  $acte->id_demande = $request->demande_id; // Lier à la demande originale
         // $acte->id_declarant = $demande->volet->id_declarant ?? null;
         //$acte->heure_naissance = $demande->volet->heure_naissance ?? null;
         $acte->id_demande = $request->demande_id;
         $acte->id_officier = $request->id_officier;
         $acte->id_commune = $request->id_commune;
         $acte->date_enregistrement_acte = now();
+        $acte->date_etablissement= now();
+        
+       
         $acte->type = 'original'; // MARQUER COMME UN ACTE ORIGINAL
         $acte->statut = 'Traité'; // Statut initial de l'acte original créé
 
@@ -534,7 +618,7 @@ public function ajaxMarkRead($id)
 
         // Mettre à jour le statut de la demande associée à cet acte original
         $demande->statut = 'Validé'; // La demande est validée une fois l'acte original créé
-        $demande->id = $acte->id; // Lier la demande à l'acte original créé
+        // $demande->id = $acte->id; // Lier la demande à l'acte original créé
         $demande->save();
 
         // Log création acte
@@ -587,9 +671,14 @@ public function ajaxMarkRead($id)
         // Récupérer la demande avec son volet et déclarant
         $demande = Demande::with('volet')->findOrFail($request->demande_id);
 
-        $lastNum = Acte::max('num_acte');
+        /* $lastNum = Acte::max('num_acte');
 
-        $nextNum = $lastNum ? $lastNum + 1 : 1;
+        $nextNum = $lastNum ? $lastNum + 1 : 1; */
+
+        //nouveaau logiqqqqque je vaaaais caster la valeur en entier pour éviter ce souci
+        $lastNum = (int) Acte::max('num_acte');
+        $nextNum = $lastNum + 1;
+
 
         // Créer l’acte avec correspondance précise
         $acte = new Acte();
@@ -623,7 +712,7 @@ public function ajaxMarkRead($id)
         // $acte->id_volet = $demande->volet->id_volet;
 
 
-        $acte->date_enregistrement_acte = now();
+       $acte->date_etablissement = now();
         // $acte->id_volet = $demande->volet->id_volet;
         return $this->storeActeOriginal($request);
     }
@@ -664,8 +753,7 @@ public function ajaxMarkRead($id)
         } else {
             // Copie sur demande - vérifier le justificatif
             if ($demande->justificatif) {
-                // Utiliser la route personnalisée pour servir l'image
-                $urlJustificatif = route('images.show', $demande->justificatif);
+                $urlJustificatif = url('/storage/' . $demande->justificatif);
             } else {
                 $urlJustificatif = null;
             }
@@ -675,6 +763,12 @@ public function ajaxMarkRead($id)
         $communes = Commune::all();
         $officiers = Officier::all();
 
+        // Récupérer tous les actes existants pour la vérification côté client
+        $actesExistants = Acte::select('num_acte', 'prenom', 'nom', 'date_naissance_enfant', 'type', 'lieu_naissance_enfant', 'heure_naissance', 'sexe_enfant', 'prenom_pere', 'nom_pere', 'profession_pere', 'domicile_pere', 'prenom_mere', 'nom_mere', 'profession_mere', 'domicile_mere')
+            ->get()
+            ->keyBy('num_acte')
+            ->toArray();
+
         // Passez les données à la vue
         return view('agent_mairie.naissances.acteCopies', compact(
             'demande',
@@ -682,7 +776,8 @@ public function ajaxMarkRead($id)
             'officiers',
             'urlJustificatif',
             'isVoletCopy',
-            'volet'
+            'volet',
+            'actesExistants'
         ));
     }
 
@@ -727,19 +822,87 @@ public function ajaxMarkRead($id)
 
         // Vérification si une COPIE a déjà été générée pour cette DEMANDE SPÉCIFIQUE
         // Cela évite de créer plusieurs copies pour la même demande.
-        if ($demande->statut === 'Traitée' || $demande->id !== null) {
+        if ($demande->statut === 'Validé' ) {
             return back()->withErrors(['general' => 'Cette demande a déjà été traitée et une copie a été générée.'])->withInput();
+        }
+
+        // Vérifier si un acte avec ce numéro existe déjà (original ou copie)
+        $existingActe = Acte::where('num_acte', $request->num_acte)->first();
+
+        if ($existingActe) {
+            // Vérifier si c'est une copie existante
+            if ($existingActe->type === 'copie') {
+                // Si c'est une copie existante, rediriger vers cette copie
+                $demande->statut = 'Validé';
+                $demande->acte_id = $existingActe->id; // Lier à la copie existante
+                $demande->save();
+
+                Log::create([
+                    'id_utilisateur' => Auth::id(),
+                    'action' => 'Redirection vers copie existante',
+                    'details' => 'Demande ID ' . $demande->id . ' redirigée vers la copie existante N°' . $request->num_acte . ' (ID: ' . $existingActe->id . ')',
+                ]);
+
+                return redirect()->route('mairie.dashboard.copies')->with('info', 'Une copie avec le numéro ' . $request->num_acte . ' existe déjà. La demande a été liée à cette copie existante. Nom: ' . $existingActe->prenom . ' ' . $existingActe->nom . ' - Date: ' . $existingActe->date_naissance_enfant);
+            } else {
+                // Si c'est un acte original, créer une copie avec le même numéro d'acte
+                // La contrainte composite permet d'avoir le même numéro avec des types différents
+                $copie = new Acte();
+                $copie->num_acte = $request->num_acte; // Même numéro que l'original pour l'authenticité
+                $copie->type = 'copie';
+
+                // Copier toutes les données de l'acte original
+                $copie->prenom = $existingActe->prenom;
+                $copie->nom = $existingActe->nom;
+                $copie->date_naissance_enfant = $existingActe->date_naissance_enfant;
+                $copie->lieu_naissance_enfant = $existingActe->lieu_naissance_enfant;
+                $copie->heure_naissance = $existingActe->heure_naissance;
+                $copie->sexe_enfant = $existingActe->sexe_enfant;
+                $copie->prenom_pere = $existingActe->prenom_pere;
+                $copie->nom_pere = $existingActe->nom_pere;
+                $copie->profession_pere = $existingActe->profession_pere;
+                $copie->domicile_pere = $existingActe->domicile_pere;
+                $copie->prenom_mere = $existingActe->prenom_mere;
+                $copie->nom_mere = $existingActe->nom_mere;
+                $copie->profession_mere = $existingActe->profession_mere;
+                $copie->domicile_mere = $existingActe->domicile_mere;
+
+                $copie->id_demande = $demande->id;
+                $copie->id_officier = $request->id_officier;
+                $copie->id_commune = $request->id_commune;
+                $copie->date_enregistrement_acte = now();
+                   $copie->date_etablissement = now();
+                $copie->statut = 'Traité';
+                $copie->sequential_num = 0;
+                $copie->is_virtuelle = true; // Marquer comme copie virtuelle (basée sur un original)
+                $copie->original_num_acte = $request->num_acte; // Référence vers le numéro d'acte original
+
+                $copie->save();
+
+                // Mettre à jour le statut de la demande
+                $demande->statut = 'Validé';
+                // $demande->id_demande = $copie->id;
+                $demande->save();
+
+                Log::create([
+                    'id_utilisateur' => Auth::id(),
+                    'action' => 'Création copie - Acte original existant',
+                    'details' => 'Copie créée pour l\'acte original N°' . $request->num_acte . ' (demande ID ' . $demande->id . ') - Copie avec le même numéro créée avec les données de l\'original.',
+                ]);
+
+                return redirect()->route('agent.dashboard')->with('success', 'Copie créée avec succès ! Basée sur l\'acte original N°' . $request->num_acte . '. Nom: ' . $existingActe->prenom . ' ' . $existingActe->nom . ' - Date: ' . $existingActe->date_naissance_enfant . '. La copie apparaîtra dans le tableau des copies.');
+            }
         }
 
         // Optionnel: Vérifier si un ACTE DE COPIE EXACTEMENT IDENTIQUE (même num_acte, même nom, date naissance, etc.) existe déjà.
         // Cela peut arriver si l'agent actualise la page ou soumet deux fois.
         $existingCopieActe = Acte::where('type', 'copie')
-                                ->where('id_demande', $request->demande_id)
-                                ->where('num_acte', $request->num_acte)
-                                ->where('prenom', $request->prenom_enfant)
-                                ->where('nom', $request->nom_enfant)
-                                ->where('date_naissance_enfant', $request->date_naissance_enfant)
-                                ->first();
+            ->where('id_demande', $request->demande_id)
+            ->where('num_acte', $request->num_acte)
+            ->where('prenom', $request->prenom_enfant)
+            ->where('nom', $request->nom_enfant)
+            ->where('date_naissance_enfant', $request->date_naissance_enfant)
+            ->first();
 
         if ($existingCopieActe) {
             return back()->withErrors(['general' => 'Une copie de cet acte a déjà été enregistrée pour cette demande.'])->withInput();
@@ -771,15 +934,25 @@ public function ajaxMarkRead($id)
         $copie->id_demande = $demande->id; // Lier la copie à la demande utilisateur
         $copie->id_officier = $request->id_officier;
         $copie->id_commune = $request->id_commune;
+           $copie->date_etablissement = now();
         $copie->date_enregistrement_acte = now(); // Date de création de la COPIE dans le système
         $copie->statut = 'Traité'; // Le statut initial de la copie est "Traité" après sa création
         $copie->sequential_num = 0; // Valeur par défaut pour les copies
 
         $copie->save();
 
+        \Log::info('Copie créée avec succès', [
+            'copie_id' => $copie->id,
+            'num_acte' => $copie->num_acte,
+            'type' => $copie->type,
+            'statut' => $copie->statut,
+            'demande_id' => $demande->id,
+            'user_id' => Auth::id()
+        ]);
+     
         // 4. Mettre à jour le statut de la demande et la lier à l'acte de copie créé
-        $demande->statut = 'Traitée'; // La demande est passée de 'En attente' à 'Traitée'
-        $demande->id = $copie->id; // Lier la demande à la COPIE qui vient d'être créée.
+        $demande->statut = 'Validé'; // La demande est passée de 'En attente' à 'Traitée'
+        // $demande->id_demande = $copie->id; // Lier la demande à la COPIE qui vient d'être créée.
         $demande->save();
 
         // 5. Enregistrer l'action dans les logs
@@ -804,8 +977,8 @@ public function ajaxMarkRead($id)
     public function show(string $id)
     {
         // Cette méthode doit pouvoir afficher les détails d'un acte original ou d'une copie
-        $acte = Acte::with(['demande', 'Commune', 'declarant', 'officier'])->findOrFail($id);
-            return view('agent_mairie.naissances.show', compact('acte'));
+        $acte = Acte::with(['demande.volet', 'Commune', 'declarant', 'officier'])->findOrFail($id);
+        return view('agent_mairie.naissances.show', compact('acte'));
     }
 
     /**
@@ -827,10 +1000,10 @@ public function ajaxMarkRead($id)
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'prenom_enfant' => 'required|string',
-            'nom_enfant' => 'required|string',
-            'date_naissance' => 'required|date',
-            'lieu_naissance' => 'required|string',
+            'prenom' => 'required|string',
+            'nom' => 'required|string',
+            'date_naissance_enfant' => 'required|date',
+            'lieu_naissance_enfant' => 'required|string',
             'sexe_enfant' => 'required|in:M,F',
             'heure_naissance' => 'nullable|string|max:20', // Ajouté validation pour heure
             'prenom_pere' => 'required|string', // Rendu required
@@ -851,8 +1024,8 @@ public function ajaxMarkRead($id)
         // La logique est la même que pour la création d'un original, mais on exclut l'acte en cours d'édition.
         if ($acte->type == 'original' || is_null($acte->type)) { // S'applique uniquement aux originaux
             $existingOriginalActe = Acte::where(function ($query) {
-                    $query->whereNull('type')->orWhere('type', 'original');
-                })
+                $query->whereNull('type')->orWhere('type', 'original');
+            })
                 ->where('id', '!=', $id) // Exclure l'acte actuel de la vérification
                 ->where('prenom', $request->prenom_enfant)
                 ->where('nom', $request->nom_enfant)
@@ -874,10 +1047,10 @@ public function ajaxMarkRead($id)
         // Si une modification est permise, les champs doivent correspondre à ceux de l'original ou être validés différemment.
         // Ici, je suppose que l'agent peut modifier les champs pour une copie aussi, mais sans la vérification des doublons d'originaux.
 
-        $acte->prenom = $request->prenom_enfant;
-        $acte->nom = $request->nom_enfant;
-        $acte->date_naissance_enfant = $request->date_naissance;
-        $acte->lieu_naissance_enfant = $request->lieu_naissance;
+        $acte->prenom = $request->prenom;
+        $acte->nom = $request->nom;
+        $acte->date_naissance_enfant = $request->date_naissance_enfant;
+        $acte->lieu_naissance_enfant = $request->lieu_naissance_enfant;
         $acte->heure_naissance = $request->heure_naissance;
         $acte->sexe_enfant = $request->sexe_enfant;
 
@@ -902,37 +1075,48 @@ public function ajaxMarkRead($id)
             'details' => 'Acte ' . ($acte->type ?? 'original') . ' ID ' . $acte->id . ' modifié par l\'agent.',
         ]);
 
-        return redirect()->route('agent.dashboard')->with('success', 'Acte de naissance modifié avec succès.');
+if ($acte->type === 'copie') {
+    return redirect()->route('mairie.dashboard.copies')->with('success', 'Copie de l’acte modifiée avec succès.');
+}
+
+return redirect()->route('mairie.dashboard.actes')->with('success', 'Acte de naissance original modifié avec succès.');
+
     }
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
-    {
-        $acte = Acte::findOrFail($id);
-        $typeActe = $acte->type ?? 'original';
+{
+    $acte = Acte::findOrFail($id);
+    // dd($acte->type);
+    $typeActe = $acte->type ?? 'original';
 
-        // Si l'acte est lié à une demande, mettre à jour la demande
-        if ($acte->id_demande) {
-            $demande = Demande::find($acte->id_demande);
-            if ($demande) {
-                $demande->statut = 'Rejeté'; // Ou 'Annulée' si la suppression d'un acte signifie l'annulation de la demande
-                $demande->id = null; // Dé-lier l'acte
-                $demande->save();
-            }
+    // Si l'acte est lié à une demande, mettre à jour le statut seulement
+    if ($acte->id_demande) {
+        $demande = Demande::find($acte->id_demande);
+        if ($demande) {
+            $demande->statut = 'Rejeté'; 
+            $demande->save(); 
         }
-
-        $acte->delete();
-
-        Log::create([
-            'id_utilisateur' => Auth::id() ?? null,
-            'action' => 'Suppression acte',
-            'details' => ucfirst($typeActe) . ' supprimé pour ' . $acte->nom . ' ' . $acte->prenom . ' (N°' . $acte->num_acte . ')',
-        ]);
-
-        return redirect()->route('agent.dashboard')->with('success', 'Acte de naissance supprimé avec succès.');
     }
+
+    $acte->delete();
+
+    Log::create([
+        'id_utilisateur' => Auth::id() ?? null,
+        'action' => 'Suppression acte',
+        'details' => ucfirst($typeActe) . ' supprimé pour ' . $acte->nom . ' ' . $acte->prenom . ' (N°' . $acte->num_acte . ')',
+    ]);
+
+if ($acte->type === 'copie') {
+    return redirect()->route('mairie.dashboard.copies')->with('success', 'Copie de l’acte supprimée avec succès.');
+}
+
+return redirect()->route('mairie.dashboard.actes')->with('success', 'Acte de naissance original supprimée avec succès.');
+
+}
+
 
     /**
      * Download PDF for a specific act (original or copy).
@@ -960,6 +1144,7 @@ public function ajaxMarkRead($id)
             $copies = Acte::where('type', 'copie')
                 ->where('statut', 'Traité') // Les copies fraîchement générées
                 ->with(['declarant', 'demande'])
+                ->orderBy('created_at', 'desc')
                 ->get();
 
             $copiesTraitees = Acte::where('type', 'copie')
@@ -983,11 +1168,38 @@ public function ajaxMarkRead($id)
                 ->get();
 
             \Log::info('Dashboard Copies - Données récupérées', [
+                'copies_count' => $copies->count(),
                 'copiesTraitees_count' => $copiesTraitees->count(),
                 'copiesEnAttenteSignature_count' => $copiesEnAttenteSignature->count(),
                 'copiesFinalises_count' => $copiesFinalises->count(),
                 'user_id' => Auth::id(),
                 'user_role' => Auth::user() ? Auth::user()->role : 'non connecté'
+            ]);
+
+            // Log détaillé des copies trouvées
+            foreach ($copies as $copie) {
+                \Log::info('Copie trouvée', [
+                    'id' => $copie->id,
+                    'num_acte' => $copie->num_acte,
+                    'type' => $copie->type,
+                    'statut' => $copie->statut,
+                    'prenom' => $copie->prenom,
+                    'nom' => $copie->nom
+                ]);
+            }
+
+            // Debug: Voir toutes les copies dans la base
+            $allCopies = Acte::where('type', 'copie')->get();
+            \Log::info('Toutes les copies dans la base', [
+                'total_copies' => $allCopies->count(),
+                'copies_details' => $allCopies->map(function ($c) {
+                    return [
+                        'id' => $c->id,
+                        'num_acte' => $c->num_acte,
+                        'statut' => $c->statut,
+                        'created_at' => $c->created_at
+                    ];
+                })->toArray()
             ]);
 
             return view('agent_mairie.dashboard_copies', compact('copies', 'copiesTraitees', 'copiesEnAttente', 'copiesEnAttenteSignature', 'copiesFinalises'));
@@ -1045,32 +1257,32 @@ public function ajaxMarkRead($id)
         try {
             // Actes traités par la mairie (prêts à être envoyés à l'officier)
             $actes = Acte::where(function ($query) {
-                    $query->whereNull('type')->orWhere('type', 'original');
-                })
+                $query->whereNull('type')->orWhere('type', 'original');
+            })
                 ->where('statut', 'Traité') // Statut après création
                 ->with(['declarant', 'demande'])
                 ->get();
 
             $actesTraites = Acte::where(function ($query) {
-                    $query->whereNull('type')->orWhere('type', 'original');
-                })
+                $query->whereNull('type')->orWhere('type', 'original');
+            })
                 ->where('statut', 'Traité') // Statut après création
                 ->with(['declarant', 'demande'])
                 ->get();
 
             $actesAFinaliser = Acte::where(function ($query) {
-                    $query->whereNull('type')->orWhere('type', 'original');
-                })
+                $query->whereNull('type')->orWhere('type', 'original');
+            })
                 ->where('statut', 'À finaliser') // Envoyé à l'officier pour finalisation
                 ->with(['declarant', 'demande'])
                 ->get();
 
             $actesFinalises = Acte::where(function ($query) {
-                    $query->whereNull('type')->orWhere('type', 'original');
-                })
+                $query->whereNull('type')->orWhere('type', 'original');
+            })
                 ->where('statut', 'Finalisé') // Finalisé par l'officier
                 ->with(['declarant', 'demande'])
-            ->get();
+                ->get();
 
             \Log::info('Dashboard Actes - Données récupérées', [
                 'actesTraites_count' => $actesTraites->count(),
@@ -1132,18 +1344,17 @@ public function ajaxMarkRead($id)
             }
 
             // Mettre à jour le statut de la demande
-            $demande->statut = 'Rejetée';
+            $demande->statut = 'Rejeté';
             $demande->save();
 
             // Enregistrer l'action dans les logs
             Log::create([
                 'id_utilisateur' => Auth::id() ?? null,
                 'action' => 'Demande rejetée',
-                'details' => 'Demande ' . $demande->type_document . ' rejetée - ID: ' . $demande->id . ' - Numéro de suivi: ' . ($demande->num_suivi ?? 'N/A'),
+                'details' => 'Demande ' . $demande->type_document . ' rejetée - ID: ' . $demande->id . ' - Numéro de suivi: ' . ($demande->numero_suivi ?? 'N/A'),
             ]);
 
             return redirect()->back()->with('success', 'Demande rejetée avec succès.');
-
         } catch (\Exception $e) {
             \Log::error('Erreur lors du rejet de la demande: ' . $e->getMessage(), [
                 'demande_id' => $id,
@@ -1153,5 +1364,40 @@ public function ajaxMarkRead($id)
             return redirect()->back()->with('error', 'Une erreur est survenue lors du rejet de la demande.');
         }
     }
-}
 
+    /**
+     * Vérifier l'existence d'un acte par son numéro (API endpoint).
+     */
+    public function checkActeExists($numActe)
+    {
+        try {
+            // Requête simple
+            $acte = \App\Models\Acte::where('num_acte', $numActe)->first();
+
+            if ($acte) {
+                return response()->json([
+                    'exists' => true,
+                    'acte' => [
+                        'num_acte' => $acte->num_acte,
+                        'prenom' => $acte->prenom,
+                        'nom' => $acte->nom,
+                        'date_naissance_enfant' => $acte->date_naissance_enfant,
+                        'type' => $acte->type
+                    ],
+                    'type' => $acte->type
+                ]);
+            }
+
+            return response()->json([
+                'exists' => false,
+                'acte' => null,
+                'type' => null
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'exists' => false,
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+}

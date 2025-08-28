@@ -21,6 +21,9 @@ class AgentController extends Controller
         $agents = User::with(['hopital', 'mairie'])
             ->whereIn('role', ['agent_hopital', 'agent_mairie'])
             ->paginate(10);
+        $last_login_at = User::whereIn('role', ['agent_hopital', 'agent_mairie'])
+            ->orderBy('last_login_at', 'desc')
+            ->pluck('last_login_at');
 
         return view('manager.agents.index', compact('agents'));
     }
@@ -42,7 +45,7 @@ class AgentController extends Controller
             'adresse'       => 'required|string|max:100',
             'telephone'       => 'required|string|max:20',
             'email'      => 'required|email|unique:users',
-            'password'   => 'required|string|min:6',
+            'password'   => 'required|string|min:8|confirmed',
             'structure'  => 'required|in:hopital,mairie',
             'structure_id' => 'required|integer',
         ]);
@@ -78,17 +81,17 @@ class AgentController extends Controller
     // Afficher les détails d'un agent
     public function show($id)
     {
-        $agent = User::with(['hopital', 'mairie'])->findOrFail($id);
-        return view('manager.agents.show', compact('agent'));
+        $manager = User::with(['hopital', 'mairie'])->findOrFail($id);
+        return view('manager.agents.show', compact('manager'));
     }
 
     // Formulaire de modification
     public function edit($id)
     {
-        $agent = User::findOrFail($id);
+        $manager = User::findOrFail($id);
         $hopitaux = Hopital::all();
         $mairies = Mairie::all();
-        return view('manager.agents.edit', compact('agent', 'hopitaux', 'mairies'));
+        return view('manager.agents.edit', compact('manager', 'hopitaux', 'mairies'));
     }
 
     // Mise à jour de l'agent
@@ -99,7 +102,7 @@ class AgentController extends Controller
             'prenom'       => 'required|string|max:100',
             'adresse'       => 'required|string|max:100',
             'telephone'       => 'required|string|max:20',
-            'email'      => 'required|email|unique:users,email,' . $id,
+            'email'      => 'email|unique:users,email,' . $id,
             'password'   => 'nullable|string|min:6',
             'structure'  => 'required|in:hopital,mairie',
             'structure_id' => 'required|integer',
@@ -110,7 +113,7 @@ class AgentController extends Controller
         $user->prenom     = $request->prenom;
         $user->adresse     = $request->adresse;
         $user->telephone     = $request->telephone;
-        $user->email    = $request->email;
+        $user->email    = $user->email;
 
         if ($request->password) {
             $user->password = Hash::make($request->password);
