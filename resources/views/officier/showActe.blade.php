@@ -228,15 +228,17 @@
     </button> --}}
     
        {{-- Section QR code --}}
-       {{-- @if($acte->token)
-        <div class="mt-6 border-2 border-blue-600 rounded-lg p-6 bg-gray-100">
-            <p class="text-center font-semibold text-blue-600 mb-2">Vérification d'authenticité</p>
-            <div class="flex justify-center mb-4">
-                {!! QrCode::size(120)->generate(url('/verifier-document/' . $acte->token)) !!}
+       @if($acte->token)
+        <div style="position: absolute; bottom: 20px; left: 20px; z-index: 10;">
+            <div style="display:inline-block; border:1px solid #0d6efd; border-radius:8px; padding:8px 12px; background:#f4f8fb;">
+                <div style="font-size:0.8em; color:#0d6efd; font-weight:bold; margin-bottom:4px; text-align:center;">Vérification</div>
+                <div style="margin-bottom:4px;">
+                    {!! QrCode::size(60)->generate(url('/verifier-document/' . $acte->token)) !!}
+                </div>
+                <div style="font-size:0.7em; color:#222; text-align:center;">Scannez pour vérifier</div>
             </div>
-            <p class="text-center text-gray-600 text-sm">Scannez ce QR code pour vérifier l'authenticité de cet acte de naissance.</p>
         </div>
-        @endif --}}
+        @endif
  {{-- </div>  --}}
 
  {{-- Script de suppression --}}
