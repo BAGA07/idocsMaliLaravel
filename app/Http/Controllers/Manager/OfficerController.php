@@ -96,8 +96,9 @@ class OfficerController extends Controller
     }
 
 
-    public function destroy(Officier $officier)
+    public function destroy($officier)
     {
+    $officier = User::findOrFail($officier);
     $officier->delete();
 
     return redirect()->route('manager.officiers.index')
