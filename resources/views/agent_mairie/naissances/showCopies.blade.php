@@ -5,10 +5,10 @@
 <div class="max-w-6xl mx-auto mt-10 p-6 bg-white rounded shadow print:hidden">
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-2xl font-bold">Détails de la copie/extrait</h2>
-        <div class="space-x-2">
+        {{-- <div class="space-x-2">
             <a href="{{ route('mairie.dashboard.copies') }}" class="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700">Retour</a>
             <button onclick="window.print()" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">Imprimer</button>
-        </div>
+        </div> --}}
     </div>
 
     <div class="bg-gray-50 p-4 rounded mb-6">
@@ -83,24 +83,35 @@
 </div>
 
 <style>
+    @page { size: A4 portrait; margin: 10mm; }
     @media print {
-        body * {
-            visibility: hidden;
-        }
+        body * { visibility: hidden; margin: 0; padding: 0; }
 
-        .acte-imprimable,
-        .acte-imprimable * {
-            visibility: visible;
-        }
+        .acte-imprimable, .acte-imprimable * { visibility: visible; }
 
         .acte-imprimable {
             position: absolute;
-            left: 0;
+            left: 50%;
             top: 0;
             width: 100%;
             border: none !important;
             box-shadow: none !important;
             padding: 0 !important;
+            transform: translateX(-50%) scale(0.82);
+            transform-origin: top center;
+            break-inside: avoid-page;
+            page-break-inside: avoid;
+            page-break-before: avoid;
+            page-break-after: avoid;
+            zoom: 0.82;
+        }
+
+        .print-acte-singlepage {
+            break-inside: avoid-page;
+            page-break-inside: avoid;
+            page-break-before: avoid;
+            page-break-after: avoid;
+            display: inline-block;
         }
     }
 </style>
@@ -108,7 +119,7 @@
 {{-- Section acte imprimable --}}
 <div class="acte-imprimable max-w-3xl mx-auto bg-white border border-black font-serif text-sm print:p-4 print:w-full print:max-w-full print:border-none print:shadow-none relative">
     {{-- Main content container with a new border --}}
-    <div class="border border-black p-4">
+    <div class="border border-black p-4 print-acte-singlepage">
         <div class="mb-4">
             <div class="flex justify-between items-start mb-4 relative z-10">
                 <div class="text-left w-1/2">
@@ -256,19 +267,31 @@
             </div>
         </div>
     </div>
+
+    @if($copie->token)
+    <div style="position: absolute; bottom: 40px; left: 40px; z-index: 10;">
+        <div style="display:inline-block; padding:0;">
+            <div style="font-size:0.8em; color:#222; font-weight:bold; margin-bottom:4px; text-align:center;">Vérification</div>
+            <div style="margin-bottom:4px;">
+                {!! QrCode::size(60)->generate(url('/verifier-document/' . $copie->token)) !!}
+            </div>
+            <div style="font-size:0.7em; color:#222; text-align:center;">Scannez pour vérifier</div>
+        </div>
+    </div>
+    @endif
 </div>
     {{-- Boutons et QR code non-imprimables --}}
-    {{-- <div class="max-w-3xl mx-auto flex flex-col items-center gap-4 mt-6 print:hidden">
+    <div class="max-w-3xl mx-auto flex flex-col items-center gap-4 mt-6 print:hidden">
         <div class="max-w-3xl mx-auto flex justify-center items-center gap-4 mt-6 print:hidden">
             {{-- Bouton d'impression --}}
-            {{-- <button onclick="window.print()" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-lg">
+            <button onclick="window.print()" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-lg">
                 Imprimer l'acte
-            </button> --}}
+            </button>
             {{-- Bouton de retour au tableau de bord --}}
-            {{-- <a href="{{ route('agent.dashboard') }}" class="inline-flex items-center bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300 shadow">
-                ← Retour au Tableau de Bord
+            <a href="{{ route('mairie.dashboard.copies') }}" class="inline-flex items-center bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300 shadow">
+                ← Retour
             </a>
-        </div> --}} 
+        </div> 
     </div>
 </div>
 

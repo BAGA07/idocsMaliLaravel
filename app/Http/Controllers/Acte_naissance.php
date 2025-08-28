@@ -613,6 +613,9 @@ class Acte_naissance extends Controller
        
         $acte->type = 'original'; // MARQUER COMME UN ACTE ORIGINAL
         $acte->statut = 'Traité'; // Statut initial de l'acte original créé
+        
+        // Génération d'un token unique pour la vérification QR code
+        $acte->token = \Illuminate\Support\Str::random(32);
 
         $acte->save();
 
@@ -875,7 +878,10 @@ class Acte_naissance extends Controller
                 $copie->statut = 'Traité';
                 $copie->sequential_num = 0;
                 $copie->is_virtuelle = true; // Marquer comme copie virtuelle (basée sur un original)
-                $copie->original_acte_num = $request->num_acte; // Référence vers le numéro d'acte original
+                $copie->original_num_acte = $request->num_acte; // Référence vers le numéro d'acte original
+                
+                // Génération d'un token unique pour la vérification QR code
+                $copie->token = \Illuminate\Support\Str::random(32);
 
                 $copie->save();
 
@@ -938,6 +944,9 @@ class Acte_naissance extends Controller
         $copie->date_enregistrement_acte = now(); // Date de création de la COPIE dans le système
         $copie->statut = 'Traité'; // Le statut initial de la copie est "Traité" après sa création
         $copie->sequential_num = 0; // Valeur par défaut pour les copies
+        
+        // Génération d'un token unique pour la vérification QR code
+        $copie->token = \Illuminate\Support\Str::random(32);
 
         $copie->save();
 

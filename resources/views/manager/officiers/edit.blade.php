@@ -6,10 +6,10 @@
         <div class="mb-8">
             <div class="flex items-center justify-between">
                 <div>
-                    <h1 class="text-3xl font-bold text-gray-900">Modifier un officer</h1>
-                    <p class="text-gray-600 mt-2">Modifiez les informations de l'officer</p>
+                    <h1 class="text-3xl font-bold text-gray-900">Modifier un officier</h1>
+                    <p class="text-gray-600 mt-2">Modifiez les informations de l'officier</p>
                 </div>
-                <a href="{{ route('manager.officers.index') }}"
+                <a href="{{ route('manager.officiers.index') }}"
                     class="bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-4 rounded-lg transition duration-200">
                     <i class="fa fa-arrow-left mr-2"></i> Retour
                 </a>
@@ -17,7 +17,7 @@
         </div>
 
         <div class="bg-white rounded-lg shadow-md p-6">
-            <form action="{{ route('manager.officers.update', $officer->id) }}" method="POST">
+            <form action="{{ route('manager.officiers.update', $officier->id) }}" method="POST">
                 @csrf
                 @method('PUT')
 
@@ -29,20 +29,20 @@
 
                         <div>
                             <label for="nom" class="block text-sm font-medium text-gray-700 mb-1">Nom *</label>
-                            <input type="text" name="nom" id="nom" value="{{ old('nom', $officer->nom) }}" required
+                            <input type="text" name="nom" id="nom" value="{{ old('nom', $officier->nom) }}" required
                                 class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                         </div>
 
                         <div>
                             <label for="prenom" class="block text-sm font-medium text-gray-700 mb-1">Prénom *</label>
-                            <input type="text" name="prenom" id="prenom" value="{{ old('prenom', $officer->prenom) }}"
+                            <input type="text" name="prenom" id="prenom" value="{{ old('prenom', $officier->prenom) }}"
                                 required
                                 class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                         </div>
 
                         <div>
                             <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email *</label>
-                            <input type="email" name="email" id="email" value="{{ old('email', $officer->email) }}"
+                            <input type="email" name="email" id="email" value="{{ old('email', $officier->email) }}"
                                 required
                                 class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                         </div>
@@ -51,14 +51,14 @@
                             <label for="telephone" class="block text-sm font-medium text-gray-700 mb-1">Téléphone
                                 *</label>
                             <input type="text" name="telephone" id="telephone"
-                                value="{{ old('telephone', $officer->telephone) }}" required
+                                value="{{ old('telephone', $officier->telephone) }}" required
                                 class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                         </div>
 
                         <div>
                             <label for="adresse" class="block text-sm font-medium text-gray-700 mb-1">Adresse *</label>
                             <textarea name="adresse" id="adresse" rows="3" required
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">{{ old('adresse', $officer->adresse) }}</textarea>
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">{{ old('adresse', $officier->adresse) }}</textarea>
                         </div>
                     </div>
 
@@ -86,7 +86,7 @@
                                 structure *</label>
                             <select name="structure" id="structure" onchange="updateStructureOptions()" required
                                 class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                <option value="mairie" {{ old('structure', $officer->structure_type) == 'mairie' ?
+                                <option value="mairie" {{ old('structure', $officier->structure_type) == 'mairie' ?
                                     'selected' : '' }}>Mairie</option>
                             </select>
                         </div>
@@ -103,7 +103,7 @@
                 </div>
 
                 <div class="mt-8 flex justify-end space-x-4">
-                    <a href="{{ route('manager.officers.index') }}"
+                    <a href="{{ route('manager.officiers.index') }}"
                         class="bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-6 rounded-lg">
                         Annuler
                     </a>
@@ -139,7 +139,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const structureType = document.getElementById('structure').value;
     if (structureType) {
         updateStructureOptions();
-        document.getElementById('structure_id').value = '{{ old("structure_id", $officer->structure_id) }}';
+        document.getElementById('structure_id').value = '{{ old("structure_id", $officier->structure_id) }}';
     }
 });
 </script>

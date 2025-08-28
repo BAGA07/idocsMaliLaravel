@@ -14,9 +14,9 @@ class OfficerController extends Controller
     public function index()
     {
         //dd('Liste des officiers'); // Pour vérifier que la route fonctionne correctement
-        // Récupérer uniquement les users avec le rôle officer
-        $officers = User::where('role', 'officer')->latest()->paginate(10);
-        return view('manager.officiers.index', compact('officers'));
+        // Récupérer uniquement les users avec le rôle officier
+        $officiers = User::where('role', 'officier')->latest()->paginate(10);
+        return view('manager.officiers.index', compact('officiers'));
     }
 
     public function create()
@@ -46,33 +46,33 @@ class OfficerController extends Controller
             'telephone' => $request->telephone,
             'adresse' => $request->adresse,
             'password' => Hash::make($request->password),
-            'role' => 'officer', // ICI le rôle
+            'role' => 'officier', // ICI le rôle
             'id_mairie' => $request->structure_id,
         ]);
 
-        return redirect()->route('manager.officers.index')->with('success', 'Officer créé avec succès.');
+        return redirect()->route('manager.officiers.index')->with('success', 'Officier créé avec succès.');
     }
 
-    public function edit(User $officer)
+    public function edit($officier)
     {
-
+        $officier = User::findOrFail($officier);
         $mairies = Mairie::all();
-        return view('manager.officiers.edit', compact('officer', 'mairies'));
+        return view('manager.officiers.edit', compact('officier', 'mairies'));
     }
 
-    public function update(Request $request, User $officer)
+    public function update(Request $request, User $officier)
     {
         $request->validate([
             'nom' => 'required|string|max:255',
             'prenom' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $officer->id,
+            'email' => 'required|email|unique:users,email,' . $officier->id,
             'telephone' => 'required|string|max:20',
             'adresse' => 'required|string|max:255',
             'structure' => 'required|string|in:hopital,mairie',
             'structure_id' => 'required|integer',
         ]);
 
-        $officer->update([
+        $officier->update([
             'nom' => $request->nom,
             'prenom' => $request->prenom,
             'email' => $request->email,
@@ -82,21 +82,22 @@ class OfficerController extends Controller
         ]);
 
         if ($request->filled('password')) {
-            $officer->update(['password' => Hash::make($request->password)]);
+            $officier->update(['password' => Hash::make($request->password)]);
         }
 
-        return redirect()->route('manager.officers.index')->with('success', 'Officer mis à jour avec succès.');
+        return redirect()->route('manager.officiers.index')->with('success', 'Officier mis à jour avec succès.');
     }
 
-    public function show(User $officer)
+    public function show($officier)
     {
-        return view('manager.officiers.show', compact('officer'));
+        $officier = User::findOrFail($officier);
+        return view('manager.officiers.show', compact('officier'));
     }
 
 
-    public function destroy(User $officer)
+    public function destroy($officier)
     {
-        $officer->delete();
-        return redirect()->route('manager.officers.index')->with('success', 'Officer supprimé avec succès.');
+        $officier->delete();
+        return redirect()->route('manager.officiers.index')->with('success', 'Officier supprimé avec succès.');
     }
 }

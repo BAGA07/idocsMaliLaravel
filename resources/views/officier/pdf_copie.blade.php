@@ -38,5 +38,17 @@
             <em>Non apposé</em>
         @endif
     </div>
+
+    @if($copie->token)
+    <div style="position: absolute; bottom: 20px; left: 20px; z-index: 10;">
+        <div style="display:inline-block; padding:0;">
+            <div style="font-size:0.8em; color:#222; font-weight:bold; margin-bottom:4px; text-align:center;">Vérification</div>
+            <div style="margin-bottom:4px;">
+                {!! QrCode::size(60)->generate(url('/verifier-document/' . $copie->token)) !!}
+            </div>
+            <div style="font-size:0.7em; color:#222; text-align:center;">Scannez pour vérifier</div>
+        </div>
+    </div>
+    @endif
 </body>
 </html> 

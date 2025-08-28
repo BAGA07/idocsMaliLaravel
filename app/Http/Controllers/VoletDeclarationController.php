@@ -147,7 +147,7 @@ class VoletDeclarationController extends Controller
         return view('hopital.naissances.show', compact('declaration', 'demandeExistante', 'mairieCommune'));
     }
 
-    
+
     public function edit($id)
     {
         $volet = VoletDeclaration::with('declarant')->findOrFail($id);

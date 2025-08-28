@@ -6,10 +6,10 @@
 
         <div class="mb-8 flex justify-between items-center">
             <div>
-                <h1 class="text-3xl font-bold text-gray-900">Détails de l'officer</h1>
-                <p class="text-gray-600 mt-2">Informations complètes de l'officer</p>
+                <h1 class="text-3xl font-bold text-gray-900">Détails de l'officier</h1>
+                <p class="text-gray-600 mt-2">Informations complètes de l'officier</p>
             </div>
-            <a href="{{ route('manager.officers.index') }}"
+            <a href="{{ route('manager.officiers.index') }}"
                 class="bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-4 rounded-lg transition duration-200">
                 <i class="fa fa-arrow-left mr-2"></i> Retour
             </a>
@@ -21,20 +21,20 @@
             <div>
                 <h3 class="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2">Informations personnelles
                 </h3>
-                <p><strong>Nom :</strong> {{ $officer->nom }}</p>
-                <p><strong>Prénom :</strong> {{ $officer->prenom }}</p>
-                <p><strong>Email :</strong> {{ $officer->email }}</p>
-                <p><strong>Téléphone :</strong> {{ $officer->telephone }}</p>
-                <p><strong>Adresse :</strong> {{ $officer->adresse }}</p>
+                <p><strong>Nom :</strong> {{ $officier->nom }}</p>
+                <p><strong>Prénom :</strong> {{ $officier->prenom }}</p>
+                <p><strong>Email :</strong> {{ $officier->email }}</p>
+                <p><strong>Téléphone :</strong> {{ $officier->telephone }}</p>
+                <p><strong>Adresse :</strong> {{ $officier->adresse }}</p>
             </div>
 
             <!-- Affectation -->
             <div>
                 <h3 class="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2">Affectation</h3>
-                @if($officer->hopital)
-                <p><strong>Structure :</strong> {{ $officer->hopital->nom_hopital }} (Hôpital)</p>
-                @elseif($officer->mairie)
-                <p><strong>Structure :</strong> {{ $officer->mairie->nom_mairie }} (Mairie)</p>
+                @if($officier->hopital)
+                <p><strong>Structure :</strong> {{ $officier->hopital->nom_hopital }} (Hôpital)</p>
+                @elseif($officier->mairie)
+                <p><strong>Structure :</strong> {{ $officier->mairie->nom_mairie }} (Mairie)</p>
                 @else
                 <p class="text-gray-500">Non assigné</p>
                 @endif
@@ -43,9 +43,9 @@
             <!-- Connexion -->
             <div>
                 <h3 class="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2">Connexion</h3>
-                @if($officer->last_login_at)
+                @if($officier->last_login_at)
                 <p><strong>Dernière connexion :</strong> {{
-                    \Carbon\Carbon::parse($officer->last_login_at)->format('d/m/Y à H:i') }}</p>
+                    \Carbon\Carbon::parse($officier->last_login_at)->format('d/m/Y à H:i') }}</p>
                 @else
                 <p class="text-gray-500">Jamais connecté</p>
                 @endif
@@ -53,12 +53,12 @@
 
             <!-- Actions -->
             <div class="flex space-x-4">
-                <a href="{{ route('manager.officers.update', $officer->id) }}"
+                <a href="{{ route('manager.officiers.update', $officier->id) }}"
                     class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg">
                     <i class="fa fa-edit mr-2"></i> Modifier
                 </a>
-                <form action="{{ route('manager.officers.destroy', $officer->id) }}" method="POST"
-                    onsubmit="return confirm('Supprimer cet officer ?')">
+                <form action="{{ route('manager.officiers.destroy', $officier->id) }}" method="POST"
+                    onsubmit="return confirm('Supprimer cet officier ?')">
                     @csrf
                     @method('DELETE')
                     <button type="submit"
