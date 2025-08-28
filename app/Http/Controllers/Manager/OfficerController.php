@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Manager;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Officier;
 use App\Models\Hopital;
 use App\Models\Mairie;
 use Illuminate\Http\Request;
@@ -95,9 +96,18 @@ class OfficerController extends Controller
     }
 
 
-    public function destroy($officier)
+    public function destroy(Officier $officier)
+    {
+    $officier->delete();
+
+    return redirect()->route('manager.officiers.index')
+                     ->with('success', 'Officier supprimé avec succès.');
+    }
+
+
+    /* public function destroy($officier)
     {
         $officier->delete();
         return redirect()->route('manager.officiers.index')->with('success', 'Officier supprimé avec succès.');
-    }
+    } */
 }

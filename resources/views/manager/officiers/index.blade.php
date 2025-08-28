@@ -88,14 +88,18 @@
                                         class="text-green-600 hover:text-green-900" title="Modifier">
                                         <i class="fa fa-edit"></i>
                                     </a>
-                                    <form action="{{ route('manager.officiers.destroy', $officier->id,'officier') }}"
-                                        method="POST" class="inline">
+                                    {{-- Bouton visible suppression --}}
+                                    <button type="button" onclick="confirmDelete({{ $officier->id }})"
+                                        class="text-red-600 hover:text-red-900" title="Supprimer">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+
+                                    {{-- Formulaire caché --}}
+                                    <form id="delete-form-{{ $officier->id }}"
+                                        action="{{ route('manager.officiers.destroy', $officier->id) }}" method="POST"
+                                        class="hidden">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="text-red-600 hover:text-red-900"
-                                            onclick="return confirm('Êtes-vous sûr ?')" title="Supprimer">
-                                            <i class="fa fa-trash"></i>
-                                        </button>
                                     </form>
                                 </div>
                             </td>
