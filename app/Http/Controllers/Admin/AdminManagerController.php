@@ -26,7 +26,7 @@ class AdminManagerController extends Controller
     {
         $structures = Hopital::where('id_communes', Auth::user()->id_commune)
             ->get();
-        dd($structures);
+
         return view('admin.managers.structureList', compact('structures'));
     }
     // Formulaire de création

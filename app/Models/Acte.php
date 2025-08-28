@@ -44,7 +44,7 @@ class Acte extends Model
         'sequential_num',
          'statut',
          'is_virtuelle',
-         'original_acte_num'
+         'original_num_acte'
     ];
 
     use HasFactory;
