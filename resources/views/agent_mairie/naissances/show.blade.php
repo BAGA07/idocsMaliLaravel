@@ -210,9 +210,10 @@
         </a>
     </div>
     {{-- Boutons d'action suppression --}}
-    <button onclick="confirmDelete({{ $acte->id }})" class="text-white py-2 px-4 rounded-lg bg-red-600 hover:bg-red-700" title="Supprimer">
+      <button onclick="confirmDelete({{ $acte->id }})" class="text-white py-2 px-4 rounded-lg bg-red-600 hover:bg-red-700" title="Supprimer">
         Supprimer l'acte
     </button>
+    
 </div> 
 
 {{-- Script de suppression --}}
@@ -240,6 +241,6 @@
             form.submit();
         }
     }
-</script>
+</script> 
 
 @endsection

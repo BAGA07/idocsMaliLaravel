@@ -488,7 +488,7 @@ class Acte_naissance extends Controller
             'date_naissance' => 'required|date',
             'lieu_naissance' => 'required|string',
             'heure_naissance' => 'nullable|string|max:20', // Rendu nullable comme souvent
-            'sexe_enfant' => 'required|in:M,F', // Utilisation de M/F pour la cohérence
+             'sexe_enfant' => 'required|in:Masculin,Féminin',
             'prenom_pere' => 'required|string',
             'nom_pere' => 'required|string',
             'profession_pere' => 'nullable|string', // Rendu nullable

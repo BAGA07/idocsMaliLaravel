@@ -269,6 +269,7 @@
                 ← Retour
             </a>
             {{-- Boutons d'action suppression --}}
+            {{-- <form action="{{ route('acte.destroy', $copie->id) }}" method="POST" onsubmit="return confirm('Confirmer la suppression ?')"> --}}
             <button onclick="confirmDelete({{ $copie->id }})" class="text-white py-2 px-4 rounded-lg bg-red-600 hover:bg-red-700" title="Supprimer">
                 Supprimer l'acte
             </button>
