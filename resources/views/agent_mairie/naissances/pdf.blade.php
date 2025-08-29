@@ -76,15 +76,15 @@
     </div>
 
     @if($acte->token)
-    <div style="margin-top:40px; text-align:center;">
-        <div style="display:inline-block; border:2px solid #0d6efd; border-radius:12px; padding:18px 24px; background:#f4f8fb;">
-            <div style="font-size:1.1em; color:#0d6efd; font-weight:bold; margin-bottom:8px;">Vérification d'authenticité</div>
-            <div style="margin-bottom:8px;">
-                {!! QrCode::size(120)->generate(url('/verifier-document/' . $acte->token)) !!}
+    <div style="position: absolute; bottom: 20px; left: 20px; z-index: 10;">
+        <div style="display:inline-block; padding:0;">
+            <div style="font-size:0.8em; color:#222; font-weight:bold; margin-bottom:4px; text-align:center;">Vérification</div>
+            <div style="margin-bottom:4px;">
+                {!! QrCode::size(60)->generate(url('/verifier-document/' . $acte->token)) !!}
             </div>
-            <div style="font-size:0.95em; color:#222;">Scannez ce QR code pour vérifier l'authenticité de cet acte de naissance.</div>
+            <div style="font-size:0.7em; color:#222; text-align:center;">Scannez pour vérifier</div>
         </div>
     </div>
-@endif
+    @endif
 </body>
 </html> 

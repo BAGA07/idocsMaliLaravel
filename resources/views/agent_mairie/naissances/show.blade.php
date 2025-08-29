@@ -3,6 +3,10 @@
 @section('content')
 
 <style>
+    @page {
+        size: A4 portrait;
+        margin: 10mm;
+    }
     @media print {
         body * {
             visibility: hidden;
@@ -14,15 +18,20 @@
         }
         .acte-imprimable {
             position: absolute;
-            left: 0;
+            left: 50%;
             top: 0;
             width: 100%;
             border: none !important;
             box-shadow: none !important;
             padding: 0 !important;
             /* Key change: Scale down the document for printing */
-            transform: scale(0.95);
-            transform-origin: top;
+            transform: translateX(-50%) scale(0.85);
+            transform-origin: top center;
+            break-inside: avoid-page;
+            page-break-inside: avoid;
+            page-break-before: avoid;
+            page-break-after: avoid;
+            zoom: 0.85;
         }
         .acte-imprimable .border {
             border-width: 1px !important;
@@ -30,12 +39,19 @@
         .print-break-avoid {
             break-inside: avoid;
         }
+        .print-acte-singlepage {
+            break-inside: avoid-page;
+            page-break-inside: avoid;
+            page-break-before: avoid;
+            page-break-after: avoid;
+            display: inline-block;
+        }
     }
 </style>
 
 <div class="acte-imprimable max-w-3xl mx-auto bg-white border border-black font-serif text-sm print:p-2 print:w-full print:max-w-full print:border-none print:shadow-none relative">
     {{-- Main content container with a new border --}}
-    <div class="border border-black p-4 print:p-2">
+    <div class="border border-black p-4 print:p-2 print-acte-singlepage">
         {{-- Cachet de l'officier en filigrane --}}
         <div class="absolute inset-y-0 left-0 w-16 h-full opacity-20 transform -translate-x-1/2 -rotate-90 origin-bottom-left print:block" style="writing-mode: vertical-rl;">
             <p class="text-[12px] font-bold tracking-wider text-center flex items-center justify-center h-full">L'OFFICIER D'ÉTAT CIVIL</p>

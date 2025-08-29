@@ -83,24 +83,35 @@
 </div>
 
 <style>
+    @page { size: A4 portrait; margin: 10mm; }
     @media print {
-        body * {
-            visibility: hidden;
-        }
+        body * { visibility: hidden; margin: 0; padding: 0; }
 
-        .acte-imprimable,
-        .acte-imprimable * {
-            visibility: visible;
-        }
+        .acte-imprimable, .acte-imprimable * { visibility: visible; }
 
         .acte-imprimable {
             position: absolute;
-            left: 0;
+            left: 50%;
             top: 0;
             width: 100%;
             border: none !important;
             box-shadow: none !important;
             padding: 0 !important;
+            transform: translateX(-50%) scale(0.82);
+            transform-origin: top center;
+            break-inside: avoid-page;
+            page-break-inside: avoid;
+            page-break-before: avoid;
+            page-break-after: avoid;
+            zoom: 0.82;
+        }
+
+        .print-acte-singlepage {
+            break-inside: avoid-page;
+            page-break-inside: avoid;
+            page-break-before: avoid;
+            page-break-after: avoid;
+            display: inline-block;
         }
     }
 </style>
@@ -108,7 +119,7 @@
 {{-- Section acte imprimable --}}
 <div class="acte-imprimable max-w-3xl mx-auto bg-white border border-black font-serif text-sm print:p-4 print:w-full print:max-w-full print:border-none print:shadow-none relative">
     {{-- Main content container with a new border --}}
-    <div class="border border-black p-4">
+    <div class="border border-black p-4 print-acte-singlepage">
         <div class="mb-4">
             <div class="flex justify-between items-start mb-4 relative z-10">
                 <div class="text-left w-1/2">
@@ -256,6 +267,18 @@
             </div>
         </div>
     </div>
+
+    @if($copie->token)
+    <div style="position: absolute; bottom: 40px; left: 40px; z-index: 10;">
+        <div style="display:inline-block; padding:0;">
+            <div style="font-size:0.8em; color:#222; font-weight:bold; margin-bottom:4px; text-align:center;">Vérification</div>
+            <div style="margin-bottom:4px;">
+                {!! QrCode::size(60)->generate(url('/verifier-document/' . $copie->token)) !!}
+            </div>
+            <div style="font-size:0.7em; color:#222; text-align:center;">Scannez pour vérifier</div>
+        </div>
+    </div>
+    @endif
 </div>
     {{-- Boutons et QR code non-imprimables --}}
     <div class="max-w-3xl mx-auto flex flex-col items-center gap-4 mt-6 print:hidden">

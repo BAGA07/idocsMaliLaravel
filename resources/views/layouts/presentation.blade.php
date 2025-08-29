@@ -62,24 +62,26 @@
             class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
             <li>
               <a href="{{ route('presentation.index') }}"
-                class="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white md:dark:text-blue-400 dark:bg-blue-600 md:dark:bg-transparent"
-                aria-current="page">Accueil</a>
+                class="block py-2 px-3 {{ request()->routeIs('presentation.index') ? 'text-white bg-blue-700 md:bg-transparent md:text-blue-700' : 'text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700' }} rounded md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent {{ request()->routeIs('presentation.index') ? 'md:dark:text-blue-400 dark:bg-blue-600 md:dark:bg-transparent' : '' }}"
+                {{ request()->routeIs('presentation.index') ? 'aria-current="page"' : '' }}>Accueil</a>
             </li>
             {{-- LIEN POUR LA DÉMARCHE DE DEMANDE --}}
             <li>
               <a href="{{ route('presentation.la_demarche') }}"
-                class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">La
+                class="block py-2 px-3 {{ request()->routeIs('presentation.la_demarche') ? 'text-white bg-blue-700 md:bg-transparent md:text-blue-700' : 'text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700' }} rounded md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent {{ request()->routeIs('presentation.la_demarche') ? 'md:dark:text-blue-400 dark:bg-blue-600 md:dark:bg-transparent' : '' }}"
+                {{ request()->routeIs('presentation.la_demarche') ? 'aria-current="page"' : '' }}>La
                 Démarche</a>
             </li>
             <li>
               <a href="{{ route('presentation.suivre_demande') }}"
-                class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Suivre
+                class="block py-2 px-3 {{ request()->routeIs('presentation.suivre_demande') ? 'text-white bg-blue-700 md:bg-transparent md:text-blue-700' : 'text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700' }} rounded md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent {{ request()->routeIs('presentation.suivre_demande') ? 'md:dark:text-blue-400 dark:bg-blue-600 md:dark:bg-transparent' : '' }}"
+                {{ request()->routeIs('presentation.suivre_demande') ? 'aria-current="page"' : '' }}>Suivre
                 ma Demande</a>
             </li>
             <li>
               <a href="{{ route('presentation.a_propos_main') }}" id="dropdownNavbarLink"
                 data-dropdown-toggle="dropdownNavbar"
-                class="flex items-center justify-between w-full py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto dark:text-white md:dark:hover:text-blue-500 dark:focus:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">
+                class="flex items-center justify-between w-full py-2 px-3 {{ request()->routeIs('presentation.a_propos*') ? 'text-white bg-blue-700 md:bg-transparent md:text-blue-700' : 'text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700' }} rounded md:p-0 md:w-auto dark:text-white md:dark:hover:text-blue-500 dark:focus:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent {{ request()->routeIs('presentation.a_propos*') ? 'md:dark:text-blue-400 dark:bg-blue-600 md:dark:bg-transparent' : '' }}">
                 Le Projet / À Propos
                 <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                   viewBox="0 0 10 6">
@@ -109,17 +111,19 @@
             </li>
             <li>
               <a href="{{ route('presentation.faq') }}"
-                class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">FAQ</a>
+                class="block py-2 px-3 {{ request()->routeIs('presentation.faq') ? 'text-white bg-blue-700 md:bg-transparent md:text-blue-700' : 'text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700' }} rounded md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent {{ request()->routeIs('presentation.faq') ? 'md:dark:text-blue-400 dark:bg-blue-600 md:dark:bg-transparent' : '' }}"
+                {{ request()->routeIs('presentation.faq') ? 'aria-current="page"' : '' }}>FAQ</a>
             </li>
             <li>
               <a href="{{ route('presentation.contact') }}"
-                class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Contact</a>
+                class="block py-2 px-3 {{ request()->routeIs('presentation.contact') ? 'text-white bg-blue-700 md:bg-transparent md:text-blue-700' : 'text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700' }} rounded md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent {{ request()->routeIs('presentation.contact') ? 'md:dark:text-blue-400 dark:bg-blue-600 md:dark:bg-transparent' : '' }}"
+                {{ request()->routeIs('presentation.contact') ? 'aria-current="page"' : '' }}>Contact</a>
             </li>
 
             <li class="md:ml-4">
               <a href="{{ route('demande.copie_extrait.create') }}"
                 class="text-white bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 md:px-5 md:py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-                Demander une copie d'extrait
+                Demander un Extrait d'Acte
               </a>
             </li>
           </ul>
@@ -155,7 +159,7 @@
                   class="text-blue-200 hover:text-white transition duration-200 text-sm">La Démarche</a></li>
               {{-- Correction : 'demander_acte' n'était pas défini, utilisation de 'choix_type' --}}
               <li><a href="{{ route('demande.copie_extrait.create') }}"
-                  class="text-blue-200 hover:text-white transition duration-200 text-sm">Demander une copie d'extrait</a></li>
+                  class="text-blue-200 hover:text-white transition duration-200 text-sm">Demander un Extrait d'Acte</a></li>
               <li><a href="{{ route('presentation.suivre_demande') }}"
                   class="text-blue-200 hover:text-white transition duration-200 text-sm">Suivre ma Demande</a></li>
               <li><a href="{{ route('presentation.faq') }}"
