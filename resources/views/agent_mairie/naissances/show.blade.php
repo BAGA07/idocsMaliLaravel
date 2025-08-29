@@ -241,6 +241,6 @@
             form.submit();
         }
     }
-</script>
+</script> 
 
 @endsection
