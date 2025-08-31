@@ -105,7 +105,7 @@
                 <p class="flex items-end mb-1"><strong>2. Heure de naissance :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black flex-grow text-left px-1">{{ $acte->heure_naissance ?? '...' }}</span></p>
                 <p class="flex items-end mb-1"><strong>3. Prénom(s) :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black flex-grow text-left px-1">{{ $acte->prenom }}</span></p>
                 <p class="flex items-end mb-1"><strong>4. Nom :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black flex-grow text-left px-1">{{ $acte->nom }}</span></p>
-                <p class="flex items-end mb-1"><strong>5. Sexe :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black flex-grow text-left px-1">{{ $acte->sexe_enfant }}</span></p>
+                <p class="flex items-end mb-1"><strong>5. Sexe :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black flex-grow text-left px-1">{{ $acte->sexe_enfant == 'M' ? 'MASCULIN' : 'FÉMININ' }}</span></p>
                 <p class="flex items-end mb-1"><strong>6. Localité ou pays de naissance :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black flex-grow text-left px-1">{{ $acte->lieu_naissance_enfant }}</span></p>
             </div>
         </div>
