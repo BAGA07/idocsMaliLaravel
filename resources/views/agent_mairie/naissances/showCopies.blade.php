@@ -83,38 +83,36 @@
 </div>
 
 <style>
-    @page { size: A4 portrait; margin: 10mm; }
     @media print {
-        body * { visibility: hidden; margin: 0; padding: 0; }
-
-        .acte-imprimable, .acte-imprimable * { visibility: visible; }
-
+        body * {
+            visibility: hidden;
+            margin: 0;
+            padding: 0;
+        }
+        .acte-imprimable, .acte-imprimable * {
+            visibility: visible;
+        }
         .acte-imprimable {
             position: absolute;
-            left: 50%;
+            left: 0;
             top: 0;
             width: 100%;
             border: none !important;
             box-shadow: none !important;
             padding: 0 !important;
-            transform: translateX(-50%) scale(0.82);
-            transform-origin: top center;
-            break-inside: avoid-page;
-            page-break-inside: avoid;
-            page-break-before: avoid;
-            page-break-after: avoid;
-            zoom: 0.82;
+            /* Key change: Scale down the document for printing */
+            transform: scale(0.95);
+            transform-origin: top;
         }
-
-        .print-acte-singlepage {
-            break-inside: avoid-page;
-            page-break-inside: avoid;
-            page-break-before: avoid;
-            page-break-after: avoid;
-            display: inline-block;
+        .acte-imprimable .border {
+            border-width: 1px !important;
+        }
+        .print-break-avoid {
+            break-inside: avoid;
         }
     }
 </style>
+
 <br><br>
 {{-- Section acte imprimable --}}
 <div class="acte-imprimable max-w-3xl mx-auto bg-white border border-black font-serif text-sm print:p-4 print:w-full print:max-w-full print:border-none print:shadow-none relative">
@@ -293,11 +291,29 @@
             </a>
             {{-- Boutons d'action suppression --}}
             {{-- <form action="{{ route('acte.destroy', $copie->id) }}" method="POST" onsubmit="return confirm('Confirmer la suppression ?')"> --}}
-            <button onclick="confirmDelete({{ $copie->id }})" class="text-white py-2 px-4 rounded-lg bg-red-600 hover:bg-red-700" title="Supprimer">
+            {{-- Bouton de suppression --}}
+            <button onclick="confirmDelete({{ $copie->id }})"
+                class="text-white py-2 px-4 rounded-lg bg-red-600 hover:bg-red-700">
                 Supprimer l'acte
             </button>
+
+            {{-- Formulaire caché --}}
+            <form id="delete-form-{{ $copie->id }}" 
+                action="{{ route('acte.destroy', $copie->id) }}" 
+                method="POST" 
+                style="display:none;">
+                @csrf
+                @method('DELETE')
+            </form>
         </div> 
     </div>
 </div>
 
+<script>
+    function confirmDelete(copieId) {
+        if (confirm('Confirmer la suppression ?')) {
+            document.getElementById('delete-form-' + copieId).submit();
+        }
+    }
+</script>
 @endsection

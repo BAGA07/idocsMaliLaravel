@@ -3,10 +3,6 @@
 @section('content')
 
 <style>
-    @page {
-        size: A4 portrait;
-        margin: 10mm;
-    }
     @media print {
         body * {
             visibility: hidden;
@@ -18,33 +14,21 @@
         }
         .acte-imprimable {
             position: absolute;
-            left: 50%;
+            left: 0;
             top: 0;
             width: 100%;
             border: none !important;
             box-shadow: none !important;
             padding: 0 !important;
             /* Key change: Scale down the document for printing */
-            transform: translateX(-50%) scale(0.85);
-            transform-origin: top center;
-            break-inside: avoid-page;
-            page-break-inside: avoid;
-            page-break-before: avoid;
-            page-break-after: avoid;
-            zoom: 0.85;
+            transform: scale(0.95);
+            transform-origin: top;
         }
         .acte-imprimable .border {
             border-width: 1px !important;
         }
         .print-break-avoid {
             break-inside: avoid;
-        }
-        .print-acte-singlepage {
-            break-inside: avoid-page;
-            page-break-inside: avoid;
-            page-break-before: avoid;
-            page-break-after: avoid;
-            display: inline-block;
         }
     }
 </style>
@@ -211,6 +195,7 @@
 </div>
 
 {{-- Boutons et QR code non-imprimables --}}
+{{-- Boutons --}}
 <div class="max-w-3xl mx-auto flex flex-col items-center gap-4 mt-6 print:hidden">
     <div class="max-w-3xl mx-auto flex justify-center items-center gap-4 mt-6 print:hidden">
         {{-- Bouton d'impression --}}
@@ -219,44 +204,48 @@
             Imprimer l'acte
         </button>
         
-        {{-- Bouton de retour au tableau de bord --}}
+        {{-- Bouton de retour --}}
         <a href="{{ route('mairie.dashboard.actes') }}"
            class="inline-flex items-center bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300 shadow">
             ← Retour
         </a>
     </div>
-    {{-- Boutons d'action suppression --}}
-      <button onclick="confirmDelete({{ $acte->id }})" class="text-white py-2 px-4 rounded-lg bg-red-600 hover:bg-red-700" title="Supprimer">
+
+    {{-- Bouton de suppression --}}
+    <button onclick="confirmDelete({{ $acte->id }})"
+        class="text-white py-2 px-4 rounded-lg bg-red-600 hover:bg-red-700">
         Supprimer l'acte
     </button>
-    
-</div> 
 
-{{-- Script de suppression --}}
+    {{-- Formulaire caché --}}
+    <form id="delete-form-{{ $acte->id }}" 
+          action="{{ route('acte.destroy', $acte->id) }}" 
+          method="POST" 
+          style="display:none;">
+        @csrf
+        @method('DELETE')
+    </form>
+</div>
+
+
+{{-- Script SweetAlert2 --}}
 <script>
     function confirmDelete(acteId) {
-        if (confirm('Êtes-vous sûr de vouloir supprimer cet acte de naissance ? Cette action est irréversible.')) {
-            let form = document.createElement('form');
-            form.action = `/actes/${acteId}`;
-            form.method = 'POST';
-            form.style.display = 'none';
-
-            let csrfInput = document.createElement('input');
-            csrfInput.setAttribute('type', 'hidden');
-            csrfInput.setAttribute('name', '_token');
-            csrfInput.setAttribute('value', '{{ csrf_token() }}');
-            form.appendChild(csrfInput);
-
-            let methodInput = document.createElement('input');
-            methodInput.setAttribute('type', 'hidden');
-            methodInput.setAttribute('name', '_method');
-            methodInput.setAttribute('value', 'DELETE');
-            form.appendChild(methodInput);
-
-            document.body.appendChild(form);
-            form.submit();
-        }
+        Swal.fire({
+            title: 'Confirmation',
+            text: "Êtes-vous sûr de vouloir supprimer cet acte de naissance ? Cette action est irréversible.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Oui, supprimer',
+            cancelButtonText: 'Annuler'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('delete-form-' + acteId).submit();
+            }
+        });
     }
-</script> 
+</script>
 
 @endsection
