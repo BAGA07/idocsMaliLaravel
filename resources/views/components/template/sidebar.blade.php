@@ -36,7 +36,7 @@
                                 complète</a></li>
                         <li><a href="{{ route('naissances.create') }}" class="block px-2 py-1 hover:text-white">Nouvelle
                                 déclaration</a></li>
-                        <li><a href="#" class="block px-2 py-1 hover:text-white">Non traitées</a></li>
+                        {{-- <li><a href="#" class="block px-2 py-1 hover:text-white">Non traitées</a></li> --}}
                     </ul>
                 </details>
             </li>

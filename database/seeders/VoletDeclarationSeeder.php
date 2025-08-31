@@ -13,7 +13,7 @@ class VoletDeclarationSeeder extends Seeder
 {
     public function run(): void
     {
-        $sexeOptions = ['M', 'F'];
+        $sexeOptions = ['Masculin', 'Féminin'];
         $ethnies = ['Bambara', 'Peulh', 'Sénoufo', 'Dogon', 'Soninké'];
         $situations = ['Marié', 'Celibataire', 'Divorcé'];
         $niveaux = ['Aucun', 'Primaire', 'Secondaire', 'Supérieur'];

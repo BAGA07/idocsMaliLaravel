@@ -1,7 +1,7 @@
 @extends('layouts.presentation')
 
 {{-- Titre de la page clair et optimisé pour le SEO --}}
-@section('title', 'La Démarche : Obtenir un Acte de Naissance au Mali avec e-Naissance Mali')
+@section('title', 'La Démarche : Obtenir un Extrait d\'Acte de Naissance au Mali avec e-Naissance Mali')
 
 @section('content')
 
@@ -9,7 +9,7 @@
 <div class="relative bg-cover bg-center h-[350px] flex items-center justify-center text-white text-shadow-lg text-center text-4xl md:text-6xl font-extrabold"
      style="background-image: url('{{ asset('images/img1.png') }}');"> {{-- Utilisation de demarche.jpg --}}
     <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div> {{-- Dégradé plus prononcé --}}
-    <h1 class="relative z-10 p-4 leading-tight">Obtenir votre Acte de Naissance au Mali : La Démarche Simplifiée</h1> {{-- Titre plus engageant --}}
+    <h1 class="relative z-10 p-4 leading-tight">Obtenir votre Extrait d'Acte de Naissance au Mali : La Démarche Simplifiée</h1> {{-- Titre plus engageant --}}
 </div>
 
 <div class="container mx-auto px-4 py-12 max-w-4xl">
@@ -17,24 +17,24 @@
     {{-- Introduction Générale à la Digitalisation --}}
     <div class="bg-white p-8 rounded-lg shadow-xl mb-10">
         <h2 class="text-3xl lg:text-4xl font-extrabold text-gray-900 mb-6 border-b-2 border-blue-500 pb-3">
-            L'Acte de Naissance au Mali à l'Ère Numérique
+            L'Extrait d'Acte de Naissance au Mali à l'Ère Numérique
         </h2>
         <p class="text-lg lg:text-xl text-gray-700 leading-relaxed mb-4">
-            Au Mali, l'acte de naissance est le fondement de l'identité juridique. Conscients des défis liés aux démarches traditionnelles, **IdocsMali** a pour objectif de simplifier et de numériser le processus d'obtention et de suivi de votre acte de naissance. Nous vous éclairons ici sur les différentes démarches possibles, désormais facilitées par notre plateforme en ligne.
+            Au Mali, l'extrait d'acte de naissance est le fondement de l'identité juridique. Conscients des défis liés aux démarches traditionnelles, **IdocsMali** a pour objectif de simplifier et de numériser le processus d'obtention et de suivi de votre extrait d'acte de naissance. Nous vous éclairons ici sur les différentes démarches possibles, désormais facilitées par notre plateforme en ligne.
         </p>
         <p class="text-lg lg:text-xl text-gray-700 leading-relaxed">
-            Que vous soyez un jeune parent souhaitant récupérer l'acte de votre nouveau-né, un citoyen ayant besoin d'une copie de votre acte existant, ou en situation de non-déclaration, notre guide vous accompagnera pas à pas.
+            Que vous soyez un jeune parent souhaitant récupérer l'extrait d'acte de votre nouveau-né, un citoyen ayant besoin d'une copie de votre extrait d'acte existant, ou en situation de non-déclaration, notre guide vous accompagnera pas à pas.
         </p>
     </div>
 
-    {{-- Section 1: Demande d'Acte de Naissance pour un Nouveau-né (Déclaration déjà faite) --}}
+                {{-- Section 1: Demande d'Extrait d'Acte de Naissance pour un Nouveau-né (Déclaration déjà faite) --}}
     <div class="bg-blue-50 p-8 rounded-lg shadow-xl mb-10 border border-blue-200 flex flex-col md:flex-row items-center">
         <div class="md:w-2/3 md:pr-8">
             <h2 class="text-3xl lg:text-4xl font-extrabold text-blue-800 mb-6 border-b-2 border-blue-400 pb-3">
-                1. Demander l'Acte de Naissance d'un Nouveau-né
+                1. Demander l'Extrait d'Acte de Naissance d'un Nouveau-né
             </h2>
             <p class="text-lg lg:text-xl text-gray-700 leading-relaxed mb-4">
-                Si la naissance de votre enfant a déjà été déclarée, **IdocsMali** vous permet de **demander facilement l'établissement ou la récupération de son acte de naissance officiel** en ligne. Cette étape cruciale finalise l'enregistrement de votre enfant auprès de l'état civil.
+                Si la naissance de votre enfant a déjà été déclarée, **IdocsMali** vous permet de **demander facilement l'établissement ou la récupération de son extrait d'acte de naissance officiel** en ligne. Cette étape cruciale finalise l'enregistrement de votre enfant auprès de l'état civil.
             </p>
             <ul class="list-disc list-inside text-lg lg:text-xl text-gray-700 space-y-3 pl-4 mb-4">
                 <li>
@@ -47,18 +47,18 @@
         </div>
         <div class="md:w-1/3 mt-6 md:mt-0 flex justify-center items-center">
             {{-- Remplacez 'acte_naissance_nouveau_ne.jpg' par le nom de votre image --}}
-            <img src="{{ asset('images/nouveau.png') }}" alt="Acte de naissance nouveau-né" class="rounded-lg shadow-md object-cover max-h-64">
+            <img src="{{ asset('images/nouveau.png') }}" alt="Extrait d'acte de naissance nouveau-né" class="rounded-lg shadow-md object-cover max-h-64">
         </div>
     </div>
 
-    {{-- Section 2: Demander une Copie Numérique d'un Acte de Naissance Existant --}}
+                {{-- Section 2: Demander une Copie Numérique d'un Extrait d'Acte de Naissance Existant --}}
     <div class="bg-green-50 p-8 rounded-lg shadow-xl mb-10 border border-green-200 flex flex-col md:flex-row items-center">
         <div class="md:w-2/3 md:pr-8">
             <h2 class="text-3xl lg:text-4xl font-extrabold text-green-800 mb-6 border-b-2 border-green-400 pb-3">
-                2. Demande de Copie d'un Acte de Naissance Existant
+                2. Demande de Copie d'un Extrait d'Acte de Naissance Existant
             </h2>
             <p class="text-lg lg:text-xl text-gray-700 leading-relaxed mb-4">
-                Si un acte de naissance a déjà été établi et enregistré, **IdocsMali** simplifie la demande de sa copie intégrale ou d'un extrait. Cette démarche est souvent nécessaire pour des besoins administratifs (passeport, carte d'identité, scolarisation, etc.).
+                Si un extrait d'acte de naissance a déjà été établi et enregistré, **IdocsMali** simplifie la demande de sa copie intégrale ou d'un extrait. Cette démarche est souvent nécessaire pour des besoins administratifs (passeport, carte d'identité, scolarisation, etc.).
             </p>
             <ul class="list-disc list-inside text-lg lg:text-xl text-gray-700 space-y-3 pl-4 mb-4">
                 <li>
@@ -71,7 +71,7 @@
         </div>
         <div class="md:w-1/3 mt-6 md:mt-0 flex justify-center items-center">
             {{-- Remplacez 'copie_acte_naissance.jpg' par le nom de votre image --}}
-            <img src="{{ asset('images/copie.png') }}" alt="Copie d'un acte de naissance" class="rounded-lg shadow-md object-cover max-h-64">
+            <img src="{{ asset('images/copie.png') }}" alt="Copie d'un extrait d'acte de naissance" class="rounded-lg shadow-md object-cover max-h-64">
         </div>
     </div>
 
@@ -95,7 +95,7 @@
         </div>
         <div class="md:w-1/3 mt-6 md:mt-0 flex justify-center items-center">
             {{-- Remplacez 'jugement_suppletif.jpg' par le nom de votre image --}}
-            <img src="{{ asset('images/jugement.png') }}" alt="Jugement supplétif d'acte de naissance" class="rounded-lg shadow-md object-cover max-h-64">
+            <img src="{{ asset('images/jugement.png') }}" alt="Jugement supplétif d'extrait d'acte de naissance" class="rounded-lg shadow-md object-cover max-h-64">
         </div>
     </div>
 
@@ -105,7 +105,7 @@
             **IdocsMali** : Votre Partenaire pour des Démarches Simplifiées
         </h2>
         <p class="text-lg lg:text-xl text-gray-700 leading-relaxed mb-4">
-            Notre plateforme a été conçue pour vous accompagner et simplifier l'ensemble des démarches liées à l'acte de naissance au Mali. Nous vous guidons pas à pas dans la préparation de votre dossier en ligne, en vous indiquant précisément les informations et documents nécessaires pour chaque type de demande.
+            Notre plateforme a été conçue pour vous accompagner et simplifier l'ensemble des démarches liées à l'extrait d'acte de naissance au Mali. Nous vous guidons pas à pas dans la préparation de votre dossier en ligne, en vous indiquant précisément les informations et documents nécessaires pour chaque type de demande.
         </p>
         <p class="text-lg lg:text-xl text-gray-700 leading-relaxed">
             Notre objectif est de faciliter votre interaction avec les services d'état civil maliens et de rendre l'accès à votre identité juridique plus rapide, plus transparente et plus accessible.

@@ -57,6 +57,12 @@ class OfficierActeController extends Controller
         $acte->finalized = true;
         $acte->cachet_applique = true;
         $acte->statut = 'Finalisé';
+        
+        // Génération d'un token unique pour la vérification QR code
+        if (!$acte->token) {
+            $acte->token = \Illuminate\Support\Str::random(32);
+        }
+        
         $acte->save();
         //Envoie du mail au declarant
          try {
@@ -148,6 +154,12 @@ class OfficierActeController extends Controller
             $copie->finalized = true;
             $copie->cachet_applique = true;
             $copie->statut = 'Finalisé';
+            
+            // Génération d'un token unique pour la vérification QR code
+            if (!$copie->token) {
+                $copie->token = \Illuminate\Support\Str::random(32);
+            }
+            
             $copie->save();
             // Envoi de l'email au déclarant/demandeur pour la copie
             try {

@@ -211,6 +211,9 @@ class CreateCopieActe extends Component
         $copie->date_enregistrement_acte = now();
         $copie->statut = 'Traité';
         $copie->sequential_num = 0;
+        
+        // Génération d'un token unique pour la vérification QR code
+        $copie->token = \Illuminate\Support\Str::random(32);
 
         $copie->save();
 

@@ -266,6 +266,9 @@ class DemandeController extends Controller
         $copie->date_enregistrement_acte = now(); // Date de création de la COPIE dans le système
         $copie->statut = 'Validé'; // Le statut de l'acte de copie est "Validé" une fois créé
         $copie->sequential_num = 0; // Valeur par défaut pour les copies
+        
+        // Génération d'un token unique pour la vérification QR code
+        $copie->token = \Illuminate\Support\Str::random(32);
 
         $copie->save();
 

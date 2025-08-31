@@ -22,7 +22,7 @@
         <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6 animate-scale-in">
             {{-- CORRECTION ICI : Ajout de l'attribut href manquant pour le premier bouton --}}
             <a href="{{ route('demande.choix_type') }}" class="inline-block bg-white text-blue-600 hover:bg-blue-100 px-8 py-4 rounded-lg text-lg font-semibold shadow-lg transition duration-300 ease-in-out transform hover:scale-105">
-                Demander un acte de naissance
+                Demander un Extrait d'acte de naissance
             </a>
             {{-- Le deuxième bouton est déjà correct --}}
             <a href="{{ route('presentation.suivre_demande') }}"
@@ -77,7 +77,7 @@
     <div class="container mx-auto px-4 text-center max-w-5xl">
         <h2 class="text-4xl font-bold text-gray-800 mb-12">Comment ça Marche ?</h2>
         <p class="text-lg text-gray-700 mb-10 max-w-3xl mx-auto">
-            Demander votre acte de naissance en ligne est un processus simple et intuitif. Suivez ces étapes pour
+            Demander votre extrait d'acte de naissance en ligne est un processus simple et intuitif. Suivez ces étapes pour
             obtenir votre document.
         </p>
 
@@ -257,7 +257,7 @@
 <section class="bg-blue-400 text-white py-20 text-center">
     <div class="container mx-auto px-4">
         {{-- Le titre est rendu plus spécifique à l'acte de naissance et à la digitalisation --}}
-        <h2 class="text-4xl md:text-5xl font-bold mb-8">Prêt à digitaliser vos démarches d'Acte de Naissance ?</h2>
+        <h2 class="text-4xl md:text-5xl font-bold mb-8">Prêt à digitaliser vos démarches d'Extrait d'Acte de Naissance ?</h2>
         <a href="{{ route('demande.choix_type') }}" class="inline-block bg-white text-blue-700 hover:bg-blue-100 px-10 py-5 rounded-lg text-xl font-semibold shadow-xl transition duration-300 ease-in-out transform hover:scale-105">
             Commencer ma Demande en Ligne
         </a>

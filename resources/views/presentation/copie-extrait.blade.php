@@ -37,10 +37,8 @@
 
     <h2 class="text-2xl font-bold text-green-700 mb-4">Étapes de la Demande en Ligne :</h2>
     <ol class="list-decimal list-inside text-lg lg:text-xl text-gray-700 space-y-3 pl-4 mb-8">
-        <li>Accédez à la section "Demander un Acte de Naissance" sur notre plateforme.</li>
-        <li>Sélectionnez l'option "Demande de copie d'un acte existant".</li>
+                        <li>Accédez à la section "Demander un Extrait d'Acte de Naissance" sur notre plateforme.</li>
         <li>Remplissez le formulaire en ligne avec les informations précises de l'acte et, si possible, téléchargez la photo ou le scan de l'acte original.</li>
-        <li>Procédez au paiement sécurisé des frais de service.</li>
         <li>Votre demande sera examinée et soumise aux autorités compétentes. Vous recevrez un numéro de suivi par email pour rester informé de son statut.</li>
         <li>Une fois la copie prête, nous vous notifierons pour son retrait ou les modalités d'envoi.</li>
     </ol>

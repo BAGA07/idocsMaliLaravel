@@ -130,7 +130,7 @@
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
                             <img class="h-16 w-16 rounded-full"
-                                src="{{ asset('gentelella/assets/ 'gentelella/assets/build/images/officier.jpg'') }}"
+                                src="{{ asset('gentelella/assets/ gentelella/assets/images/avataridocs.jpg') }}"
                                 alt="Profile">
                         </div>
                         <div class="ml-4">
