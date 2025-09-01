@@ -5,7 +5,7 @@
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="bg-white rounded-lg shadow-md p-6">
             <h2 class="text-2xl font-semibold text-gray-900 mb-6 flex items-center">
-                <i class="fa fa-user-plus text-blue-500 mr-2"></i> Ajouter un nouveau utilisateur
+                <i class="fa fa-user-plus text-blue-500 mr-2"></i> Ajouter un nouveau manager
             </h2>
 
             @if ($errors->any())
@@ -66,19 +66,7 @@
                         class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                         required>
                         <option value="">-- Sélectionner --</option>
-                        <option value="hopital">Hôpital</option>
                         <option value="mairie">Mairie</option>
-                    </select>
-                </div>
-
-                <div class="mb-4" id="select_hopital" style="display: none;">
-                    <label class="block text-sm font-medium text-gray-700">Hôpital concerné</label>
-                    <select name="structure_id"
-                        class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-                        disabled>
-                        @foreach($hopitaux as $hopital)
-                        <option value="{{ $hopital->id }}">{{ $hopital->nom_hopital }}</option>
-                        @endforeach
                     </select>
                 </div>
 
@@ -112,18 +100,15 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const structureSelect = document.getElementById('structure');
-        const hopitalDiv = document.getElementById('select_hopital');
         const mairieDiv = document.getElementById('select_mairie');
 
         structureSelect.addEventListener('change', function () {
             const selectedValue = this.value;
             
             // Masquer tous les divs
-            hopitalDiv.style.display = 'none';
             mairieDiv.style.display = 'none';
             
             // Désactiver tous les selects
-            hopitalDiv.querySelector('select').disabled = true;
             mairieDiv.querySelector('select').disabled = true;
             
             // Afficher le div correspondant

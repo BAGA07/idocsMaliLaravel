@@ -19,7 +19,8 @@
 <body class="bg-light">
     <div class="d-flex">
         {{-- Sidebar Admin --}}
-        <div class="sidebar bg-dark text-white" style="width: 250px; min-height: 100vh;">
+        <div class="sidebar bg-dark text-white position-fixed" 
+             style="width: 250px; height: 100vh; top: 0; left: 0; overflow-y: auto;">
             <div class="p-3">
                 <h4 class="text-white mb-4">
                     <i class="fas fa-shield-alt me-2"></i>
@@ -38,8 +39,6 @@
                         <i class="fas fa-users me-2"></i>
                         Gestionnaires Des utilisateurs
                     </a>
-
-
 
                     <a class="nav-link text-white-50 {{ request()->routeIs('admin.structures.*') ? 'active bg-primary' : '' }}"
                         href="{{ route('admin.structures.index') }}">
@@ -66,7 +65,7 @@
         </div>
 
         {{-- Contenu principal --}}
-        <div class="flex-grow-1">
+        <div class="flex-grow-1" style="margin-left: 250px;">
             {{-- Barre de navigation en haut --}}
             <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
                 <div class="container-fluid">
@@ -82,9 +81,7 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="{{ route('profile') }}">Profil</a></li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
+                                <li><hr class="dropdown-divider"></li>
                                 <li>
                                     <form method="POST" action="{{ route('logout') }}">
                                         @csrf

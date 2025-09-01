@@ -63,7 +63,7 @@ class AdminManagerController extends Controller
         if ($request->structure === 'hopital') {
             $user->role     = 'agent_hopital';
         } else {
-            $user->role     = 'agent_mairie';
+            $user->role     = 'manager';
         }
 
 
