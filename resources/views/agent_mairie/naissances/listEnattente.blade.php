@@ -78,13 +78,9 @@
                         <a href="{{ route('acteCopies.create', $demandeCopie->id) }}"
                             class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition duration-150 ease-in-out text-sm font-medium">Traiter
                             Copie</a>
-                        <form action="{{ route('mairie.demandes.rejeter', $demandeCopie->id) }}" method="POST"
-                            class="inline"
-                            onsubmit="return confirm('Êtes-vous sûr de vouloir rejeter cette demande de copie ? Cette action est irréversible.');">
-                            @csrf
-                            <button type="submit"
-                                class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition duration-150 ease-in-out text-sm font-medium">Rejeter</button>
-                        </form>
+                        <button type="button"
+                            onclick="openRejetModal({{ $demandeCopie->id }})"
+                            class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition duration-150 ease-in-out text-sm font-medium">Rejeter</button>
                     </td>
                 </tr>
                 @endforeach
@@ -160,12 +156,9 @@
                     <td class="px-4 py-3 border border-gray-300 space-x-2 whitespace-nowrap">
                         <a href="{{ route('acte.create', $demande->id) }}"
                             class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition duration-150 ease-in-out text-sm font-medium">Traiter</a>
-                        <form action="{{ route('mairie.demandes.rejeter', $demande->id) }}" method="POST" class="inline"
-                            onsubmit="return confirm('Êtes-vous sûr de vouloir rejeter cette demande d\'acte original ? Cette action est irréversible.');">
-                            @csrf
-                            <button type="submit"
-                                class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition duration-150 ease-in-out text-sm font-medium">Rejeter</button>
-                        </form>
+                        <button type="button"
+                            onclick="openRejetModal({{ $demande->id }})"
+                            class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition duration-150 ease-in-out text-sm font-medium">Rejeter</button>
                     </td>
                 </tr>
                 @endforeach
@@ -174,4 +167,36 @@
     </div>
     @endif
 </div>
+<div id="rejet-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="bg-white w-full max-w-md mx-4 rounded-lg shadow-lg">
+        <div class="px-6 py-4 border-b">
+            <h3 class="text-lg font-semibold text-gray-800">Motif du rejet</h3>
+        </div>
+        <form id="rejet-form" method="POST" action="{{ url('mairie/demandes/__ID__/rejeter') }}" class="px-6 py-4">
+            @csrf
+            <label for="motif" class="block text-sm font-medium text-gray-700 mb-1">Veuillez préciser le motif du rejet</label>
+            <textarea id="motif" name="motif" rows="4" required class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-red-500" placeholder="Ex: justificatif illisible, informations incohérentes, ..."></textarea>
+            <div class="mt-4 flex justify-end gap-2">
+                <button type="button" onclick="closeRejetModal()" class="px-4 py-2 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100">Annuler</button>
+                <button type="submit" class="px-4 py-2 rounded-md bg-red-600 text-white hover:bg-red-700">Confirmer le rejet</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    const baseRejetUrl = "{{ url('mairie/demandes/__ID__/rejeter') }}";
+    function openRejetModal(id) {
+        const modal = document.getElementById('rejet-modal');
+        const form = document.getElementById('rejet-form');
+        form.action = baseRejetUrl.replace('__ID__', id);
+        document.getElementById('motif').value = '';
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    }
+    function closeRejetModal() {
+        const modal = document.getElementById('rejet-modal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }
+</script>
 @endsection

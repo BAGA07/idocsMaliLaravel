@@ -16,6 +16,7 @@ use App\Models\Log;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Notification;
 use Illuminate\Support\Facades\Storage; // Correctement importé, bien !
+use Illuminate\Support\Facades\Mail;
 
 class Acte_naissance extends Controller
 {
@@ -1333,7 +1334,7 @@ return redirect()->route('mairie.dashboard.actes')->with('success', 'Acte de nai
     /**
      * Rejeter une demande (originale ou copie).
      */
-    public function rejeterDemande($id)
+    public function rejeterDemande(Request $request, $id)
     {
         try {
             $demande = Demande::findOrFail($id);
@@ -1343,9 +1344,69 @@ return redirect()->route('mairie.dashboard.actes')->with('success', 'Acte de nai
                 return redirect()->back()->with('error', 'Seules les demandes en attente peuvent être rejetées.');
             }
 
+            // Valider le motif de rejet
+            $validated = $request->validate([
+                'motif' => 'required|string|max:1000',
+            ]);
+
+            // Enregistrer le motif côté mairie si champ disponible
+            $demande->remarque_mairie = $validated['motif'];
+
             // Mettre à jour le statut de la demande
             $demande->statut = 'Rejeté';
             $demande->save();
+
+            // Tentative d'envoi d'email de rejet au déclarant
+            try {
+                $dateRejet = Carbon::now()->format('d-m-Y H:i:s');
+                $motif = $validated['motif'];
+
+                // Cas des demandes d'acte original (via volet)
+                if (!empty($demande->id_volet) && $demande->volet) {
+                    $volet = $demande->volet;
+                    $volet->loadMissing(['declarant', 'hopital']);
+
+                    $toEmail = optional($volet->declarant)->email;
+
+                    if ($toEmail) {
+                        $data = [
+                            'nom_declarant' => trim((string) optional($volet->declarant)->prenom_declarant . ' ' . (string) optional($volet->declarant)->nom_declarant),
+                            'num_volet' => $volet->num_volet ?? 'N/A',
+                            'nom_enfant' => trim((string) ($volet->prenom_enfant ?? '') . ' ' . (string) ($volet->nom_enfant ?? '')),
+                            'date_naissance' => $volet->date_naissance ?? 'N/A',
+                            'hopital' => optional(optional(optional($volet->hopital)->commune)->mairie)->nom_mairie ?? 'Mairie',
+                            'date_rejet' => $dateRejet,
+                            'motif_rejet' => $motif,
+                        ];
+
+                        Mail::send('emails.declaration_notification_rejet', ['data' => $data], function ($message) use ($toEmail) {
+                            $message->to($toEmail)
+                                ->subject('Votre déclaration a été rejetée');
+                        });
+                    }
+                } else {
+                    // Cas des demandes de copie (plateforme publique)
+                    if (!empty($demande->email)) {
+                        $toEmail = $demande->email;
+                        $type = strtolower($demande->type_document ?? 'document');
+                        $messageTexte = "Bonjour {$demande->nom_complet},\nVotre demande de {$type} a été rejetée le {$dateRejet}.\nMotif du rejet : {$motif}.\nNuméro de suivi : " . ($demande->numero_suivi ?? 'N/A') . ".\nMerci de corriger les informations ou de fournir les pièces requises, puis de soumettre à nouveau votre demande.";
+
+                        $data = [
+                            'message' => $messageTexte,
+                        ];
+
+                        Mail::send('emails.declaration_notification_rejet', ['data' => $data], function ($message) use ($toEmail) {
+                            $message->to($toEmail)
+                                ->subject('Votre demande a été rejetée');
+                        });
+                    }
+                }
+            } catch (\Exception $mailEx) {
+                \Log::error('Erreur lors de l\'envoi du mail de rejet: ' . $mailEx->getMessage(), [
+                    'demande_id' => $demande->id,
+                ]);
+                // On continue sans interrompre le flux utilisateur
+            }
 
             // Enregistrer l'action dans les logs
             Log::create([
@@ -1354,7 +1415,7 @@ return redirect()->route('mairie.dashboard.actes')->with('success', 'Acte de nai
                 'details' => 'Demande ' . $demande->type_document . ' rejetée - ID: ' . $demande->id . ' - Numéro de suivi: ' . ($demande->numero_suivi ?? 'N/A'),
             ]);
 
-            return redirect()->back()->with('success', 'Demande rejetée avec succès.');
+            return redirect()->back()->with('success', 'Demande rejetée avec succès. Le déclarant a été notifié par email si une adresse est disponible.');
         } catch (\Exception $e) {
             \Log::error('Erreur lors du rejet de la demande: ' . $e->getMessage(), [
                 'demande_id' => $id,
