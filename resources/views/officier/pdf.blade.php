@@ -116,6 +116,18 @@
     <div class="section">
         <button onclick="window.print()" class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700">Imprimer</button>
     </div>
+
+    @if($acte->token)
+    <div style="margin-top:40px; text-align:center;">
+        <div style="display:inline-block; padding:0;">
+            <div style="font-size:1.1em; color:#222; font-weight:bold; margin-bottom:8px;">Vérification d'authenticité</div>
+            <div style="margin-bottom:8px;">
+                {!! QrCode::size(120)->generate(url('/verifier-document/' . $acte->token)) !!}
+            </div>
+            <div style="font-size:0.95em; color:#222;">Scannez ce QR code pour vérifier l'authenticité de cet acte de naissance.</div>
+        </div>
+    </div>
+    @endif
 </div>
 </body>
 </html> 

@@ -63,6 +63,29 @@
     </script>
     @endif
 
+    {{-- Alert pour envoyer à l'officier --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+    function confirmSend(id) {
+        Swal.fire({
+            title: 'Confirmation',
+            text: "Êtes-vous sûr de vouloir envoyer cet acte à l'officier ?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#16a34a', // vert
+            cancelButtonColor: '#6b7280',  // gris
+            confirmButtonText: 'Oui, envoyer',
+            cancelButtonText: 'Annuler'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('send-form-' + id).submit();
+            }
+        });
+    }
+    </script>
+
+
+
     {{-- Fonction de suppression avec confirmation --}}
     <script>
         function confirmDelete(id) {

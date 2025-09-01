@@ -19,7 +19,7 @@ return new class extends Migration
             $table->date('date_declaration');
             $table->string('prenom_enfant', 100);
             $table->string('nom_enfant', 100);
-            $table->enum('sexe', ['M', 'F']);
+            $table->enum('sexe', ['Masculin', 'Féminin']);
             $table->integer('nbreEnfantAccouchement');
 
             $table->string('prenom_pere', 100);

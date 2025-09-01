@@ -86,13 +86,12 @@
     @media print {
         body * {
             visibility: hidden;
+            margin: 0;
+            padding: 0;
         }
-
-        .acte-imprimable,
-        .acte-imprimable * {
+        .acte-imprimable, .acte-imprimable * {
             visibility: visible;
         }
-
         .acte-imprimable {
             position: absolute;
             left: 0;
@@ -101,14 +100,24 @@
             border: none !important;
             box-shadow: none !important;
             padding: 0 !important;
+            /* Key change: Scale down the document for printing */
+            transform: scale(0.95);
+            transform-origin: top;
+        }
+        .acte-imprimable .border {
+            border-width: 1px !important;
+        }
+        .print-break-avoid {
+            break-inside: avoid;
         }
     }
 </style>
+
 <br><br>
 {{-- Section acte imprimable --}}
 <div class="acte-imprimable max-w-3xl mx-auto bg-white border border-black font-serif text-sm print:p-4 print:w-full print:max-w-full print:border-none print:shadow-none relative">
     {{-- Main content container with a new border --}}
-    <div class="border border-black p-4">
+    <div class="border border-black p-4 print-acte-singlepage">
         <div class="mb-4">
             <div class="flex justify-between items-start mb-4 relative z-10">
                 <div class="text-left w-1/2">
@@ -256,6 +265,18 @@
             </div>
         </div>
     </div>
+
+    @if($copie->token)
+    <div style="position: absolute; bottom: 40px; left: 40px; z-index: 10;">
+        <div style="display:inline-block; padding:0;">
+            <div style="font-size:0.8em; color:#222; font-weight:bold; margin-bottom:4px; text-align:center;">Vérification</div>
+            <div style="margin-bottom:4px;">
+                {!! QrCode::size(60)->generate(url('/verifier-document/' . $copie->token)) !!}
+            </div>
+            <div style="font-size:0.7em; color:#222; text-align:center;">Scannez pour vérifier</div>
+        </div>
+    </div>
+    @endif
 </div>
     {{-- Boutons et QR code non-imprimables --}}
     <div class="max-w-3xl mx-auto flex flex-col items-center gap-4 mt-6 print:hidden">
@@ -268,8 +289,31 @@
             <a href="{{ route('mairie.dashboard.copies') }}" class="inline-flex items-center bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300 shadow">
                 ← Retour
             </a>
+            {{-- Boutons d'action suppression --}}
+            {{-- <form action="{{ route('acte.destroy', $copie->id) }}" method="POST" onsubmit="return confirm('Confirmer la suppression ?')"> --}}
+            {{-- Bouton de suppression --}}
+            <button onclick="confirmDelete({{ $copie->id }})"
+                class="text-white py-2 px-4 rounded-lg bg-red-600 hover:bg-red-700">
+                Supprimer l'acte
+            </button>
+
+            {{-- Formulaire caché --}}
+            <form id="delete-form-{{ $copie->id }}" 
+                action="{{ route('acte.destroy', $copie->id) }}" 
+                method="POST" 
+                style="display:none;">
+                @csrf
+                @method('DELETE')
+            </form>
         </div> 
     </div>
 </div>
 
+<script>
+    function confirmDelete(copieId) {
+        if (confirm('Confirmer la suppression ?')) {
+            document.getElementById('delete-form-' + copieId).submit();
+        }
+    }
+</script>
 @endsection

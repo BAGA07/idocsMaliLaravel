@@ -45,7 +45,7 @@ class AgentController extends Controller
             'adresse'       => 'required|string|max:100',
             'telephone'       => 'required|string|max:20',
             'email'      => 'required|email|unique:users',
-            'password'   => 'required|string|min:6',
+            'password'   => 'required|string|min:8|confirmed',
             'structure'  => 'required|in:hopital,mairie',
             'structure_id' => 'required|integer',
         ]);

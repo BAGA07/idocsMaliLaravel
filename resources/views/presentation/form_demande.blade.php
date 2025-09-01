@@ -1,6 +1,6 @@
 @extends('layouts.presentation')
 
-@section('title', 'Demander un Acte - IdocsMali')
+@section('title', 'Demander un Extrait d\'Acte - IdocsMali')
 
 @section('content')
 

@@ -39,12 +39,17 @@
                         <td class="px-4 py-2 border space-x-2">
                             <a href="{{ route('acte.show', $acte->id) }}" class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 text-sm">Voir</a>
                             <a href="{{ route('acte.edit', $acte->id) }}" class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 text-sm">Modifier</a>
-                            <form action="{{ route('acte.envoyer_officier', $acte->id) }}" method="POST" class="inline">
+                            <button type="button" 
+                                class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 text-sm"
+                                onclick="confirmSend({{ $acte->id }})">
+                                Envoyer à l'officier
+                            </button>
+                            <!-- Formulaire caché -->
+                            <form id="send-form-{{ $acte->id }}" 
+                                action="{{ route('acte.envoyer_officier', $acte->id) }}" 
+                                method="POST" 
+                                style="display: none;">
                                 @csrf
-                                <button type="submit" class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 text-sm" 
-                                        onclick="return confirm('Êtes-vous sûr de vouloir envoyer cet acte à l\'officier ?')">
-                                    Envoyer à l'officier
-                                </button>
                             </form>
                         </td>
                     </tr>
@@ -121,4 +126,13 @@
         </div>
     </div>
 </div>
+@endsection
+@section('scripts')
+<script>
+function confirmSend(id) {
+    if(confirm("Êtes-vous sûr de vouloir envoyer cet acte à l'officier ?")) {
+        document.getElementById('send-form-' + id).submit();
+    }
+}
+</script>
 @endsection

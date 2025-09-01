@@ -4,7 +4,7 @@
     <h2 class="text-2xl font-bold mb-6">Tableau de bord - Gestion des copies/extraits</h2>
 
     {{-- Messages Flash --}}
-    @if(session('success'))
+    {{-- @if(session('success'))
         <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4" role="alert">
             <div class="flex">
                 <div class="py-1">
@@ -18,7 +18,7 @@
                 </div>
             </div>
         </div>
-    @endif
+    @endif --}}
 
     @if(session('info'))
         <div class="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded mb-4" role="alert">
@@ -93,15 +93,22 @@
                                 <a href="{{ route('copies.show', $copie->id) }}" class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 text-sm">Voir</a>
                             <a href="{{ route('acte.edit', $copie->id) }}" class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 text-sm">Modifier</a>
 
-                                @if(!$copie->statut || $copie->statut != 'En attente de signature')
-                                    <form method="POST" action="{{ route('copies.envoyer_officier', $copie->id) }}" class="inline">
-                                        @csrf
-                                        <button type="submit" class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 text-sm" 
-                                                onclick="return confirm('Êtes-vous sûr de vouloir envoyer cette copie à l\'officier ?')">
-                                            Envoyer à l'officier
-                                        </button>
-                                    </form>
-                                @endif
+                            @if(!$copie->statut || $copie->statut != 'En attente de signature')
+                                <!-- Bouton -->
+                                <button type="button" 
+                                        class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 text-sm"
+                                        onclick="confirmSend({{ $copie->id }})">
+                                    Envoyer à l'officier
+                                </button>
+
+                                <!-- Formulaire caché -->
+                                <form id="send-form-{{ $copie->id }}" 
+                                    action="{{ route('copies.envoyer_officier', $copie->id) }}" 
+                                    method="POST" 
+                                    style="display: none;">
+                                    @csrf
+                                </form>
+                            @endif
                             </td>
                         </tr>
                     @endforeach

@@ -35,7 +35,7 @@
 
 <div class="acte-imprimable max-w-3xl mx-auto bg-white border border-black font-serif text-sm print:p-2 print:w-full print:max-w-full print:border-none print:shadow-none relative">
     {{-- Main content container with a new border --}}
-    <div class="border border-black p-4 print:p-2">
+    <div class="border border-black p-4 print:p-2 print-acte-singlepage">
         {{-- Cachet de l'officier en filigrane --}}
         <div class="absolute inset-y-0 left-0 w-16 h-full opacity-20 transform -translate-x-1/2 -rotate-90 origin-bottom-left print:block" style="writing-mode: vertical-rl;">
             <p class="text-[12px] font-bold tracking-wider text-center flex items-center justify-center h-full">L'OFFICIER D'ÉTAT CIVIL</p>
@@ -89,7 +89,7 @@
                 <p class="flex items-end mb-1"><strong>2. Heure de naissance :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black flex-grow text-left px-1">{{ $acte->heure_naissance ?? '...' }}</span></p>
                 <p class="flex items-end mb-1"><strong>3. Prénom(s) :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black flex-grow text-left px-1">{{ $acte->prenom }}</span></p>
                 <p class="flex items-end mb-1"><strong>4. Nom :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black flex-grow text-left px-1">{{ $acte->nom }}</span></p>
-                <p class="flex items-end mb-1"><strong>5. Sexe :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black flex-grow text-left px-1">{{ $acte->sexe_enfant }}</span></p>
+                <p class="flex items-end mb-1"><strong>5. Sexe :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black flex-grow text-left px-1">{{ $acte->sexe_enfant == 'M' ? 'MASCULIN' : 'FÉMININ' }}</span></p>
                 <p class="flex items-end mb-1"><strong>6. Localité ou pays de naissance :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black flex-grow text-left px-1">{{ $acte->lieu_naissance_enfant }}</span></p>
             </div>
         </div>
@@ -195,6 +195,7 @@
 </div>
 
 {{-- Boutons et QR code non-imprimables --}}
+{{-- Boutons --}}
 <div class="max-w-3xl mx-auto flex flex-col items-center gap-4 mt-6 print:hidden">
     <div class="max-w-3xl mx-auto flex justify-center items-center gap-4 mt-6 print:hidden">
         {{-- Bouton d'impression --}}
@@ -203,42 +204,47 @@
             Imprimer l'acte
         </button>
         
-        {{-- Bouton de retour au tableau de bord --}}
+        {{-- Bouton de retour --}}
         <a href="{{ route('mairie.dashboard.actes') }}"
            class="inline-flex items-center bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300 shadow">
             ← Retour
         </a>
     </div>
-    {{-- Boutons d'action suppression --}}
-    {{-- <button onclick="confirmDelete({{ $acte->id }})" class="text-white py-2 px-4 rounded-lg bg-red-600 hover:bg-red-700" title="Supprimer">
-        Supprimer l'acte
-    </button> --}}
-</div> 
 
-{{-- Script de suppression --}}
+    {{-- Bouton de suppression --}}
+    <button onclick="confirmDelete({{ $acte->id }})"
+        class="text-white py-2 px-4 rounded-lg bg-red-600 hover:bg-red-700">
+        Supprimer l'acte
+    </button>
+
+    {{-- Formulaire caché --}}
+    <form id="delete-form-{{ $acte->id }}" 
+          action="{{ route('acte.destroy', $acte->id) }}" 
+          method="POST" 
+          style="display:none;">
+        @csrf
+        @method('DELETE')
+    </form>
+</div>
+
+
+{{-- Script SweetAlert2 --}}
 <script>
     function confirmDelete(acteId) {
-        if (confirm('Êtes-vous sûr de vouloir supprimer cet acte de naissance ? Cette action est irréversible.')) {
-            let form = document.createElement('form');
-            form.action = `/actes/${acteId}`;
-            form.method = 'POST';
-            form.style.display = 'none';
-
-            let csrfInput = document.createElement('input');
-            csrfInput.setAttribute('type', 'hidden');
-            csrfInput.setAttribute('name', '_token');
-            csrfInput.setAttribute('value', '{{ csrf_token() }}');
-            form.appendChild(csrfInput);
-
-            let methodInput = document.createElement('input');
-            methodInput.setAttribute('type', 'hidden');
-            methodInput.setAttribute('name', '_method');
-            methodInput.setAttribute('value', 'DELETE');
-            form.appendChild(methodInput);
-
-            document.body.appendChild(form);
-            form.submit();
-        }
+        Swal.fire({
+            title: 'Confirmation',
+            text: "Êtes-vous sûr de vouloir supprimer cet acte de naissance ? Cette action est irréversible.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Oui, supprimer',
+            cancelButtonText: 'Annuler'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('delete-form-' + acteId).submit();
+            }
+        });
     }
 </script>
 
