@@ -142,8 +142,8 @@
                 <div class="field">
                     <label>Sexe</label>
                     <select name="sexe">
-                        <option value="M">Masculin</option>
-                        <option value="F">Féminin</option>
+                        <option value="Masculin">Masculin</option>
+                        <option value="Féminin">Féminin</option>
                     </select>
                 </div>
                 <div class="field">

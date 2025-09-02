@@ -6,6 +6,9 @@ use Illuminate\Pagination\Paginator;
 @section('titre')Tableau de bord @endsection
 @section('content')
 <div class="min-h-screen bg-gray-50 py-8">
+      <div align="right">
+        @include('hopital.partials.notifications', ['notifications' => $notifications])
+    </div>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Statistiques -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
@@ -93,12 +96,12 @@ use Illuminate\Pagination\Paginator;
                                 +223 {{ $declaration->declarant->telephone }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                @if ($declaration->sexe === 'M')
+                                @if ($declaration->sexe === 'Masculin')
                                 <span
                                     class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                                     Masculin
                                 </span>
-                                @elseif ($declaration->sexe === 'F')
+                                @elseif ($declaration->sexe === 'Féminin')
                                 <span
                                     class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-pink-100 text-pink-800">
                                     Féminin
