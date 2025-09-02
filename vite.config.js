@@ -23,14 +23,14 @@ import { defineConfig } from "vite";
 import laravel from "laravel-vite-plugin";
 
 export default defineConfig({
-    server: {
-        host: "0.0.0.0",
-        hmr: {
-            host: "1f37ad69d63b.ngrok-free.app", // remplace par ton URL ngrok sans https://
-            protocol: "wss", // important si ngrok https, websocket sécurisé
-            port: 443,
-        },
-    },
+    // server: {
+    //     host: "0.0.0.0",
+    //     hmr: {
+    //         host: "1f37ad69d63b.ngrok-free.app", // remplace par ton URL ngrok sans https://
+    //         protocol: "wss", // important si ngrok https, websocket sécurisé
+    //         port: 443,
+    //     },
+    // },
     plugins: [
         laravel({
             input: ["resources/css/app.css", "resources/js/app.js"],
