@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('hopitals', function (Blueprint $table) {
             $table->id();
             $table->string('nom_hopital');
+            $table->string('email')->nullable();
             $table->foreignId('id_commune')->constrained('communes')->onDelete('cascade');
             $table->timestamps();
         });

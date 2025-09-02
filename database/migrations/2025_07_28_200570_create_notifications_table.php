@@ -14,12 +14,15 @@ return new class extends Migration
     Schema::create('notifications', function (Blueprint $table) {
         $table->id();
         $table->unsignedBigInteger('mairie_id');
+        $table->unsignedBigInteger('hopital_id')->nullable();
+        $table->string('from_mairie')->nullable();
         $table->string('from_hopital')->nullable();
         $table->text('message');
         $table->boolean('is_read')->default(false);
         $table->timestamps();
 
         $table->foreign('mairie_id')->references('id')->on('mairie')->onDelete('cascade');
+        $table->foreign('hopital_id')->references('id')->on('hopitals')->onDelete('cascade');
     });
 }
 

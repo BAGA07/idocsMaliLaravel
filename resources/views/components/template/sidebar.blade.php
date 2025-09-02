@@ -40,6 +40,12 @@
                     </ul>
                 </details>
             </li>
+              <li>
+                <a href="{{ route('hopital.notifications.index') }}"
+                    class="flex items-center p-2 rounded hover:bg-blue-700">
+                    <i class="fa fa-bell w-5 mr-2 text-white"></i> Notifications
+                </a>
+            </li>
             @endif
 
             {{-- Agent État civil --}}
