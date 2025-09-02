@@ -27,8 +27,8 @@
 
                 <div>
                     <div class="mb-1">
-                        <i class="fa fa-hospital {{ $notif->is_read ? 'text-secondary' : 'text-primary' }}"></i>
-                        <span>{{ $notif->from_mairie ?? 'Hôpital inconnu' }}</span>
+                        <i class="fa fa-landmark {{ $notif->is_read ? 'text-secondary' : 'text-primary' }}"></i>
+                        <span>{{''}}</span>
                         @if(!$notif->is_read)
                             <span class="badge bg-success ms-2">Non lu</span>
                         @else
