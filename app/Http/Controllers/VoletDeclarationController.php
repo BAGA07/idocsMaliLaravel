@@ -25,7 +25,7 @@ class VoletDeclarationController extends Controller
         $anneeActuelle = Carbon::now()->month;
 
         $totalGarçons = VoletDeclaration::whereMonth('created_at', $anneeActuelle)
-            ->where('sexe', 'Maculin')
+            ->where('sexe', 'Masculin')
             ->count();
 
         $totalFilles = VoletDeclaration::whereMonth('created_at', $anneeActuelle)

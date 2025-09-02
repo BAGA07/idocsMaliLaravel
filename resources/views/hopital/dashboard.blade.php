@@ -32,6 +32,7 @@ use Illuminate\Pagination\Paginator;
                 <div class="flex-1">
                     <h3 class="text-gray-600 font-semibold">Total Garçons</h3>
                     <p class="text-2xl font-bold text-gray-900">{{ $totalGarçons ?? 0 }}</p>
+
                     <span class="text-sm text-gray-500">Nés cette année</span>
                 </div>
             </div>
