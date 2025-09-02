@@ -62,7 +62,7 @@
                     </div>
                 </div>
             @else
-                <div class="bg-white rounded-lg shadow-lg p-6">
+                <div class="bg-white rounded-lg shadow-lg p-6 sticky top-20">
                     <h3 class="text-lg font-semibold mb-4 text-blue-600">📄 Justificatif fourni par l'utilisateur</h3>
                     
 
