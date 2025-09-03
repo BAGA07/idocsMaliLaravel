@@ -24,11 +24,11 @@ class VoletDeclarationController extends Controller
         $anneeActuelle = Carbon::now()->month;
 
         $totalGarçons = VoletDeclaration::whereMonth('created_at', $anneeActuelle)
-            ->where('sexe', 'M')
+            ->where('sexe', 'Masculin')
             ->count();
 
         $totalFilles = VoletDeclaration::whereMonth('created_at', $anneeActuelle)
-            ->where('sexe', 'F')
+            ->where('sexe', 'Féminin')
             ->count();
 
         $declarations = VoletDeclaration::with('declarant', 'hopital')->latest()->paginate(20);
@@ -66,7 +66,7 @@ class VoletDeclarationController extends Controller
             'prenom_enfant' => 'nullable|string|max:100',
             'nom_enfant' => 'nullable|string|max:100',
             'date_naissance' => 'required|date',
-            'sexe' => 'required|string|in:M,F',
+            'sexe' => 'required|string|in:Masculin,Féminin',
             'nbreEnfantAccouchement' => 'nullable|integer|min:1',
 
             'prenom_declarant' => 'required|string|max:100',
@@ -163,7 +163,7 @@ class VoletDeclarationController extends Controller
             'nom_enfant' => 'nullable|string|max:100',
             'date_naissance' => 'required|date',
             'heure_naissance' => 'required',
-            'sexe' => 'required|in:M,F',
+            'sexe' => 'required|in:Masculin,Féminin',
             'nbreEnfantAccouchement' => 'nullable|integer|min:1',
 
             // Père
