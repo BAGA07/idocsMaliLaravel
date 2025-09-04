@@ -9,6 +9,10 @@ use App\Models\Log;
 use App\Models\Acte;
 use App\Models\Commune;
 use App\Models\Officier;
+use App\Models\Mairie;
+use App\Models\Notification;
+use App\Mail\DemandeCopieNotificationMail;
+use Illuminate\Support\Facades\Mail;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,8 +31,11 @@ class DemandeController extends Controller
      */
     public function createCopieExtraitFormPublique()
     {
+        // Récupérer toutes les communes pour le select
+        $communes = Commune::orderBy('nom_commune')->get();
+
         // Cette vue doit contenir les champs pour le nom, prénom, email, téléphone et le fichier justificatif.
-        return view('presentation.copie_extrait_form'); // J'ai gardé le même nom de vue, assurez-vous qu'il contient les champs de contact.
+        return view('presentation.copie_extrait_form', compact('communes')); // J'ai gardé le même nom de vue, assurez-vous qu'il contient les champs de contact.
     }
 
     /**
@@ -49,6 +56,7 @@ class DemandeController extends Controller
             'prenom_demandeur' => 'required|string|max:255',
             'email_demandeur' => 'required|email|max:255',
             'telephone_demandeur' => 'required|string|max:20',
+            'commune_demandeur' => 'required|exists:communes,id',
             'justificatif' => 'required|file|mimes:jpeg,png,jpg,pdf|max:5120', // Augmenté la taille max à 5MB
             'nombre_copie' => 'required|integer|min:1',
             'informations_complementaires_copie' => 'nullable|string',
@@ -99,6 +107,7 @@ class DemandeController extends Controller
                 'nom_complet' => $request->prenom_demandeur . ' ' . $request->nom_demandeur,
                 'email' => $request->email_demandeur,
                 'telephone' => $request->telephone_demandeur,
+                'commune_demandeur' => $request->commune_demandeur,
                 'informations_complementaires' => $request->informations_complementaires_copie,
                 'id_utilisateur' => null,
                 'type_document' => 'Extrait de naissance'
@@ -111,7 +120,10 @@ class DemandeController extends Controller
                 'details' => 'Demande de copie déposée par ' . $demande->nom_complet . ' (ID Demande: ' . $demande->id . ').',
             ]);
 
-            // 6. Redirection avec message de succès et le numéro de suivi
+            // 6. Envoyer notification à la mairie de la commune sélectionnée
+            $this->envoyerNotificationMairie($demande);
+
+            // 7. Redirection avec message de succès et le numéro de suivi
             return redirect()->route('demande.copie_extrait.create')
                 ->with('numero_suivi_succes', $numeroSuivi);
         } catch (\Exception $e) {
@@ -266,7 +278,7 @@ class DemandeController extends Controller
         $copie->date_enregistrement_acte = now(); // Date de création de la COPIE dans le système
         $copie->statut = 'Validé'; // Le statut de l'acte de copie est "Validé" une fois créé
         $copie->sequential_num = 0; // Valeur par défaut pour les copies
-        
+
         // Génération d'un token unique pour la vérification QR code
         $copie->token = \Illuminate\Support\Str::random(32);
 
@@ -350,5 +362,51 @@ class DemandeController extends Controller
             'total' => count($resultats),
             'demandes' => $resultats
         ]);
+    }
+
+    /**
+     * Envoie une notification à la mairie de la commune sélectionnée pour une demande de copie
+     */
+    private function envoyerNotificationMairie($demande)
+    {
+        try {
+            // Récupérer la commune et la mairie associées
+            $commune = Commune::with('mairie')->find($demande->commune_demandeur);
+
+            if (!$commune || !$commune->mairie) {
+                \Log::warning('Aucune mairie trouvée pour la commune ID: ' . $demande->commune_demandeur);
+                return;
+            }
+
+            $mairie = $commune->mairie;
+
+            // Vérifier que la mairie a un email
+            if (empty($mairie->email)) {
+                \Log::warning('Aucun email configuré pour la mairie ID: ' . $mairie->id);
+                return;
+            }
+
+            // Envoyer l'email à la mairie
+            Mail::to($mairie->email)->send(new DemandeCopieNotificationMail($demande, $commune, $mairie));
+
+            // Enregistrer la notification dans la base de données
+            Notification::create([
+                'mairie_id' => $mairie->id,
+                'from_hopital' => 'Plateforme IdocsMali',
+                'message' => "Nouvelle demande de copie d'extrait d'acte de naissance (N° {$demande->numero_suivi}) déposée par {$demande->nom_complet}.",
+                'type' => 'demande_copie',
+                'demande_id' => $demande->id,
+                'is_read' => false
+            ]);
+
+            \Log::info('Notification envoyée à la mairie de ' . $commune->nom_commune . ' pour la demande ' . $demande->numero_suivi);
+
+        } catch (\Exception $e) {
+            \Log::error('Erreur lors de l\'envoi de notification à la mairie', [
+                'demande_id' => $demande->id,
+                'commune_id' => $demande->commune_demandeur,
+                'error' => $e->getMessage()
+            ]);
+        }
     }
 }
