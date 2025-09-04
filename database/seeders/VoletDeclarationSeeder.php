@@ -28,7 +28,7 @@ class VoletDeclarationSeeder extends Seeder
 
         for ($i = 0; $i < 30; $i++) {
             $sexe = $sexeOptions[array_rand($sexeOptions)];
-            $prenom_enfant = $sexe === 'M'
+            $prenom_enfant = $sexe === 'Masculin'
                 ? $prenomsGarçons[array_rand($prenomsGarçons)]
                 : $prenomsFilles[array_rand($prenomsFilles)];
             $nom_enfant = $nomsFamille[array_rand($nomsFamille)];
