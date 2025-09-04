@@ -20,7 +20,6 @@ use Illuminate\Pagination\Paginator;
                 <div class="flex-1">
                     <h3 class="text-gray-600 font-semibold">Total des naissances</h3>
                     <p class="text-2xl font-bold text-gray-900">{{ $totalNaissances ?? 0 }}</p>
-                    <span class="text-sm text-gray-500">Depuis votre inscription</span>
                 </div>
             </div>
 
@@ -33,7 +32,7 @@ use Illuminate\Pagination\Paginator;
                     <h3 class="text-gray-600 font-semibold">Total Garçons</h3>
                     <p class="text-2xl font-bold text-gray-900">{{ $totalGarçons ?? 0 }}</p>
 
-                    <span class="text-sm text-gray-500">Nés cette année</span>
+                    <span class="text-sm text-gray-500">Nées ce mois-ci</span>
                 </div>
             </div>
             <!-- Total Filles -->
@@ -44,7 +43,7 @@ use Illuminate\Pagination\Paginator;
                 <div class="flex-1">
                     <h3 class="text-gray-600 font-semibold">Total Filles</h3>
                     <p class="text-2xl font-bold text-gray-900">{{ $totalFilles ?? 0 }}</p>
-                    <span class="text-sm text-gray-500">Nées cette année</span>
+                    <span class="text-sm text-gray-500">Nées ce mois-ci</span>
                 </div>
             </div>
         </div>
