@@ -15,7 +15,9 @@ class Notification extends Model
         'hopital_id',
         'from_mairie',
         'message',
-
+        'type',
+        'demande_id',
+        'is_read'
     ];
 
 
@@ -29,6 +31,11 @@ class Notification extends Model
     public function hopital()
     {
         return $this->belongsTo(Hopital::class, 'from_hopital');
+    }
+
+    public function demande()
+    {
+        return $this->belongsTo(Demande::class, 'demande_id');
     }
 
 }

@@ -44,17 +44,33 @@ class Acte_naissance extends Controller
         $monthCount = Demande::whereMonth('created_at', Carbon::now()->month)->count(); // Compteur du mois
         $monthDeclarationsCount = Demande::whereMonth('created_at', Carbon::now()->month)->count();
 
-        // Récupérer les DEMANDES d'actes originaux (via volet de déclaration)
+        // Récupérer la commune de l'agent connecté
+        $agent = Auth::user();
+        $communeId = null;
+
+        if ($agent && $agent->mairie) {
+            $communeId = $agent->mairie->id_commune;
+        }
+
+        // Récupérer les DEMANDES d'actes originaux (via volet de déclaration) - filtrées par commune
         $demandes = Demande::where('type_document', 'Extrait original')
             ->whereNotNull('id_volet')
+            ->when($communeId, function($query) use ($communeId) {
+                return $query->whereHas('volet.hopital', function($q) use ($communeId) {
+                    $q->where('id_commune', $communeId);
+                });
+            })
             ->with('volet')
              ->latest()
             ->paginate(10);
 
 
 
-        // Récupérer les DEMANDES de copies (via plateforme publique)
+        // Récupérer les DEMANDES de copies (via plateforme publique) - filtrées par commune
         $demandesCopies = Demande::where('type_document', 'Extrait de naissance')
+            ->when($communeId, function($query) use ($communeId) {
+                return $query->where('commune_demandeur', $communeId);
+            })
             ->with('acte')
              ->latest()
             ->paginate(10);
@@ -364,29 +380,53 @@ class Acte_naissance extends Controller
      */
     public function listTraiter()
     {
-        // Demandes d'actes originaux (via volet) validées/traitées
+        // Récupérer la commune de l'agent connecté
+        $agent = Auth::user();
+        $communeId = null;
+
+        if ($agent && $agent->mairie) {
+            $communeId = $agent->mairie->id_commune;
+        }
+
+        // Demandes d'actes originaux (via volet) validées/traitées - filtrées par commune
         $demandes = Demande::where('type_document', 'Extrait original')
             ->where('statut', 'Validé')
             ->whereNotNull('id_volet')
+            ->when($communeId, function($query) use ($communeId) {
+                return $query->whereHas('volet.hopital', function($q) use ($communeId) {
+                    $q->where('id_commune', $communeId);
+                });
+            })
             ->with('volet')
             ->get();
 
         $demandesActesOriginauxTraitees = Demande::where('type_document', 'Extrait original')
             ->where('statut', 'Validé')
             ->whereNotNull('id_volet')
+            ->when($communeId, function($query) use ($communeId) {
+                return $query->whereHas('volet.hopital', function($q) use ($communeId) {
+                    $q->where('id_commune', $communeId);
+                });
+            })
             ->with('volet')
             ->get();
 
-        // Demandes de copies d'actes traitées
+        // Demandes de copies d'actes traitées - filtrées par commune
         $demandesCopies = Demande::where('type_document', 'Extrait de naissance')
             ->where('statut', 'Validé')
             ->whereNotNull('id')
+            ->when($communeId, function($query) use ($communeId) {
+                return $query->where('commune_demandeur', $communeId);
+            })
             ->with('acte')
             ->get();
 
         $demandesCopiesTraitees = Demande::where('type_document', 'Extrait de naissance')
             ->where('statut', 'Validé')
             ->whereNotNull('id')
+            ->when($communeId, function($query) use ($communeId) {
+                return $query->where('commune_demandeur', $communeId);
+            })
             ->with('acte')
             ->get();
 
@@ -398,23 +438,44 @@ class Acte_naissance extends Controller
      */
     public function listEnattente()
     {
-        // Demandes d'actes originaux (via volet) en attente
+        // Récupérer la commune de l'agent connecté
+        $agent = Auth::user();
+        $communeId = null;
+
+        if ($agent && $agent->mairie) {
+            $communeId = $agent->mairie->id_commune;
+        }
+
+        // Demandes d'actes originaux (via volet) en attente - filtrées par commune
         $demandesOriginalesEnAttente = Demande::where('type_document', 'Extrait original')
             ->where('statut', 'En attente')
             ->whereNotNull('id_volet')
+            ->when($communeId, function($query) use ($communeId) {
+                return $query->whereHas('volet.hopital', function($q) use ($communeId) {
+                    $q->where('id_commune', $communeId);
+                });
+            })
             ->with('volet')
             ->get();
 
         $demandesActesOriginauxEnAttente = Demande::where('type_document', 'Extrait original')
             ->where('statut', 'En attente')
             ->whereNotNull('id_volet')
+            ->when($communeId, function($query) use ($communeId) {
+                return $query->whereHas('volet.hopital', function($q) use ($communeId) {
+                    $q->where('id_commune', $communeId);
+                });
+            })
             ->with('volet')
             ->get();
 
-        // Demandes de copies en attente
+        // Demandes de copies en attente - filtrées par commune
         $demandesCopiesEnAttente = Demande::where('type_document', 'Extrait de naissance')
             ->where('statut', 'En attente')
             ->whereNull('id_volet')
+            ->when($communeId, function($query) use ($communeId) {
+                return $query->where('commune_demandeur', $communeId);
+            })
             ->get();
 
         return view('agent_mairie.naissances.listEnattente', compact('demandesOriginalesEnAttente', 'demandesActesOriginauxEnAttente', 'demandesCopiesEnAttente'));
@@ -425,27 +486,51 @@ class Acte_naissance extends Controller
      */
     public function listRejeté()
     {
-        // Demandes d'actes originaux rejetées
+        // Récupérer la commune de l'agent connecté
+        $agent = Auth::user();
+        $communeId = null;
+
+        if ($agent && $agent->mairie) {
+            $communeId = $agent->mairie->id_commune;
+        }
+
+        // Demandes d'actes originaux rejetées - filtrées par commune
         $demandesActesOriginauxRejetees = Demande::where('type_document', 'Extrait original')
             ->where('statut', 'Rejeté')
             ->whereNotNull('id_volet')
+            ->when($communeId, function($query) use ($communeId) {
+                return $query->whereHas('volet.hopital', function($q) use ($communeId) {
+                    $q->where('id_commune', $communeId);
+                });
+            })
             ->with('volet')
             ->get();
 
-        // Demandes d'actes originaux rejetées (pour la vue)
+        // Demandes d'actes originaux rejetées (pour la vue) - filtrées par commune
         $demandes = Demande::where('type_document', 'Extrait original')
             ->where('statut', 'Rejeté')
             ->whereNotNull('id_volet')
+            ->when($communeId, function($query) use ($communeId) {
+                return $query->whereHas('volet.hopital', function($q) use ($communeId) {
+                    $q->where('id_commune', $communeId);
+                });
+            })
             ->with('volet')
             ->get();
 
-        // Demandes de copies rejetées
+        // Demandes de copies rejetées - filtrées par commune
         $demandesCopies = Demande::where('type_document', 'Extrait de naissance')
             ->where('statut', 'Rejeté')
+            ->when($communeId, function($query) use ($communeId) {
+                return $query->where('commune_demandeur', $communeId);
+            })
             ->get();
 
         $demandesCopiesRejetees = Demande::where('type_document', 'Extrait de naissance')
             ->where('statut', 'Rejeté')
+            ->when($communeId, function($query) use ($communeId) {
+                return $query->where('commune_demandeur', $communeId);
+            })
             ->get();
 
         return view('agent_mairie.naissances.listRejeté', compact('demandes', 'demandesActesOriginauxRejetees', 'demandesCopies', 'demandesCopiesRejetees'));
@@ -1150,30 +1235,63 @@ return redirect()->route('mairie.dashboard.actes')->with('success', 'Acte de nai
     public function dashboardCopies()
     {
         try {
-            // Copies traitées par la mairie (prêtes à être envoyées à l'officier)
+            // Récupérer la commune de l'agent connecté
+            $agent = Auth::user();
+            $communeId = null;
+
+            if ($agent && $agent->mairie) {
+                $communeId = $agent->mairie->id_commune;
+            }
+
+            // Copies traitées par la mairie (prêtes à être envoyées à l'officier) - filtrées par commune
             $copies = Acte::where('type', 'copie')
                 ->where('statut', 'Traité') // Les copies fraîchement générées
+                ->when($communeId, function($query) use ($communeId) {
+                    return $query->whereHas('demande', function($q) use ($communeId) {
+                        $q->where('commune_demandeur', $communeId);
+                    });
+                })
                 ->with(['declarant', 'demande'])
                 ->orderBy('created_at', 'desc')
                 ->get();
 
             $copiesTraitees = Acte::where('type', 'copie')
                 ->where('statut', 'Traité') // Les copies fraîchement générées
+                ->when($communeId, function($query) use ($communeId) {
+                    return $query->whereHas('demande', function($q) use ($communeId) {
+                        $q->where('commune_demandeur', $communeId);
+                    });
+                })
                 ->with(['declarant', 'demande'])
                 ->get();
 
             $copiesEnAttente = Acte::where('type', 'copie')
                 ->where('statut', 'En attente de signature')
+                ->when($communeId, function($query) use ($communeId) {
+                    return $query->whereHas('demande', function($q) use ($communeId) {
+                        $q->where('commune_demandeur', $communeId);
+                    });
+                })
                 ->with(['declarant', 'demande'])
                 ->get();
 
             $copiesEnAttenteSignature = Acte::where('type', 'copie')
                 ->where('statut', 'En attente de signature')
+                ->when($communeId, function($query) use ($communeId) {
+                    return $query->whereHas('demande', function($q) use ($communeId) {
+                        $q->where('commune_demandeur', $communeId);
+                    });
+                })
                 ->with(['declarant', 'demande'])
                 ->get();
 
             $copiesFinalises = Acte::where('type', 'copie')
                 ->where('statut', 'Finalisé')
+                ->when($communeId, function($query) use ($communeId) {
+                    return $query->whereHas('demande', function($q) use ($communeId) {
+                        $q->where('commune_demandeur', $communeId);
+                    });
+                })
                 ->with(['declarant', 'demande'])
                 ->get();
 

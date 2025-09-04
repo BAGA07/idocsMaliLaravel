@@ -13,6 +13,7 @@ class Demande extends Model
         'nom_complet',
         'email',
         'telephone',
+        'commune_demandeur',
         'type_document',
         'informations_complementaires',
         'justificatif',
@@ -40,5 +41,10 @@ class Demande extends Model
     {
 
         return $this->belongsTo(VoletDeclaration::class, 'id_volet');
+    }
+
+    public function commune()
+    {
+        return $this->belongsTo(Commune::class, 'commune_demandeur');
     }
 }

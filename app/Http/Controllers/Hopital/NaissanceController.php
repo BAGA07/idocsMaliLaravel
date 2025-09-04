@@ -21,11 +21,11 @@ class NaissanceController extends Controller
         $anneeActuelle = Carbon::now()->year;
 
         $totalGarçons = VoletDeclaration::whereYear('created_at', $anneeActuelle)
-            ->where('sexe', 'M')
+            ->where('sexe', 'Masculin')
             ->count();
 
         $totalFilles = VoletDeclaration::whereYear('created_at', $anneeActuelle)
-            ->where('sexe_enfant', 'F')
+            ->where('sexe', 'Féminin')
             ->count();
 
         return view('hopital.dashboard', compact('totalNaissances', 'totalGarçons', 'totalFilles'));
