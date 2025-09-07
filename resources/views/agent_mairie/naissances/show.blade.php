@@ -158,29 +158,34 @@
         </div>
         
         {{-- Cachet et Signature --}}
-        <div class="border border-black mx-2 flex items-center mb-2 relative z-10 print-break-avoid">
-            {{-- Cachet de l'officier d'état civil --}}
+        <div class="border border-black mx-2 mb-2 flex relative z-10 print-break-avoid">
+            {{-- Titre de la section "OFFICIER" --}}
             <div class="w-[5%] flex items-center justify-center text-center px-1 border-r border-black" style="writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg); background-color: hsla(0, 93%, 6%, 0.10);">
-                <p class="font-bold text-[10px] tracking-wider">OFFICIER</p>
+                <p class="font-bold text-[10px] tracking-wider">L'OFFICIER D'ÉTAT CIVIL</p>
             </div>
+
+            {{-- Conteneur des détails (nom, date) et de la signature/cachet --}}
             <div class="flex-1 p-2 grid grid-cols-2 gap-4 items-center">
+                {{-- Informations de l'officier --}}
                 <div class="space-y-1">
                     <p class="flex items-end mb-1"><strong>21. Prénom(s) et Nom :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black flex-grow text-left px-1">{{ $acte->officier->prenom ?? '...' }} {{ $acte->officier->nom ?? '...' }}</span></p>
                     <p class="flex items-end mb-1"><strong>22. Qualité :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black flex-grow text-left px-1">{{ $acte->officier->profession ?? '...' }}</span></p>
                     <p class="flex items-end mb-1"><strong>23. Date :</strong> <span class="uppercase font-bold text-blue-700 border-b border-black flex-grow text-left px-1">{{ \Carbon\Carbon::parse($acte->date_enregistrement_acte)->format('d/m/Y') }}</span></p>
                 </div>
+
+                {{-- Section pour le cachet et la signature --}}
                 <div class="text-center relative pt-8">
                     <p class="font-bold">24. Signature et cachet de l'officier d'état civil</p>
                     <div class="flex justify-center items-end mt-2 h-32">
                         @if($acte->statut === 'Finalisé')
-                            <div class="absolute inset-0">
-                                <div class="w-full h-full flex items-end justify-between">
-                                    <img src="{{ asset('images/cacher.png') }}" alt="Cachet" style="width:120px; height: auto; object-fit: contain;">
-                                    @if($acte->signature_image)
-                                        <img src="{{ $acte->signature_image }}" alt="Signature Officier" class="w-40 absolute right-0 bottom-0 transform -translate-x-1/4">
-                                    @endif
-                                </div>
+                            <div class="absolute inset-0 flex justify-around items-end">
+                                <img src="{{ asset('images/cacher.png') }}" alt="Cachet" style="width:120px; height: auto; object-fit: contain;">
+                                @if($acte->signature_image)
+                                    <img src="{{ $acte->signature_image }}" alt="Signature Officier" style="width:160px; height: auto; object-fit: contain;">
+                                @endif
                             </div>
+                        @else
+                            <p class="text-red-500 text-sm">Acte non finalisé</p>
                         @endif
                     </div>
                 </div>
