@@ -18,13 +18,13 @@ class NaissanceController extends Controller
         // Statistiques globales
         $totalNaissances = VoletDeclaration::count();
 
-        $anneeActuelle = Carbon::now()->year;
+        $moisActuel = Carbon::now()->month;
 
-        $totalGarçons = VoletDeclaration::whereYear('created_at', $anneeActuelle)
+        $totalGarçons = VoletDeclaration::whereMonth('created_at', $moisActuel)
             ->where('sexe', 'Masculin')
             ->count();
 
-        $totalFilles = VoletDeclaration::whereYear('created_at', $anneeActuelle)
+        $totalFilles = VoletDeclaration::whereMonth('created_at', $moisActuel)
             ->where('sexe', 'Féminin')
             ->count();
 

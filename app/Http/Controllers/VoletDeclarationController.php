@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use App\Models\Notification;
 
 class VoletDeclarationController extends Controller
 {
@@ -30,16 +31,87 @@ class VoletDeclarationController extends Controller
         $totalFilles = VoletDeclaration::whereMonth('created_at', $anneeActuelle)
             ->where('sexe', 'Féminin')
             ->count();
+            $hopital_id = Auth::user()->id_hopital ?? null;
+            $notifications = collect();
+
+        if ($hopital_id) {
+            $notifications = Notification::where('hopital_id', $hopital_id)
+                ->orderBy('created_at', 'desc')
+                ->paginate(10); // Pagination (10 par page)
+        }
+        $notificationsDropdown = Notification::where('hopital_id', $hopital_id)
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
 
         $declarations = VoletDeclaration::with('declarant', 'hopital')->latest()->paginate(20);
 
-        return view('hopital.dashboard', compact('declarations', 'totalNaissances', 'totalGarçons', 'totalFilles'));
+        return view('hopital.dashboard', compact('declarations', 'totalNaissances', 'totalGarçons', 'totalFilles', 'notifications', 'notificationsDropdown'));
     }
 
     public function create()
     {
         return view('hopital.naissances.create');
     }
+    public function notifications()
+{
+    $hopitalId = Auth::user()->id_hopital;
+
+    $notifications = Notification::where('hopital_id', $hopitalId)
+        ->orderBy('created_at', 'desc')
+        ->paginate(20);
+    return view('hopital.notifications.index', compact('notifications'));
+}
+
+public function showNotification($id)
+{
+    $notification = Notification::findOrFail($id);
+
+    // Vérifie que la notification appartient à l'hôpital connecté
+    if ($notification->hopital_id !== Auth::user()->id_hopital) {
+        abort(403, 'Accès non autorisé');
+    }
+
+    if (!$notification->is_read) {
+        $notification->is_read = true;
+        $notification->save();
+    }
+
+    return view('hopital.notifications.show', compact('notification'));
+}
+
+public function markAllAsRead()
+{
+    Notification::where('hopital_id', Auth::user()->id_hopital)
+        ->where('is_read', false)
+        ->update(['is_read' => true]);
+
+    return response()->json(['success' => true]);
+}
+
+public function ajaxMarkRead($id)
+{
+    $notification = Notification::findOrFail($id);
+
+    // Vérifie que la notification est destinée à l'hôpital connecté
+    if ($notification->hopital_id !== Auth::user()->id_hopital) {
+        return response()->json(['message' => 'Non autorisé'], 403);
+    }
+
+    if (!$notification->is_read) {
+        $notification->is_read = true;
+        $notification->save();
+    }
+
+    $unreadCount = Notification::where('hopital_id', Auth::user()->id_hopital)
+        ->where('is_read', false)
+        ->count();
+
+    return response()->json([
+        'message' => 'Notification marquée comme lue.',
+        'unreadCount' => $unreadCount
+    ]);
+}
 
     public function store(Request $request)
     {

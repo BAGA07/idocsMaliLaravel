@@ -19,9 +19,9 @@ class Commune extends Model
     }
 
 
-    public function Mairie()
+    public function mairie()
     {
-        return $this->hasOne(Mairie::class,'id_commune');
+        return $this->hasOne(Mairie::class, 'id_commune');
     }
     public function Officier()
     {

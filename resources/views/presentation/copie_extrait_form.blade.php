@@ -119,6 +119,23 @@
                         @enderror
                     </div>
 
+                    <div>
+                        <label for="commune_demandeur"
+                            class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Commune:</label>
+                        <select name="commune_demandeur" id="commune_demandeur"
+                            class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <option value="">Sélectionnez votre commune</option>
+                            @foreach($communes as $commune)
+                                <option value="{{ $commune->id }}" {{ old('commune_demandeur') == $commune->id ? 'selected' : '' }}>
+                                    {{ $commune->nom_commune }} - {{ $commune->cercle }} ({{ $commune->region }})
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('commune_demandeur')
+                        <p class="text-red-500 text-xs italic mt-2">{{ $message }}</p>
+                        @enderror
+                    </div>
+
                     <div class="flex justify-end mt-6">
                         <button type="button" onclick="nextStep()"
                             class="text-white bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-lg px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 transition duration-300 ease-in-out transform hover:scale-105">
@@ -215,9 +232,10 @@
             const prenomDemandeur = document.getElementById('prenom_demandeur');
             const emailDemandeur = document.getElementById('email_demandeur');
             const telephoneDemandeur = document.getElementById('telephone_demandeur');
+            const communeDemandeur = document.getElementById('commune_demandeur');
 
             // Simple validation client-side pour s'assurer que les champs requis de l'étape 1 sont remplis
-            if (!nomDemandeur.value || !prenomDemandeur.value || !emailDemandeur.value || !telephoneDemandeur.value) {
+            if (!nomDemandeur.value || !prenomDemandeur.value || !emailDemandeur.value || !telephoneDemandeur.value || !communeDemandeur.value) {
                 Swal.fire({
                     icon: 'warning',
                     title: 'Champs manquants !',
@@ -247,14 +265,14 @@
             // Désactiver le bouton pour éviter les doubles soumissions
             submitBtn.disabled = true;
             submitBtn.innerHTML = 'Soumission en cours...';
-            
+
             // Laisser le formulaire se soumettre normalement
             return true;
         });
 
         // Si des erreurs de validation Laravel existent, revenir à l'étape correspondante
         @if($errors->any())
-            const errorFieldsStep1 = ['nom_demandeur', 'prenom_demandeur', 'email_demandeur', 'telephone_demandeur'];
+            const errorFieldsStep1 = ['nom_demandeur', 'prenom_demandeur', 'email_demandeur', 'telephone_demandeur', 'commune_demandeur'];
             const errorFieldsStep2 = ['nombre_copie', 'justificatif', 'informations_complementaires_copie'];
 
             let hasErrorInStep1 = false;

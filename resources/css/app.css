@@ -1,8 +1,6 @@
-@import '@fortawesome/fontawesome-free/css/all.css';
-
-/* Vos autres imports CSS/Tailwind */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import "tailwindcss";
-@import 'flowbite';
+
+/* @import "@fortawesome/fontawesome-free/css/all.css";
+@import "flowbite"; */

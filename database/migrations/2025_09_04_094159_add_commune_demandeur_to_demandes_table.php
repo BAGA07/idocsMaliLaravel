@@ -11,12 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('hopitals', function (Blueprint $table) {
-            $table->id();
-            $table->string('nom_hopital');
-            $table->string('email')->nullable();
-            $table->foreignId('id_commune')->constrained('communes')->onDelete('cascade');
-            $table->timestamps();
+        Schema::table('demandes', function (Blueprint $table) {
+            $table->unsignedBigInteger('commune_demandeur')->nullable()->after('telephone');
+            $table->foreign('commune_demandeur')->references('id')->on('communes')->onDelete('set null');
         });
     }
 
@@ -25,6 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('hopitals');
+        Schema::table('demandes', function (Blueprint $table) {
+            //
+        });
     }
 };

@@ -178,6 +178,10 @@ Route::middleware([
     Route::get('/dashboard', [VoletDeclarationController::class, 'dashboard'])->name('hopital.dashboard');
     Route::post('/hopital/demandes/envoyer/{id_volet}', [App\Http\Controllers\Hopital\DemandeController::class, 'envoyerDemande'])->name('hopital.demandes.envoyer');
     Route::resource('naissances', VoletDeclarationController::class);
+    Route::get('/notifications', [VoletDeclarationController::class, 'notifications'])->name('hopital.notifications.index');
+    Route::post('/notifications/{id}/mark-read', [VoletDeclarationController::class, 'ajaxMarkRead'])->name('hopital.notifications.markRead');
+    Route::post('/notifications/mark-all-read', [VoletDeclarationController::class, 'markAllAsRead'])->name('hopital.notifications.markAllRead');
+    Route::get('/notifications/{id}/mark-read', [VoletDeclarationController::class, 'showNotification'])->name('hopital.notifications.show');
 });
 // fin des routes pour les agents de l'hopital
 
