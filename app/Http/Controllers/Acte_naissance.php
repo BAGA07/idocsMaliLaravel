@@ -32,16 +32,56 @@ class Acte_naissance extends Controller
     public function index()
     {
         // Statistiques globales pour les déclarations/demandes
-        $total = Demande::count(); // Total des volets de déclaration
-        $totalDeclarations = Demande::count();
+        // $total = Demande::count(); // Total des volets de déclaration
+        // $totalDeclarations = Demande::count();
+        // $today = Carbon::today();
+        // $startOfWeek = Carbon::now()->startOfWeek();
+        // $endOfWeek = Carbon::now()->endOfWeek();
+        // $todayCount = Demande::whereDate('created_at', $today)->count(); // Compteur du jour
+        // $todayDeclarationsCount = Demande::whereDate('created_at', $today)->count();
+        // $weekCount = Demande::whereBetween('created_at', [$startOfWeek, $endOfWeek])->count(); // Compteur de la semaine
+        // $weekDeclarationsCount = Demande::whereBetween('created_at', [$startOfWeek, $endOfWeek])->count();
+        // $monthCount = Demande::whereMonth('created_at', Carbon::now()->month)->count(); // Compteur du mois
+        $communeNumero = 1;
+
+        $total = Demande::where('commune_demandeur', $communeNumero)->count();
+
         $today = Carbon::today();
         $startOfWeek = Carbon::now()->startOfWeek();
         $endOfWeek = Carbon::now()->endOfWeek();
-        $todayCount = Demande::whereDate('created_at', $today)->count(); // Compteur du jour
-        $todayDeclarationsCount = Demande::whereDate('created_at', $today)->count();
-        $weekCount = Demande::whereBetween('created_at', [$startOfWeek, $endOfWeek])->count(); // Compteur de la semaine
-        $weekDeclarationsCount = Demande::whereBetween('created_at', [$startOfWeek, $endOfWeek])->count();
-        $monthCount = Demande::whereMonth('created_at', Carbon::now()->month)->count(); // Compteur du mois
+        $currentMonth = Carbon::now()->month;
+
+        $todayCount = Demande::where('commune_demandeur', $communeNumero)
+            ->whereDate('created_at', $today)
+            ->count();
+
+        $weekCount = Demande::where('commune_demandeur', $communeNumero)
+            ->whereBetween('created_at', [$startOfWeek, $endOfWeek])
+            ->count();
+
+        $monthCount = Demande::where('commune_demandeur', $communeNumero)
+            ->whereMonth('created_at', $currentMonth)
+            ->count();
+        $communeNumero = 1;
+
+        $total = Demande::where('commune_demandeur', $communeNumero)->count();
+
+        $today = Carbon::today();
+        $startOfWeek = Carbon::now()->startOfWeek();
+        $endOfWeek = Carbon::now()->endOfWeek();
+        $currentMonth = Carbon::now()->month;
+
+        $todayCount = Demande::where('commune_demandeur', $communeNumero)
+            ->whereDate('created_at', $today)
+            ->count();
+
+        $weekCount = Demande::where('commune_demandeur', $communeNumero)
+            ->whereBetween('created_at', [$startOfWeek, $endOfWeek])
+            ->count();
+
+        $monthCount = Demande::where('commune_demandeur', $communeNumero)
+            ->whereMonth('created_at', $currentMonth)
+            ->count();
         $monthDeclarationsCount = Demande::whereMonth('created_at', Carbon::now()->month)->count();
 
         // Récupérer la commune de l'agent connecté
@@ -55,24 +95,24 @@ class Acte_naissance extends Controller
         // Récupérer les DEMANDES d'actes originaux (via volet de déclaration) - filtrées par commune
         $demandes = Demande::where('type_document', 'Extrait original')
             ->whereNotNull('id_volet')
-            ->when($communeId, function($query) use ($communeId) {
-                return $query->whereHas('volet.hopital', function($q) use ($communeId) {
+            ->when($communeId, function ($query) use ($communeId) {
+                return $query->whereHas('volet.hopital', function ($q) use ($communeId) {
                     $q->where('id_commune', $communeId);
                 });
             })
             ->with('volet')
-             ->latest()
+            ->latest()
             ->paginate(10);
 
 
 
         // Récupérer les DEMANDES de copies (via plateforme publique) - filtrées par commune
         $demandesCopies = Demande::where('type_document', 'Extrait de naissance')
-            ->when($communeId, function($query) use ($communeId) {
+            ->when($communeId, function ($query) use ($communeId) {
                 return $query->where('commune_demandeur', $communeId);
             })
             ->with('acte')
-             ->latest()
+            ->latest()
             ->paginate(10);
 
 
@@ -392,8 +432,8 @@ class Acte_naissance extends Controller
         $demandes = Demande::where('type_document', 'Extrait original')
             ->where('statut', 'Validé')
             ->whereNotNull('id_volet')
-            ->when($communeId, function($query) use ($communeId) {
-                return $query->whereHas('volet.hopital', function($q) use ($communeId) {
+            ->when($communeId, function ($query) use ($communeId) {
+                return $query->whereHas('volet.hopital', function ($q) use ($communeId) {
                     $q->where('id_commune', $communeId);
                 });
             })
@@ -403,8 +443,8 @@ class Acte_naissance extends Controller
         $demandesActesOriginauxTraitees = Demande::where('type_document', 'Extrait original')
             ->where('statut', 'Validé')
             ->whereNotNull('id_volet')
-            ->when($communeId, function($query) use ($communeId) {
-                return $query->whereHas('volet.hopital', function($q) use ($communeId) {
+            ->when($communeId, function ($query) use ($communeId) {
+                return $query->whereHas('volet.hopital', function ($q) use ($communeId) {
                     $q->where('id_commune', $communeId);
                 });
             })
@@ -415,7 +455,7 @@ class Acte_naissance extends Controller
         $demandesCopies = Demande::where('type_document', 'Extrait de naissance')
             ->where('statut', 'Validé')
             ->whereNotNull('id')
-            ->when($communeId, function($query) use ($communeId) {
+            ->when($communeId, function ($query) use ($communeId) {
                 return $query->where('commune_demandeur', $communeId);
             })
             ->with('acte')
@@ -424,7 +464,7 @@ class Acte_naissance extends Controller
         $demandesCopiesTraitees = Demande::where('type_document', 'Extrait de naissance')
             ->where('statut', 'Validé')
             ->whereNotNull('id')
-            ->when($communeId, function($query) use ($communeId) {
+            ->when($communeId, function ($query) use ($communeId) {
                 return $query->where('commune_demandeur', $communeId);
             })
             ->with('acte')
@@ -450,8 +490,8 @@ class Acte_naissance extends Controller
         $demandesOriginalesEnAttente = Demande::where('type_document', 'Extrait original')
             ->where('statut', 'En attente')
             ->whereNotNull('id_volet')
-            ->when($communeId, function($query) use ($communeId) {
-                return $query->whereHas('volet.hopital', function($q) use ($communeId) {
+            ->when($communeId, function ($query) use ($communeId) {
+                return $query->whereHas('volet.hopital', function ($q) use ($communeId) {
                     $q->where('id_commune', $communeId);
                 });
             })
@@ -461,8 +501,8 @@ class Acte_naissance extends Controller
         $demandesActesOriginauxEnAttente = Demande::where('type_document', 'Extrait original')
             ->where('statut', 'En attente')
             ->whereNotNull('id_volet')
-            ->when($communeId, function($query) use ($communeId) {
-                return $query->whereHas('volet.hopital', function($q) use ($communeId) {
+            ->when($communeId, function ($query) use ($communeId) {
+                return $query->whereHas('volet.hopital', function ($q) use ($communeId) {
                     $q->where('id_commune', $communeId);
                 });
             })
@@ -473,7 +513,7 @@ class Acte_naissance extends Controller
         $demandesCopiesEnAttente = Demande::where('type_document', 'Extrait de naissance')
             ->where('statut', 'En attente')
             ->whereNull('id_volet')
-            ->when($communeId, function($query) use ($communeId) {
+            ->when($communeId, function ($query) use ($communeId) {
                 return $query->where('commune_demandeur', $communeId);
             })
             ->get();
@@ -498,8 +538,8 @@ class Acte_naissance extends Controller
         $demandesActesOriginauxRejetees = Demande::where('type_document', 'Extrait original')
             ->where('statut', 'Rejeté')
             ->whereNotNull('id_volet')
-            ->when($communeId, function($query) use ($communeId) {
-                return $query->whereHas('volet.hopital', function($q) use ($communeId) {
+            ->when($communeId, function ($query) use ($communeId) {
+                return $query->whereHas('volet.hopital', function ($q) use ($communeId) {
                     $q->where('id_commune', $communeId);
                 });
             })
@@ -510,8 +550,8 @@ class Acte_naissance extends Controller
         $demandes = Demande::where('type_document', 'Extrait original')
             ->where('statut', 'Rejeté')
             ->whereNotNull('id_volet')
-            ->when($communeId, function($query) use ($communeId) {
-                return $query->whereHas('volet.hopital', function($q) use ($communeId) {
+            ->when($communeId, function ($query) use ($communeId) {
+                return $query->whereHas('volet.hopital', function ($q) use ($communeId) {
                     $q->where('id_commune', $communeId);
                 });
             })
@@ -521,14 +561,14 @@ class Acte_naissance extends Controller
         // Demandes de copies rejetées - filtrées par commune
         $demandesCopies = Demande::where('type_document', 'Extrait de naissance')
             ->where('statut', 'Rejeté')
-            ->when($communeId, function($query) use ($communeId) {
+            ->when($communeId, function ($query) use ($communeId) {
                 return $query->where('commune_demandeur', $communeId);
             })
             ->get();
 
         $demandesCopiesRejetees = Demande::where('type_document', 'Extrait de naissance')
             ->where('statut', 'Rejeté')
-            ->when($communeId, function($query) use ($communeId) {
+            ->when($communeId, function ($query) use ($communeId) {
                 return $query->where('commune_demandeur', $communeId);
             })
             ->get();
@@ -574,7 +614,7 @@ class Acte_naissance extends Controller
             'date_naissance' => 'required|date',
             'lieu_naissance' => 'required|string',
             'heure_naissance' => 'nullable|string|max:20', // Rendu nullable comme souvent
-             'sexe_enfant' => 'required|in:Masculin,Féminin',
+            'sexe_enfant' => 'required|in:Masculin,Féminin',
             'prenom_pere' => 'required|string',
             'nom_pere' => 'required|string',
             'profession_pere' => 'nullable|string', // Rendu nullable
@@ -686,7 +726,7 @@ class Acte_naissance extends Controller
         $acte->nom_mere = $request->nom_mere;
         $acte->profession_mere = $request->profession_mere;
         $acte->domicile_mere = $request->domicile_mere;
-         $acte->id_declarant = $demande->volet->id_declarant ?? null; // Utilise l'ID du déclarant trouvé ou créé (assurez-vous que la PK est bien 'id')
+        $acte->id_declarant = $demande->volet->id_declarant ?? null; // Utilise l'ID du déclarant trouvé ou créé (assurez-vous que la PK est bien 'id')
         //  $acte->id_demande = $request->demande_id; // Lier à la demande originale
         // $acte->id_declarant = $demande->volet->id_declarant ?? null;
         //$acte->heure_naissance = $demande->volet->heure_naissance ?? null;
@@ -694,7 +734,7 @@ class Acte_naissance extends Controller
         $acte->id_officier = $request->id_officier;
         $acte->id_commune = $request->id_commune;
         $acte->date_enregistrement_acte = now();
-        $acte->date_etablissement= now();
+        $acte->date_etablissement = now();
 
 
         $acte->type = 'original'; // MARQUER COMME UN ACTE ORIGINAL
@@ -801,7 +841,7 @@ class Acte_naissance extends Controller
         // $acte->id_volet = $demande->volet->id_volet;
 
 
-       $acte->date_etablissement = now();
+        $acte->date_etablissement = now();
         // $acte->id_volet = $demande->volet->id_volet;
         return $this->storeActeOriginal($request);
     }
@@ -911,7 +951,7 @@ class Acte_naissance extends Controller
 
         // Vérification si une COPIE a déjà été générée pour cette DEMANDE SPÉCIFIQUE
         // Cela évite de créer plusieurs copies pour la même demande.
-        if ($demande->statut === 'Validé' ) {
+        if ($demande->statut === 'Validé') {
             return back()->withErrors(['general' => 'Cette demande a déjà été traitée et une copie a été générée.'])->withInput();
         }
 
@@ -960,7 +1000,7 @@ class Acte_naissance extends Controller
                 $copie->id_officier = $request->id_officier;
                 $copie->id_commune = $request->id_commune;
                 $copie->date_enregistrement_acte = now();
-                   $copie->date_etablissement = now();
+                $copie->date_etablissement = now();
                 $copie->statut = 'Traité';
                 $copie->sequential_num = 0;
                 $copie->is_virtuelle = true; // Marquer comme copie virtuelle (basée sur un original)
@@ -1026,7 +1066,7 @@ class Acte_naissance extends Controller
         $copie->id_demande = $demande->id; // Lier la copie à la demande utilisateur
         $copie->id_officier = $request->id_officier;
         $copie->id_commune = $request->id_commune;
-           $copie->date_etablissement = now();
+        $copie->date_etablissement = now();
         $copie->date_enregistrement_acte = now(); // Date de création de la COPIE dans le système
         $copie->statut = 'Traité'; // Le statut initial de la copie est "Traité" après sa création
         $copie->sequential_num = 0; // Valeur par défaut pour les copies
@@ -1170,47 +1210,45 @@ class Acte_naissance extends Controller
             'details' => 'Acte ' . ($acte->type ?? 'original') . ' ID ' . $acte->id . ' modifié par l\'agent.',
         ]);
 
-if ($acte->type === 'copie') {
-    return redirect()->route('mairie.dashboard.copies')->with('success', 'Copie de l’acte modifiée avec succès.');
-}
+        if ($acte->type === 'copie') {
+            return redirect()->route('mairie.dashboard.copies')->with('success', 'Copie de l’acte modifiée avec succès.');
+        }
 
-return redirect()->route('mairie.dashboard.actes')->with('success', 'Acte de naissance original modifié avec succès.');
-
+        return redirect()->route('mairie.dashboard.actes')->with('success', 'Acte de naissance original modifié avec succès.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
-{
-    $acte = Acte::findOrFail($id);
-    // dd($acte->type);
-    $typeActe = $acte->type ?? 'original';
+    {
+        $acte = Acte::findOrFail($id);
+        // dd($acte->type);
+        $typeActe = $acte->type ?? 'original';
 
-    // Si l'acte est lié à une demande, mettre à jour le statut seulement
-    if ($acte->id_demande) {
-        $demande = Demande::find($acte->id_demande);
-        if ($demande) {
-            $demande->statut = 'Rejeté';
-            $demande->save();
+        // Si l'acte est lié à une demande, mettre à jour le statut seulement
+        if ($acte->id_demande) {
+            $demande = Demande::find($acte->id_demande);
+            if ($demande) {
+                $demande->statut = 'Rejeté';
+                $demande->save();
+            }
         }
+
+        $acte->delete();
+
+        Log::create([
+            'id_utilisateur' => Auth::id() ?? null,
+            'action' => 'Suppression acte',
+            'details' => ucfirst($typeActe) . ' supprimé pour ' . $acte->nom . ' ' . $acte->prenom . ' (N°' . $acte->num_acte . ')',
+        ]);
+
+        if ($acte->type === 'copie') {
+            return redirect()->route('mairie.dashboard.copies')->with('success', 'Copie de l’acte supprimée avec succès.');
+        }
+
+        return redirect()->route('mairie.dashboard.actes')->with('success', 'Acte de naissance original supprimée avec succès.');
     }
-
-    $acte->delete();
-
-    Log::create([
-        'id_utilisateur' => Auth::id() ?? null,
-        'action' => 'Suppression acte',
-        'details' => ucfirst($typeActe) . ' supprimé pour ' . $acte->nom . ' ' . $acte->prenom . ' (N°' . $acte->num_acte . ')',
-    ]);
-
-if ($acte->type === 'copie') {
-    return redirect()->route('mairie.dashboard.copies')->with('success', 'Copie de l’acte supprimée avec succès.');
-}
-
-return redirect()->route('mairie.dashboard.actes')->with('success', 'Acte de naissance original supprimée avec succès.');
-
-}
 
 
     /**
@@ -1246,8 +1284,8 @@ return redirect()->route('mairie.dashboard.actes')->with('success', 'Acte de nai
             // Copies traitées par la mairie (prêtes à être envoyées à l'officier) - filtrées par commune
             $copies = Acte::where('type', 'copie')
                 ->where('statut', 'Traité') // Les copies fraîchement générées
-                ->when($communeId, function($query) use ($communeId) {
-                    return $query->whereHas('demande', function($q) use ($communeId) {
+                ->when($communeId, function ($query) use ($communeId) {
+                    return $query->whereHas('demande', function ($q) use ($communeId) {
                         $q->where('commune_demandeur', $communeId);
                     });
                 })
@@ -1257,8 +1295,8 @@ return redirect()->route('mairie.dashboard.actes')->with('success', 'Acte de nai
 
             $copiesTraitees = Acte::where('type', 'copie')
                 ->where('statut', 'Traité') // Les copies fraîchement générées
-                ->when($communeId, function($query) use ($communeId) {
-                    return $query->whereHas('demande', function($q) use ($communeId) {
+                ->when($communeId, function ($query) use ($communeId) {
+                    return $query->whereHas('demande', function ($q) use ($communeId) {
                         $q->where('commune_demandeur', $communeId);
                     });
                 })
@@ -1267,8 +1305,8 @@ return redirect()->route('mairie.dashboard.actes')->with('success', 'Acte de nai
 
             $copiesEnAttente = Acte::where('type', 'copie')
                 ->where('statut', 'En attente de signature')
-                ->when($communeId, function($query) use ($communeId) {
-                    return $query->whereHas('demande', function($q) use ($communeId) {
+                ->when($communeId, function ($query) use ($communeId) {
+                    return $query->whereHas('demande', function ($q) use ($communeId) {
                         $q->where('commune_demandeur', $communeId);
                     });
                 })
@@ -1277,8 +1315,8 @@ return redirect()->route('mairie.dashboard.actes')->with('success', 'Acte de nai
 
             $copiesEnAttenteSignature = Acte::where('type', 'copie')
                 ->where('statut', 'En attente de signature')
-                ->when($communeId, function($query) use ($communeId) {
-                    return $query->whereHas('demande', function($q) use ($communeId) {
+                ->when($communeId, function ($query) use ($communeId) {
+                    return $query->whereHas('demande', function ($q) use ($communeId) {
                         $q->where('commune_demandeur', $communeId);
                     });
                 })
@@ -1287,8 +1325,8 @@ return redirect()->route('mairie.dashboard.actes')->with('success', 'Acte de nai
 
             $copiesFinalises = Acte::where('type', 'copie')
                 ->where('statut', 'Finalisé')
-                ->when($communeId, function($query) use ($communeId) {
-                    return $query->whereHas('demande', function($q) use ($communeId) {
+                ->when($communeId, function ($query) use ($communeId) {
+                    return $query->whereHas('demande', function ($q) use ($communeId) {
                         $q->where('commune_demandeur', $communeId);
                     });
                 })
@@ -1553,97 +1591,97 @@ return redirect()->route('mairie.dashboard.actes')->with('success', 'Acte de nai
     //     }
     // }
     public function rejeterDemande(Request $request, $id)
-{
-    try {
-        $demande = Demande::findOrFail($id);
+    {
+        try {
+            $demande = Demande::findOrFail($id);
 
-        // Vérifier que la demande est en attente
-        if ($demande->statut !== 'En attente') {
-            return redirect()->back()->with('error', 'Seules les demandes en attente peuvent être rejetées.');
-        }
+            // Vérifier que la demande est en attente
+            if ($demande->statut !== 'En attente') {
+                return redirect()->back()->with('error', 'Seules les demandes en attente peuvent être rejetées.');
+            }
 
-        // Valider le motif de rejet
-        $validated = $request->validate([
-            'motif' => 'required|string|max:1000',
-        ]);
+            // Valider le motif de rejet
+            $validated = $request->validate([
+                'motif' => 'required|string|max:1000',
+            ]);
 
-        // Enregistrer le motif côté mairie si champ disponible
-        $demande->remarque_mairie = $validated['motif'];
+            // Enregistrer le motif côté mairie si champ disponible
+            $demande->remarque_mairie = $validated['motif'];
 
-        // Mettre à jour le statut de la demande
-        $demande->statut = 'Rejeté';
-        $demande->save();
+            // Mettre à jour le statut de la demande
+            $demande->statut = 'Rejeté';
+            $demande->save();
 
-        // Traitement pour le type de demande : Copie ou Acte original
-        if ($demande->type_document === 'Extrait original' && !empty($demande->id_volet) && $demande->volet) {
-            // Demande d'acte original : notification à l'hôpital
-            $volet = $demande->volet;
-            $volet->loadMissing(['hopital']);
+            // Traitement pour le type de demande : Copie ou Acte original
+            if ($demande->type_document === 'Extrait original' && !empty($demande->id_volet) && $demande->volet) {
+                // Demande d'acte original : notification à l'hôpital
+                $volet = $demande->volet;
+                $volet->loadMissing(['hopital']);
 
-            if ($volet->hopital) {
-                $hopital = $volet->hopital;
-                $hopitalEmail = $hopital->email ?? null;
-                $hopitalNom = $hopital->nom_hopital;
+                if ($volet->hopital) {
+                    $hopital = $volet->hopital;
+                    $hopitalEmail = $hopital->email ?? null;
+                    $hopitalNom = $hopital->nom_hopital;
 
-                if ($hopitalEmail) {
+                    if ($hopitalEmail) {
+                        $motif = $validated['motif'];
+                        $dateRejet = Carbon::now()->format('d-m-Y H:i:s');
+
+                        $messageHopital = "Bonjour {$hopitalNom},\nLa demande de déclaration de naissance pour l'enfant "
+                            . ($volet->prenom_enfant ?? '') . " " . ($volet->nom_enfant ?? '')
+                            . " a été rejetée par la mairie.\nMotif du rejet : {$motif}\nNuméro de volet : " . ($volet->num_volet ?? 'N/A')
+                            . ".\nMerci de bien vouloir traiter à nouveau cette demande si besoin.";
+
+                        Mail::send('emails.declaration_notification_rejet', ['data' => ['message' => $messageHopital]], function ($message) use ($hopitalEmail) {
+                            $message->to($hopitalEmail)
+                                ->subject('Notification de rejet de demande');
+                        });
+
+                        // Enregistrer la notification dans la base de données
+                        Notification::create([
+                            'hopital_id' => $hopital->id,
+                            'mairie_id' => $hopital->commune->mairie->id ?? null,
+                            'message' => $messageHopital,
+                        ]);
+
+                        \Log::info("Notification envoyée à l'hôpital : {$hopitalEmail}");
+                    }
+                }
+            } elseif ($demande->type_document === 'Extrait de naissance') {
+                // Demande de copie : notification au déclarant
+                if (!empty($demande->email)) {
+                    $toEmail = $demande->email;
                     $motif = $validated['motif'];
                     $dateRejet = Carbon::now()->format('d-m-Y H:i:s');
+                    $messageDeclarant = "Bonjour {$demande->nom_complet},\nVotre demande de copie de votre acte de naissance a été rejetée le {$dateRejet}.\nMotif du rejet : {$motif}.\nNuméro de suivi : " . ($demande->numero_suivi ?? 'N/A') . ".\nMerci de corriger les informations ou de fournir les pièces requises, puis de soumettre à nouveau votre demande.";
 
-                    $messageHopital = "Bonjour {$hopitalNom},\nLa demande de déclaration de naissance pour l'enfant "
-                        . ($volet->prenom_enfant ?? '') . " " . ($volet->nom_enfant ?? '')
-                        . " a été rejetée par la mairie.\nMotif du rejet : {$motif}\nNuméro de volet : " . ($volet->num_volet ?? 'N/A')
-                        . ".\nMerci de bien vouloir traiter à nouveau cette demande si besoin.";
-
-                    Mail::send('emails.declaration_notification_rejet', ['data' => ['message' => $messageHopital]], function ($message) use ($hopitalEmail) {
-                        $message->to($hopitalEmail)
-                            ->subject('Notification de rejet de demande');
+                    // Envoi du mail au déclarant
+                    Mail::send('emails.declaration_notification_rejet', ['data' => ['message' => $messageDeclarant]], function ($message) use ($toEmail) {
+                        $message->to($toEmail)
+                            ->subject('Votre demande de copie a été rejetée');
                     });
 
-                    // Enregistrer la notification dans la base de données
-                    Notification::create([
-                        'hopital_id' => $hopital->id,
-                        'mairie_id' => $hopital->commune->mairie->id ?? null,
-                        'message' => $messageHopital,
-                    ]);
-
-                    \Log::info("Notification envoyée à l'hôpital : {$hopitalEmail}");
+                    \Log::info("Notification envoyée au déclarant : {$toEmail}");
                 }
             }
-        } elseif ($demande->type_document === 'Extrait de naissance') {
-            // Demande de copie : notification au déclarant
-            if (!empty($demande->email)) {
-                $toEmail = $demande->email;
-                $motif = $validated['motif'];
-                $dateRejet = Carbon::now()->format('d-m-Y H:i:s');
-                $messageDeclarant = "Bonjour {$demande->nom_complet},\nVotre demande de copie de votre acte de naissance a été rejetée le {$dateRejet}.\nMotif du rejet : {$motif}.\nNuméro de suivi : " . ($demande->numero_suivi ?? 'N/A') . ".\nMerci de corriger les informations ou de fournir les pièces requises, puis de soumettre à nouveau votre demande.";
 
-                // Envoi du mail au déclarant
-                Mail::send('emails.declaration_notification_rejet', ['data' => ['message' => $messageDeclarant]], function ($message) use ($toEmail) {
-                    $message->to($toEmail)
-                        ->subject('Votre demande de copie a été rejetée');
-                });
+            // Enregistrer l'action dans les logs
+            Log::create([
+                'id_utilisateur' => Auth::id() ?? null,
+                'action' => 'Demande rejetée',
+                'details' => 'Demande ' . $demande->type_document . ' rejetée - ID: ' . $demande->id . ' - Numéro de suivi: ' . ($demande->numero_suivi ?? 'N/A'),
+            ]);
 
-                \Log::info("Notification envoyée au déclarant : {$toEmail}");
-            }
+            return redirect()->back()->with('success', 'Demande rejetée avec succès. L\'hôpital ou le déclarant a été notifié.');
+        } catch (\Exception $e) {
+            \Log::error('Erreur lors du rejet de la demande: ' . $e->getMessage(), [
+                'demande_id' => $id,
+                'user_id' => Auth::id()
+            ]);
+
+            return redirect()->back()->with('error', 'Une erreur est survenue lors du rejet de la demande.');
         }
-
-        // Enregistrer l'action dans les logs
-        Log::create([
-            'id_utilisateur' => Auth::id() ?? null,
-            'action' => 'Demande rejetée',
-            'details' => 'Demande ' . $demande->type_document . ' rejetée - ID: ' . $demande->id . ' - Numéro de suivi: ' . ($demande->numero_suivi ?? 'N/A'),
-        ]);
-
-        return redirect()->back()->with('success', 'Demande rejetée avec succès. L\'hôpital ou le déclarant a été notifié.');
-    } catch (\Exception $e) {
-        \Log::error('Erreur lors du rejet de la demande: ' . $e->getMessage(), [
-            'demande_id' => $id,
-            'user_id' => Auth::id()
-        ]);
-
-        return redirect()->back()->with('error', 'Une erreur est survenue lors du rejet de la demande.');
     }
-}
 
 
     /**
