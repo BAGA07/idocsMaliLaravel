@@ -67,9 +67,9 @@ use Illuminate\Pagination\Paginator;
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Date</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Nom du père</th>
+                                Nom de l'enfant</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Nom de la mère</th>
+                                Nom du Déclarant</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Téléphone</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -87,13 +87,13 @@ use Illuminate\Pagination\Paginator;
                                 $declaration->heure_naissance }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                {{ $declaration->prenom_pere }} {{ $declaration->nom_pere }}
+                                {{ $declaration->prenom_enfant }} {{ $declaration->nom_enfant }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                {{ $declaration->prenom_mere }} {{ $declaration->nom_mere }}
+                                {{ $declaration->declarant->prenom_declarant }} {{ $declaration->declarant->nom_declarant }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                +223 {{ $declaration->declarant->telephone }}
+                                {{ $declaration->declarant->telephone }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 @if ($declaration->sexe === 'Masculin')
